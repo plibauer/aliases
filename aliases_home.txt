@@ -7,9 +7,11 @@ set DATE = `date +%B%Y`
 set path = ( /cygdrive/c/strawberry/perl/bin /cygdrive/c/Python26 /bin /cygdrive/c/Users/plibauer/Work/Perl/bin  $path:q )
 unset autologout
 
+set alias_file = $alias_dir/aliases
+
 alias src           "source $alias_file"
-alias src71         "source ~/aliases/71environment"
-alias src72         "source ~/aliases/72environment"
+alias src71         "source $alias_dir/71environment"
+alias src72         "source $alias_dir/72environment"
 alias whichenv      "echo 'TRIMDIR = $trimdir, DBID = $DBID'"
 
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
@@ -72,7 +74,6 @@ alias flushdns "ipconfig /flushdns"
 alias more less
 #alias newpath "set path = ($path ${P})"
 
-set alias_file = ~/aliases/aliases
 
 alias home "cd /home/plibauer"
 alias via  "vi $alias_file"
@@ -101,7 +102,6 @@ alias gotrimlog "cd $trimdir/$defArch/Debug/ServerLocalData/Log"
 alias goauto    "cd $trimdir/Automation"
 alias gobulk    "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
 alias goblk     gobulk
-alias origins   "$trimdir/$defArch/Debug/BulkLoader.exe -o '*' -action get -db $DBID"
 alias gob 	"cd $trimdir/trim/CSharp/BulkLoader"
 alias golog    	gotrimlog
 alias gologs    gotrimlog
@@ -174,6 +174,8 @@ alias b          "$trimdir/$defArch/Debug/BulkLoader.exe -db $DBID "
 alias br         "$trimdir/$defArch/Release/BulkLoader.exe -db $DBID "
 alias org        "$trimdir/$defArch/Debug/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
 alias orgr       "$trimdir/$defArch/Release/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
+alias origins    "$trimdir/$defArch/Debug/BulkLoader.exe -o '*' -action get -db $DBID"
+alias orgget     "$trimdir/$defArch/Debug/BulkLoader.exe -o '\!^' -action get -db $DBID"
 alias makerecs	 "CreateManyRecords.pl --number \!^  --output out.txt"
 
 alias tes        "$trimdir/$defArch/Debug/TRIMEnterpriseStudio.exe &"
@@ -210,6 +212,8 @@ alias perlfunc  "perldoc -f"
 
 alias db          "sperl $trimdir/trim/misc/Scripts/Perl/db.pl"
 alias dbs         db --list
+alias tableids    db -ids 
+alias tableidsrev db -ids -reverse
 alias dbw	  "sperl $trimdir/trim/misc/Scripts/Perl/dbwrap.pl"
 alias sql         db -sql
 alias gtable      "db -table"

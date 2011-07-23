@@ -7,9 +7,12 @@ set DATE = `date +%B%Y`
 set path = ( /cygdrive/c/strawberry/perl/bin /cygdrive/c/Python26 /bin /cygdrive/c/Users/plibauer/Work/Perl/bin  $path:q )
 unset autologout
 
-alias src           "source ~/aliases"
-alias src71         "source ~/71environment"
-alias src72         "source ~/72environment"
+set alias_file = $alias_dir/aliases
+
+alias src           "source $alias_file"
+alias src71         "source $alias_dir/71environment"
+alias src72         "source $alias_dir/72environment"
+
 alias whichenv      "echo 'TRIMDIR = $trimdir, DBID = $DBID'"
 
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
@@ -75,10 +78,9 @@ alias more less
 #alias newpath "set path = ($path ${P})"
 
 alias home "cd /home/plibauer"
-alias via  "vi /home/plibauer/aliases"
-alias x86  "set defArch = x86; source ~/aliases"
-alias x64  "set defArch = x64; source ~/aliases"
-
+alias via  "vi $alias_file"
+alias x86  "set defArch = x86; source $alias_file"
+alias x64  "set defArch = x64; source $alias_file"
 
 alias x11  "cd /cygdrive/c/cygwin/usr/X11R6/bin"
 alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
