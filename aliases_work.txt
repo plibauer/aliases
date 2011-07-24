@@ -1,285 +1,25 @@
-set prompt="%B%n %~>"
-setenv DISPLAY amd-hexcore:0.0
+setenv DISPLAY libauer:0.0
 
 # Set the $DATE variable for use in editing wiki journal
 set DATE = `date +%B%Y`
 
-set path = ( /cygdrive/c/strawberry/perl/bin /cygdrive/c/Python26 /bin /cygdrive/c/Users/plibauer/Work/Perl/bin  $path:q )
-unset autologout
-
-set alias_file = $alias_dir/aliases
-
-alias src           "source $alias_file"
-alias src71         "source $alias_dir/71environment"
-alias src72         "source $alias_dir/72environment"
-
-alias whichenv      "echo 'TRIMDIR = $trimdir, DBID = $DBID'"
-
-set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
-set winhome = "/cygdrive/c/Documents\ and\ Settings/plibauer"
-set mydocs  = "$winhome/My\ Documents"
-
-set locateDirectories = "/bin /dev /etc /home /lib /packages /usr /var $cygtrimdir /cygdrive/c/Users /cygdrive/c/Windows"
-
-set autocorrect=1
-set autolist=ambiguous
-unset autologout
-set complete=enhance
-set correct=cmd
-set echo_style=both
-set ellipsis
-set fignore=(.o \~)
-set histdup=erase
-set history=15000
-unset ignoreeof
-set listjobs=long
-set listmaxrows=23
-#set noglob
-set notify=1
-set rmstar=1
-set savehist=( $history merge )
-set showdots=1
-set symlinks=expand
+set path = ( /cygdrive/c/Python26 /cygdrive/c/Users/plibauer/perl/bin  $path:q )
 
 
-# Tell less to leave the output displayed
-setenv LESS "-X"
-
-# Set directory colours
-setenv LS_COLORS 'no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:'
-
-alias lc "ls --color"
-alias ll "ls --color -l"
-alias lt "ls --color -lt"
-alias la "ls --color -al"
-alias ++ pushd
-alias -- popd
-alias d dirs
-alias h history
-alias j jobs
-
-
-
-alias display "setenv DISPLAY :0.0"
-alias disp1 "setenv DISPLAY :1.0"
-alias d "setenv | grep DISPLAY"
-alias lh "ll -t \!^ | head "
-
-
-alias findalias "alias | grep -i " 
-alias falias findalias
-alias update "updatedb --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /cygdrive/c/strawberry'"
-alias locate "locate -d /home/plibauer/locatedb"
-alias trimfind "locate -i \!^ | egrep -v '*.svn'"
-alias loc "trimfind"
-
-alias flushdns "ipconfig /flushdns"
-alias more less
-#alias newpath "set path = ($path ${P})"
-
-alias home "cd /home/plibauer"
-alias via  "vi $alias_file"
-alias x86  "set defArch = x86; source $alias_file"
-alias x64  "set defArch = x64; source $alias_file"
-
-alias x11  "cd /cygdrive/c/cygwin/usr/X11R6/bin"
-alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
-alias logs "xt wgs-log; xt evnt-log; xt dci-log"
-alias refresh "C:/Users/plibauer/Downloads/SysinternalsSuite/Bginfo.exe"
-
-
-alias rundox      "$trimdir/xtra/Doxygen/runDoxygen/bin/Debug/runDoxygen.exe"
 alias winemacs    "/cygdrive/c/Program\ Files\ \(x86\)/XEmacs/XEmacs-21.4.21/i586-pc-win32/xemacs.exe"
 alias updatewiki  "rsync -avz /cygdrive/z/ /cygdrive/d/RDWiki/"
-
-alias msitrimi     "msiexec /i HPTRIM.msi /lv\* out.log"
-alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
-alias gocfg        "cd $trimcfgdir"
 
 alias gowiki         "cd /cygdrive/z/data/pages"
 alias gowikij        "cd /cygdrive/z/data/pages/wiki/paul_libauer"
 alias gowikibackup   "cd /cygdrive/d/backup/RDWiki/data/pages/wiki/paul_libauer"
-
 alias goproj    "cd /cygdrive/z/data/pages/wiki/paul_libauer/projects"
-alias vibulk    "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
-alias govs      "cd /cygdrive/c/Documents\ and\ Settings/plibauer/My\ Documents/Visual\ Studio\ 2005/Projects"
-alias godown    "cd /cygdrive/c/Documents\ and\ Settings/plibauer/Downloads"
-alias godebug   "cd $trimdir/$defArch/Debug"
-alias godeb     "cd $trimdir/$defArch/Debug"
-alias gorel     "cd $trimdir/$defArch/release"
-alias gorelease "cd $trimdir/$defArch/release"
-alias gomsi     "cd $trimdir/msi/$defArch/en-us"
-alias gotest    "cd $trimdir/trim/test"
-alias goauto    "cd $trimdir/Automation"
-alias goptest   "cd ~/perl/test"
-alias gosrc     "cd $trimdir/trim/src"
-alias gosln     "cd $trimdir/trim/sln"
-alias gotrim    "cd $trimdir/trim"
-alias gotrimlog "cd $trimdir/$defArch/Debug/ServerLocalData/Log"
-alias goauto    "cd $trimdir/Automation"
-alias gobulk    "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
-alias goblk     gobulk
-alias origins   "$trimdir/$defArch/Debug/BulkLoader.exe -o '*' -action get -db $DBID"
-alias gob 	"cd $trimdir/trim/CSharp/BulkLoader"
-alias golog    	gotrimlog
-alias gologs    gotrimlog
-alias gotrimdslog    	"cd /cygdrive/c/Users/plibauer/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
-alias showlog  'cat /cygdrive/c/tmp/finalbuilder.log | fromunicode | perl -ne '"'"'  s/^\s+//;  print "$_"; '"'"' | more '
-alias shlog  showlog
-alias tailog   "tail -f /cygdrive/c/tmp/finalbuilder.log"
-alias gotmp    "cd /cygdrive/c/tmp"
-alias gosharp  "cd /cygdrive/e/Documents\ and\ Settings/plibauer/My\ Documents/Visual\ Studio\ 2005/Projects/C_Sharp"
-alias godox    "cd $trimdir/xtra/Doxygen/runDoxygen"
-alias godoc    "cd /cygdrive/c/documentation"
-alias gosmoke  "cd $trimdir/Automation/Smoketest"
-alias goperl   "cd $trimdir/trim/misc/Scripts/Perl"
-alias gop      "cd $home/winhome/perl"
-alias godocs   "cd $mydocs"
-alias gowix    "cd $trimdir/trim/wix"
-alias gowixbin "cd /cygdrive/c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
-alias gowin    "cd /cygdrive/c/Users/plibauer"
-alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
-alias godownloads "cd /cygdrive/c/Users/plibauer/Downloads"
-alias goroam  "cd /cygdrive/c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
-alias gojet    "cd /cygdrive/c/LucidImagination/LucidWorks/lucidworks/jetty/logs"
-alias gojetty  gojet
 
-alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
-alias trace	"tracert"
+alias visolr    "vi /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
+alias vis       "vi /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr.txt"
+alias emacsolr  "winemacs z:/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
 
 
-alias ff            "find . -name "
-alias ifind         'find . -iname "\!^" '
-alias pfind         "/cygdrive/c/Users/plibauer/perl/bin/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
-alias pf pfind
-alias grep          "grep --perl-regexp"
-alias grep_examples "cat /cygdrive/c/Users/libauer/grep_examples.txt"
-alias grepe grep_examples
-alias messages      'grep -i "\!^" $trimdir/trim/TRIMMessages.txt'
-alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
-alias properties    'grep -i "\!^" $trimdir/trim/src/DD/properties.txt'
-alias viewprop      'view $trimdir/trim/src/DD/properties.txt'
-alias database	    'grep -i "\!^" $trimdir/trim/src/DD/DATABASE.TXT'
-alias viewdb	    'view $trimdir/trim/src/DD/DATABASE.TXT'
-
-alias dce  ContentExtraction
-alias dox  "/cygdrive/c/Program\ Files\ \(x86\)/doxygen/bin/doxygen"
-alias dwiz "/cygdrive/c/Program\ Files/doxygen/bin/doxywizard"
-alias aperl "/cygdrive/c/Perl/bin/perl"
-alias wperl aperl
-
-# Path conversion using cygpath
-alias towin  'cygpath -t windows "\!^"'
-alias tounix 'cygpath -t unix    "\!^"'
-
-# Wix stuff
-#alias candle "/cygdrive/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
-#alias lit "/cygdrive/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
-
-# SVN
-alias hpsvn "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk REPOS_trunk --username paul_libauer"
-alias svn "/cygdrive/c/Program\ Files\ \(x86\)/CollabNet\ Subversion\ Client/svn.exe"
-#alias svnlog "svn log -l 10"
-alias svnlog       "~/perl/bin/svn_log_processor.pl --file ~/svn/svn.verbose.log"
-alias svnlogupdate "~/perl/bin/svn_log_processor.pl --update"
-alias svnlist      "~/perl/bin/svn_log_processor.pl --file ~/svn/svn.verbose.log --list_users"
-alias svnlogh      "~/perl/bin/svn_log_processor.pl --help"
-
-# RSYNC
-# Sync the files from source to destination
-alias sync    "rsync -avub --size-only --exclude '.svn' --exclude '*~'" 
-alias syncdry "rsync -avubn --size-only --exclude '.svn' --exclude '*~'"
-
-
-# Run TRIM programs
-
-# alias bulkloader "$trimdir/$defArch/Debug/BulkLoader.exe &"
-alias b          "$trimdir/$defArch/Debug/BulkLoader.exe -db $DBID "
-alias br         "$trimdir/$defArch/Release/BulkLoader.exe -db $DBID "
-alias org        "$trimdir/$defArch/Debug/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
-alias orgr       "$trimdir/$defArch/Release/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
-alias makerecs	 "CreateManyRecords.pl --number \!^  --output out.txt"
-
-alias tes        "$trimdir/$defArch/Debug/TRIMEnterpriseStudio.exe &"
-alias trim       "$trimdir/$defArch/Debug/TRIM.exe &"
-alias wgs        "$trimdir/$defArch/Debug/TRIMWorkgroup.exe &"
-alias trimds     "$trimdir/$defArch/Debug/TrimDS.exe &"
-
-set svexe = "/cygdrive/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
-alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\release\\HP.HPTRIM.SDK.dll sdknet.snk"
 alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
-
-# Run populate database
-alias popdb "cd $trimdir; $trimdir/$defArch/Debug/PopulateDatabase.exe"
-
-alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
-alias getpath "/cygdrive/c/Users/plibauer/perl/bin/getPath.pl"
-
-# Compile a script to an executable using Strawberry Perl's version of pp
-alias perlcompile   "/cygdrive/c/strawberry/perl/bin/pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o "
-alias sperl         "/cygdrive/c/strawberry/perl/bin/perl"
-alias xmlconf       "sperl C:/Users/plibauer/perl/bin/xmlconfig.pl --file "
-alias xconf         "sperl C:/Users/plibauer/perl/bin/xmlconfig.pl"
-alias trimconfig    sperl C:/Users/plibauer/perl/bin/xmlconfig.pl --file $trimcfg
-alias restoreconfig "cp /cygdrive/c/TestDatasets/C1/backup/TRIMConfig.tcfg $trimcfgdir"
-alias goconfig	    gocfg 
-alias xmltrim       "xmlformat.pl $trimcfg"
-alias getconfig     "more $trimcfg"
-alias fixtrimconfig "xmlformat.pl -i -b .backup $trimcfg"
-alias xmlnoc        "sperl stripXMLcomments.pl"
-alias xmlf          xmlformat.pl
-
-# Lookup a perl function using perldoc
-alias perlfunc  "perldoc -f" 
-
-
-alias db          "sperl $trimdir/trim/misc/Scripts/Perl/db.pl"
-alias dbs         db --list
-alias dbw	  "sperl $trimdir/trim/misc/Scripts/Perl/dbwrap.pl"
-alias sql         db -sql
-alias gtable      "db -table"
-alias loceaddr    "db -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 1,2,4,24,27,28 -num -verbose" 
-alias getrec      "db -num -row" 
-alias getrecs     getrec  
-alias getloc      dbw loc
-alias dumpdb	  db --dump_all
-alias grepdump    "db --dump_all | egrep -i "
-
-# FIGHTING THE SHELL EVERY STEP OF THE WAY :)
-alias mklocdata   "sql 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.uri = PER.lpLocUri' -col 22,23,28,27 -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
-alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
-
-# SQLITE
-alias sqlite		"~/winhome/Development/SQLite/sqlite3.exe"
-alias sqliteanal	"~/winhome/Development/SQLite/sqlite3_analyzer.exe"
-
-alias spell 'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
-alias spella 'echo "\!^" >> ~/words.txt; wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
-alias spellb 'echo "\!^" >> ~/words.txt; wn "\!^" -g -over -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:"'
-
-alias svndiff svn diff -r PREV
-
-#  You need to supply an argument, so just use an empty string, '', to get the aliases to work without an argument
-alias hklm "regtool list \\machine\\\!^"
-alias hkcu "regtool list \\user\\\!^"
-alias hkcr "regtool list \\root\\\!^"
-
-
-alias totext      'iconv -f UTF-16 -t UTF-8 '
-alias fromunicode 'iconv -f UTF-16 -t UTF-8 '
-alias grepu       'fromunicode \!:2 | grep \!:1'
-alias grepui      'fromunicode \!:2 | grep -i \!:1'
-
-alias testtrim     "$trimdir/$defArch/Debug/testTrim.exe --test"
-alias trimtest     testtrim
-alias testbld      "$trimdir/$defArch/Debug/testTrim.exe --test bldnet"
-alias testsolr     "$trimdir/$defArch/Debug/testTrim.exe --test solr"
-alias restoresolr  "$trimdir/$defArch/Debug/testTrim.exe --test solr --restore"
-alias bldnet testbld
-
-alias bulkedocs "date; b -o edocs-test -a run; date"
-alias timeblk  "date; b -o origin-test-1 -a run; date"
-alias cleanblk "rm -rf 000000*; rm $DBID.*"
 
 # ssh into Ubuntu
 set ubuntu = 15.146.221.194
@@ -287,13 +27,7 @@ set ubuntu = 15.146.221.194
 alias sshu	"ssh -l plibauer $ubuntu"
 alias st	"ssh -l plibauer solrtest"
 alias solr	sshu
-alias visolr    "vi /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
-alias vis       "vi /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr.txt"
-alias emacsolr  "winemacs z:/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
 
-alias golucid		"cd /cygdrive/c/LucidImagination/LucidWorks"
-alias solrl		'curl "http://localhost:8983/solr/select?q=\!^" --noproxy "*" --silent | xmlformat.pl'
-alias solrlucid		'curl "http://localhost:8888/solr/collection1/select?q=\!^" --noproxy "*" --silent | xmlformat.pl'
 alias solrq     	'curl "http://solrtest:8080/solr/select?q=\!^" --noproxy "*" --silent | xmlformat.pl'
 alias scurl		'curl "http://solrtest:8080/\!^" --noproxy "*" --silent'
 alias solrdel		'curl "http://solrtest:8080/solr/update?commit=true" -H "Content-Type: text/xml" --data-binary "<delete><query>*:*</query></delete>" --noproxy "*"'
@@ -334,20 +68,4 @@ alias getsolr   "scp -l plibauer "$ubuntu":/home/plibauer/Uploads/\!^ ."
 alias cpst    "scp \!^ plibauer@solrtest:/home/plibauer"
 alias getst   "scp plibauer@solrtest:/home/plibauer/Uploads/\!^ ."
 
-alias psall     'ps -alW'
 
-# Query windows services to see what is running or stopped
-alias svc_active	"sc query type= service"
-alias svc_inactive	"sc query type= service state= inactive"
-alias svc_all		"sc query type= service state= all"
-alias svc_drivers	"sc query type= driver"
-alias startsql		"sc start MSSQLSERVER"
-alias sqlstart 		startsql
-alias querysql		"sc query MSSQLSERVER"
-alias sqlquery		querysql
-
-alias goiview 		"cd /cygdrive/f/ABC_Iview;"
-alias iview 		"cd /cygdrive/f/ABC_Iview; ./PerlIView.pl"
-alias iviewsh	 	"cd /cygdrive/f/ABC_Iview; ./PerlIView.pl --show"
-alias iviewr		"cd /cygdrive/f/ABC_Iview; ./PerlIView.pl --refresh"
-alias iviewg		"cd /cygdrive/f/ABC_Iview; ./PerlIView.pl --get"
