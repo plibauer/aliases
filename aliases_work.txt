@@ -5,19 +5,33 @@ set DATE = `date +%B%Y`
 
 set path = ( /cygdrive/c/Python26 /cygdrive/c/Users/plibauer/perl/bin  $path:q )
 
-
 alias winemacs    "/cygdrive/c/Program\ Files\ \(x86\)/XEmacs/XEmacs-21.4.21/i586-pc-win32/xemacs.exe"
-alias updatewiki  "rsync -avz /cygdrive/z/ /cygdrive/d/RDWiki/"
 
-alias gowiki         "cd /cygdrive/z/data/pages"
-alias gowikij        "cd /cygdrive/z/data/pages/wiki/paul_libauer"
-alias gowikibackup   "cd /cygdrive/d/backup/RDWiki/data/pages/wiki/paul_libauer"
-alias goproj    "cd /cygdrive/z/data/pages/wiki/paul_libauer/projects"
+#########################################################################################
+###  JOURNAL shortcuts
 
-alias visolr    "vi /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
-alias vis       "vi /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr.txt"
-alias emacsolr  "winemacs z:/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
+alias updatewiki      "rsync -avz /cygdrive/z/ /cygdrive/d/RDWiki/"
+alias gowiki          "cd /cygdrive/z/data/pages"
+alias gowikij         "cd /cygdrive/z/data/pages/wiki/paul_libauer"
+alias gowikibackup    "cd /cygdrive/d/backup/RDWiki/data/pages/wiki/paul_libauer"
+alias goproj          "cd /cygdrive/z/data/pages/wiki/paul_libauer/projects"
+alias grepj           "grep \!^ `cat /cygdrive/c/tmp/journalname.txt`"
+alias mkjourn         "setdate; echo '/cygdrive/z/data/pages/wiki/paul_libauer/'$DATE'.txt' | perl -ne 'print lc ' > /cygdrive/c/tmp/journalname.txt"
+alias rmjourn         "rm /cygdrive/c/tmp/journalname.txt"
+alias scrub           "~/perl/bin/scrub.pl --file"
+alias tailj           "tail `cat /cygdrive/c/tmp/journalname.txt`"
+alias tjournal        "tail -50 `cat /cygdrive/c/tmp/journalname.txt`"
+alias vij             "vi `cat /cygdrive/c/tmp/journalname.txt`; scrub  `cat /cygdrive/c/tmp/journalname.txt`"
+alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
+alias visolr          "vi /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
+alias vis             "vi /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr.txt"
+alias emacsolr        "winemacs z:/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
 
+#########################################################################################
+
+alias showlog         'cat /cygdrive/c/tmp/finalbuilder.log | fromunicode | perl -ne '"'"'  s/^\s+//;  print "$_"; '"'"' | more '^M
+alias tailog          "tail -f /cygdrive/c/tmp/finalbuilder.log"
+alias rundox          "$trimdir/xtra/Doxygen/runDoxygen/bin/Debug/runDoxygen.exe"^M
 
 alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
 
