@@ -1,10 +1,6 @@
 #setenv DISPLAY amd-hexcore:0.0
 
-# Set the $DATE variable for use in editing wiki journal
-set DATE = `date +%B%Y`
-
 set path = ( /cygdrive/c/Users/plibauer/Work/Perl/bin  $path:q )
-
 
 alias goiview 		"cd /cygdrive/f/ABC_Iview;"
 alias iview 		"cd /cygdrive/f/ABC_Iview; ./PerlIView.pl"
