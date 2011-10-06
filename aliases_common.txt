@@ -17,13 +17,11 @@ alias via  	"vi $alias_file"
 alias x86  	"set defArch = x86; source $alias_file; settitle"
 alias x64  	"set defArch = x64; source $alias_file; settitle"
 alias src       "source $alias_file"
-alias src71     "source $alias_dir/71environment; settitle"
 alias src72     "source $alias_dir/72environment; settitle"
+alias src73     "source $alias_dir/73environment; settitle"
 alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, DBID = $DBID'"
 
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
-
-
 
 set autocorrect=1
 set autolist=ambiguous
