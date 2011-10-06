@@ -1,4 +1,4 @@
-setenv DISPLAY amd-hexcore:0.0
+setenv DISPLAY :0.0
 
 # Set the $DATE variable for use in editing wiki journal
 set DATE = `date +%B%Y`
@@ -11,3 +11,5 @@ alias iview 		"cd /cygdrive/f/ABC_Iview; ./PerlIView.pl"
 alias iviewsh	 	"cd /cygdrive/f/ABC_Iview; ./PerlIView.pl --show"
 alias iviewr		"cd /cygdrive/f/ABC_Iview; ./PerlIView.pl --refresh"
 alias iviewg		"cd /cygdrive/f/ABC_Iview; ./PerlIView.pl --get"
+
+alias router		"telnet 10.0.0.1"

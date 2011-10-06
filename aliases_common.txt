@@ -10,15 +10,15 @@ set locateDirectories = "/bin /dev /etc /home /lib /packages /usr /var $cygtrimd
 alias get_title 'xprop -id ${WINDOWID}  | perl -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
 alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
-alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], DBID=$in[3]\007");          ' "'"
+alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], DBID=$in[3]\007");          ' "'"
 
 alias home 	"cd /home/plibauer"
 alias via  	"vi $alias_file"
 alias x86  	"set defArch = x86; source $alias_file; settitle"
 alias x64  	"set defArch = x64; source $alias_file; settitle"
 alias src       "source $alias_file"
-alias src71     "source $alias_dir/71environment; settitle"
 alias src72     "source $alias_dir/72environment; settitle"
+alias src73     "source $alias_dir/73environment; settitle"
 alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, DBID = $DBID'"
 
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
