@@ -23,8 +23,6 @@ alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, DBID = $DBID'"
 
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 
-
-
 set autocorrect=1
 set autolist=ambiguous
 unset autologout
@@ -112,6 +110,7 @@ alias gosmoke  "cd $trimdir/Automation/Smoketest"
 alias goperl   "cd $trimdir/trim/misc/Scripts/Perl"
 alias gop      "cd $home/winhome/perl"
 alias gowix    "cd $trimdir/trim/wix"
+alias gowixbin "cd /cygdrive/c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
 alias gowin    "cd /cygdrive/c/Users/plibauer"
 alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
 alias godownloads "cd /cygdrive/c/Users/plibauer/Downloads"
@@ -131,7 +130,8 @@ alias refresh "C:/Users/plibauer/Downloads/SysinternalsSuite/Bginfo.exe"
 
 alias ff            "find . -name "
 alias ifind         'find . -iname "\!^" '
-alias pfind         "/cygdrive/c/Users/plibauer/perl/bin/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias pfind2k8      "/cygdrive/c/Users/plibauer/perl/bin/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias pfind         "/cygdrive/c/Users/plibauer/perl/bin/find_project_files.vs2010.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
 alias pf pfind
 alias grep          "grep --perl-regexp"
 alias grep_examples "cat /cygdrive/c/Users/libauer/grep_examples.txt"
@@ -156,6 +156,10 @@ alias tounix 'cygpath -t unix    "\!^"'
 # Wix stuff
 #alias candle "/cygdrive/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
 #alias lit "/cygdrive/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
+alias msitrimi     "msiexec /i HPTRIM.msi /lv\* out.log"
+alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
+
+
 
 # SVN
 alias hpsvn "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk REPOS_trunk --username paul_libauer"
@@ -189,6 +193,7 @@ alias wgs        "$trimdir/$defArch/Debug/TRIMWorkgroup.exe &"
 alias trimds     "$trimdir/$defArch/Debug/TrimDS.exe &"
 
 set svexe = "/cygdrive/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
+alias sn "$svexe"
 alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\release\\HP.HPTRIM.SDK.dll sdknet.snk"
 
 # Run populate database
@@ -201,36 +206,59 @@ alias getpath "/cygdrive/c/Users/plibauer/perl/bin/getPath.pl"
 # Compile a script to an executable using Strawberry Perl's version of pp
 alias perlcompile   "/cygdrive/c/strawberry/perl/bin/pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o "
 alias sperl         "/cygdrive/c/strawberry/perl/bin/perl"
+
 alias xmlconf       "sperl C:/Users/plibauer/perl/bin/xmlconfig.pl --file "
 alias xconf         "sperl C:/Users/plibauer/perl/bin/xmlconfig.pl"
+alias xmlnoc        "sperl stripXMLcomments.pl"
+alias xmlf          xmlformat.pl
+
 alias trimconfig    sperl C:/Users/plibauer/perl/bin/xmlconfig.pl --file $trimcfg
+alias shconf        trimconfig
+alias shconfig      trimconfig
+alias showconf      trimconfig
 alias restoreconfig "cp /cygdrive/c/TestDatasets/C1/backup/TRIMConfig.tcfg $trimcfgdir"
 alias goconfig      gocfg
 alias xmltrim       "xmlformat.pl $trimcfg"
 alias getconfig     "more $trimcfg"
 alias fixtrimconfig "xmlformat.pl -i -b .backup $trimcfg"
-alias xmlnoc        "sperl stripXMLcomments.pl"
-alias xmlf          xmlformat.pl
+
 
 # Lookup a perl function using perldoc
 alias perlfunc  "perldoc -f"
 
 
-alias db          "sperl $trimdir/trim/misc/Scripts/Perl/db.pl"
-alias dbs         db --list
-alias tableids    db -ids table
-alias tableidsrev db -ids table -reverse
-alias eventids    db -ids event
-alias bobids      db -ids bob
-alias dbw         "sperl $trimdir/trim/misc/Scripts/Perl/dbwrap.pl"
+################################################
+### PERL DATABASE ACCESS
+
+alias db          "sperl $trimdir/trim/misc/Scripts/Perl/db/db.pl"
+alias dbs         "db --list"
+
+alias bobids      "db -id bob"
+alias bobidsr     "db -id bob -rev"
+alias bobs        bobids
+alias bobsr       bobidsr
+
+alias eventids    "db -id event"
+alias eventidsr   "db -id event -rev"
+alias events      eventids
+alias eventsr     eventidsr
+
+alias table       "db -table"
+alias tables      "db -g"
+alias tableids    "db -id table"
+alias tableidsr   "db -id table -rev"
+alias tids        tableids
+alias tidsr       tableidsr
+
 alias sql         db -sql
 alias gtable      "db -table"
 alias loceaddr    "db -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 1,2,4,24,27,28 -num -verbose"
 alias getrec      "db -num -row"
 alias getrecs     getrec
-alias getloc      dbw loc
 alias dumpdb      db --dump_all
 alias grepdump    "db --dump_all | egrep -i "
+
+#-------------------------------------------------
 
 # FIGHTING THE SHELL EVERY STEP OF THE WAY :)
 alias mklocdata   "sql 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.uri = PER.lpLocUri' -col 22,23,28,27 -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
@@ -292,10 +320,16 @@ alias sqlquery          querysql
 
 
 
+####################################################################
+### GIT commands
 
-alias gitpush    "git push origin master"
-alias gitnewrepo "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
-alias gitcommit  "git commit -a"
-alias gitdiff    "git diff"
+alias gitpush     "git push origin master"
+alias gitnewrepo  "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
+alias gitcommit   "git commit -a"
+alias gitdiff     "git diff"
+alias gitpull     "git pull"
+
+#-------------------------------------------------------------------
+
 
 alias ldapa    "/bin/ldapadd.exe -x -D 'cn=Manager,dc=libauer,dc=com' -W -f \!^"
