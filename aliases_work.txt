@@ -1,4 +1,4 @@
-setenv DISPLAY libauer:0.0
+#setenv DISPLAY libauer:0.0
 
 # Set the $DATE variable for use in editing wiki journal
 set DATE = `date +%B%Y`
