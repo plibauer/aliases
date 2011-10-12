@@ -1,4 +1,8 @@
-After checking out the sources to ~/aliases,  create a soft link to the home or work file;
+Checkout a clone of the repository in your home directory using;
+
+      >git clone git@github.com:plibauer/aliases.git
+
+Create a soft link to the home or work file;
 
       >ln -s ~/aliases/aliases_{home|work}.txt  ~/aliases/aliases
 
@@ -8,5 +12,5 @@ In your ~/.tcshrc file, put in the initial source command for which environment 
 file: ~/.tcshrc
 ===============
 
-  source ~/aliases/72environment
+  source ~/aliases/73environment
 

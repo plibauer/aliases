@@ -333,6 +333,10 @@ alias gitcheckout "git clone git://github.com/plibauer/aliases"
 alias checkout     gitcheckout
 alias commit	   gitcommit
 alias status       gitstatus
+alias gitsetrepo  "get remote set-url origin git@github.com:plibauer/aliases.git"
+alias gitconfig   "git config -l"
+alias gitsshtest  "ssh -T git@github.com"
+
 
 #-------------------------------------------------------------------
 
