@@ -2,9 +2,10 @@ unalias '*'
 
 set trimdir       = C:/73
 set defArch       = x64
+set defBuild      = Debug
 set cygtrimdir    = /cygdrive/c/73
 set DBID          = D1
-set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData/TRIMconfig.tcfg"
+set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
 set alias_dir     = ~/aliases
 
 source $alias_dir/aliases_common.txt

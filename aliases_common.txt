@@ -10,16 +10,18 @@ set locateDirectories = "/bin /dev /etc /home /lib /packages /usr /var $cygtrimd
 alias get_title 'xprop -id ${WINDOWID}  | perl -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
 alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
-alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], DBID=$in[3]\007");          ' "'"
+alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${defBuild}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
 
 alias home 	"cd /home/plibauer"
 alias via  	"vi $alias_file"
 alias x86  	"set defArch = x86; source $alias_file; settitle"
 alias x64  	"set defArch = x64; source $alias_file; settitle"
+alias debug  	"set defBuild = Debug; source $alias_file; settitle"
+alias release  	"set defBuild = Release; source $alias_file; settitle"
 alias src       "source $alias_file"
 alias src72     "source $alias_dir/72environment; settitle"
 alias src73     "source $alias_dir/73environment; settitle"
-alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, DBID = $DBID'"
+alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, BUILD = $defBuild, DBID = $DBID'"
 
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 
@@ -95,7 +97,7 @@ alias goauto    "cd $trimdir/Automation"
 alias gosrc     "cd $trimdir/trim/src"
 alias gosln     "cd $trimdir/trim/sln"
 alias gotrim    "cd $trimdir/trim"
-alias gotrimlog "cd $trimdir/$defArch/Debug/ServerLocalData/Log"
+alias gotrimlog "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
 alias goauto    "cd $trimdir/Automation"
 alias gobulk    "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
 alias goblk     gobulk
@@ -178,26 +180,24 @@ alias syncdry "rsync -avubn --size-only --exclude '.svn' --exclude '*~'"
 
 # Run TRIM programs
 
-# alias bulkloader "$trimdir/$defArch/Debug/BulkLoader.exe &"
-alias b          "$trimdir/$defArch/Debug/BulkLoader.exe -db $DBID "
-alias br         "$trimdir/$defArch/Release/BulkLoader.exe -db $DBID "
-alias org        "$trimdir/$defArch/Debug/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
-alias orgr       "$trimdir/$defArch/Release/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
-alias origins    "$trimdir/$defArch/Debug/BulkLoader.exe -o '*' -action get -db $DBID"
-alias orgget     "$trimdir/$defArch/Debug/BulkLoader.exe -o '\!^' -action get -db $DBID"
+# alias bulkloader "$trimdir/$defArch/$defBuild/BulkLoader.exe &"
+alias b          "$trimdir/$defArch/$defBuild/BulkLoader.exe -db $DBID "
+alias org        "$trimdir/$defArch/$defBuild/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
+alias origins    "$trimdir/$defArch/$defBuild/BulkLoader.exe -o '*' -action get -db $DBID"
+alias orgget     "$trimdir/$defArch/$defBuild/BulkLoader.exe -o '\!^' -action get -db $DBID"
 alias makerecs   "CreateManyRecords.pl --number \!^  --output out.txt"
 
-alias tes        "$trimdir/$defArch/Debug/TRIMEnterpriseStudio.exe &"
-alias trim       "$trimdir/$defArch/Debug/TRIM.exe &"
-alias wgs        "$trimdir/$defArch/Debug/TRIMWorkgroup.exe &"
-alias trimds     "$trimdir/$defArch/Debug/TrimDS.exe &"
+alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
+alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
+alias wgs        "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe &"
+alias trimds     "$trimdir/$defArch/$defBuild/TrimDS.exe &"
 
 set svexe = "/cygdrive/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
 alias sn "$svexe"
-alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\release\\HP.HPTRIM.SDK.dll sdknet.snk"
+alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
 
 # Run populate database
-alias popdb "cd $trimdir; $trimdir/$defArch/Debug/PopulateDatabase.exe"
+alias popdb "cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
 
 alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
 alias getpath "/cygdrive/c/Users/plibauer/perl/bin/getPath.pl"
@@ -288,11 +288,11 @@ alias grepui      'fromunicode \!:2 | grep -i \!:1'
 
 
 
-alias testtrim     "$trimdir/$defArch/Debug/testTrim.exe --test"
+alias testtrim     "$trimdir/$defArch/$defBuild/testTrim.exe --test"
 alias trimtest     testtrim
-alias testbld      "$trimdir/$defArch/Debug/testTrim.exe --test bldnet"
-alias testsolr     "$trimdir/$defArch/Debug/testTrim.exe --test solr"
-alias restoresolr  "$trimdir/$defArch/Debug/testTrim.exe --test solr --restore"
+alias testbld      "$trimdir/$defArch/$defBuild/testTrim.exe --test bldnet"
+alias testsolr     "$trimdir/$defArch/$defBuild/testTrim.exe --test solr"
+alias restoresolr  "$trimdir/$defArch/$defBuild/testTrim.exe --test solr --restore"
 alias bldnet testbld
 
 alias bulkedocs "date; b -o edocs-test -a run; date"
@@ -306,7 +306,7 @@ alias solrlucid         'curl "http://localhost:8888/solr/collection1/select?q=\
 #
 
 
-alias psall     'ps -alW'
+alias psall     'ps -aelW'
 
 # Query windows services to see what is running or stopped
 alias svc_active        "sc query type= service"
@@ -328,6 +328,11 @@ alias gitnewrepo  "mkdir \!^; cd \!^; git init; touch README; git add README; gi
 alias gitcommit   "git commit -a"
 alias gitdiff     "git diff"
 alias gitpull     "git pull"
+alias gitstatus   "git status"
+alias gitcheckout "git clone git://github.com/plibauer/aliases"
+alias checkout     gitcheckout
+alias commit	   gitcommit
+alias status       gitstatus
 
 #-------------------------------------------------------------------
 
