@@ -3,6 +3,7 @@ unalias '*'
 set trimdir       = C:/72
 set defArch       = x64
 set defBuild      = Debug
+set defCompiler   = VS2010
 set cygtrimdir    = /cygdrive/c/72
 set DBID          = C1
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"

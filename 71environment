@@ -2,6 +2,7 @@ unalias '*'
 
 set trimdir       = C:/71
 set defArch       = x86
+set defCompiler   = VS2010
 set defBuild	  = Debug
 set cygtrimdir    = /cygdrive/c/71
 set DBID          = B1

@@ -12,8 +12,24 @@ alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
 alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${defBuild}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
 
+if ($defCompiler == "VS2010" && $DBID == "C1") then
+    if ($defArch == "x86") then
+        set defArch = "x86_2010"; settitle
+    else
+        set defArch = "x64_2010"; settitle
+    endif
+else if ($defCompiler == "VS2008" && $DBID == "D1") then
+    if ($defArch == "x86") then
+        set defArch = "x86_2008"; settitle
+    else
+        set defArch = "x64_2008"; settitle
+    endif
+endif
+
 alias home 	"cd /home/plibauer"
 alias via  	"vi $alias_file"
+alias vs2010    "set defCompiler = VS2010; source $alias_file"
+alias vs2008    "set defCompiler = VS2008; source $alias_file"
 alias x86  	"set defArch = x86; source $alias_file; settitle"
 alias x64  	"set defArch = x64; source $alias_file; settitle"
 alias debug  	"set defBuild = Debug; source $alias_file; settitle"
@@ -23,7 +39,11 @@ alias src72     "source $alias_dir/72environment; settitle"
 alias src73     "source $alias_dir/73environment; settitle"
 alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, BUILD = $defBuild, DBID = $DBID'"
 
+
+
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
+set PROGRAMFILES = "ProgramFiles"
+set PROGRAMFILESX86 = "ProgramFilesX86"
 
 set autocorrect=1
 set autolist=ambiguous
@@ -72,10 +92,14 @@ alias lh "ll -t \!^ | head "
 
 alias findalias "alias | grep -i "
 alias falias findalias
-alias update "updatedb --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /cygdrive/c/strawberry'"
-alias locate "locate -d /home/plibauer/locatedb"
+
+# The -H option tells 'find' to only follow symbollic links for files passed in via the command line. We have 2 symbollic links to "Program Files" and "Program Files (x86)" to get around the spaces problem. The --findoptions argument to updatedb doesn't seem to work, so the environment variable FINDOPTIONS is set instead
+alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /cygdrive/c/strawberry /cygdrive/c/cygwin/$PROGRAMFILES /cygdrive/c/cygwin/$PROGRAMFILESX86'"
+
+alias locate   "locate -d /home/plibauer/locatedb"
+alias locatei  "locate -i -d /home/plibauer/locatedb"
 alias trimfind "locate -i \!^ | egrep -v '*.svn'"
-alias loc "trimfind"
+alias loc      "trimfind"
 
 alias flushdns "ipconfig /flushdns"
 alias more less
