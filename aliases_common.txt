@@ -4,7 +4,6 @@ set alias_file = $alias_dir/aliases_common.txt
 
 set path = ( /cygdrive/c/strawberry/perl/bin /bin $path:q )
 
-set locateDirectories = "/bin /dev /etc /home /lib /packages /usr /var $cygtrimdir /cygdrive/c/Users /cygdrive/c/Windows"
 
 
 alias get_title 'xprop -id ${WINDOWID}  | perl -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
@@ -94,11 +93,11 @@ alias findalias "alias | grep -i "
 alias falias findalias
 
 # The -H option tells 'find' to only follow symbollic links for files passed in via the command line. We have 2 symbollic links to "Program Files" and "Program Files (x86)" to get around the spaces problem. The --findoptions argument to updatedb doesn't seem to work, so the environment variable FINDOPTIONS is set instead
-alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /cygdrive/c/strawberry /cygdrive/c/cygwin/$PROGRAMFILES /cygdrive/c/cygwin/$PROGRAMFILESX86'"
+alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /cygdrive/c/strawberry /cygdrive/c/cygwin/$PROGRAMFILES /cygdrive/c/cygwin/$PROGRAMFILESX86 /bin /etc /home /lib /usr /var /cygdrive/c/Users /cygdrive/c/Windows'"
+
 
 alias locate   "locate -d /home/plibauer/locatedb"
 alias locatei  "locate -i -d /home/plibauer/locatedb"
-alias trimfind "locate -i \!^ | egrep -v '*.svn'"
 alias loc      "trimfind"
 
 alias flushdns "ipconfig /flushdns"
