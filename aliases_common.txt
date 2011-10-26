@@ -98,7 +98,8 @@ alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb
 
 alias locate   "locate -d /home/plibauer/locatedb"
 alias locatei  "locate -i -d /home/plibauer/locatedb"
-alias loc      "trimfind"
+alias loc       locate
+alias loci	locatei
 
 alias flushdns "ipconfig /flushdns"
 alias more less
