@@ -100,6 +100,8 @@ alias locate   "locate -d /home/plibauer/locatedb"
 alias locatei  "locate -i -d /home/plibauer/locatedb"
 alias loc       locate
 alias loci	locatei
+alias trimfind   "loc \!^ | grep -i $cygtrimdir"
+alias trimfindi  "loci \!^ | grep -i $cygtrimdir"
 
 alias flushdns "ipconfig /flushdns"
 alias more less
