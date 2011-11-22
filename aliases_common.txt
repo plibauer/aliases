@@ -150,6 +150,7 @@ alias trace     "tracert"
 alias x11  "cd /cygdrive/c/cygwin/usr/X11R6/bin"
 alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
+alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
 alias refresh "C:/Users/plibauer/Downloads/SysinternalsSuite/Bginfo.exe"
 
 
