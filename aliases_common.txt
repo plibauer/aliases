@@ -2,14 +2,18 @@ set prompt="%B%n %~>"
 set autologout
 set alias_file = $alias_dir/aliases_common.txt
 
-set path = ( /cygdrive/c/strawberry/perl/bin /bin $path:q )
+set path = ( /c/strawberry/perl/bin /bin $path:q )
 
-
+# Always set the drive prefix to just /, not "/cygdrive"
+# This has now been configured in /etc/fstab, so no need to do it here
+#mount --change-cygdrive-prefix /
 
 alias get_title 'xprop -id ${WINDOWID}  | perl -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
 alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
-alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${defBuild}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
+#alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${defBuild}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
+
+alias settitle 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}\007"'
 
 if ($defCompiler == "VS2010" && $DBID == "C1") then
     if ($defArch == "x86") then
@@ -34,8 +38,9 @@ alias x64  	"set defArch = x64; source $alias_file; settitle"
 alias debug  	"set defBuild = Debug; source $alias_file; settitle"
 alias release  	"set defBuild = Release; source $alias_file; settitle"
 alias src       "source $alias_file"
-alias src72     "source $alias_dir/72environment; settitle"
-alias src73     "source $alias_dir/73environment; settitle"
+alias src722     "source $alias_dir/722environment"
+alias src73     "source $alias_dir/73environment"
+alias src80     "source $alias_dir/80environment"
 alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, BUILD = $defBuild, DBID = $DBID'"
 
 
@@ -43,6 +48,7 @@ alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, BUILD = $defBuild, D
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 set PROGRAMFILES = "ProgramFiles"
 set PROGRAMFILESX86 = "ProgramFilesX86"
+set SVN_MIRROR = "file:///f:/svn_mirror"
 
 set autocorrect=1
 set autolist=ambiguous
@@ -53,14 +59,15 @@ set echo_style=both
 set ellipsis
 set fignore=(.o \~)
 set histdup=erase
-set history=15000
+set history=50000
+set histfile=~/.history
+set savehist=( $history merge )
 unset ignoreeof
 set listjobs=long
 set listmaxrows=23
 #set noglob
 set notify=1
 set rmstar=1
-set savehist=( $history merge )
 set showdots=1
 set symlinks=expand
 
@@ -71,10 +78,11 @@ setenv LESS "-X"
 # Set directory colours
 setenv LS_COLORS 'no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:'
 
-alias lc "ls --color"
-alias ll "ls --color -l"
-alias lt "ls --color -lt"
-alias la "ls --color -al"
+alias lc  "ls --color"
+alias ll  "ls --color -l"
+alias lt  "ls --color -lt"
+alias la  "ls --color -al"
+alias lat "ls --color -alt"
 alias ++ pushd
 alias -- popd
 alias d dirs
@@ -86,14 +94,28 @@ alias j jobs
 alias display "setenv DISPLAY :0.0"
 alias disp1 "setenv DISPLAY :1.0"
 alias d "setenv | grep DISPLAY"
+alias newpath  'setenv PATH "\!^:$PATH"'
+
 alias lh "ll -t \!^ | head "
+alias head10 "ll -t | head "
+alias head20 "ll -t | head -20"
+alias head30 "ll -t | head -30"
+alias headt "ll -t | head -\!^"
 
 
 alias findalias "alias | grep -i "
 alias falias findalias
 
-# The -H option tells 'find' to only follow symbollic links for files passed in via the command line. We have 2 symbollic links to "Program Files" and "Program Files (x86)" to get around the spaces problem. The --findoptions argument to updatedb doesn't seem to work, so the environment variable FINDOPTIONS is set instead
-alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /cygdrive/c/strawberry /cygdrive/c/cygwin/$PROGRAMFILES /cygdrive/c/cygwin/$PROGRAMFILESX86 /bin /etc /home /lib /usr /var /cygdrive/c/Users /cygdrive/c/Windows'"
+#  In order for updatedb to work with the program files directories, create the following links;
+#
+#    /c>ln -s Program\ Files programfiles
+#    /c>ln -s Program\ Files\ \(x86\) programfilesx86
+#
+#  You must also make sure that the cygdrive prefix has been setup correctly in /etc/fstab, namely;
+#
+#    none / cygdrive binary,posix=0,user 0 0
+#
+alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows'"
 
 
 alias locate   "locate -d /home/plibauer/locatedb"
@@ -105,7 +127,6 @@ alias trimfindi  "loci \!^ | grep -i $cygtrimdir"
 
 alias flushdns "ipconfig /flushdns"
 alias more less
-#alias newpath "set path = ($path ${P})"
 
 
 
@@ -113,10 +134,7 @@ alias more less
 
 alias gocfg        "cd $trimcfgdir"
 
-alias godebug   "cd $trimdir/$defArch/Debug"
-alias godeb     "cd $trimdir/$defArch/Debug"
-alias gorel     "cd $trimdir/$defArch/release"
-alias gorelease "cd $trimdir/$defArch/release"
+alias goexe     "cd $trimdir/$defArch/$defBuild"
 alias gomsi     "cd $trimdir/msi/$defArch/en-us"
 alias gotest    "cd $trimdir/trim/test"
 alias goauto    "cd $trimdir/Automation"
@@ -130,27 +148,25 @@ alias goblk     gobulk
 alias gob       "cd $trimdir/trim/CSharp/BulkLoader"
 alias golog     gotrimlog
 alias gologs    gotrimlog
-alias gotrimdslog       "cd /cygdrive/c/Users/plibauer/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
+alias gotrimdslog       "cd /c/Users/plibauer/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
 alias shlog  showlog
-alias gotmp    "cd /cygdrive/c/tmp"
+alias gotmp    "cd /c/tmp"
 alias godox    "cd $trimdir/xtra/Doxygen/runDoxygen"
 alias gosmoke  "cd $trimdir/Automation/Smoketest"
 alias goperl   "cd $trimdir/trim/misc/Scripts/Perl"
 alias gop      "cd $home/winhome/perl"
 alias gowix    "cd $trimdir/trim/wix"
-alias gowixbin "cd /cygdrive/c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
-alias gowin    "cd /cygdrive/c/Users/plibauer"
+alias gowixbin "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
+alias gowin    "cd /c/Users/plibauer"
 alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
-alias godownloads "cd /cygdrive/c/Users/plibauer/Downloads"
-alias goroam  "cd /cygdrive/c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
-alias gojet    "cd /cygdrive/c/LucidImagination/LucidWorks/lucidworks/jetty/logs"
-alias gojetty  gojet
+alias godownloads "cd /c/Users/plibauer/Downloads"
+alias goroam  "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
 
 alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace     "tracert"
 
 
-alias x11  "cd /cygdrive/c/cygwin/usr/X11R6/bin"
+alias x11  "cd /c/cygwin/usr/X11R6/bin"
 alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
 alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
@@ -159,11 +175,11 @@ alias refresh "C:/Users/plibauer/Downloads/SysinternalsSuite/Bginfo.exe"
 
 alias ff            "find . -name "
 alias ifind         'find . -iname "\!^" '
-alias pfind2k8      "/cygdrive/c/Users/plibauer/perl/bin/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
-alias pfind         "/cygdrive/c/Users/plibauer/perl/bin/find_project_files.vs2010.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias pfind2k8      "perl c:/Users/plibauer/perl/bin/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias pfind         "perl C:/Users/plibauer/perl/bin/find_project_files.vs2010.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
 alias pf pfind
 alias grep          "grep --perl-regexp"
-alias grep_examples "cat /cygdrive/c/Users/libauer/grep_examples.txt"
+alias grep_examples "cat /c/Users/libauer/grep_examples.txt"
 alias grepe grep_examples
 alias messages      'grep -i "\!^" $trimdir/trim/TRIMMessages.txt'
 alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
@@ -173,9 +189,9 @@ alias database      'grep -i "\!^" $trimdir/trim/src/DD/DATABASE.TXT'
 alias viewdb        'view $trimdir/trim/src/DD/DATABASE.TXT'
 
 alias dce  ContentExtraction
-alias dox  "/cygdrive/c/Program\ Files\ \(x86\)/doxygen/bin/doxygen"
-alias dwiz "/cygdrive/c/Program\ Files/doxygen/bin/doxywizard"
-alias aperl "/cygdrive/c/Perl/bin/perl"
+alias dox  "/c/Program\ Files\ \(x86\)/doxygen/bin/doxygen"
+alias dwiz "/c/Program\ Files/doxygen/bin/doxywizard"
+alias aperl "/c/Perl/bin/perl"
 alias wperl aperl
 
 # Path conversion using cygpath
@@ -183,21 +199,40 @@ alias towin  'cygpath -t windows "\!^"'
 alias tounix 'cygpath -t unix    "\!^"'
 
 # Wix stuff
-#alias candle "/cygdrive/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
-#alias lit "/cygdrive/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
+#alias candle "/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
+#alias lit "/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
 alias msitrimi     "msiexec /i HPTRIM.msi /lv\* out.log"
 alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
 
 
+#######################################################################################################################
 
 # SVN
 alias hpsvn "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk REPOS_trunk --username paul_libauer"
-alias svn "/cygdrive/c/Program\ Files\ \(x86\)/CollabNet\ Subversion\ Client/svn.exe"
+alias svn "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
 #alias svnlog "svn log -l 10"
-alias svnlog       "~/perl/bin/svn_log_processor.pl --file ~/svn/svn.verbose.log"
-alias svnlogupdate "~/perl/bin/svn_log_processor.pl --update"
-alias svnlist      "~/perl/bin/svn_log_processor.pl --file ~/svn/svn.verbose.log --list_users"
-alias svnlogh      "~/perl/bin/svn_log_processor.pl --help"
+alias svnlog       "perl ~/perl/bin/svn_log_processor.pl --file ~/svn/svn.verbose.log"
+alias svnlogupdate "perl ~/perl/bin/svn_log_processor.pl --update"
+alias svnlist      "perl ~/perl/bin/svn_log_processor.pl --file ~/svn/svn.verbose.log --list_users"
+alias svnlogh      "perl ~/perl/bin/svn_log_processor.pl --help"
+#
+# If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
+# alias syncsvn	   "svnsync sync svn://localhost/"
+#
+alias syncsvn	   "svnsync sync $SVN_MIRROR"
+alias remlock	   "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
+
+# Updated the trim release we are working on
+alias svnup	  "svn update $trimdir"
+alias svnupr	  "svn relocate https://svn.aus.hp.com/local/bio-im-trim svn://localhost $trimdir; svn update $trimdir; svn relocate svn://localhost https://svn.aus.hp.com/local/bio-im-trim $trimdir"
+
+alias showlatest  "svn log $trimdir -r HEAD:1 --limit 10"
+alias showlatestv "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
+
+
+
+
+#######################################################################################################################
 
 # RSYNC
 # Sync the files from source to destination
@@ -212,14 +247,18 @@ alias b          "$trimdir/$defArch/$defBuild/BulkLoader.exe -db $DBID "
 alias org        "$trimdir/$defArch/$defBuild/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
 alias origins    "$trimdir/$defArch/$defBuild/BulkLoader.exe -o '*' -action get -db $DBID"
 alias orgget     "$trimdir/$defArch/$defBuild/BulkLoader.exe -o '\!^' -action get -db $DBID"
-alias makerecs   "CreateManyRecords.pl --number \!^  --output out.txt"
+alias makerecs   "perl CreateManyRecords.pl --number \!^  --output out.txt"
 
 alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
 alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
 alias wgs        "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe &"
 alias trimds     "$trimdir/$defArch/$defBuild/TrimDS.exe &"
+alias killtrim   "$trimdir/Automation/SmokeTest/killtrim.exe"
+alias nuke       "gosln;./NukeSolutions.bat"
+alias makesln    "gosln;./GenerateSolutions.bat"
+alias nukeandmake "nuke;makesln"
 
-set svexe = "/cygdrive/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
+set svexe = "/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
 alias sn "$svexe"
 alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
 
@@ -227,27 +266,29 @@ alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBu
 alias popdb "cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
 
 alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
-alias getpath "/cygdrive/c/Users/plibauer/perl/bin/getPath.pl"
+alias getpath "perl c:/Users/plibauer/perl/bin/getPath.pl"
+alias sysinfo "systeminfo | perl -ne  'print unless /^\s+\[\d+\]/'"
+alias uptime  "systeminfo | grep -i 'boot time'"
 
 
 # Compile a script to an executable using Strawberry Perl's version of pp
-alias perlcompile   "/cygdrive/c/strawberry/perl/bin/pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o "
-alias sperl         "/cygdrive/c/strawberry/perl/bin/perl"
+alias perlcompile   "/c/strawberry/perl/bin/pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o "
+alias sperl         "/c/strawberry/perl/bin/perl"
 
-alias xmlconf       "sperl C:/Users/plibauer/perl/bin/xmlconfig.pl --file "
-alias xconf         "sperl C:/Users/plibauer/perl/bin/xmlconfig.pl"
-alias xmlnoc        "sperl stripXMLcomments.pl"
-alias xmlf          xmlformat.pl
+alias xmlconf       "perl C:/Users/plibauer/perl/bin/xmlconfig.pl --file "
+alias xconf         "perl C:/Users/plibauer/perl/bin/xmlconfig.pl"
+alias xmlnoc        "perl stripXMLcomments.pl"
+alias xmlf          "perl xmlformat.pl"
 
-alias trimconfig    sperl C:/Users/plibauer/perl/bin/xmlconfig.pl --file $trimcfg
+alias trimconfig    perl C:/Users/plibauer/perl/bin/xmlconfig.pl --file $trimcfg
 alias shconf        trimconfig
 alias shconfig      trimconfig
 alias showconf      trimconfig
-alias restoreconfig "cp /cygdrive/c/TestDatasets/C1/backup/TRIMConfig.tcfg $trimcfgdir"
+alias restoreconfig "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg $trimcfgdir"
 alias goconfig      gocfg
-alias xmltrim       "xmlformat.pl $trimcfg"
+alias xmltrim       "perl xmlformat.pl $trimcfg"
 alias getconfig     "more $trimcfg"
-alias fixtrimconfig "xmlformat.pl -i -b .backup $trimcfg"
+alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
 
 
 # Lookup a perl function using perldoc
@@ -257,7 +298,7 @@ alias perlfunc  "perldoc -f"
 ################################################
 ### PERL DATABASE ACCESS
 
-alias db          "sperl $trimdir/trim/misc/Scripts/Perl/db/db.pl"
+alias db          "perl $trimdir/trim/misc/Scripts/Perl/db/db.pl"
 alias dbs         "db --list"
 
 alias bobids      "db -id bob"
@@ -318,8 +359,6 @@ alias grepui      'fromunicode \!:2 | grep -i \!:1'
 alias testtrim     "$trimdir/$defArch/$defBuild/testTrim.exe --test"
 alias trimtest     testtrim
 alias testbld      "$trimdir/$defArch/$defBuild/testTrim.exe --test bldnet"
-alias testsolr     "$trimdir/$defArch/$defBuild/testTrim.exe --test solr"
-alias restoresolr  "$trimdir/$defArch/$defBuild/testTrim.exe --test solr --restore"
 alias bldnet testbld
 
 alias bulkedocs "date; b -o edocs-test -a run; date"
@@ -327,10 +366,16 @@ alias timeblk  "date; b -o origin-test-1 -a run; date"
 alias cleanblk "rm -rf 000000*; rm $DBID.*"
 
 
-alias golucid           "cd /cygdrive/c/LucidImagination/LucidWorks"
-alias solrl             'curl "http://localhost:8983/solr/select?q=\!^" --noproxy "*" --silent | xmlformat.pl'
-alias solrlucid         'curl "http://localhost:8888/solr/collection1/select?q=\!^" --noproxy "*" --silent | xmlformat.pl'
-#
+#########################################################################################################################
+##########################             SOLR          ####################################################################
+alias testsolr          "$trimdir/$defArch/$defBuild/testTrim.exe --test solr"
+alias restoresolr       "$trimdir/$defArch/$defBuild/testTrim.exe --test solr --restore"
+alias golucid           "cd /c/LucidImagination/LucidWorks"
+alias solrl             'curl "http://localhost:8983/solr/select?q=\!^" --noproxy "*" --silent | perl xmlformat.pl'
+alias solrlucid         'curl "http://localhost:8888/solr/collection1/select?q=\!^" --noproxy "*" --silent | perl xmlformat.pl'
+alias gojet             "cd /c/LucidImagination/LucidWorks/lucidworks/jetty/logs"
+alias gojetty           gojet
+#########################################################################################################################
 
 
 alias psall     'ps -aelW'
@@ -344,7 +389,18 @@ alias startsql          "sc start MSSQLSERVER"
 alias sqlstart          startsql
 alias querysql          "sc query MSSQLSERVER"
 alias sqlquery          querysql
+alias services		"svc_all | grep DISPLAY"
+alias servicesrun	"svc_active | grep DISPLAY"
 
+# Run Management Studio
+alias mstudio		"/c/cygwin/ProgramFilesX86/Microsoft\ SQL\ Server/100/Tools/Binn/VSShell/Common7/IDE/Ssms.exe &"
+alias sqlms		mstudio
+
+# Run Remote Desktop
+alias rdp		"/c/windows/system32/mstsc.exe &"
+alias remote		rdp
+alias remotedesk	rdp
+alias rdesktop		rdp
 
 
 ####################################################################
@@ -369,3 +425,19 @@ alias gitsshtest  "ssh -T git@github.com"
 
 
 alias ldapa    "/bin/ldapadd.exe -x -D 'cn=Manager,dc=libauer,dc=com' -W -f \!^"
+
+# Backup RDWIKI pages
+alias rdwiki	"Robocopy.exe //twrwebsvr/NewWiki/ E:\\backup\\RDWiki /MIR /R:0"
+
+# WGET an entire HTML site
+alias wgetall		"wget -r -l 0 -p " 
+alias wgetallhttp	"wget -r -l 0 -p http://\!^" 
+
+# Show internet settings
+alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings"'
+
+# Edit a file with emacs and detach
+alias emacs	"emacs \!^ &"
+
+# Change the mount prefix if required
+alias mountcygwin	"mount -s --change-cygdrive-prefix /"

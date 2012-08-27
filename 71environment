@@ -4,10 +4,12 @@ set trimdir       = C:/71
 set defArch       = x86
 set defCompiler   = VS2010
 set defBuild	  = Debug
-set cygtrimdir    = /cygdrive/c/71
+set cygtrimdir    = /c/71
 set DBID          = B1
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
 set alias_dir     = ~/aliases
 
 source $alias_dir/aliases_common.txt
 source $alias_dir/aliases
+
+settitle

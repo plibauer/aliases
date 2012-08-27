@@ -3,37 +3,56 @@
 # Set the $DATE variable for use in editing wiki journal
 set DATE = `date +%B%Y`
 
-set path = ( /cygdrive/c/Python26 /cygdrive/c/Users/plibauer/perl/bin  $path:q )
+set path = ( /c/Python26 /c/Users/plibauer/perl/bin  $path:q )
 
-alias winemacs    "/cygdrive/c/Program\ Files\ \(x86\)/XEmacs/XEmacs-21.4.21/i586-pc-win32/xemacs.exe"
+alias winemacs    "/c/Program\ Files\ \(x86\)/XEmacs/XEmacs-21.4.21/i586-pc-win32/xemacs.exe"
 
 #########################################################################################
 ###  JOURNAL shortcuts
 
-alias updatewiki      "rsync -avz /cygdrive/z/ /cygdrive/d/RDWiki/"
-alias gowiki          "cd /cygdrive/z/data/pages"
-alias gowikij         "cd /cygdrive/z/data/pages/wiki/paul_libauer"
-alias gowikibackup    "cd /cygdrive/d/backup/RDWiki/data/pages/wiki/paul_libauer"
-alias goproj          "cd /cygdrive/z/data/pages/wiki/paul_libauer/projects"
-alias grepj           "grep \!^ `cat /cygdrive/c/tmp/journalname.txt`"
-alias mkjourn         "echo '/cygdrive/z/data/pages/wiki/paul_libauer/'$DATE'.txt' | perl -ne 'print lc ' > /cygdrive/c/tmp/journalname.txt"
-alias rmjourn         "rm /cygdrive/c/tmp/journalname.txt"
-alias scrub           "~/perl/bin/scrub.pl --file"
-alias tailj           "tail `cat /cygdrive/c/tmp/journalname.txt`"
-alias tjournal        "tail -50 `cat /cygdrive/c/tmp/journalname.txt`"
-alias vij             "vi `cat /cygdrive/c/tmp/journalname.txt`; scrub  `cat /cygdrive/c/tmp/journalname.txt`"
+alias updatewiki      "rsync -avz //twrwebsvr/NewWiki/ /d/RDWiki/"
+alias gowiki          "cd //twrwebsvr/NewWiki/data/pages"
+alias gowikij         "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer"
+alias gowikibackup    "cd /d/backup/RDWiki/data/pages/wiki/paul_libauer"
+alias goproj          "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects"
+alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
+alias mkjourn         "echo '//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/'$DATE'.txt' | perl -ne 'print lc ' > /c/tmp/journalname.txt"
+alias rmjourn         "rm /c/tmp/journalname.txt"
+alias scrub           "perl c:/cygwin/home/plibauer/perl/bin/scrub.pl --file"
+alias tailj           "tail `cat /c/tmp/journalname.txt`"
+alias tjournal        "tail -50 `cat /c/tmp/journalname.txt`"
+alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
 alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
-alias visolr          "vi /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
-alias vis             "vi /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr.txt"
-alias emacsolr        "winemacs z:/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub /cygdrive/z/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
 
 #########################################################################################
 
-alias showlog         'cat /cygdrive/c/tmp/finalbuilder.log | fromunicode | perl -ne '"'"'  s/^\s+//;  print "$_"; '"'"' | more '^M
-alias tailog          "tail -f /cygdrive/c/tmp/finalbuilder.log"
+alias showlog         'cat /c/tmp/finalbuilder.log | fromunicode | perl -ne '"'"'  s/^\s+//;  print "$_"; '"'"' | more '^M
+alias tailog          "tail -f /c/tmp/finalbuilder.log"
 alias rundox          "$trimdir/xtra/Doxygen/runDoxygen/bin/Debug/runDoxygen.exe"^M
 
 alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
+
+
+##############################################################################
+###########################         IDOL          ############################
+
+
+alias icurl		'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
+alias idolrecs		'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=999" --noproxy "*" --silent'
+alias idolstatus	'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent | xmlformat.pl'
+alias irecs		"idolrecs | xmlformat.pl"
+alias removedb		'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
+alias removedocs	'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
+
+
+
+#####################################################################################################################################################################################
+#####################################################################              SOLR  (DEPRECATED)             ###################################################################
+#####################################################################################################################################################################################
+
+alias visolr          "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
+alias vis             "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr.txt"
+alias emacsolr        "winemacs z:/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
 
 # ssh into Ubuntu
 set ubuntu = 15.146.221.194
@@ -82,4 +101,6 @@ alias getsolr   "scp -l plibauer "$ubuntu":/home/plibauer/Uploads/\!^ ."
 alias cpst    "scp \!^ plibauer@solrtest:/home/plibauer"
 alias getst   "scp plibauer@solrtest:/home/plibauer/Uploads/\!^ ."
 
+alias goapache  "cd /c/Program\ Files\ \(x86\)/Apache\ Software\ Foundation/Apache2.2"
 
+#####################################################################################################################################################################################
