@@ -269,6 +269,8 @@ alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'
 alias getpath "perl c:/Users/plibauer/perl/bin/getPath.pl"
 alias sysinfo "systeminfo | perl -ne  'print unless /^\s+\[\d+\]/'"
 alias uptime  "systeminfo | grep -i 'boot time'"
+alias sysinfo "systeminfo | perl -ne  'print unless /^\s+\[\d+\]/'"
+alias uptime  "systeminfo | grep -i 'boot time'"
 
 
 # Compile a script to an executable using Strawberry Perl's version of pp
