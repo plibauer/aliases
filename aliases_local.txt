@@ -2,7 +2,15 @@
 #
 set REPOS_ROOT  = e
 #set REPOS_ROOT  = c
+
 set SVN_URL     = https://localhost
 #set SVN_URL     = svn://localhost
+
 set SVN_MIRROR  = file:///e:/svn_mirror
 #set SVN_MIRROR  = file:///f:/svn_mirror
+
+#  Whatever has been configured in .ssh/config pointing to proxy, otherwise use normal entry below 
+set GIT_HOST	= gitproxy
+#set GIT_HOST	= github.com
+set GIT_URL    = "$GIT_HOST:"
+#set GIT_URL    = git://$GIT_HOST/

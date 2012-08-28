@@ -411,13 +411,13 @@ alias gitcommit   "git commit -a"
 alias gitdiff     "git diff"
 alias gitpull     "git pull"
 alias gitstatus   "git status"
-alias gitcheckout "git clone git://github.com/plibauer/aliases"
+alias gitcheckout "git clone $GIT_URL""plibauer/aliases.git"
 alias checkout     gitcheckout
 alias commit	   gitcommit
 alias status       gitstatus
 alias gitsetrepo  "get remote set-url origin git@github.com:plibauer/aliases.git"
 alias gitconfig   "git config -l"
-alias gitsshtest  "ssh -T git@github.com"
+alias gitsshtest  "ssh -T git@$GIT_HOST"
 
 
 #-------------------------------------------------------------------
