@@ -2,11 +2,20 @@ Checkout a clone of the repository in your home directory using;
 
       >git clone git@github.com:plibauer/aliases.git
 
+or, for read only checkout (won't be able to push), you can also use;
+
+      >get clone http://plibauer@github.com/plibauer/aliases.git
+
+See the Google document "Git repository" for information on how to setup ssh access from anywhere.
+
 Create a soft link to the home or work file;
 
       >ln -s ~/aliases/aliases_{home|work}.txt  ~/aliases/aliases
 
 This will make sure it gets sourced correctly.
+
+Modify the file ../aliases/aliases_local.txt to set paths to the repository drive and SVN mirror directories.
+
 In your ~/.tcshrc file, put in the initial source command for which environment you would like to default to;
 
 file: ~/.tcshrc

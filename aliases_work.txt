@@ -32,6 +32,9 @@ alias rundox          "$trimdir/xtra/Doxygen/runDoxygen/bin/Debug/runDoxygen.exe
 
 alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
 
+# Backup RDWIKI pages
+alias rdwiki    "Robocopy.exe //twrwebsvr/NewWiki/ E:\\backup\\RDWiki /MIR /R:0"
+
 
 ##############################################################################
 ###########################         IDOL          ############################

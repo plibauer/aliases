@@ -48,7 +48,6 @@ alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, BUILD = $defBuild, D
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 set PROGRAMFILES = "ProgramFiles"
 set PROGRAMFILESX86 = "ProgramFilesX86"
-set SVN_MIRROR = "file:///f:/svn_mirror"
 
 set autocorrect=1
 set autolist=ambiguous
@@ -224,7 +223,7 @@ alias remlock	   "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 
 # Updated the trim release we are working on
 alias svnup	  "svn update $trimdir"
-alias svnupr	  "svn relocate https://svn.aus.hp.com/local/bio-im-trim svn://localhost $trimdir; svn update $trimdir; svn relocate svn://localhost https://svn.aus.hp.com/local/bio-im-trim $trimdir"
+alias svnupr	  "svn relocate https://svn.aus.hp.com/local/bio-im-trim $SVN_URL $trimdir; svn update $trimdir; svn relocate $SVN_URL https://svn.aus.hp.com/local/bio-im-trim $trimdir"
 
 alias showlatest  "svn log $trimdir -r HEAD:1 --limit 10"
 alias showlatestv "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
@@ -267,8 +266,6 @@ alias popdb "cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
 
 alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
 alias getpath "perl c:/Users/plibauer/perl/bin/getPath.pl"
-alias sysinfo "systeminfo | perl -ne  'print unless /^\s+\[\d+\]/'"
-alias uptime  "systeminfo | grep -i 'boot time'"
 alias sysinfo "systeminfo | perl -ne  'print unless /^\s+\[\d+\]/'"
 alias uptime  "systeminfo | grep -i 'boot time'"
 
@@ -427,9 +424,6 @@ alias gitsshtest  "ssh -T git@github.com"
 
 
 alias ldapa    "/bin/ldapadd.exe -x -D 'cn=Manager,dc=libauer,dc=com' -W -f \!^"
-
-# Backup RDWIKI pages
-alias rdwiki	"Robocopy.exe //twrwebsvr/NewWiki/ E:\\backup\\RDWiki /MIR /R:0"
 
 # WGET an entire HTML site
 alias wgetall		"wget -r -l 0 -p " 
