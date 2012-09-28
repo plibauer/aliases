@@ -22,6 +22,7 @@ alias scrub           "perl c:/cygwin/home/plibauer/perl/bin/scrub.pl --file"
 alias tailj           "tail `cat /c/tmp/journalname.txt`"
 alias tjournal        "tail -50 `cat /c/tmp/journalname.txt`"
 alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
+alias mj              "less `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
 alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
 
 #########################################################################################
@@ -46,6 +47,12 @@ alias idolstatus	'curl "http://localhost:11000/action=GetStatus" --noproxy "*" -
 alias irecs		"idolrecs | xmlformat.pl"
 alias removedb		'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
 alias removedocs	'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
+alias idologa1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
+alias idologa2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/application.log"
+alias idologi1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
+alias idologi2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/index.log"
+alias idologq1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
+alias idologq2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/query.log"
 
 
 

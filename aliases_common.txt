@@ -15,19 +15,14 @@ alias xterm_title   'echo -n "\033]0;\!^\007" '
 
 alias settitle 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}\007"'
 
-if ($defCompiler == "VS2010" && $DBID == "C1") then
-    if ($defArch == "x86") then
-        set defArch = "x86_2010"; settitle
-    else
-        set defArch = "x64_2010"; settitle
-    endif
-else if ($defCompiler == "VS2008" && $DBID == "D1") then
-    if ($defArch == "x86") then
-        set defArch = "x86_2008"; settitle
-    else
-        set defArch = "x64_2008"; settitle
-    endif
-endif
+#if ($defCompiler == "VS2010" && $DBID == "C1") then
+#    if ($defArch == "x86") then
+#        set defArch = "x86_2010"; settitle
+#    else
+#        set defArch = "x64_2010"; settitle
+#    endif
+#endif
+
 
 alias home 	"cd /home/plibauer"
 alias via  	"vi $alias_file"
@@ -38,16 +33,32 @@ alias x64  	"set defArch = x64; source $alias_file; settitle"
 alias debug  	"set defBuild = Debug; source $alias_file; settitle"
 alias release  	"set defBuild = Release; source $alias_file; settitle"
 alias src       "source $alias_file"
+alias src7213   "source $alias_dir/7213environment"
 alias src7214   "source $alias_dir/7214environment"
 alias src73     "source $alias_dir/73environment"
 alias src80     "source $alias_dir/80environment"
 alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, BUILD = $defBuild, DBID = $DBID'"
-
-
-
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
-set PROGRAMFILES = "ProgramFiles"
-set PROGRAMFILESX86 = "ProgramFilesX86"
+
+if ($defCompiler == "VS2012") then
+  set VSVER = 11.0
+else if ($defCompiler == "VS2010") then
+  set VSVER = 10.0
+else if ($defCompiler == "VS2008") then
+  set VSVER = 9.0
+endif
+
+set buildLog = "C:/tmp/TRIM-$defArch-$defBuild.log"
+
+#  THIS version uses the `` perl command to run the deven.exe process, whereas the one below use /bin/sh .  I have
+#  left it in as an example of how to escape " and '  script delimiters when using aliases
+#       alias bldsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  if(/.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp; $td=$1;$da=$2;$db=$3;$bl=$4; s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }  print "tail -f $bl\n";  print `$_ $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl`;   '" '"
+
+
+alias bldsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  if(/.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp; $td=$1;$da=$2;$db=$3;$bl=$4; s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }   print "touch $bl\n$_ $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\ntail -f $bl"; ' "' "'  |  /bin/sh | egrep -i "Build started|error\(s\)|failed"   '
+alias bldslnt 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  if(/.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp; $td=$1;$da=$2;$db=$3;$bl=$4; s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }   print "touch $bl\n$_ $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\ntail -f $bl"; ' "' "'  |  /bin/sh   '
+alias clnsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  if(/.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp; $td=$1;$da=$2;$db=$3;$bl=$4; s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }   print "touch $bl\n$_ $td/trim/sln/TRIM/$da/TRIM.sln /clean $db /project ALL_BUILD /out $bl &\ntail -f $bl"; ' "' "'  |  /bin/sh   '
+
 
 set autocorrect=1
 set autolist=ambiguous
@@ -254,8 +265,10 @@ alias wgs        "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe &"
 alias trimds     "$trimdir/$defArch/$defBuild/TrimDS.exe &"
 alias killtrim   "$trimdir/Automation/SmokeTest/killtrim.exe"
 alias nuke       "gosln;./NukeSolutions.bat"
-alias makesln    "gosln;./GenerateSolutions.bat"
-alias nukeandmake "nuke;makesln"
+alias gensln     "gosln;./GenerateSolutions.bat"
+alias nukeandgen "nuke;gensln"
+
+# Build the correct solution
 
 set svexe = "/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
 alias sn "$svexe"
