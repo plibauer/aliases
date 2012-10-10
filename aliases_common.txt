@@ -23,6 +23,8 @@ alias settitle 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=
 #    endif
 #endif
 
+set defproj = ALL_BUILD
+
 
 alias home 	"cd /home/plibauer"
 alias via  	"vi $alias_file"
@@ -55,9 +57,13 @@ set buildLog = "C:/tmp/TRIM-$defArch-$defBuild.log"
 #       alias bldsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  if(/.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp; $td=$1;$da=$2;$db=$3;$bl=$4; s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }  print "tail -f $bl\n";  print `$_ $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl`;   '" '"
 
 
-alias bldsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  if(/.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp; $td=$1;$da=$2;$db=$3;$bl=$4; s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }   print "touch $bl\n$_ $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\ntail -f $bl"; ' "' "'  |  /bin/sh | egrep -i "Build started|error\(s\)|failed"   '
-alias bldslnt 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  if(/.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp; $td=$1;$da=$2;$db=$3;$bl=$4; s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }   print "touch $bl\n$_ $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\ntail -f $bl"; ' "' "'  |  /bin/sh   '
-alias clnsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  if(/.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp; $td=$1;$da=$2;$db=$3;$bl=$4; s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }   print "touch $bl\n$_ $td/trim/sln/TRIM/$da/TRIM.sln /clean $db /project ALL_BUILD /out $bl &\ntail -f $bl"; ' "' "'  |  /bin/sh   '
+
+alias bldsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -e ' "' "'   @l = <>; $line = shift @l; if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp $line; $td=$1;$da=$2;$db=$3;$bl=$4; $line =~ s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }   print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\n" ' "' "' | /bin/sh | /bin/perl -le "print q{$buildLog :: $trimdir}" | /bin/perl -e ' "' "' $| = 1;  use File::Tail;      @in = <>; $i = shift @in;  chomp $i;  if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }    $ver =~ s/^.:.//; $b =~ s/TRIM-/TRIM-$ver-/;  print "LOG FILE: $b\n";  $file = File::Tail->new(name=>$b, interval=>1);  while(defined($log=$file->read)) { if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){ $total = $1 + $2 + $3; if($total > 40){ print $log; exit; } else { print $log } } elsif($log =~ /Build started|error\(s\)|failed/) { print $log } }  '"'" 
+
+alias bldproj ' echo \!:1 > /c/tmp/__x; echo "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" >> /c/tmp/__x;  /bin/perl -e  '"'"'  open F,"/c/tmp/__x"  ; @in=<F>;close F; $proj = shift @in; chomp $proj; $_ = shift @in; s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; $line = $_; if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp $line; $td=$1;$da=$2;$db=$3;$bl=$4; $line =~ s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }   print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project $proj /out $bl &\n"  '"'"'  |  /bin/sh | /bin/perl -le "print q{$buildLog :: $trimdir}" | /bin/perl -e '"'"' $| = 1;  use File::Tail;      @in = <>; $i = shift @in;  chomp $i;  if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }    $ver =~ s/^.:.//; $b =~ s/TRIM-/TRIM-$ver-/;  print "LOG FILE: $b\n";  $file = File::Tail->new(name=>$b, interval=>1, maxinterval=>2);  while(defined($log=$file->read)) { if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){ $total = $1 + $2 + $3; if($total > 7){ print $log; exit; } else { print $log } } elsif($log =~ /Build started|error\(s\)|failed/) { print $log } }   '"'"
+
+
+alias clnsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -e ' "' "'  @l = <>; $line = shift @l; if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp $line; $td=$1;$da=$2;$db=$3;$bl=$4; $line =~ s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; $bl =~ s/TRIM-/TRIM-$ver-/; }   print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /clean $db /project ALL_BUILD /out $bl &\n" ' "' "'  | /bin/sh  | /bin/perl -le "print q{$buildLog :: $trimdir}" | /bin/perl -e ' "' "' $| = 1;  use File::Tail;      @in = <>; $i = shift @in;  chomp $i;  if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }    $ver =~ s/^.:.//; $b =~ s/TRIM-/TRIM-$ver-/;  print "LOG FILE: $b\n";  $file = File::Tail->new(name=>$b, interval=>1);  while(defined($log=$file->read)) { if($log =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print $log; exit; } elsif($log =~ /Clean started|Deleting|error\(s\)|failed/) { print $log } }    '" '"
 
 
 set autocorrect=1
@@ -156,8 +162,8 @@ alias goauto    "cd $trimdir/Automation"
 alias gobulk    "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
 alias goblk     gobulk
 alias gob       "cd $trimdir/trim/CSharp/BulkLoader"
-alias golog     gotrimlog
-alias gologs    gotrimlog
+alias golog     "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
+alias gologs    golog
 alias gotrimdslog       "cd /c/Users/plibauer/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
 alias shlog  showlog
 alias gotmp    "cd /c/tmp"
@@ -180,8 +186,9 @@ alias x11  "cd /c/cygwin/usr/X11R6/bin"
 alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
 alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
-alias wglog 'ls -t TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
-alias evlog 'ls -t TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
+alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
+alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
+alias revert popd
 
 #alias clnsln 'echo -n "${PROGRAMFILES}" | /bin/perl -ne '"'"' s/^(.):./\/$1\//; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  $ver =~ s/^.:.//; ' "' "'  |  /bin/sh   '
 
@@ -375,8 +382,10 @@ alias grepui      'fromunicode \!:2 | grep -i \!:1'
 
 alias testtrim     "$trimdir/$defArch/$defBuild/testTrim.exe --test"
 alias trimtest     testtrim
-alias testbld      "$trimdir/$defArch/$defBuild/testTrim.exe --test bldnet"
-alias bldnet testbld
+alias bld          "$trimdir/$defArch/$defBuild/testTrim.exe --test bld --type all --timeout 6000"
+alias bldapi       "$trimdir/$defArch/$defBuild/testTrim.exe --test bld --type api --timeout 6000"
+alias bldsth       "$trimdir/$defArch/$defBuild/testTrim.exe --test bld --type sth --timeout 6000"
+alias bldnet       "$trimdir/$defArch/$defBuild/testTrim.exe --test bldnet --timeout 6000"
 
 alias bulkedocs "date; b -o edocs-test -a run; date"
 alias timeblk  "date; b -o origin-test-1 -a run; date"
