@@ -242,6 +242,7 @@ alias svnlogh      "perl ~/perl/bin/svn_log_processor.pl --help"
 # alias syncsvn	   "svnsync sync svn://localhost/"
 #
 alias syncsvn	   "svnsync sync $SVN_MIRROR"
+alias syncsvnhome  "svnsync sync $SVN_MIRROR svn://10.0.0.3/"
 alias remlock	   "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 
 # Updated the trim release we are working on
@@ -446,6 +447,7 @@ alias gitsetrepo  "get remote set-url origin git@github.com:plibauer/aliases.git
 alias gitconfig   "git config -l"
 alias gitsshtest  "ssh -T git@""$GIT_HOST"
 alias gitforceupdate "get fetch --all; git reset --hard origin/master"
+alias gitcommitsome "git add -i"
 
 
 #-------------------------------------------------------------------
