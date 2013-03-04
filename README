@@ -14,12 +14,12 @@ Create a soft link to the home or work file;
 
 This will make sure it gets sourced correctly.
 
-Modify the file ../aliases/aliases_local.txt to set paths to the repository drive and SVN mirror directories.
+Copy the file ../aliases/aliases_local.txt.remove_postfix to aliases_local.txt and set paths to the repository drive and SVN mirror directories and r.
 
 In your ~/.tcshrc file, put in the initial source command for which environment you would like to default to;
 
 file: ~/.tcshrc
 ===============
 
-  source ~/aliases/73environment
+  source ~/aliases/80environment
 

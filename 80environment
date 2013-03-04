@@ -5,7 +5,7 @@ source $alias_dir/aliases_local.txt
 
 set trimdir       = $REPOS_ROOT":/80"
 set defArch       = x64
-set defCompiler   = VS2010
+set defCompiler   = VS2012
 set defBuild      = Debug
 set cygtrimdir    = "/$REPOS_ROOT"/80
 set DBID          = E1
