@@ -448,6 +448,7 @@ alias gitconfig   "git config -l"
 alias gitsshtest  "ssh -T git@""$GIT_HOST"
 alias gitforceupdate "get fetch --all; git reset --hard origin/master"
 alias gitcommitsome "git add -i"
+alias gitremove   "git rm"
 
 
 #-------------------------------------------------------------------
