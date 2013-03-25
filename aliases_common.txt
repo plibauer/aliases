@@ -183,10 +183,8 @@ alias trace     "tracert"
 
 
 alias x11  "cd /c/cygwin/usr/X11R6/bin"
-
 #alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
-
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
 alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
 alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
@@ -248,9 +246,25 @@ alias syncsvn	   "svnsync sync $SVN_MIRROR"
 alias syncsvnhome  "svnsync sync $SVN_MIRROR svn://10.0.0.3/"
 alias remlock	   "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 
+set trimbuild   = $trimdir/build/build
+set trimdoc     = $trimdir/doc/doc/DocPub
+
 # Updated the trim release we are working on
-alias svnup	  "svn update $trimdir"
-alias svnupr	  "svn relocate https://svn.aus.hp.com/local/bio-im-trim $SVN_URL $trimdir; svn update $trimdir; svn relocate $SVN_URL https://svn.aus.hp.com/local/bio-im-trim $trimdir"
+alias svnup	        "svn update $trimdir; svn update $trimbuild; svn update $trimdoc"
+
+alias svnrelocatemain   "svn relocate $SVN_MASTER $SVN_URL $trimdir"
+alias svnrelocbackmain  "svn relocate $SVN_URL $SVN_MASTER $trimdir"
+
+alias svnrelocatebuild  "svn relocate $SVN_MASTER $SVN_URL $trimbuild"
+alias svnrelocbackbuild "svn relocate $SVN_URL $SVN_MASTER $trimbuild"
+
+alias svnrelocatedoc    "svn relocate $SVN_MASTER $SVN_URL $trimdoc"
+alias svnrelocbackdoc   "svn relocate $SVN_URL $SVN_MASTER $trimdoc"
+
+alias svnrelocateall    "svnrelocatemain; svnrelocatebuild; svnrelocatedoc"
+alias svnrelocbackall   "svnrelocbackmain; svnrelocbackbuild; svnrelocbackdoc"
+
+alias svnupr	        "svnrelocateall; svnup; svnrelocbackall"
 
 alias showlatest  "svn log $trimdir -r HEAD:1 --limit 10"
 alias showlatestv "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
