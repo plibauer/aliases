@@ -23,6 +23,12 @@ alias settitle 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=
 #    endif
 #endif
 
+set defArchCSharp = "AnyCPU"
+if ($defCompiler != "VS2012") then
+    set defArchCSharp = $defArch
+endif
+
+
 set defproj = ALL_BUILD
 
 
@@ -188,7 +194,7 @@ alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
 alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
 alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
-alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
+alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" '
 alias revert popd
 
 #alias clnsln 'echo -n "${PROGRAMFILES}" | /bin/perl -ne '"'"' s/^(.):./\/$1\//; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  $ver =~ s/^.:.//; ' "' "'  |  /bin/sh   '
@@ -282,12 +288,12 @@ alias syncdry "rsync -avubn --size-only --exclude '.svn' --exclude '*~'"
 
 # Run TRIM programs
 
-alias bulk       "$trimdir/$defArch/$defBuild/BulkLoader.exe "
-alias bulkloader "$trimdir/$defArch/$defBuild/BulkLoader.exe "
-alias b          "$trimdir/$defArch/$defBuild/BulkLoader.exe -db $DBID "
-alias org        "$trimdir/$defArch/$defBuild/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
-alias origins    "$trimdir/$defArch/$defBuild/BulkLoader.exe -o '*' -action get -db $DBID"
-alias orgget     "$trimdir/$defArch/$defBuild/BulkLoader.exe -o '\!^' -action get -db $DBID"
+alias bulk       "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe "
+alias bulkloader "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe "
+alias b          "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe -db $DBID "
+alias org        "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
+alias origins    "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe -o '*' -action get -db $DBID"
+alias orgget     "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe -o '\!^' -action get -db $DBID"
 alias makerecs   "perl CreateManyRecords.pl --number \!^  --output out.txt"
 
 alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
@@ -401,13 +407,12 @@ alias grepui      'fromunicode \!:2 | grep -i \!:1'
 
 alias testtrim     "$trimdir/$defArch/$defBuild/testTrim.exe --test"
 alias trimtest     testtrim
-alias bld          "$trimdir/$defArch/$defBuild/testTrim.exe --test bld --type all --timeout 6000 --assert"
-alias bldapi       "$trimdir/$defArch/$defBuild/testTrim.exe --test bld --type api --timeout 6000 --assert"
-alias bldsth       "$trimdir/$defArch/$defBuild/testTrim.exe --test bld --type sth --timeout 6000 --assert"
-alias bldnet       "$trimdir/$defArch/$defBuild/testTrim.exe --test bldnet --timeout 6000 --assert"
+alias bld          "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type all --timeout 6000 --assert"
+alias bldapi       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type api --timeout 6000 --assert"
+alias bldsth       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type sth --timeout 6000 --assert"
 
-alias bulkedocs "date; b -o edocs-test -a run; date"
-alias timeblk  "date; b -o origin-test-1 -a run; date"
+alias bulkedocs "date; b -o Origin_Test_Record_ElectronicDocuments -a run; date"
+alias timeblk  "date; b -o Origin_Test_Bulk_Loader -a run; date"
 alias cleanblk "rm -rf 000000*; rm $DBID.*"
 
 
@@ -490,3 +495,22 @@ alias emacs	"emacs \!^ &"
 
 # Change the mount prefix if required
 alias mountcygwin	"mount -s --change-cygdrive-prefix /"
+
+##############################################################################
+###########################         IDOL          ############################
+
+
+alias icurl             'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
+alias idolrecs          'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=999" --noproxy "*" --silent'
+alias idolstatus        'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent | xmlformat.pl'
+alias irecs             "idolrecs | xmlformat.pl"
+alias removedb          'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
+alias removedocs        'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
+alias idologa1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
+alias idologa2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/application.log"
+alias idologi1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
+alias idologi2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/index.log"
+alias idologq1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
+alias idologq2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/query.log"
+
+
