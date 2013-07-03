@@ -11,6 +11,7 @@ set cygtrimdir    = "/$REPOS_ROOT"/80
 set DBID          = E1
 set idolDb        = Test_80_SqlServer
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
+set currentEnv    = ~/aliases/80environment
 
 source $alias_dir/aliases_common.txt
 source $alias_dir/aliases

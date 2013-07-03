@@ -177,6 +177,7 @@ alias godox    "cd $trimdir/xtra/Doxygen/runDoxygen"
 alias gosmoke  "cd $trimdir/Automation/Smoketest"
 alias goperl   "cd $trimdir/trim/misc/Scripts/Perl"
 alias gop      "cd $home/winhome/perl"
+alias gosetup  "cd $trimdir/trim/wix/Setup.exe"
 alias gowix    "cd $trimdir/trim/wix"
 alias gowixbin "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
 alias gowin    "cd /c/Users/plibauer"
@@ -194,7 +195,7 @@ alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
 alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
 alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
-alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" '
+alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
 alias revert popd
 
 #alias clnsln 'echo -n "${PROGRAMFILES}" | /bin/perl -ne '"'"' s/^(.):./\/$1\//; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  $ver =~ s/^.:.//; ' "' "'  |  /bin/sh   '
@@ -239,7 +240,8 @@ alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
 # SVN
 alias hpsvn "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk REPOS_trunk --username paul_libauer"
 alias svn "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
-#alias svnlog "svn log -l 10"
+alias svnrev "svn log -v -r"
+alias svnlogrev svnrev 
 alias svnlog       "perl ~/perl/bin/svn_log_processor.pl --file ~/svn/svn.verbose.log"
 alias svnlogupdate "perl ~/perl/bin/svn_log_processor.pl --update"
 alias svnlist      "perl ~/perl/bin/svn_log_processor.pl --file ~/svn/svn.verbose.log --list_users"
@@ -289,17 +291,17 @@ alias syncdry "rsync -avubn --size-only --exclude '.svn' --exclude '*~'"
 # Run TRIM programs
 
 alias bulk       "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe "
-alias bulkloader "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe "
-alias b          "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe -db $DBID "
-alias org        "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe -db $DBID -o origin-test-1 -a run"
-alias origins    "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe -o '*' -action get -db $DBID"
-alias orgget     "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe -o '\!^' -action get -db $DBID"
+alias bulkloader bulk
+alias b          bulk -db $DBID
+alias origins    bulk -o '*' -action get -db $DBID
+alias orgget     bulk -o '\!^' -action get -db $DBID
+alias orgrun     bulk -o '\!^' -action run -db $DBID
 alias makerecs   "perl CreateManyRecords.pl --number \!^  --output out.txt"
 
 alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
 alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
 alias wgs        "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe &"
-alias trimds     "$trimdir/$defArch/$defBuild/TrimDS.exe &"
+alias trimds     "$trimdir/$defArchCSharp/$defBuild/TrimDS.exe &"
 alias killtrim   "$trimdir/Automation/SmokeTest/killtrim.exe"
 alias nuke       "gosln;./NukeSolutions.bat"
 alias gensln     "gosln;./GenerateSolutions.bat"
@@ -469,7 +471,7 @@ alias status       gitstatus
 alias gitsetrepo  "get remote set-url origin git@github.com:plibauer/aliases.git"
 alias gitconfig   "git config -l"
 alias gitsshtest  "ssh -T git@""$GIT_HOST"
-alias gitforceupdate "get fetch --all; git reset --hard origin/master"
+alias gitforceupdate "git fetch --all; git reset --hard origin/master"
 alias gitcommitsome "git add -i"
 alias gitremove   "git rm"
 alias gitundo     "git reset HEAD"
