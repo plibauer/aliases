@@ -196,6 +196,7 @@ alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golo
 alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
 alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
 alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
+alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
 alias revert popd
 
 #alias clnsln 'echo -n "${PROGRAMFILES}" | /bin/perl -ne '"'"' s/^(.):./\/$1\//; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  $ver =~ s/^.:.//; ' "' "'  |  /bin/sh   '
@@ -293,7 +294,7 @@ alias syncdry "rsync -avubn --size-only --exclude '.svn' --exclude '*~'"
 alias bulk       "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe "
 alias bulkloader bulk
 alias b          bulk -db $DBID
-alias origins    bulk -o '*' -action get -db $DBID
+alias origins    bulk -o "'*'" -action get -db $DBID
 alias orgget     bulk -o '\!^' -action get -db $DBID
 alias orgrun     bulk -o '\!^' -action run -db $DBID
 alias makerecs   "perl CreateManyRecords.pl --number \!^  --output out.txt"
@@ -341,6 +342,7 @@ alias xmltrim       "perl xmlformat.pl $trimcfg"
 alias getconfig     "more $trimcfg"
 alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
 
+alias wixgen       perl $trimdir/trim/misc/Scripts/Perl/WixGenerator.pl
 
 # Lookup a perl function using perldoc
 alias perlfunc  "perldoc -f"
