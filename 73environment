@@ -9,7 +9,7 @@ set defCompiler   = VS2008
 set defBuild      = Debug
 set cygtrimdir    = "/$REPOS_ROOT"/73
 set DBID          = D1
-set idolDb        = Test_73_SqlServer
+set idolDb        = TRIM_D1
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
 set currentEnv    = ~/aliases/73environment
 
