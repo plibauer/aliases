@@ -212,11 +212,11 @@ alias pf pfind
 alias grep          "grep --perl-regexp"
 alias grep_examples "cat /c/Users/libauer/grep_examples.txt"
 alias grepe grep_examples
-alias messages      'grep -i "\!^" $trimdir/trim/TRIMMessages.txt'
+alias messages      'cat $trimdir/trim/TRIMMessages.txt | grep -i '
 alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
-alias properties    'grep -i "\!^" $trimdir/trim/src/DD/properties.txt'
+alias properties    'cat $trimdir/trim/src/DD/properties.txt | grep -i '
 alias viewprop      'view $trimdir/trim/src/DD/properties.txt'
-alias database      'grep -i "\!^" $trimdir/trim/src/DD/DATABASE.TXT'
+alias database      'cat $trimdir/trim/src/DD/DATABASE.TXT | grep -i '
 alias viewdb        'view $trimdir/trim/src/DD/DATABASE.TXT'
 
 alias dce  ContentExtraction
