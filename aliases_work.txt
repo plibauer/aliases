@@ -67,7 +67,7 @@ alias rdwiki    "Robocopy.exe //twrwebsvr/NewWiki/ E:\\backup\\RDWiki /MIR /R:0"
 # ssh into Ubuntu
 #set ubuntu = 15.146.221.194
 
-alias sshu	"ssh -l plibauer $ubuntu"
+#alias sshu	"ssh -l plibauer $ubuntu"
 #alias st	"ssh -l plibauer solrtest"
 #alias solr	sshu
 
