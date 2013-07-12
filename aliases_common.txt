@@ -194,6 +194,7 @@ alias x11  "cd /c/cygwin/usr/X11R6/bin"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
 alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
+alias cleanevlog "cat \!^ | grep -v 'No events waiting at workgroup' > event_log.clean"
 alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
 alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
 alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
