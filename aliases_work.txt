@@ -16,7 +16,7 @@ alias gowikij         "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer"
 alias gowikibackup    "cd /d/backup/RDWiki/data/pages/wiki/paul_libauer"
 alias goproj          "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects"
 alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
-alias mkjourn         "echo '//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/'$DATE'.txt' | perl -ne 'print lc ' > /c/tmp/journalname.txt"
+alias mkjourn         "echo '//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/'$DATE'.txt' | perl -ne 'print lc ' > /c/tmp/journalname.txt; source ${currentEnv}"
 alias rmjourn         "rm /c/tmp/journalname.txt"
 alias scrub           "perl c:/cygwin/home/plibauer/perl/bin/scrub.pl --file"
 alias tailj           "tail `cat /c/tmp/journalname.txt`"
@@ -38,21 +38,21 @@ alias rdwiki    "Robocopy.exe //twrwebsvr/NewWiki/ E:\\backup\\RDWiki /MIR /R:0"
 
 
 ##############################################################################
-###########################         IDOL          ############################
+###########################         IDOL  (MOVED TO COMMON)         ############################
 
 
-alias icurl		'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
-alias idolrecs		'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=999" --noproxy "*" --silent'
-alias idolstatus	'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent | xmlformat.pl'
-alias irecs		"idolrecs | xmlformat.pl"
-alias removedb		'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
-alias removedocs	'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
-alias idologa1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
-alias idologa2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/application.log"
-alias idologi1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
-alias idologi2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/index.log"
-alias idologq1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
-alias idologq2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/query.log"
+#alias icurl		'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
+#alias idolrecs		'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=999" --noproxy "*" --silent'
+#alias idolstatus	'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent | xmlformat.pl'
+#alias irecs		"idolrecs | xmlformat.pl"
+#alias removedb		'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
+#alias removedocs	'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
+#alias idologa1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
+#alias idologa2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/application.log"
+#alias idologi1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
+#alias idologi2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/index.log"
+#alias idologq1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
+#alias idologq2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/query.log"
 
 
 
@@ -60,57 +60,57 @@ alias idologq2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/query.log"
 #####################################################################              SOLR  (DEPRECATED)             ###################################################################
 #####################################################################################################################################################################################
 
-alias visolr          "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
-alias vis             "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr.txt"
-alias emacsolr        "winemacs z:/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
+#alias visolr          "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
+#alias vis             "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr.txt"
+#alias emacsolr        "winemacs z:/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
 
 # ssh into Ubuntu
-set ubuntu = 15.146.221.194
+#set ubuntu = 15.146.221.194
 
-alias sshu	"ssh -l plibauer $ubuntu"
-alias st	"ssh -l plibauer solrtest"
-alias solr	sshu
+#alias sshu	"ssh -l plibauer $ubuntu"
+#alias st	"ssh -l plibauer solrtest"
+#alias solr	sshu
 
-alias solrq     	'curl "http://solrtest:8080/solr/select?q=\!^" --noproxy "*" --silent | xmlformat.pl'
-alias scurl		'curl "http://solrtest:8080/\!^" --noproxy "*" --silent'
-alias solrdel		'curl "http://solrtest:8080/solr/update?commit=true" -H "Content-Type: text/xml" --data-binary "<delete><query>*:*</query></delete>" --noproxy "*"'
-alias solrschema 	scurl "solr/admin/file/?file=schema.xml"
-alias solrconfig 	scurl "solr/admin/file/?file=solrconfig.xml"
-alias instcreate        scurl "solr/instance/create?name=\!^"
-alias instnew           instcreate
-alias instdelete        scurl "solr/instance/remove?name=\!^"
-alias instdel           instdelete
-alias instremove        instdelete
-alias instrem           instdelete
-alias instbackup        scurl "solr/instance/backup?name=\!^"
-alias instrestore       scurl "solr/instance/restore?name=\!^"
-alias instget	 	scurl "solr/instance/get"
-alias instgetname	scurl "solr/instance/get?name=\!^"
-alias instlog	 	scurl "solr/instance/log?name=\!^ |  perl c:/Users/plibauer/perl/bin/formatSolrResponse.pl"
-alias solrinst   	scurl "solr/instance/\!^"
+#alias solrq     	'curl "http://solrtest:8080/solr/select?q=\!^" --noproxy "*" --silent | xmlformat.pl'
+#alias scurl		'curl "http://solrtest:8080/\!^" --noproxy "*" --silent'
+#alias solrdel		'curl "http://solrtest:8080/solr/update?commit=true" -H "Content-Type: text/xml" --data-binary "<delete><query>*:*</query></delete>" --noproxy "*"'
+#alias solrschema 	scurl "solr/admin/file/?file=schema.xml"
+#alias solrconfig 	scurl "solr/admin/file/?file=solrconfig.xml"
+#alias instcreate        scurl "solr/instance/create?name=\!^"
+#alias instnew           instcreate
+#alias instdelete        scurl "solr/instance/remove?name=\!^"
+#alias instdel           instdelete
+#alias instremove        instdelete
+#alias instrem           instdelete
+#alias instbackup        scurl "solr/instance/backup?name=\!^"
+#alias instrestore       scurl "solr/instance/restore?name=\!^"
+#alias instget	 	scurl "solr/instance/get"
+#alias instgetname	scurl "solr/instance/get?name=\!^"
+#alias instlog	 	scurl "solr/instance/log?name=\!^ |  perl c:/Users/plibauer/perl/bin/formatSolrResponse.pl"
+#alias solrinst   	scurl "solr/instance/\!^"
 
 #
 # SHARD INSTANCES
 # REMEMBER to escape '?' in queries  Eg.  shard1 "select\?q=mofo"
 #
-alias shard1		'curl "http://solrtest:8080/shard1/\!^" --noproxy "*" '
-alias shard1s		'curl "http://solrtest:8080/shard1/select?q=\!^" --noproxy "*" '
-alias shard2		'curl "http://solrtest:8080/shard2/\!^" --noproxy "*" '
-alias shard2s		'curl "http://solrtest:8080/shard2/select?q=\!^" --noproxy "*" '
-alias shard3		'curl "http://solrtest:8080/shard3/\!^" --noproxy "*" '
-alias shard3s		'curl "http://solrtest:8080/shard3/select?q=\!^" --noproxy "*" '
+#alias shard1		'curl "http://solrtest:8080/shard1/\!^" --noproxy "*" '
+#alias shard1s		'curl "http://solrtest:8080/shard1/select?q=\!^" --noproxy "*" '
+#alias shard2		'curl "http://solrtest:8080/shard2/\!^" --noproxy "*" '
+#alias shard2s		'curl "http://solrtest:8080/shard2/select?q=\!^" --noproxy "*" '
+#alias shard3		'curl "http://solrtest:8080/shard3/\!^" --noproxy "*" '
+#alias shard3s		'curl "http://solrtest:8080/shard3/select?q=\!^" --noproxy "*" '
 
 # Search across all shards
-alias shards		'curl "http://solrtest:8080/shard1/select?shards=solrtest:8080/shard1,solrtest:8080/shard2,solrtest:8080/shard3&\!^" --noproxy "*" '
-alias shardss		'curl "http://solrtest:8080/shard1/select?shards=solrtest:8080/shard1,solrtest:8080/shard2,solrtest:8080/shard3&indent=true&q=\!^" --noproxy "*" '
+#alias shards		'curl "http://solrtest:8080/shard1/select?shards=solrtest:8080/shard1,solrtest:8080/shard2,solrtest:8080/shard3&\!^" --noproxy "*" '
+#alias shardss		'curl "http://solrtest:8080/shard1/select?shards=solrtest:8080/shard1,solrtest:8080/shard2,solrtest:8080/shard3&indent=true&q=\!^" --noproxy "*" '
 
-alias insthelp          'echo "solr/intance/command, where command is one of;"; echo "\tcreate?name=...  Create a new instance (replace ... with the actual name)"; echo "\tremove?name=...  Remove an instance"; echo "\tbackup?name=...  Backup an instance"; echo "\trestore?name=... Restore an instance"; echo "\tdisable?name=... Disable an instance"; echo "\tenable?name=...  Enable an instance"; echo "\tget[?name=...]   Get all instances, or optionally check one instance if name is provided"; echo "\tlog?name=...     Get the log output for the instance"'
+#alias insthelp          'echo "solr/intance/command, where command is one of;"; echo "\tcreate?name=...  Create a new instance (replace ... with the actual name)"; echo "\tremove?name=...  Remove an instance"; echo "\tbackup?name=...  Backup an instance"; echo "\trestore?name=... Restore an instance"; echo "\tdisable?name=... Disable an instance"; echo "\tenable?name=...  Enable an instance"; echo "\tget[?name=...]   Get all instances, or optionally check one instance if name is provided"; echo "\tlog?name=...     Get the log output for the instance"'
 
-alias cpsolr    "scp -l plibauer  \!^ "$ubuntu":/home/plibauer"
-alias getsolr   "scp -l plibauer "$ubuntu":/home/plibauer/Uploads/\!^ ."
-alias cpst    "scp \!^ plibauer@solrtest:/home/plibauer"
-alias getst   "scp plibauer@solrtest:/home/plibauer/Uploads/\!^ ."
+#alias cpsolr    "scp -l plibauer  \!^ "$ubuntu":/home/plibauer"
+#alias getsolr   "scp -l plibauer "$ubuntu":/home/plibauer/Uploads/\!^ ."
+#alias cpst    "scp \!^ plibauer@solrtest:/home/plibauer"
+#alias getst   "scp plibauer@solrtest:/home/plibauer/Uploads/\!^ ."
 
-alias goapache  "cd /c/Program\ Files\ \(x86\)/Apache\ Software\ Foundation/Apache2.2"
+#alias goapache  "cd /c/Program\ Files\ \(x86\)/Apache\ Software\ Foundation/Apache2.2"
 
 #####################################################################################################################################################################################

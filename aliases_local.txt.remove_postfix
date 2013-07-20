@@ -4,23 +4,30 @@
 #set REPOS_ROOT  = e
 #set SVN_URL     = svn://localhost
 #set SVN_MIRROR  = file:///e:/svn_mirror
+#set SVN_MASTER  = https://svn.aus.hp.com/local/bio-im-trim
 #  Whatever has been configured in .ssh/config pointing to proxy, otherwise use normal entry below 
 #set GIT_HOST    = gitproxy
 #set GIT_URL     = "$GIT_HOST"":"
 #set IDOL_DIR    = /c/IDOL
+#set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
 
 # Home Machine (Hexcore)
 #set REPOS_ROOT  = c
 #set SVN_URL     = svn://localhost
 #set SVN_MIRROR  = file:///f:/svn_mirror
-#set GIT_HOST	= github.com
-#set GIT_URL    = git://$GIT_HOST/
+#set SVN_MASTER  = https://svn.aus.hp.com/local/bio-im-trim
+#set GIT_HOST    = github.com
+#set GIT_URL     = git://$GIT_HOST/
 #set IDOL_DIR    = /c/IDOL
+#set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
 
 # Laptop
-set REPOS_ROOT  = d
-set SVN_URL     = https://localhost
-set SVN_MIRROR  = file:///d:/svn_mirror
-set GIT_HOST   = github.com
-set GIT_URL    = git://$GIT_HOST/
-set IDOL_DIR    = /c/IDOL
+#set REPOS_ROOT  = d
+#set SVN_URL     = https://localhost
+#set SVN_MIRROR  = file:///d:/svn_mirror
+#set SVN_MASTER  = https://svn.aus.hp.com/local/bio-im-trim
+#set GIT_HOST    = github.com
+#set GIT_URL     = git://$GIT_HOST/
+#set IDOL_DIR    = /c/IDOL
+#set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
+
