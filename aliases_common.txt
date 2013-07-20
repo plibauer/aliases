@@ -181,6 +181,8 @@ alias gosetup  "cd $trimdir/trim/wix/Setup.exe"
 alias gowix    "cd $trimdir/trim/wix"
 alias gowixbin "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
 alias gowin    "cd /c/Users/plibauer"
+alias gowork   "cd ~/winhome/Work"
+alias goworkh  "cd ~/winhome/Work/HPIT"
 alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
 alias godownloads "cd /c/Users/plibauer/Downloads"
 alias goroam  "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
@@ -194,7 +196,8 @@ alias x11  "cd /c/cygwin/usr/X11R6/bin"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
 alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
-alias cleanevlog "cat \!^ | grep -v 'No events waiting at workgroup' > event_log.clean"
+alias cleanwgpartial 'cat \!^ | perl -ne '"'"' if(/^(.{50}).+FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP/){ print "$1 ... ######################################\n" }else{ print } ' "' "' > wgs_log_with_EVENTDAT_timestamps.txt '
+alias cleanevlog "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
 alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
 alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
 alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
@@ -493,6 +496,20 @@ alias mountcygwin	"mount -s --change-cygdrive-prefix /"
 ##############################################################################
 ###########################         IDOL          ############################
 
+
+alias goidol            "cd $IDOL_DIR"
+
+alias goidols           "cd $IDOL_DIR/TRIM\ IDOL\ Service"
+alias idolscfg          "more $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
+alias editidolscfg      "vi $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
+
+alias goidolc1          "cd $IDOL_DIR/TRIM\ Content\ Service\ 1"
+alias idolc1cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
+alias editidolc1cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
+
+alias goidolc2          "cd $IDOL_DIR/TRIM\ Content\ Service\ 2"
+alias idolc2cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
+alias editidolc2cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
 
 alias icurl             'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
 alias idolrecs          'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=999" --noproxy "*" --silent'
