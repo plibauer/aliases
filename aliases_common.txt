@@ -2,7 +2,7 @@ set prompt="%B%n %~>"
 set autologout
 set alias_file = $alias_dir/aliases_common.txt
 
-set path = ( /c/strawberry/perl/bin /bin $path:q )
+set path = ( /c/strawberry/perl/bin /c/python27 /bin $path:q )
 
 # Always set the drive prefix to just /, not "/cygdrive"
 # This has now been configured in /etc/fstab, so no need to do it here
@@ -182,6 +182,8 @@ alias gosetup  "cd $trimdir/trim/wix/Setup.exe"
 alias gowix    "cd $trimdir/trim/wix"
 alias gowixbin "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
 alias gowin    "cd /c/Users/plibauer"
+alias gowork   "cd ~/winhome/Work"
+alias goworkh  "cd ~/winhome/Work/HPIT"
 alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
 alias godownloads "cd /c/Users/plibauer/Downloads"
 alias goroam  "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
@@ -196,6 +198,8 @@ alias x11  "cd /c/cygwin/usr/X11R6/bin"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
 alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
+alias cleanwgpartial 'cat \!^ | perl -ne '"'"' if(/^(.{50}).+FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP/){ print "$1 ... ######################################\n" }else{ print } ' "' "' > wgs_log_with_EVENTDAT_timestamps.txt '
+alias cleanevlog "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
 alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
 alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
 alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
@@ -211,6 +215,7 @@ alias ff            "find . -name "
 alias ifind         'find . -iname "\!^" '
 alias pfind2k8      "perl $PERL_BIN/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
 alias pfind         "perl $PERL_BIN/find_project_files.vs2010.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias projfind      "perl $PERL_BIN/find_project_files.vs2010.pl -s "
 alias pf pfind
 alias grep          "grep --perl-regexp"
 alias grep_examples "cat /c/Users/libauer/grep_examples.txt"
@@ -256,6 +261,7 @@ alias svnlogh      "perl $PERL_BIN/svn_log_processor.pl --help"
 #
 alias syncsvn	   "svnsync sync $SVN_MIRROR"
 alias syncsvnhome  "svnsync sync $SVN_MIRROR svn://10.0.0.3/"
+alias syncsvnwork  "svnsync sync $SVN_MIRROR https://svn.aus.hp.com/local/bio-im-trim"
 alias remlock	   "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 
 set trimbuild   = $trimdir/build/build
@@ -386,6 +392,9 @@ alias getrec      "db -num -row"
 alias getrecs     getrec
 alias dumpdb      db --dump_all
 alias grepdump    "db --dump_all | egrep -i "
+alias constraints "db -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY TABLE_NAME'"
+#alias tblconstraints "db -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS con WHERE con.TABLE_NAME = '\!^' ORDER BY CONSTRAINT_NAME'" 
+alias tblconstraints "db -sql 'SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY CONSTRAINT_NAME' | perl -ne 'if(/Test_80_SqlServer/){ if(/\!^/){ print }} else {print}'"
 
 #-------------------------------------------------
 
@@ -499,11 +508,26 @@ alias mountcygwin	"mount -s --change-cygdrive-prefix /"
 ###########################         IDOL          ############################
 
 
+alias goidol            "cd $IDOL_DIR"
+
+alias goidols           "cd $IDOL_DIR/TRIM\ IDOL\ Service"
+alias idolscfg          "more $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
+alias editidolscfg      "vi $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
+
+alias goidolc1          "cd $IDOL_DIR/TRIM\ Content\ Service\ 1"
+alias idolc1cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
+alias editidolc1cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
+
+alias goidolc2          "cd $IDOL_DIR/TRIM\ Content\ Service\ 2"
+alias idolc2cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
+alias editidolc2cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
+
 alias icurl             'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
 alias idolrecs          'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=999" --noproxy "*" --silent'
 alias idolrecsdb        'curl "http://localhost:11000/action=query&text=*&databasematch=' "\!^" '&MaxResults=999" --noproxy "*" --silent'
 alias idolstatus        'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent | xmlformat.pl'
-alias idolquery         'curl "http://localhost:11000/action=query&text=' "\!^" '&databasematch=' "$idolDb" '" --noproxy "*" --silent'
+alias idolquery         'curl "http://localhost:11000/action=query&text=' "\!^" '&databasematch=' "$idolDb" '" --noproxy "*" --silent | xmlformat.pl'
+alias idolq             idolquery 
 alias irecs             "idolrecs | xmlformat.pl"
 alias irecsdb           "idolrecs \!^ | xmlformat.pl"
 alias removedb          'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
