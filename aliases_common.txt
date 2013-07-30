@@ -259,6 +259,7 @@ alias svnlogh      "perl $PERL_BIN/svn_log_processor.pl --help"
 #
 alias syncsvn	   "svnsync sync $SVN_MIRROR"
 alias syncsvnhome  "svnsync sync $SVN_MIRROR svn://10.0.0.3/"
+alias syncsvnwork  "svnsync sync $SVN_MIRROR https://svn.aus.hp.com/local/bio-im-trim"
 alias remlock	   "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 
 set trimbuild   = $trimdir/build/build

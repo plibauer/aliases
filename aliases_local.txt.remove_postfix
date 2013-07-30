@@ -22,7 +22,7 @@
 #set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
 
 # Laptop
-#set REPOS_ROOT  = d
+#set REPOS_ROOT  = c
 #set SVN_URL     = https://localhost
 #set SVN_MIRROR  = file:///d:/svn_mirror
 #set SVN_MASTER  = https://svn.aus.hp.com/local/bio-im-trim
