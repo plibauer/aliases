@@ -157,6 +157,7 @@ alias more less
 alias gocfg        "cd $trimcfgdir"
 
 alias goexe     "cd $trimdir/$defArch/$defBuild"
+alias gobin     goexe
 alias gomsi     "cd $trimdir/msi/$defArch/en-us"
 alias gotest    "cd $trimdir/trim/test"
 alias goauto    "cd $trimdir/Automation"
@@ -186,7 +187,8 @@ alias godownloads "cd /c/Users/plibauer/Downloads"
 alias goroam  "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
 
 alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
-alias trace     "tracert"
+alias trace    "tracert"
+alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/bin/dumpbin.exe"
 
 
 alias x11  "cd /c/cygwin/usr/X11R6/bin"
@@ -279,6 +281,10 @@ alias svnupr	        "svnrelocateall; svnup; svnrelocbackall"
 alias showlatest  "svn log $trimdir -r HEAD:1 --limit 10"
 alias showlatestv "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
 
+alias svnupbin		"svn update $PERL_BIN"
+alias svnrelocperl      "svn relocate $SVN_MASTER $SVN_URL $PERL_BIN"
+alias svnrelocbackperl  "svn relocate $SVN_URL $SVN_MASTER $PERL_BIN"
+alias svnupbinr		"svnrelocperl; svnupbin; svnrelocbackperl"
 
 
 
