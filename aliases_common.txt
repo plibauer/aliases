@@ -158,6 +158,9 @@ alias gocfg        "cd $trimcfgdir"
 
 alias goexe     "cd $trimdir/$defArch/$defBuild"
 alias gobin     goexe
+alias gocs      "cd $trimdir/$defArchCSharp/$defBuild"
+alias goany     gocs
+alias goanycpu  gocs
 alias gomsi     "cd $trimdir/msi/$defArch/en-us"
 alias gotest    "cd $trimdir/trim/test"
 alias goauto    "cd $trimdir/Automation"
@@ -251,9 +254,9 @@ alias hpsvn "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk R
 alias svn "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
 alias svnrev "svn log -v -r"
 alias svnlogrev svnrev 
-alias svnlog       "perl $PERL_BIN/svn_log_processor.pl --file ~/svn/svn.verbose.log"
+alias svnlog       "perl $PERL_BIN/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log"
 alias svnlogupdate "perl $PERL_BIN/svn_log_processor.pl --update"
-alias svnlist      "perl $PERL_BIN/svn_log_processor.pl --file ~/svn/svn.verbose.log --list_users"
+alias svnlist      "perl $PERL_BIN/svn_log_processor.pl --file C:/cygwin/home/plibaue/svn/svn.verbose.log --list_users"
 alias svnlogh      "perl $PERL_BIN/svn_log_processor.pl --help"
 #
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
@@ -342,9 +345,9 @@ alias sperl         "/c/strawberry/perl/bin/perl"
 
 alias xmlconf       "perl $PERL_BIN/xmlconfig.pl --file "
 alias xconf         "perl $PERL_BIN/xmlconfig.pl"
-alias xmlnoc        "perl stripXMLcomments.pl"
-alias xmlf          "perl xmlformat.pl"
+alias xmlnoc        "perl $PERL_BIN/stripXMLcomments.pl"
 alias xmlformat     $PERL_BIN/xmlformat.pl
+alias xmlf          xmlformat
 
 alias trimconfig    perl $PERL_BIN/xmlconfig.pl --file $trimcfg
 alias shconf        trimconfig
