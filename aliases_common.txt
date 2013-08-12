@@ -428,6 +428,8 @@ alias grepui      'fromunicode \!:2 | grep -i \!:1'
 
 alias testtrim     "$trimdir/$defArch/$defBuild/testTrim.exe --test"
 alias trimtest     testtrim
+alias testhelp	   "$trimdir/$defArch/$defBuild/testTrim.exe --help"
+alias testcases    "$trimdir/$defArch/$defBuild/testTrim.exe --list"
 alias bld          "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type all --timeout 6000 --assert"
 alias bldapi       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type api --timeout 6000 --assert"
 alias bldsth       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type sth --timeout 6000 --assert"
