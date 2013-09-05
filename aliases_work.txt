@@ -24,6 +24,8 @@ alias tjournal        "tail -50 `cat /c/tmp/journalname.txt`"
 alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
 alias mj              "less `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
 alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
+alias showrevisions   "cat ~/winhome/Documents/HPRM-release-versions.txt"
+alias showrevs        showrevisions
 
 #########################################################################################
 
