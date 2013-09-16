@@ -45,6 +45,7 @@ alias src71     "source $alias_dir/71environment"
 alias src72     "source $alias_dir/72environment"
 alias src73     "source $alias_dir/73environment"
 alias src80     "source $alias_dir/80environment"
+alias src81     "source $alias_dir/81environment"
 alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, BUILD = $defBuild, DBID = $DBID'"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 
