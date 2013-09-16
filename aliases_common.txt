@@ -45,6 +45,7 @@ alias src71     "source $alias_dir/71environment"
 alias src72     "source $alias_dir/72environment"
 alias src73     "source $alias_dir/73environment"
 alias src80     "source $alias_dir/80environment"
+alias src81     "source $alias_dir/81environment"
 alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, BUILD = $defBuild, DBID = $DBID'"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 
@@ -257,8 +258,9 @@ alias svnrev "svn log -v -r"
 alias svnlogrev svnrev 
 alias svnlog       "perl $PERL_BIN/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log"
 alias svnlogupdate "perl $PERL_BIN/svn_log_processor.pl --update"
-alias svnlist      "perl $PERL_BIN/svn_log_processor.pl --file C:/cygwin/home/plibaue/svn/svn.verbose.log --list_users"
+alias svnlist      "perl $PERL_BIN/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --list_users"
 alias svnlogh      "perl $PERL_BIN/svn_log_processor.pl --help"
+alias svnmatch     "perl $PERL_BIN/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --match"
 #
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
 # alias syncsvn	   "svnsync sync svn://localhost/"
