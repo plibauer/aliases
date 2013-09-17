@@ -9,8 +9,8 @@ set defArch       = x64
 set defCompiler   = VS2012
 set defBuild      = Debug
 set cygtrimdir    = "/$REPOS_ROOT/$revision"
-set DBID          = E1
-set idolDb        = TRIM_E1
+set DBID          = F1
+set idolDb        = TRIM_F1
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
 set currentEnv    = ~/aliases/80environment
 
