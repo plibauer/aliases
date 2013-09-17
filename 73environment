@@ -3,11 +3,12 @@ set alias_dir     = ~/aliases
 
 source $alias_dir/aliases_local.txt
 
-set trimdir       = $REPOS_ROOT":/73"
+set revision      = 73
+set trimdir       = $REPOS_ROOT":/$revision"
 set defArch       = x64
 set defCompiler   = VS2008
 set defBuild      = Debug
-set cygtrimdir    = "/$REPOS_ROOT"/73
+set cygtrimdir    = "/$REPOS_ROOT/$revision"
 set DBID          = D1
 set idolDb        = TRIM_D1
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
