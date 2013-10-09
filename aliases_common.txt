@@ -141,7 +141,7 @@ alias falias findalias
 #
 #    none / cygdrive binary,posix=0,user 0 0
 #
-alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows'"
+alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development'"
 
 
 alias locate   "locate -d /home/plibauer/locatedb"
@@ -293,14 +293,19 @@ alias svnrelocbackall   "svnrelocbackmain; svnrelocbackbuild; svnrelocbackdoc"
 
 alias svnupr	        "svnrelocateall; svnup; svnrelocbackall"
 
-alias showlatest  "svn log $trimdir -r HEAD:1 --limit 10"
-alias showlatestv "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
+alias showlatest  	"svn log $trimdir -r HEAD:1 --limit 10"
+alias showlatestv 	"svn log $trimdir -r HEAD:1 --limit 10 --verbose"
 
 alias svnupbin		"svn update $PERL_BIN"
 alias svnrelocperl      "svn relocate $SVN_MASTER $SVN_URL $PERL_BIN"
 alias svnrelocbackperl  "svn relocate $SVN_URL $SVN_MASTER $PERL_BIN"
 alias svnupbinr		"svnrelocperl; svnupbin; svnrelocbackperl"
 
+alias sloghelp		'echo "\nUse slog and slogr if you are in the directory you wish to view the svn log of;\n\n\tslog 85123         - Will print all log entries from HEAD -> revision 85123\n\tslogr 85123 84444  - Will print the log entries starting at 85123  -> 84444\n\nUse slogurl and slogurlr when you have the repository URL and are not in a checked-out directory;\n\n\tslogurl svn://localhost/REPOS/trunk 84357\n\tslogurlr svn://localhost/REPOS/trunk 84405 84357\n\n" '
+alias slog 		'svn log -r HEAD:\!^ | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
+alias slogr 		'svn log -r \!:1\:\!:2 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
+alias slogurl 		'svn log \!:1 -r HEAD:\!:2 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
+alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
 
 
 #######################################################################################################################
