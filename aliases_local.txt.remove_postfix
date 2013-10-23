@@ -30,4 +30,5 @@
 #set GIT_URL     = git://$GIT_HOST/
 #set IDOL_DIR    = /c/IDOL
 #set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
+#set DEVENV_ROOT = "D:/Program Files (x86)/"
 
