@@ -281,10 +281,11 @@ alias svnmatch     "perl $PERL_BIN/svn_log_processor.pl --file C:/cygwin/home/pl
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
 # alias syncsvn	   "svnsync sync svn://localhost/"
 #
-alias syncsvn	   "svnsync sync $SVN_MIRROR"
-alias syncsvnhome  "svnsync sync $SVN_MIRROR svn://10.0.0.3/"
-alias syncsvnwork  "svnsync sync $SVN_MIRROR https://svn.aus.hp.com/local/bio-im-trim"
-alias remlock	   "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
+alias syncsvn	    "svnsync sync $SVN_MIRROR"
+alias syncsvnhome   "svnsync sync $SVN_MIRROR svn://10.0.0.3/"
+alias syncsvnwork   "svnsync sync $SVN_MIRROR https://svn.aus.hp.com/local/bio-im-trim"
+alias syncsvnmaster syncsvnwork
+alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 
 set trimbuild   = $trimdir/build/build
 set trimdoc     = $trimdir/doc/doc/DocPub
@@ -526,6 +527,13 @@ alias wgetallhttp	"wget -r -l 0 -p http://\!^"
 
 # Show internet settings
 alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings"'
+
+# Run a local http server from the current directory;
+# Python 2.x
+alias httplocal	"cd ~; python -m SimpleHTTPServer"
+alias http	httplocal
+# Python 3.x
+alias http3	"cd ~; python -m http.server"
 
 # Edit a file with emacs and detach
 alias emacs	"emacs \!^ &"
