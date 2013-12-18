@@ -442,8 +442,11 @@ alias mklocdata   "sql 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.
 alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
 
 # SQLITE
-alias sqlite            "~/winhome/Development/SQLite/sqlite3.exe"
-alias sqliteanal        "~/winhome/Development/SQLite/sqlite3_analyzer.exe"
+alias sqlite            "sqlite3.exe"
+alias sqlitedb          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db
+alias sqliteanal        "sqlite3_analyzer.exe"
+alias filepath          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitefp          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
 
 alias spell 'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
 alias spella 'echo "\!^" >> ~/words.txt; wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
