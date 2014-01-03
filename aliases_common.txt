@@ -696,6 +696,7 @@ alias sqlitedb          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/
 alias sqliteanal        "sqlite3_analyzer.exe"
 alias filepath          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
 alias sqlitefp          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitem           sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
 
 alias spell 'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
 alias spella 'echo "\!^" >> ~/words.txt; wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
