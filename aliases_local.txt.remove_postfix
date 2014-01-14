@@ -10,6 +10,7 @@
 #set GIT_URL     = "$GIT_HOST"":"
 #set IDOL_DIR    = /c/IDOL
 #set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
+#set DEVENV_ROOT = ""
 
 # Home Machine (Hexcore)
 #set REPOS_ROOT  = c
@@ -20,6 +21,7 @@
 #set GIT_URL     = git://$GIT_HOST/
 #set IDOL_DIR    = /c/IDOL
 #set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
+#set DEVENV_ROOT = ""
 
 # Laptop
 #set REPOS_ROOT  = c
@@ -30,4 +32,5 @@
 #set GIT_URL     = git://$GIT_HOST/
 #set IDOL_DIR    = /c/IDOL
 #set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
+#set DEVENV_ROOT = "D:/Program Files (x86)/"
 

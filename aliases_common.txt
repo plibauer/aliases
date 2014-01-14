@@ -2,7 +2,7 @@ set prompt="%B%n %~>"
 set autologout
 set alias_file = $alias_dir/aliases_common.txt
 
-set path = ( /c/strawberry/perl/bin /c/python27 /bin $path:q )
+set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /c/python27 /bin $path:q )
 
 # Always set the drive prefix to just /, not "/cygdrive"
 # This has now been configured in /etc/fstab, so no need to do it here
@@ -15,6 +15,11 @@ alias xterm_title   'echo -n "\033]0;\!^\007" '
 
 alias settitle 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}\007"'
 
+# Allow a different standard path for devenv.exe
+if ("$DEVENV_ROOT" == "") then
+  set DEVENV_ROOT = "${PROGRAMFILES}"
+endif
+
 #if ($defCompiler == "VS2010" && $DBID == "C1") then
 #    if ($defArch == "x86") then
 #        set defArch = "x86_2010"; settitle
@@ -24,17 +29,16 @@ alias settitle 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=
 #endif
 
 set defArchCSharp = "AnyCPU"
-if ($defCompiler != "VS2012") then
+if ($defCompiler == "VS2008") then
     set defArchCSharp = $defArch
 endif
 
-
 set defproj = ALL_BUILD
 
-
+alias view	vi
 alias home 	"cd /home/plibauer"
 alias via  	"vi $alias_file"
-alias vs2010    "set defCompiler = VS2010; source $alias_file"
+alias vs2012    "set defCompiler = VS2012; source $alias_file"
 alias vs2008    "set defCompiler = VS2008; source $alias_file"
 alias x86  	"set defArch = x86; source $alias_file; settitle"
 alias x64  	"set defArch = x64; source $alias_file; settitle"
@@ -49,30 +53,293 @@ alias src81     "source $alias_dir/81environment"
 alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, BUILD = $defBuild, DBID = $DBID'"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 
-if ($defCompiler == "VS2012") then
+set msbuildexe = "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe"
+if ($defCompiler == "VS2013") then
+  set VSVER = 12.0
+  set msbuildexe = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
+else if ($defCompiler == "VS2012") then
   set VSVER = 11.0
-else if ($defCompiler == "VS2010") then
-  set VSVER = 10.0
 else if ($defCompiler == "VS2008") then
   set VSVER = 9.0
 endif
 
-set buildLog = "C:/tmp/TRIM-$revision-$defArch-$defBuild.log"
+set buildLog       = "C:/tmp/TRIM-$revision-$defArch-$defBuild.log"
 set buildLogCSharp = "C:/tmp/TRIMCSharp-$revision-$defArch-$defBuild.log"
+set buildLogWix    = "C:/tmp/WIX-$revision-$defArch-$defBuild.log"
+set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
 
-#  THIS version uses the `` perl command to run the deven.exe process, whereas the one below use /bin/sh .  I have
-#  left it in as an example of how to escape " and '  script delimiters when using aliases
-#       alias bldsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  if(/.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp; $td=$1;$da=$2;$db=$3;$bl=$4; s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; }  print "tail -f $bl\n";  print `$_ $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl`;   '" '"
+alias bldsln '  echo $logSeparator;                                                                                        \\
+   echo -n "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build" \\
+ | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+      @l = <>;                                                                                                             \\
+      $line = shift @l;                                                                                                    \\
+      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {                                                                \\
+        chomp $line;                                                                                                       \\
+        $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                       \\
+        $line =~ s/.exe(,.+)/.exe/;                                                                                        \\
+        $ver=$td; $ver =~ s/^.:.//;                                                                                        \\
+      }                                                                                                                    \\
+      print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\n"                   \\
+ ' "' "'                                                                                                                   \\
+ | /bin/sh                                                                                                                 \\
+ | /bin/perl -le "print q{$buildLog.build :: $trimdir}"                                                                    \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+      $| = 1;                                                                                                              \\
+      use File::Tail;                                                                                                      \\
+      @in = <>; $i = shift @in; chomp $i;                                                                                  \\
+      if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                         \\
+      $ver =~ s/^.:.//;                                                                                                    \\
+      print "LOG FILE: $b\n";                                                                                              \\
+      $file = File::Tail->new(name=>$b, interval=>1);                                                                      \\
+      while(defined($log=$file->read)) {                                                                                   \\
+        chomp $log;                                                                                                        \\
+        if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){                                        \\
+          $total = $1 + $2 + $3;                                                                                           \\
+          if($total > 40){ print "$log\n"; exit; }                                                                         \\
+          else { print "$log\n" }                                                                                          \\
+        }                                                                                                                  \\
+        elsif($log =~ /----- Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                             \\
+          if(length($log) > 100){ $log = substr($log,0,100); }                                                             \\
+          print "$log\n"                                                                                                   \\
+        }                                                                                                                  \\
+      }                                                                                                                    \\
+ '"'"
 
 
+alias clnsln '    echo $logSeparator;                                                                                      \\
+    echo -n "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.clean"\\
+ | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    @l = <>;                                                                                                               \\
+    $line = shift @l;                                                                                                      \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
+      chomp $line;                                                                                                         \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                         \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                                          \\
+      $ver=$td; $ver =~ s/^.:.//;                                                                                          \\
+    }                                                                                                                      \\
+    print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /clean $db /project ALL_BUILD /out $bl &\n"                     \\
+ ' "' "'                                                                                                                   \\
+ | /bin/sh                                                                                                                 \\
+ | /bin/perl -le "print q{$buildLog.clean :: $trimdir}"                                                                    \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    $| = 1;                                                                                                                \\
+    use File::Tail;                                                                                                        \\
+    @in = <>;                                                                                                              \\
+    $i = shift @in;                                                                                                        \\
+    chomp $i;                                                                                                              \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                           \\
+    $ver =~ s/^.:.//;                                                                                                      \\
+    print "LOG FILE: $b\n";                                                                                                \\
+    $file = File::Tail->new(name=>$b, interval=>1);                                                                        \\
+    while(defined($log=$file->read)) {                                                                                     \\
+      chomp $log;                                                                                                          \\
+      if($log    =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print "$log\n"; exit; }                                       \\
+      elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) {                                                        \\
+        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
+        print "$log\n"                                                                                                     \\
+      }                                                                                                                    \\
+    }                                                                                                                      \\
+ '" '"
 
-alias bldsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -e ' "' "'   @l = <>; $line = shift @l; if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp $line; $td=$1;$da=$2;$db=$3;$bl=$4; $line =~ s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; }   print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\n" ' "' "' | /bin/sh | /bin/perl -le "print q{$buildLog :: $trimdir}" | /bin/perl -e ' "' "' $| = 1;  use File::Tail;      @in = <>; $i = shift @in;  chomp $i;  if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }    $ver =~ s/^.:.//; print "LOG FILE: $b\n";  $file = File::Tail->new(name=>$b, interval=>1);  while(defined($log=$file->read)) { if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){ $total = $1 + $2 + $3; if($total > 40){ print $log; exit; } else { print $log } } elsif($log =~ /Build started|error|fatal|failed/i) { print $log } }  '"'" 
 
-alias bldcsharp 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -e ' "' "'   @l = <>; $line = shift @l; if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp $line; $td=$1;$da=$2;$db=$3;$bl=$4; $line =~ s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; }   print "touch $bl\n$line $td/trim/TRIMCSharp.sln /build $db /out $bl &\n" ' "' "' | /bin/sh | /bin/perl -le "print q{$buildLogCSharp :: $trimdir}" | /bin/perl -e ' "' "' $| = 1;  use File::Tail;      @in = <>; $i = shift @in;  chomp $i;  if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }    $ver =~ s/^.:.//; print "LOG FILE: $b\n";  $file = File::Tail->new(name=>$b, interval=>1);  while(defined($log=$file->read)) { if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){ $total = $1 + $2 + $3; if($total > 40){ print $log; exit; } else { print $log } } elsif($log =~ /Build started|error|fatal|failed/i) { print $log } }  '"'" 
+alias bldcsharp 'echo $logSeparator;                                                                                       \\
+    echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.build"                                    \\
+ | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+     @l = <>;                                                                                                              \\
+    $line = shift @l;                                                                                                      \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
+      chomp $line;                                                                                                         \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                         \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                                          \\
+      $ver=$td; $ver =~ s/^.:.//;                                                                                          \\
+    }                                                                                                                      \\
+    print "touch $bl\n$line $td/trim/TRIMCSharp.sln /p:Configuration=$db /fl /flp:logfile=$bl /v:normal /m &\n" ' "' "'    \\
+ | /bin/sh                                                                                                                 \\
+ | /bin/perl -le "print q{$buildLogCSharp.build :: $trimdir}"                                                              \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    $| = 1;                                                                                                                \\
+    use File::Tail;                                                                                                        \\
+    @in = <>;                                                                                                              \\
+    $i = shift @in;                                                                                                        \\
+    chomp $i;                                                                                                              \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                           \\
+    $ver =~ s/^.:.//;                                                                                                      \\
+    print "LOG FILE: $b\n";                                                                                                \\
+    $file = File::Tail->new(name=>$b, interval=>1);                                                                        \\
+    while(defined($log=$file->read)) {                                                                                     \\
+      chomp $log;                                                                                                          \\
+      if($log    =~ /^Time elapsed/i){ print "$log\n"; exit; }                                                             \\
+      elsif($log =~ /(\d+)>Done building target "Build" in project "(.+)"/) { print "$1\tDone building $2\n" }             \\
+      elsif($log =~ /^\s+\d+\s(Warning|Error)|\serror\s|\sfatal\s|\sfailed\s/i) {                                          \\
+        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
+        $log =~ s/^\s+(\d+)>/$1\t/;                                                                                        \\
+        print "$log\n"                                                                                                     \\
+      }                                                                                                                    \\
+    }                                                                                                                      \\
+ '"'"
 
-alias bldproj ' echo \!:1 > /c/tmp/__x; echo "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" >> /c/tmp/__x;  /bin/perl -e  '"'"'  open F,"/c/tmp/__x"  ; @in=<F>;close F; $proj = shift @in; chomp $proj; $_ = shift @in; s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; $line = $_; if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp $line; $td=$1;$da=$2;$db=$3;$bl=$4; $line =~ s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//; }   print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project $proj /out $bl &\n"  '"'"'  |  /bin/sh | /bin/perl -le "print q{$buildLog :: $trimdir}" | /bin/perl -e '"'"' $| = 1;  use File::Tail;      @in = <>; $i = shift @in;  chomp $i;  if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }    $ver =~ s/^.:.//; print "LOG FILE: $b\n";  $file = File::Tail->new(name=>$b, interval=>1, maxinterval=>2);  while(defined($log=$file->read)) { if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){ $total = $1 + $2 + $3; if($total > 7){ print $log; exit; } else { print $log } } elsif($log =~ /Build started|error|fatal|failed/i) { print $log } }   '"'"
+alias clncsharp 'echo $logSeparator;                                                                                       \\
+    echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.clean"                                    \\
+ | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    @l = <>;                                                                                                               \\
+    $line = shift @l;                                                                                                      \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
+      chomp $line;                                                                                                         \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                         \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                                          \\
+      $ver=$td;                                                                                                            \\
+      $ver =~ s/^.:.//;                                                                                                    \\
+    }                                                                                                                      \\
+    print "touch $bl\n$line $td/trim/TRIMCSharp.sln /t:Clean /p:Configuration=$db /fl /flp:logfile=$bl /v:normal /m &\n" ' "' "' \\
+ | /bin/sh                                                                                                                 \\
+ | /bin/perl -le "print q{$buildLogCSharp.clean :: $trimdir}"                                                              \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    $| = 1;                                                                                                                \\
+    use File::Tail;                                                                                                        \\
+    @in = <>;                                                                                                              \\
+    $i = shift @in;                                                                                                        \\
+    chomp $i;                                                                                                              \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                           \\
+    $ver =~ s/^.:.//;                                                                                                      \\
+    print "LOG FILE: $b\n";                                                                                                \\
+    $file = File::Tail->new(name=>$b, interval=>0);                                                                        \\
+    while(defined($log=$file->read)) {                                                                                     \\
+      chomp $log;                                                                                                          \\
+      if($log    =~ /^Time elapsed/i){ print "$log\n"; exit; }                                                             \\
+      if($log    =~ /(\d+)>Done building target "Clean" in project "(.+)"/) { print "$1\tDone cleaning $2\n" }             \\
+      elsif($log =~ /^\s+\d+\s(Warning|Error)|\serror\s|\sfatal\s|\sfailed/i){                                             \\
+        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
+        $log =~ s/^\s+(\d+)>/$1\t/;                                                                                        \\
+        print "$log\n";                                                                                                    \\
+      }                                                                                                                    \\
+    }                                                                                                                      \\
+ '"'"
 
-alias clnsln 'echo -n "${PROGRAMFILES}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'  | /bin/perl -e ' "' "'  @l = <>; $line = shift @l; if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ chomp $line; $td=$1;$da=$2;$db=$3;$bl=$4; $line =~ s/.exe(,.+)/.exe/; $ver=$td; $ver =~ s/^.:.//;}   print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /clean $db /project ALL_BUILD /out $bl &\n" ' "' "'  | /bin/sh  | /bin/perl -le "print q{$buildLog :: $trimdir}" | /bin/perl -e ' "' "' $| = 1;  use File::Tail;      @in = <>; $i = shift @in;  chomp $i;  if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }    $ver =~ s/^.:.//; print "LOG FILE: $b\n";  $file = File::Tail->new(name=>$b, interval=>1);  while(defined($log=$file->read)) { if($log =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print $log; exit; } elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) { print $log } }    '" '"
+alias bldwix 'echo $logSeparator;                                                                                          \\
+    echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix"                                             \\
+ | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    @l = <>;                                                                                                               \\
+    $line = shift @l;                                                                                                      \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
+      chomp $line;                                                                                                         \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                         \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                                          \\
+      $ver=$td; $ver =~ s/^.:.//;                                                                                          \\
+    }                                                                                                                      \\
+    print "touch $bl\n$line $td/trim/WIX.sln /p:Configuration=$db /p:Platform=$da /fl /flp:logfile=$bl /v:normal /m &\n" ' "' "' \\
+ | /bin/sh                                                                                                                 \\
+ | /bin/perl -le "print q{$buildLogWix :: $trimdir}"                                                                       \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    $| = 1;                                                                                                                \\
+    use File::Tail;                                                                                                        \\
+    @in = <>;                                                                                                              \\
+    $i = shift @in;                                                                                                        \\
+    chomp $i;                                                                                                              \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                           \\
+    $ver =~ s/^.:.//;                                                                                                      \\
+    print "LOG FILE: $b\n";                                                                                                \\
+    $file = File::Tail->new(name=>$b, interval=>1);                                                                        \\
+    while(defined($log=$file->read)) {                                                                                     \\
+      chomp $log;                                                                                                          \\
+      if($log =~ /^Time elapsed/i){ print "$log\n"; exit; }                                                                \\
+      if($log =~ /due to false condition|Input files:|previous bind inputs|warning CNDL1118/i) { next; }                   \\
+      if($log =~ /Build started|error|fatal|failed|warning|Done Building Project.+wixproj\"/i) {                           \\
+        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
+        print "$log\n"                                                                                                     \\
+      }                                                                                                                    \\
+    }                                                                                                                      \\
+ '"'"
+
+alias clnwix 'echo $logSeparator;                                                                                          \\
+    echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix"                                             \\
+ | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    @l = <>;                                                                                                               \\
+    $line = shift @l;                                                                                                      \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
+      chomp $line;                                                                                                         \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                         \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                                          \\
+      $ver=$td;                                                                                                            \\
+      $ver =~ s/^.:.//;                                                                                                    \\
+    }                                                                                                                      \\
+    print "touch $bl\n$line $td/trim/WIX.sln /p:Configuration=$db /p:Platform=$da /t:Clean /fl /flp:logfile=$bl /v:normal /m &\n" ' "' "' \\
+ | /bin/sh                                                                                                                 \\
+ | /bin/perl -le "print q{$buildLogWix :: $trimdir}"                                                                       \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    $| = 1;                                                                                                                \\
+    use File::Tail;                                                                                                        \\
+    @in = <>;                                                                                                              \\
+    $i = shift @in;                                                                                                        \\
+    chomp $i;                                                                                                              \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                           \\
+    $ver =~ s/^.:.//;                                                                                                      \\
+    print "LOG FILE: $b\n";                                                                                                \\
+    $file = File::Tail->new(name=>$b, interval=>1);                                                                        \\
+    while(defined($log=$file->read)) {                                                                                     \\
+      chomp $log;                                                                                                          \\
+      if($log =~ /^Time elapsed/i){ print "$log\n"; exit; }                                                                \\
+      if($log =~ /due to false condition|Input files:|previous bind inputs/i) { next; }                                    \\
+      if($log =~ /Build started|error|fatal|failed|warning/i) {                                                            \\
+        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
+        print "$log\n"                                                                                                     \\
+      }                                                                                                                    \\
+    }                                                                                                                      \\
+ '"'"
+
+alias bldproj ' echo \!:1                                                                                                  \\
+    > /c/tmp/__x;                                                                                                          \\
+    echo "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" \\
+    >> /c/tmp/__x;                                                                                                         \\
+   /bin/perl -e  '"'"'                                                                                                     \\
+    open F,"/c/tmp/__x"  ;                                                                                                 \\
+    @in=<F>;close F;                                                                                                       \\
+    $proj = shift @in;                                                                                                     \\
+    chomp $proj;                                                                                                           \\
+    $_ = shift @in;                                                                                                        \\
+    s/^(.):./\/$1\//;                                                                                                      \\
+    s/\s/\\ /g;                                                                                                            \\
+    s/\(/\\(/g; s/\)/\\)/g;                                                                                                \\
+    $line = $_;                                                                                                            \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
+      chomp $line;                                                                                                         \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                         \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                                          \\
+      $ver=$td;                                                                                                            \\
+      $ver =~ s/^.:.//;                                                                                                    \\
+    }                                                                                                                      \\
+    print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project $proj /out $bl &\n"  '"'"'                  \\
+ | /bin/sh                                                                                                                 \\
+ | /bin/perl -le "print q{$buildLog :: $trimdir}"                                                                          \\
+ | /bin/perl -e '"'"'                                                                                                      \\
+    $| = 1;                                                                                                                \\
+    use File::Tail;                                                                                                        \\
+    @in = <>;                                                                                                              \\
+    $i = shift @in;                                                                                                        \\
+    chomp $i;                                                                                                              \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                           \\
+    $ver =~ s/^.:.//;                                                                                                      \\
+    print "LOG FILE: $b\n";                                                                                                \\
+    $file = File::Tail->new(name=>$b, interval=>1, maxinterval=>2);                                                        \\
+    while(defined($log=$file->read)) {                                                                                     \\
+      chomp $log;                                                                                                          \\
+      if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){                                          \\
+        $total = $1 + $2 + $3;                                                                                             \\
+        if($total > 7){ print "$log\n"; exit; }                                                                            \\
+        else { print "$log\n" }                                                                                            \\
+      }                                                                                                                    \\
+      elsif($log =~ /Build started|error|fatal|failed/i) {                                                                 \\
+        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
+        print "$log\n"                                                                                                     \\
+      }                                                                                                                    \\
+    }                                                                                                                      \\
+ '"'"
+
 
 
 alias tailbldlog "tail -f /c/tmp/TRIM-$revision-$defArch-$defBuild.log"
@@ -192,6 +459,7 @@ alias gosetup  "cd $trimdir/trim/wix/Setup.exe"
 alias gowix    "cd $trimdir/trim/wix"
 alias gowixbin "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
 alias gowin    "cd /c/Users/plibauer"
+alias gowint   "cd /c/Users/plibauer.TRIM"
 alias gowork   "cd ~/winhome/Work"
 alias goworkh  "cd ~/winhome/Work/HPIT"
 alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
@@ -261,19 +529,20 @@ alias hpsvn "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk R
 alias svn "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
 alias svnrev "svn log -v -r"
 alias svnlogrev svnrev 
-alias svnlog       "perl $PERL_BIN/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log"
-alias svnlogupdate "perl $PERL_BIN/svn_log_processor.pl --update"
-alias svnlist      "perl $PERL_BIN/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --list_users"
-alias svnlogh      "perl $PERL_BIN/svn_log_processor.pl --help"
-alias svnmatch     "perl $PERL_BIN/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --match"
+alias svnlog       "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log"
+alias svnlogupdate "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --update"
+alias svnlist      "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --list_users"
+alias svnlogh      "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --help"
+alias svnmatch     "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --match"
 #
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
 # alias syncsvn	   "svnsync sync svn://localhost/"
 #
-alias syncsvn	   "svnsync sync $SVN_MIRROR"
-alias syncsvnhome  "svnsync sync $SVN_MIRROR svn://10.0.0.3/"
-alias syncsvnwork  "svnsync sync $SVN_MIRROR https://svn.aus.hp.com/local/bio-im-trim"
-alias remlock	   "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
+alias syncsvn	    "svnsync sync $SVN_MIRROR"
+alias syncsvnhome   "svnsync sync $SVN_MIRROR svn://10.0.0.3/"
+alias syncsvnwork   "svnsync sync $SVN_MIRROR https://svn.aus.hp.com/local/bio-im-trim"
+alias syncsvnmaster syncsvnwork
+alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 
 set trimbuild   = $trimdir/build/build
 set trimdoc     = $trimdir/doc/doc/DocPub
@@ -375,6 +644,7 @@ alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
 alias wixgen       perl $trimdir/trim/misc/Scripts/Perl/WixGenerator.pl
 
 # Lookup a perl function using perldoc
+alias perldoc   "/c/strawberry/perl/bin/perldoc.bat"
 alias perlfunc  "perldoc -f"
 
 
@@ -419,8 +689,13 @@ alias mklocdata   "sql 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.
 alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
 
 # SQLITE
-alias sqlite            "~/winhome/Development/SQLite/sqlite3.exe"
-alias sqliteanal        "~/winhome/Development/SQLite/sqlite3_analyzer.exe"
+alias sqlite            "sqlite3.exe"
+alias sqlitedb          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db
+alias sqliteanal        "sqlite3_analyzer.exe"
+alias filepath          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitefp          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitem           sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
+alias sqlmatch         'sqlitem \!^ |   perl -ne '"'"'  if(/^(\d+)\|(.+)$/){ print "-------------------------| $1 |--------------------------\n$2\n" }else{print}    '"'"
 
 alias spell 'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
 alias spella 'echo "\!^" >> ~/words.txt; wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
@@ -515,6 +790,13 @@ alias wgetallhttp	"wget -r -l 0 -p http://\!^"
 
 # Show internet settings
 alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings"'
+
+# Run a local http server from the current directory;
+# Python 2.x
+alias httplocal	"cd ~; python -m SimpleHTTPServer"
+alias http	httplocal
+# Python 3.x
+alias http3	"cd ~; python -m http.server"
 
 # Edit a file with emacs and detach
 alias emacs	"emacs \!^ &"
