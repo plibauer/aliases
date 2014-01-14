@@ -757,26 +757,33 @@ alias rdesktop		rdp
 ####################################################################
 ### GIT commands
 
-alias gitpush     "git push origin master"
-alias gitnewrepo  "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
-alias gitcommit   "git commit -a"
-alias gitdiff     "git diff"
-alias gitpull     "git pull"
-alias gitstatus   "git status"
-alias gitcheckout "git clone $GIT_URL""plibauer/aliases.git"
-alias checkout     gitcheckout
-alias commit	   gitcommit
-alias status       gitstatus
-alias gitsetrepo  "get remote set-url origin git@github.com:plibauer/aliases.git"
-alias gitconfig   "git config -l"
-alias gitsshtest  "ssh -T git@""$GIT_HOST"
+alias gitpush        "git push origin master"
+alias gitnewrepo     "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
+alias gitcommit      "git commit -a"
+alias gitdiff        "git diff"
+alias gitdiffbc      "git difftool"
+alias gitmerge       "git mergetool"
+alias gitpull        "git pull"
+alias gitstatus      "git status"
+alias gitcheckout    "git clone $GIT_URL""plibauer/aliases.git"
+alias checkout        gitcheckout
+alias commit	      gitcommit
+alias status          gitstatus
+alias gitsetrepo     "get remote set-url origin git@github.com:plibauer/aliases.git"
+alias gitconfig      "git config -l"
+alias gitsshtest     "ssh -T git@""$GIT_HOST"
 alias gitforceupdate "git fetch --all; git reset --hard origin/master"
-alias gitcommitsome "git add -i"
-alias gitremove   "git rm"
-alias gitundo     "git reset HEAD"
+alias gitcommitsome  "git add -i"
+alias gitremove      "git rm"
+alias gitundo        "git reset HEAD"
 
 # If a file has been deleted locally, you can restore it using the following and providing the filename as the argument
 alias gitrestore  "git checkout HEAD \!^"
+
+# Setup BeyondCompare as the diff/merge tool
+set BC3 "C:/Program Files (x86)/Beyond Compare 3/bcomp.exe"
+alias gitconfigdiff  'git config --global diff.tool bc3; git config --global difftool.bc3.path "$BC3" '
+alias gitconfigmerge 'git config --global merge.tool bc3; git config --global mergetool.bc3.path "$BC3" '
 
 
 #-------------------------------------------------------------------
