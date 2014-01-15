@@ -781,7 +781,7 @@ alias gitundo        "git reset HEAD"
 alias gitrestore  "git checkout HEAD \!^"
 
 # Setup BeyondCompare as the diff/merge tool
-set BC3 "C:/Program Files (x86)/Beyond Compare 3/bcomp.exe"
+set BC3 = "C:/Program Files (x86)/Beyond Compare 3/bcomp.exe"
 alias gitconfigdiff  'git config --global diff.tool bc3; git config --global difftool.bc3.path "$BC3" '
 alias gitconfigmerge 'git config --global merge.tool bc3; git config --global mergetool.bc3.path "$BC3" '
 
