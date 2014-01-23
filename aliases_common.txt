@@ -527,8 +527,8 @@ alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
 # SVN
 alias hpsvn         "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk REPOS_trunk --username paul_libauer"
 alias svn           "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
-alias svnrev        "svn log svn://localhost/REPOS/trunk -v -r \!^:\!^"
-alias svnrevcurrent "svn log -v -r \!^:\!^"
+alias svnrev        'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
+alias svnrevcurrent 'svn log -v -r "\!^":"\!^"'
 alias svnlog        "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log"
 alias svnlogupdate  "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --update"
 alias svnlist       "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --list_users"
