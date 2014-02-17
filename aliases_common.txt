@@ -531,6 +531,7 @@ alias svnrev        'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
 alias svnrevcurrent 'svn log -v -r "\!^":"\!^"'
 alias svnlog        "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log"
 alias svnlogupdate  "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --update"
+alias logupdate     svnlogupdate
 alias svnlist       "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --list_users"
 alias svnlogh       "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --help"
 alias svnmatch      "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --match"
