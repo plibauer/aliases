@@ -696,7 +696,7 @@ alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD
 
 # SQLITE
 alias sqlite            "sqlite3.exe"
-alias sqlitedb          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db
+alias sqlitedb          cygstart cmd.exe /c sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db
 alias sqliteanal        "sqlite3_analyzer.exe"
 alias filepath          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
 alias sqlitefp          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
@@ -816,6 +816,9 @@ alias emacs	"emacs \!^ &"
 
 # Change the mount prefix if required
 alias mountcygwin	"mount -s --change-cygdrive-prefix /"
+
+# Invoke an admin command prompt
+alias command  cygstart cmd.exe
 
 ##############################################################################
 ###########################         IDOL          ############################
