@@ -527,13 +527,15 @@ alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
 # SVN
 alias hpsvn          "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk REPOS_trunk --username paul_libauer"
 alias svn            "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
-alias svnrev        'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
-alias svnrevcurrent 'svn log -v -r "\!^":"\!^"'
-alias svnlogrev      svnrev 
+alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
+alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
 alias logproc        "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl"
+alias logrev         "logproc --rev"
+alias svnrev         logrev
 alias logprocuser    logproc --user
 alias logproclist    logproc --list_users
 alias logprocschema  logproc --schema
+alias schema         logprocschema
 alias svnlog         "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log"
 alias svnlogupdate   "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --update"
 alias logupdate      svnlogupdate
@@ -695,12 +697,15 @@ alias mklocdata   "sql 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.
 alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
 
 # SQLITE
+set SQLITE_DB=C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db
 alias sqlite            "sqlite3.exe"
-alias sqlitedb          cygstart cmd.exe /c sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db
+alias sqliteq           "sqlite3.exe $SQLITE_DB"
+alias sqlitequery	sqliteq
+alias sqlitedb          cygstart cmd.exe /c sqlite3.exe $SQLITE_DB 
 alias sqliteanal        "sqlite3_analyzer.exe"
-alias filepath          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
-alias sqlitefp          sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
-alias sqlitem           sqlite3.exe C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
+alias filepath          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitefp          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitem           sqlite3.exe $SQLITE_DB \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
 alias sqlmatch         'sqlitem \!^ |   perl -ne '"'"'  if(/^(\d+)\|(.+)$/){ print "-------------------------| $1 |--------------------------\n$2\n" }else{print}    '"'"
 
 alias spell 'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
