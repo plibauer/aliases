@@ -535,6 +535,13 @@ alias svnrev         logrev
 alias rev            logrev
 alias logprocuser    logproc --user
 alias logproclist    logproc --list_users
+alias logm           logproc --match 
+alias logmv          logproc --verbose --match 
+alias match          logm
+alias loga           "logproc --match \!:1 --author \!:2"
+alias logav          "logproc --verbose --match \!:1 --author \!:2"
+alias matchauth      "logproc --match \!:1 --author \!:2"
+alias matchauthor    "logproc --match \!:1 --author \!:2"    
 alias listusers      logproclist
 alias logprocschema  logproc --schema
 alias schema         logprocschema
