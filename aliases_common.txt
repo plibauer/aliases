@@ -535,6 +535,7 @@ alias svnrev         logrev
 alias rev            logrev
 alias logprocuser    logproc --user
 alias logproclist    logproc --list_users
+alias listusers      logproclist
 alias logprocschema  logproc --schema
 alias schema         logprocschema
 alias svnlog         "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log"
