@@ -475,7 +475,7 @@ alias x11  "cd /c/cygwin/usr/X11R6/bin"
 #alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
-alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' > wgs_log.clean"
+alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' | grep -v 'FROM TSRENDQUEU WITH \(NOLOCK\)' > wgs_log.clean"
 alias cleanwgpartial 'cat \!^ | perl -ne '"'"' if(/^(.{50}).+FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP/){ print "$1 ... ######################################\n" }else{ print } ' "' "' > wgs_log_with_EVENTDAT_timestamps.txt '
 alias cleanevlog "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
 alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
