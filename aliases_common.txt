@@ -13,7 +13,8 @@ alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
 #alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${defBuild}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
 
-alias settitle 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}\007"'
+alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}\007"'
+alias settitledir 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}    `/bin/pwd`\007"'
 
 # Allow a different standard path for devenv.exe
 if ("$DEVENV_ROOT" == "") then
