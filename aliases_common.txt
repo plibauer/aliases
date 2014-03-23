@@ -710,7 +710,7 @@ alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD
 set SQLITE_DB=C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db
 alias sqlite            "sqlite3.exe"
 alias sqliteq           "sqlite3.exe $SQLITE_DB"
-alias sqlitequery	sqliteq
+alias query		sqliteq
 alias sqlitedb          cygstart cmd.exe /c sqlite3.exe $SQLITE_DB 
 alias sqliteanal        "sqlite3_analyzer.exe"
 alias filepath          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
