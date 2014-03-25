@@ -537,10 +537,10 @@ alias rev            logrev
 alias revhead        logrev head
 alias revchange      logproc --change
 alias change         logproc --change
-alias revchrange     logproc --change \!^ --range 
+alias revchrange     logproc --change \!:1 --range \!:2
 alias changer        revchrange
 alias revchdiff      logproc --change \!^ --diff 
-alias revchdiffr     logproc --change \!^ --diff --range
+alias revchdiffr     logproc --change \!:1 --diff --range \!:2
 alias changerd       revchdiffr
 alias logprocuser    logproc --user
 alias logproclist    logproc --list_users
