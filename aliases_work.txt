@@ -16,6 +16,25 @@ alias gowikij         "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer"
 alias gowikibackup    "cd /d/backup/RDWiki/data/pages/wiki/paul_libauer"
 alias goproj          "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects"
 alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
+
+alias grepjd          ' ls //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer          \\
+| /bin/perl -e '"'"'                                                                 \\
+%m = (jan,"01",feb,"02",mar,"03",apr,"04",may,"05",jun,"06",jul,"07",aug,"08",sep,"09","oct",10,nov,11,dec,12);     \\
+my $match=join "|", keys %m;                                                                                        \\
+    while(<>){                                                                                                          \\
+      chomp;                                                                                                            \\
+      if(/($match).*(\d\d\d\d).txt$/){                                                                                  \\
+        $mon=$m{$1};                                                                                                    \\
+        $y=$2;                                                                                                          \\
+        $ordered{"$y$mon"} = $_;                                                                                        \\
+      }                                                                                                                 \\
+    }                                                                                                                   \\
+   for(sort {$b<=>$a} keys %ordered){                                                                                   \\
+     print "//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/$ordered{$_}\n";                                           \\
+   }                                                                                                                    \\
+ '"'" 
+alias search 	      "grep -i \!^ `grepjd` | perl -ne 's|//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/||; print'" 
+
 alias mkjourn         "echo '//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/'$DATE'.txt' | perl -ne 'print lc ' > /c/tmp/journalname.txt; source ${currentEnv}"
 alias rmjourn         "rm /c/tmp/journalname.txt"
 alias scrub           "perl c:/cygwin/home/plibauer/perl/bin/scrub.pl --file"
@@ -29,9 +48,9 @@ alias showrevs        showrevisions
 
 #########################################################################################
 
-alias showlog         'cat /c/tmp/finalbuilder.log | fromunicode | perl -ne '"'"'  s/^\s+//;  print "$_"; '"'"' | more '^M
+alias showlog         'cat /c/tmp/finalbuilder.log | fromunicode | perl -ne '"'"'  s/^\s+//;  print "$_"; '"'"' | more '
 alias tailog          "tail -f /c/tmp/finalbuilder.log"
-alias rundox          "$trimdir/xtra/Doxygen/runDoxygen/bin/Debug/runDoxygen.exe"^M
+alias rundox          "$trimdir/xtra/Doxygen/runDoxygen/bin/Debug/runDoxygen.exe"
 
 alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
 
