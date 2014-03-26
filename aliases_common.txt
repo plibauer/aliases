@@ -558,12 +558,9 @@ alias matchauthor    "logproc --match \!:1 --author \!:2"
 alias listusers      logproclist
 alias logprocschema  logproc --schema
 alias schema         logprocschema
-alias svnlog         "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log"
 alias svnlogupdate   "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --update"
 alias logupdate      svnlogupdate
-alias svnlist        "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --list_users"
 alias svnlogh        "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --help"
-alias svnmatch       "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --file C:/cygwin/home/plibauer/svn/svn.verbose.log --match"
 #
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
 # alias syncsvn	   "svnsync sync svn://localhost/"
