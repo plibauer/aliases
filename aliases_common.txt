@@ -555,6 +555,8 @@ alias logav          "logproc --verbose --match \!:1 --author \!:2"
 alias logavi         "logproc --no_case --verbose --match \!:1 --author \!:2"
 alias matchauth      "logproc --match \!:1 --author \!:2"
 alias matchauthor    "logproc --match \!:1 --author \!:2"    
+alias findfile       "logproc --find_file"
+alias logf           findfile
 alias listusers      logproclist
 alias logprocschema  logproc --schema
 alias schema         logprocschema
