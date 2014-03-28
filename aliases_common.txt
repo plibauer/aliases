@@ -548,7 +548,7 @@ alias logm           logproc --match
 alias logmi          logproc --no_case --match 
 alias logmv          logproc --verbose --match 
 alias logmvi         logproc --no_case --verbose --match 
-alias match          logm
+alias match          logproc --no_case --limit 30 --match
 alias loga           "logproc --match \!:1 --author \!:2"
 alias logai          "logproc --no_case --match \!:1 --author \!:2"
 alias logav          "logproc --verbose --match \!:1 --author \!:2"
@@ -573,8 +573,8 @@ alias syncsvnwork   "svnsync sync $SVN_MIRROR https://svn.aus.hp.com/local/bio-i
 alias syncsvnmaster syncsvnwork
 alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 
-set trimbuild   = $trimdir/build/build
-set trimdoc     = $trimdir/doc/doc/DocPub
+set trimbuild      = $trimdir/build/build
+set trimdoc        = $trimdir/doc/doc/DocPub
 
 # Updated the trim release we are working on
 alias svnup	        "svn update $trimdir; svn update $trimbuild; svn update $trimdoc"
