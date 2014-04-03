@@ -808,6 +808,9 @@ alias gitforceupdate "git fetch --all; git reset --hard origin/master"
 alias gitcommitsome  "git add -i"
 alias gitremove      "git rm"
 alias gitundo        "git reset HEAD"
+alias gitsetproxy    "setenv HTTP_PROXY http://proxy.aus.hp.com:8080; setenv HTTPS_PROXY https://proxy.aus.hp.com:8080"
+alias gitunsetproxy  "setenv HTTP_PROXY;setenv HTTPS_PROXY "
+alias gitcheckproxy  "setenv | grep PROXY"
 
 # If a file has been deleted locally, you can restore it using the following and providing the filename as the argument
 alias gitrestore  "git checkout HEAD \!^"
