@@ -548,8 +548,8 @@ alias logmi          logproc --no_case --match
 alias logmv          logproc --verbose --match 
 alias logmvi         logproc --no_case --verbose --match 
 alias match          logproc --no_case --limit 30 --match
-alias loga           "logproc --match \!:1 --author \!:2"
-alias logai          "logproc --no_case --match \!:1 --author \!:2"
+alias loga           "logproc --no_case --match \!:1 --author \!:2"
+alias logacs         "logproc --match \!:1 --author \!:2"
 alias logav          "logproc --verbose --match \!:1 --author \!:2"
 alias logavi         "logproc --no_case --verbose --match \!:1 --author \!:2"
 alias matchauth      "logproc --match \!:1 --author \!:2"
