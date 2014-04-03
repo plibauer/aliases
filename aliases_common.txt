@@ -64,9 +64,9 @@ else if ($defCompiler == "VS2008") then
   set VSVER = 9.0
 endif
 
-set buildLog       = "C:/tmp/TRIM-$revision-$defArch-$defBuild.log"
-set buildLogCSharp = "C:/tmp/TRIMCSharp-$revision-$defArch-$defBuild.log"
-set buildLogWix    = "C:/tmp/WIX-$revision-$defArch-$defBuild.log"
+set buildLog       = "G:/TEMP/TRIM-$revision-$defArch-$defBuild.log"
+set buildLogCSharp = "G:/TEMP/TRIMCSharp-$revision-$defArch-$defBuild.log"
+set buildLogWix    = "G:/TEMP/WIX-$revision-$defArch-$defBuild.log"
 set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
 
 alias bldsln '  echo $logSeparator;                                                                                        \\
@@ -106,7 +106,6 @@ alias bldsln '  echo $logSeparator;                                             
         }                                                                                                                  \\
       }                                                                                                                    \\
  '"'"
-
 
 alias clnsln '    echo $logSeparator;                                                                                      \\
     echo -n "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.clean"\\
@@ -426,7 +425,7 @@ alias more less
 
 
 
-
+set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
 alias gocfg        "cd $trimcfgdir"
 
@@ -461,8 +460,8 @@ alias gowix    "cd $trimdir/trim/wix"
 alias gowixbin "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
 alias gowin    "cd /c/Users/plibauer"
 alias gowint   "cd /c/Users/plibauer.TRIM"
-alias gowork   "cd ~/winhome/Work"
-alias goworkh  "cd ~/winhome/Work/HPIT"
+alias gowork   "cd $WINHOME/Work"
+alias goworkh  "cd $WINHOME/Work/HPIT"
 alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
 alias godownloads "cd /c/Users/plibauer/Downloads"
 alias goroam  "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"

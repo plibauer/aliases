@@ -42,6 +42,19 @@ alias tailj           "tail `cat /c/tmp/journalname.txt`"
 alias tjournal        "tail -50 `cat /c/tmp/journalname.txt`"
 alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
 alias mj              "less `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
+
+alias vj              ' echo -n "\!*" | /bin/perl -ne  '"'"'                                                                  \\
+     /^([A-z]+)\s*(\d+)*/ and do { ($m,$y) = ($1,$2) };                                                                          \\
+     foreach("january","february","march","april","may","june","july","august","september","october","november","december"){  \\
+         if($_ =~ /^$m/i) { $month = $_; last; }                                                                              \\
+     }                                                                                                                        \\
+     if($y =~ /^\d{2}$/) { $y = "20".$y };                                                                                    \\
+     if($y !~ /^\d{4}$/) { print "BAD YEAR: $y\n"; exit }                                                                     \\
+     $file = "//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/$month$y.txt";                                                 \\
+     if(not -e $file) { print "File $file doesnt exist?\n"; exit; }                                                           \\
+     print "cat //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/$month$y.txt";                                               \\
+ ' "' "' | /bin/sh | vim -R - '  
+
 alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
 alias showrevisions   "cat ~/winhome/Documents/HPRM-release-versions.txt"
 alias showrevs        showrevisions
