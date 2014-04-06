@@ -533,7 +533,10 @@ alias logproc        "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl"
 alias logrev         "logproc --rev"
 alias svnrev         logrev
 alias rev            logrev
+alias rdiff          logrev \!^ --diff \!:2
 alias revhead        logrev head
+alias revheadiff     logrev head --diff
+alias rhd	     revheadiff
 alias revchange      logproc --change
 alias change         logproc --change
 alias revchrange     logproc --change \!:1 --range \!:2
