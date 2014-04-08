@@ -64,9 +64,9 @@ else if ($defCompiler == "VS2008") then
   set VSVER = 9.0
 endif
 
-set buildLog       = "G:/TEMP/TRIM-$revision-$defArch-$defBuild.log"
-set buildLogCSharp = "G:/TEMP/TRIMCSharp-$revision-$defArch-$defBuild.log"
-set buildLogWix    = "G:/TEMP/WIX-$revision-$defArch-$defBuild.log"
+set buildLog       = "${REPOS_ROOT}:/TEMP/TRIM-$revision-$defArch-$defBuild.log"
+set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$revision-$defArch-$defBuild.log"
+set buildLogWix    = "${REPOS_ROOT}:/TEMP/WIX-$revision-$defArch-$defBuild.log"
 set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
 
 alias bldsln '  echo $logSeparator;                                                                                        \\
