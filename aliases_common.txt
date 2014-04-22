@@ -511,6 +511,7 @@ alias dox  "/c/Program\ Files\ \(x86\)/doxygen/bin/doxygen"
 alias dwiz "/c/Program\ Files/doxygen/bin/doxywizard"
 alias aperl "/c/Perl/bin/perl"
 alias wperl aperl
+alias vmperl "/c/Program\ Files\ \(x86\)/VMware/VMware\ vSphere\ CLI/Perl/bin/perl"
 
 # Path conversion using cygpath
 alias towin  'cygpath -t windows "\!^"'
