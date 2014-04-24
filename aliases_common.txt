@@ -18,7 +18,7 @@ alias settitledir 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUI
 
 # Allow a different standard path for devenv.exe
 if ("$DEVENV_ROOT" == "") then
-  set DEVENV_ROOT = "${PROGRAMFILES}"
+  set DEVENV_ROOT = "C:/Program Files (x86)"
 endif
 
 #if ($defCompiler == "VS2010" && $DBID == "C1") then
