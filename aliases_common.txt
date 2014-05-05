@@ -563,7 +563,7 @@ alias matchauthor    "logproc --match \!:1 --author \!:2"
 alias findfile       "logproc --find_file"
 alias logf           findfile
 alias listusers      logproclist
-alias logprocschema  logproc --schema
+alias logprocschema  logproc --get schema
 alias schema         logprocschema
 alias svnlogupdate   "perl $PERL_BIN/svnLogProcessor/svn_log_processor.pl --update"
 alias logupdate      svnlogupdate
