@@ -11,6 +11,7 @@
 #set IDOL_DIR    = /c/IDOL
 #set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
 #set DEVENV_ROOT = ""
+#set SVN_LOG_DB  = C:/svnLogDatabase
 
 # Home Machine (Hexcore)
 #set REPOS_ROOT  = c
@@ -22,6 +23,7 @@
 #set IDOL_DIR    = /c/IDOL
 #set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
 #set DEVENV_ROOT = ""
+#set SVN_LOG_DB  = C:/svnLogDatabase
 
 # Laptop
 #set REPOS_ROOT  = c
@@ -33,4 +35,5 @@
 #set IDOL_DIR    = /c/IDOL
 #set PERL_BIN    = C:/cygwin/home/plibauer/perl/bin
 #set DEVENV_ROOT = "D:/Program Files (x86)/"
+#set SVN_LOG_DB  = C:/svnLogDatabase
 
