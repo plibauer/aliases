@@ -479,16 +479,49 @@ alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golo
 alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' | grep -v 'FROM TSRENDQUEU WITH \(NOLOCK\)' > wgs_log.clean"
 alias cleanwgpartial 'cat \!^ | perl -ne '"'"' if(/^(.{50}).+FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP/){ print "$1 ... ######################################\n" }else{ print } ' "' "' > wgs_log_with_EVENTDAT_timestamps.txt '
 alias cleanevlog "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
-alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT" '
 alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
 alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
 alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
 alias revert popd
 
-#alias clnsln 'echo -n "${PROGRAMFILES}" | /bin/perl -ne '"'"' s/^(.):./\/$1\//; print "$_\n"  ' "' "'  | /bin/perl -ne ' "' "'  $ver =~ s/^.:.//; ' "' "'  |  /bin/sh   '
+#alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 | perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh| egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT|SELECT *  FROM TSTWRSYS WITH|SELECT  uri  FROM TSRECORD WITH \(NOLOCK\)   WHERE \(rcFilePlanUri|SELECT COUNT_BIG\(uri\)  FROM TSRECORD WITH \(NOLOCK\)   WHERE \(rcFilePlanUri|SELECT  TOP 30 *  FROM TSTODOITEM WITH \(NOLOCK\)   WHERE \(tdoDoneAt |SELECT *  FROM TSTWRSYS WITH \(NOLOCK\)   WHERE \(code = |SELECT  uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate  FROM TSWKACTIVI" '
 
-alias refresh "C:/Users/plibauer/Downloads/SysinternalsSuite/Bginfo.exe"
 
+alias wglog  ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup*                                        \\
+ | head -1                                                                                                                 \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    $| = 1;                                                                                                                \\
+    use File::Tail;                                                                                                        \\
+    @in = <>;                                                                                                              \\
+    $i = shift @in;                                                                                                        \\
+    chomp $i;                                                                                                              \\
+    $file = File::Tail->new(name=>$i, interval=>1, maxinterval=>2);                                                        \\
+    while(defined($log=$file->read)) {                                                                                     \\
+      #print $log;                                                                                                         \\
+      #next;                                                                                                               \\
+      if($log =~ /                                                                                                         \\
+select\s+top\s+30\s+uri\s+from\s+tseventdat|                                                                               \\
+SELECT\s+\*\s+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(code\s+=|                                                    \\
+SELECT\s+TOP\s+30\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt|                                      \\
+SELECT\s+COUNT_BIG\(uri\)\s+ FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri|                                \\
+SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)|                                  \\
+SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI|                                \\
+UPDATE\s+TSTWRSYS\s+SET\s+value\s+=\s+|                                                                                    \\
+SELECT\s+\*\s+ FROM\s+TSTASK\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tkTriggerDate|                                                \\
+select\s+uri\s+from\s+tsrecord\s+with\s+\(nolock\)\s+where\s+\(rcfileplanuri|                                              \\
+SELECT\s+TOP\s+20\s+A0.uri,A0.wesEscalatedOn,A0.wesEscalatedToUri,A0.wesActivityUri,A0.wesWaitSecs,A1.wacDueDate\s+FROM\s+TSWKESCALA|         \\
+SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rqDateCreated\s+BETWEEN \\
+        /ix){                                                                                                              \\
+         next;                                                                                                             \\
+      }                                                                                                                    \\
+      print $log;                                                                                                          \\
+    }                                                                                                                      \\
+'"'"
+
+
+
+
+alias refresh "C:/sysinternals/Bginfo.exe"
 
 alias ff            "find . -name "
 alias ifind         'find . -iname "\!^" '
