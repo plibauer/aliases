@@ -484,9 +484,6 @@ alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | 
 alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
 alias revert popd
 
-#alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 | perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh| egrep -iv "SELECT TOP .+ uri FROM TSEVENTDAT|SELECT *  FROM TSTWRSYS WITH|SELECT  uri  FROM TSRECORD WITH \(NOLOCK\)   WHERE \(rcFilePlanUri|SELECT COUNT_BIG\(uri\)  FROM TSRECORD WITH \(NOLOCK\)   WHERE \(rcFilePlanUri|SELECT  TOP 30 *  FROM TSTODOITEM WITH \(NOLOCK\)   WHERE \(tdoDoneAt |SELECT *  FROM TSTWRSYS WITH \(NOLOCK\)   WHERE \(code = |SELECT  uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate  FROM TSWKACTIVI" '
-
-
 alias wglog  ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup*                                        \\
  | head -1                                                                                                                 \\
  | /bin/perl -e ' "' "'                                                                                                    \\
