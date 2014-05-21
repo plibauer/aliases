@@ -492,7 +492,7 @@ alias wglog  ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgro
     @in = <>;                                                                                                              \\
     $i = shift @in;                                                                                                        \\
     chomp $i;                                                                                                              \\
-    $file = File::Tail->new(name=>$i, interval=>1, maxinterval=>2);                                                        \\
+    $file = File::Tail->new(name=>$i, interval=>0, maxinterval=>2);                                                        \\
     while(defined($log=$file->read)) {                                                                                     \\
       #print $log;                                                                                                         \\
       #next;                                                                                                               \\
@@ -614,29 +614,29 @@ set trimbuild      = $trimdir/build/build
 set trimdoc        = $trimdir/doc/doc/DocPub
 
 # Updated the trim release we are working on
-alias svnup	        "svn update $trimdir; svn update $trimbuild; svn update $trimdoc"
+alias svnup	          "svn update $trimdir; svn update $trimbuild; svn update $trimdoc"
 
-alias svnrelocatemain   "svn relocate $SVN_MASTER $SVN_URL $trimdir"
-alias svnrelocbackmain  "svn relocate $SVN_URL $SVN_MASTER $trimdir"
+alias relocmainlocal   "svn relocate $SVN_MASTER $SVN_URL $trimdir"
+alias relocmainremote  "svn relocate $SVN_URL $SVN_MASTER $trimdir"
 
-alias svnrelocatebuild  "svn relocate $SVN_MASTER $SVN_URL $trimbuild"
-alias svnrelocbackbuild "svn relocate $SVN_URL $SVN_MASTER $trimbuild"
+alias relocbuildlocal  "svn relocate $SVN_MASTER $SVN_URL $trimbuild"
+alias relocbuildremote "svn relocate $SVN_URL $SVN_MASTER $trimbuild"
 
-alias svnrelocatedoc    "svn relocate $SVN_MASTER $SVN_URL $trimdoc"
-alias svnrelocbackdoc   "svn relocate $SVN_URL $SVN_MASTER $trimdoc"
+alias relocdoclocal    "svn relocate $SVN_MASTER $SVN_URL $trimdoc"
+alias relocdocremote   "svn relocate $SVN_URL $SVN_MASTER $trimdoc"
 
-alias svnrelocateall    "svnrelocatemain; svnrelocatebuild; svnrelocatedoc"
-alias svnrelocbackall   "svnrelocbackmain; svnrelocbackbuild; svnrelocbackdoc"
+alias relocaalllocal   "svnrelocatemain; svnrelocatebuild; svnrelocatedoc"
+alias relocallremote   "svnrelocbackmain; svnrelocbackbuild; svnrelocbackdoc"
 
-alias svnupr	        "svnrelocateall; svnup; svnrelocbackall"
+alias svnupr	       "svnrelocateall; svnup; svnrelocbackall"
 
-alias showlatest  	"svn log $trimdir -r HEAD:1 --limit 10"
-alias showlatestv 	"svn log $trimdir -r HEAD:1 --limit 10 --verbose"
+alias showlatest       "svn log $trimdir -r HEAD:1 --limit 10"
+alias showlatestv      "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
 
-alias svnupbin		"svn update $PERL_BIN"
-alias svnrelocperl      "svn relocate $SVN_MASTER $SVN_URL $PERL_BIN"
-alias svnrelocbackperl  "svn relocate $SVN_URL $SVN_MASTER $PERL_BIN"
-alias svnupbinr		"svnrelocperl; svnupbin; svnrelocbackperl"
+alias svnupbin	       "svn update $PERL_BIN"
+alias relocperllocal   "svn relocate $SVN_MASTER $SVN_URL $PERL_BIN"
+alias relocperlremote  "svn relocate $SVN_URL $SVN_MASTER $PERL_BIN"
+alias svnupbinr	       "svnrelocperl; svnupbin; svnrelocbackperl"
 
 alias sloghelp		'echo "\nUse slog and slogr if you are in the directory you wish to view the svn log of;\n\n\tslog 85123         - Will print all log entries from HEAD -> revision 85123\n\tslogr 85123 84444  - Will print the log entries starting at 85123  -> 84444\n\nUse slogurl and slogurlr when you have the repository URL and are not in a checked-out directory;\n\n\tslogurl svn://localhost/REPOS/trunk 84357\n\tslogurlr svn://localhost/REPOS/trunk 84405 84357\n\n" '
 alias slog 		'svn log -r HEAD:\!^ | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
@@ -793,6 +793,7 @@ alias testcases    "$trimdir/$defArch/$defBuild/testTrim.exe --list"
 alias bld          "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type all --timeout 6000 --assert"
 alias bldapi       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type api --timeout 6000 --assert"
 alias bldsth       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type sth --timeout 6000 --assert"
+alias bldcont      "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type container --timeout 6000 --assert"
 
 alias bulkedocs "date; b -o Origin_Test_Record_ElectronicDocuments -a run; date"
 alias timeblk  "date; b -o Origin_Test_Bulk_Loader -a run; date"
