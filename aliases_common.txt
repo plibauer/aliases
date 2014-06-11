@@ -476,9 +476,9 @@ alias x11  "cd /c/cygwin/usr/X11R6/bin"
 #alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
-alias cleanwgslog "cat \!^ | grep -v 'FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP' | grep -v 'FROM TSRENDQUEU WITH \(NOLOCK\)' > wgs_log.clean"
-alias cleanwgpartial 'cat \!^ | perl -ne '"'"' if(/^(.{50}).+FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP/){ print "$1 ... ######################################\n" }else{ print } ' "' "' > wgs_log_with_EVENTDAT_timestamps.txt '
-alias cleanevlog "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
+ 
+alias wglog_clean_partial 'cat \!^ | perl -ne '"'"' if(/^(.{50}).+FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP/){ print "$1 ... ######################################\n" }else{ print } ' "' "' > wgs_log_with_EVENTDAT_timestamps.txt '
+alias evlog_clean "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
 alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
 alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
 alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
@@ -515,8 +515,30 @@ SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSREC
     }                                                                                                                      \\
 '"'"
 
-
-
+alias cleanlog  ' cat \!^                                                                                                                                       \\
+ | /bin/perl -e ' "' "'                                                                                                                                           \\
+    $| = 1;                                                                                                                                                       \\
+   while(<>){                                                                                                                                                     \\
+      chomp;                                                                                                                                                      \\
+      /select\s+top\s+30\s+uri\s+from\s+tseventdat/i and next;                                                                                                    \\
+      /SELECT\s+\*\s+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(code\s+=/i and next;                                                                         \\
+      /SELECT\s+TOP\s+30\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt/i and next;                                                           \\
+      /SELECT\s+COUNT_BIG\(uri\)\s+ FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri/i and next;                                                     \\
+      /SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)/i and next;                                                       \\
+      /SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI/i and next;                                                     \\
+      /UPDATE\s+TSTWRSYS\s+SET\s+value\s+=\s+/i and next;                                                                                                         \\
+      /SELECT\s+\*\s+ FROM\s+TSTASK\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tkTriggerDate/i and next;                                                                     \\
+      /select\s+uri\s+from\s+tsrecord\s+with\s+\(nolock\)\s+where\s+\(rcfileplanuri/i and next;                                                                   \\
+      /SELECT\s+TOP\s+20\s+A0.uri,A0.wesEscalatedOn,A0.wesEscalatedToUri,A0.wesActivityUri,A0.wesWaitSecs,A1.wacDueDate\s+FROM\s+TSWKESCALA/i and next;           \\
+      /SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rqDateCreated\s+BETWEEN /i and next; \\
+      /ExecTransaction:[\w-]+:\d+\s+EvpLastRunDate\s*$/i and next;                                                                                                \\
+      /logout:\s+machine=.+,\s+username=.+/i and next;                                                                                                            \\
+      /RCF\s+client\s+has\s+disconnected\s+from\s+I_WorkgroupService.\s+RCF\s+session:/i and next;                                                                \\
+      #//i and next;     \\
+      #//i and next;     \\
+      print "$_\n";                                                                                                                                               \\
+   } ' "' "'                                                                                                                                                      \\
+ > wg_log_clean.txt '
 
 alias refresh "C:/sysinternals/Bginfo.exe"
 

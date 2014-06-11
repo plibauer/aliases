@@ -3,6 +3,7 @@ set alias_dir     = ~/aliases
 
 source $alias_dir/aliases_local.txt
 
+set REPOS_ROOT    = E
 set revision      = 80
 set trimdir       = $REPOS_ROOT":/$revision"
 set defArch       = x64
