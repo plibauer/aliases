@@ -555,6 +555,7 @@ alias messages      'cat $trimdir/trim/TRIMMessages.txt | grep -i '
 alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
 alias properties    'cat $trimdir/trim/src/DD/properties.txt | grep -i '
 alias viewprop      'view $trimdir/trim/src/DD/properties.txt'
+alias propids       'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | grep -i '
 alias database      'cat $trimdir/trim/src/DD/DATABASE.TXT | grep -i '
 alias viewdb        'view $trimdir/trim/src/DD/DATABASE.TXT'
 
@@ -702,6 +703,7 @@ alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBu
 
 # Run populate database
 alias popdb "cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
+alias reloadpopdb "popdb --load"
 
 alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
 alias getpath "perl $PERL_BIN/getPath.pl"
