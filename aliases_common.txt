@@ -477,12 +477,32 @@ alias x11  "cd /c/cygwin/usr/X11R6/bin"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
  
-alias wglog_clean_partial 'cat \!^ | perl -ne '"'"' if(/^(.{50}).+FROM TSEVENTDAT WHERE uri IN  \( SELECT TOP/){ print "$1 ... ######################################\n" }else{ print } ' "' "' > wgs_log_with_EVENTDAT_timestamps.txt '
 alias evlog_clean "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
 alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
 alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
 alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
 alias revert popd
+
+alias wglog_partial ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup*                                 \\
+ | head -1                                                                                                                 \\
+ | /bin/perl -e ' "' "'                                                                                                    \\
+    $| = 1;                                                                                                                \\
+    use File::Tail;                                                                                                        \\
+    @in = <>;                                                                                                              \\
+    $i = shift @in;                                                                                                        \\
+    chomp $i;                                                                                                              \\
+    $file = File::Tail->new(name=>$i, interval=>0, maxinterval=>2);                                                        \\
+    while(defined($log=$file->read)) {                                                                                     \\
+      #print $log;                                                                                                         \\
+      #next;                                                                                                               \\
+      if($log =~ /                                                                                                         \\
+select\s+top\s+30\s+uri\s+from\s+tseventdat                                                                                \\
+        /ix){                                                                                                              \\
+         next;                                                                                                             \\
+      }                                                                                                                    \\
+      print $log;                                                                                                          \\
+    }                                                                                                                      \\
+'"'"
 
 alias wglog  ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup*                                        \\
  | head -1                                                                                                                 \\
@@ -789,6 +809,11 @@ alias filepath          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH
 alias sqlitefp          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
 alias sqlitem           sqlite3.exe $SQLITE_DB \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
 alias sqlmatch         'sqlitem \!^ |   perl -ne '"'"'  if(/^(\d+)\|(.+)$/){ print "-------------------------| $1 |--------------------------\n$2\n" }else{print}    '"'"
+
+# Query the SVN sqlite database for the UUID of a given checked out path
+alias sqliteuuid        "sqlite .svn/wc.db 'select uuid from REPOSITORY where id=1'"
+alias uuidupdate        "sqlite .svn/wc.db 'update REPOSITORY set uuid=\!^ where id=1'"
+alias repoinfo          "sqlite .svn/wc.db 'select * from REPOSITORY'"
 
 alias spell 'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
 alias spella 'echo "\!^" >> ~/words.txt; wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
