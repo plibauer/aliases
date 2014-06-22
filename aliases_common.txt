@@ -583,6 +583,15 @@ alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
 # SVN
 alias hpsvn          "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk REPOS_trunk --username paul_libauer"
 alias svn            "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
+
+set trimbuild      = $trimdir/build/build
+set trimdoc        = $trimdir/doc/doc/DocPub
+
+# Updated the trim release we are working on
+alias svnup	          "svn update $trimdir; svn update $trimbuild; svn update $trimdoc"
+
+alias svnstatus      "(svn info $trimdir; echo; svn info $trimdoc; echo; svn info $trimbuild) | perl -ne 'print if /^Path|^URL:|^\n/;' "
+alias svnstatusfull  "(svn info $trimdir; echo; svn info $trimdoc; echo; svn info $trimbuild) | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
 alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
 alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
 alias logproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
@@ -633,11 +642,6 @@ alias syncsvnmaster syncsvnwork
 alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 alias syncup        "syncsvn; logupdate"
 
-set trimbuild      = $trimdir/build/build
-set trimdoc        = $trimdir/doc/doc/DocPub
-
-# Updated the trim release we are working on
-alias svnup	          "svn update $trimdir; svn update $trimbuild; svn update $trimdoc"
 
 alias relocmainlocal   "svn relocate $SVN_MASTER $SVN_URL $trimdir"
 alias relocmainremote  "svn relocate $SVN_URL $SVN_MASTER $trimdir"
