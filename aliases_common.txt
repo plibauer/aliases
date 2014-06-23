@@ -610,8 +610,8 @@ set trimdoc        = $trimdir/doc/doc/DocPub
 # Updated the trim release we are working on
 alias svnup	          "svn update $trimdir; svn update $trimbuild; svn update $trimdoc"
 
-alias svnstatus      "(svn info $trimdir; echo; svn info $trimdoc; echo; svn info $trimbuild) | perl -ne 'print if /^Path|^URL:|^\n/;' "
-alias svnstatusfull  "(svn info $trimdir; echo; svn info $trimdoc; echo; svn info $trimbuild) | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
+alias svnstatus      "(svn info $trimdir; svn info $trimdoc; svn info $trimbuild) | perl -ne 'print if /^Path|^URL:|^\n/;' "
+alias svnstatusfull  "(svn info $trimdir; svn info $trimdoc; svn info $trimbuild) | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
 alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
 alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
 alias logproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
