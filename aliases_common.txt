@@ -767,21 +767,23 @@ alias perlfunc  "perldoc -f"
 
 alias db          "perl $trimdir/trim/misc/Scripts/Perl/db/db.pl"
 alias dbs         "db --list"
+alias dbid        "db -id"
+alias dbidall     "dbid ids"
 
-alias bobids      "db -id bob"
-alias bobidsr     "db -id bob -rev"
+alias bobids      "dbid bob"
+alias bobidsr     "dbid bob -rev"
 alias bobs        bobids
 alias bobsr       bobidsr
 
-alias eventids    "db -id event"
-alias eventidsr   "db -id event -rev"
+alias eventids    "dbid event"
+alias eventidsr   "dbid event -rev"
 alias events      eventids
 alias eventsr     eventidsr
 
 alias table       "db -table"
 alias tables      "db -g"
-alias tableids    "db -id table"
-alias tableidsr   "db -id table -rev"
+alias tableids    "dbid table"
+alias tableidsr   "dbid table -rev"
 alias tids        tableids
 alias tidsr       tableidsr
 
