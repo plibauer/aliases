@@ -712,6 +712,7 @@ alias makerecs   "perl CreateManyRecords.pl --number \!^  --output out.txt"
 
 alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
 alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
+alias trimhelp   "hh $trimdir/doc/doc/DocPub/TRIM.chm &"
 alias wgs        "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe &"
 alias trimds     "$trimdir/$defArchCSharp/$defBuild/TrimDS.exe &"
 alias killtrim   "$trimdir/Automation/SmokeTest/killtrim.exe"
