@@ -45,14 +45,577 @@ alias x86  	"set defArch = x86; source $alias_file; settitle"
 alias x64  	"set defArch = x64; source $alias_file; settitle"
 alias debug  	"set defBuild = Debug; source $alias_file; settitle"
 alias release  	"set defBuild = Release; source $alias_file; settitle"
+alias dbdefault "set dbSession = $dbDefault; source $alias_file"
+alias dbcurrent echo $dbSession
+alias dbsession "set dbSession = \!^; source $alias_file"
 alias src       "source $alias_file"
 alias src71     "source $alias_dir/71environment"
 alias src72     "source $alias_dir/72environment"
 alias src73     "source $alias_dir/73environment"
 alias src80     "source $alias_dir/80environment"
 alias src81     "source $alias_dir/81environment"
-alias whichenv  "echo 'TRIMDIR = $trimdir, ARCH = $defArch, BUILD = $defBuild, DBID = $DBID'"
+alias src82     "source $alias_dir/82environment"
+alias whichenv  "echo 'TRIMDIR   = $trimdir';          \\
+                 echo 'ARCH      = $defArch';          \\
+                 echo 'BUILD     = $defBuild';         \\
+                 echo 'DBID      = $DBID';             \\
+                 echo 'DBSession = $dbSession';        \\
+                 echo 'IDOLDB    = $idolDb';           \\
+                 echo 'SVNLOGDB  = $SVN_LOG_DB';       \\
+"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
+
+set autocorrect=1
+set autolist=ambiguous
+unset autologout
+set complete=enhance
+set correct=cmd
+set echo_style=both
+set ellipsis
+set fignore=(.o \~)
+set histdup=erase
+set history=50000
+set histfile=~/.history
+set savehist=( $history merge )
+unset ignoreeof
+set listjobs=long
+set listmaxrows=23
+#set noglob
+set notify=1
+set rmstar=1
+set showdots=1
+set symlinks=expand
+
+# Tell less to leave the output displayed
+setenv LESS "-X"
+
+# Set directory colours
+setenv LS_COLORS 'no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:'
+
+alias lc  "ls --color"
+alias ll  "ls --color -l"
+alias lt  "ls --color -lt"
+alias la  "ls --color -al"
+alias lat "ls --color -alt"
+alias ++ pushd
+alias -- popd
+alias d dirs
+alias h history
+alias j jobs
+
+alias display "setenv DISPLAY :0.0"
+alias disp1 "setenv DISPLAY :1.0"
+alias d "setenv | grep DISPLAY"
+alias newpath  'setenv PATH "\!^:$PATH"'
+
+alias lh "ll -t \!^ | head "
+alias head10 "ll -t | head "
+alias head20 "ll -t | head -20"
+alias head30 "ll -t | head -30"
+alias headt "ll -t | head -\!^"
+
+alias findalias "alias | grep -i "
+alias falias findalias
+
+#  In order for updatedb to work with the program files directories, create the following links;
+#
+#    /c>ln -s Program\ Files programfiles
+#    /c>ln -s Program\ Files\ \(x86\) programfilesx86
+#
+#  You must also make sure that the cygdrive prefix has been setup correctly in /etc/fstab, namely;
+#
+#    none / cygdrive binary,posix=0,user 0 0
+#
+alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development'"
+
+alias locate   "locate -d /home/plibauer/locatedb"
+alias locatei  "locate -i -d /home/plibauer/locatedb"
+alias loc       locate
+alias loci	locatei
+alias trimfind   "loc \!^ | grep -i $cygtrimdir"
+alias trimfindi  "loci \!^ | grep -i $cygtrimdir"
+
+alias flushdns "ipconfig /flushdns"
+alias more less
+
+set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
+
+alias gocfg        "cd $trimcfgdir"
+
+alias goexe     "cd $trimdir/$defArch/$defBuild"
+alias gobin     goexe
+alias gocs      "cd $trimdir/$defArchCSharp/$defBuild"
+alias goany     gocs
+alias goanycpu  gocs
+alias gomsi     "cd $trimdir/msi/$defArch/en-us"
+alias gotest    "cd $trimdir/trim/test"
+alias goauto    "cd $trimdir/Automation"
+alias gosrc     "cd $trimdir/trim/src"
+alias gosln     "cd $trimdir/trim/sln"
+alias gotrim    "cd $trimdir/trim"
+alias gotrimlog "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
+alias goauto    "cd $trimdir/Automation"
+alias gobulk    "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
+alias goblk     gobulk
+alias gob       "cd $trimdir/trim/CSharp/BulkLoader"
+alias golog     "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
+alias gologs    golog
+alias goaudit   "cd $trimdir/$defArch/$defBuild/ServerData/$DBID/AuditLogs"
+alias gotrimdslog       "cd /c/Users/plibauer/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
+alias shlog  showlog
+alias gotmp    "cd /c/tmp"
+alias godox    "cd $trimdir/xtra/Doxygen/runDoxygen"
+alias gosmoke  "cd $trimdir/Automation/Smoketest"
+alias goperl   "cd $trimdir/trim/misc/Scripts/Perl"
+alias gop      "cd $PERL_BIN"
+alias gosetup  "cd $trimdir/trim/wix/Setup.exe"
+alias gowix    "cd $trimdir/trim/wix"
+alias gowixbin "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
+alias gowin    "cd /c/Users/plibauer"
+alias gowint   "cd /c/Users/plibauer.TRIM"
+alias gowork   "cd $WINHOME/Work"
+alias goworkh  "cd $WINHOME/Work/HPIT"
+alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
+alias godownloads "cd /c/Users/plibauer/Downloads"
+alias goroam  "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
+
+alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
+alias trace    "tracert"
+
+alias x11  "cd /c/cygwin/usr/X11R6/bin"
+#alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
+alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
+alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
+ 
+alias evlog_clean "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
+alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
+alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
+alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
+alias revert popd
+
+alias refresh "C:/sysinternals/Bginfo.exe"
+
+alias ff            "find . -name "
+alias ifind         'find . -iname "\!^" '
+alias pfind2k8      "perl $PERL_BIN/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias pfind         "perl $PERL_BIN/find_project_files.vs2010.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias projfind      "perl $PERL_BIN/find_project_files.vs2010.pl -s "
+alias pf pfind
+alias grep          "grep --perl-regexp"
+alias grep_examples "cat /c/Users/libauer/grep_examples.txt"
+alias grepe grep_examples
+alias messages      'cat $trimdir/trim/TRIMMessages.txt | grep -i '
+alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
+alias properties    'cat $trimdir/trim/src/DD/properties.txt | grep -i '
+alias viewprop      'view $trimdir/trim/src/DD/properties.txt'
+alias propids       'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | grep -i '
+alias database      'cat $trimdir/trim/src/DD/DATABASE.TXT | grep -i '
+alias viewdb        'view $trimdir/trim/src/DD/DATABASE.TXT'
+
+alias dce  ContentExtraction
+alias dox  "/c/Program\ Files\ \(x86\)/doxygen/bin/doxygen"
+alias dwiz "/c/Program\ Files/doxygen/bin/doxywizard"
+alias aperl "/c/Perl/bin/perl"
+alias wperl aperl
+alias vmperl "/c/Program\ Files\ \(x86\)/VMware/VMware\ vSphere\ CLI/Perl/bin/perl"
+alias govsphere "cd /c/Program\ Files\ \(x86\)/VMware/VMware\ vSphere\ CLI/Perl/"
+
+# Path conversion using cygpath
+alias towin  'cygpath -t windows "\!^"'
+alias tounix 'cygpath -t unix    "\!^"'
+
+# Wix stuff
+#alias candle "/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
+#alias lit "/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
+alias msitrimi     "msiexec /i HPTRIM.msi /lv\* out.log"
+alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
+
+
+#######################################################################################################################
+
+# SVN
+alias hpsvn          "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk REPOS_trunk --username paul_libauer"
+alias svn            "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
+
+set trimbuild      = $trimdir/build/build
+set trimdoc        = $trimdir/doc/doc/DocPub
+
+# Updated the trim release we are working on
+alias svnup	          "svn update $trimdir; svn update $trimbuild; svn update $trimdoc"
+
+alias svnstatus      "(svn info $trimdir; svn info $trimdoc; svn info $trimbuild) | perl -ne 'print if /^Path|^URL:|^\n/;' "
+alias svnstatusfull  "(svn info $trimdir; svn info $trimdoc; svn info $trimbuild) | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
+alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
+alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
+alias logproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
+alias logrev         "logproc --rev"
+alias svnrev         logrev
+alias rev            logrev
+alias rdiff          logrev \!^ --diff \!:2
+alias revhead        logrev head
+alias revheadiff     logrev head --diff
+alias rhd	     revheadiff
+alias revchange      logproc --change
+alias change         logproc --change
+alias revchrange     logproc --change \!:1 --range \!:2
+alias changer        revchrange
+alias revchdiff      logproc --change \!^ --diff 
+alias revchdiffr     logproc --change \!:1 --diff --range \!:2
+alias changerd       revchdiffr
+alias logprocuser    logproc --get user
+alias logm           logproc --match 
+alias logmi          logproc --no_case --match 
+alias logmv          logproc --verbose --match 
+alias logmvi         logproc --no_case --verbose --match 
+alias match          logproc --no_case --limit 30 --match
+alias loga           "logproc --no_case --match \!:1 --author \!:2"
+alias logacs         "logproc --match \!:1 --author \!:2"
+alias logav          "logproc --verbose --match \!:1 --author \!:2"
+alias logavi         "logproc --no_case --verbose --match \!:1 --author \!:2"
+alias matchauth      "logproc --match \!:1 --author \!:2"
+alias matchauthor    "logproc --match \!:1 --author \!:2"    
+alias findfile       "logproc --find_file"
+alias logf           findfile
+alias users          logprocuser
+alias logprocschema  logproc --get schema
+alias schema         logprocschema
+alias svnlogupdate   logproc --update
+alias logupdate      svnlogupdate
+alias svnlogh        logproc --help
+alias logprocbranches logproc --get branch
+alias branches        logprocbranches
+#
+# If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
+# alias syncsvn	   "svnsync sync svn://localhost/"
+#
+alias syncsvn	    "svnsync sync $SVN_MIRROR"
+alias syncsvnhome   "svnsync sync $SVN_MIRROR svn://10.0.0.3/"
+alias syncsvnwork   "svnsync sync $SVN_MIRROR https://svn.aus.hp.com/local/bio-im-trim"
+alias syncsvnmaster syncsvnwork
+alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
+alias syncup        "syncsvn; logupdate"
+
+
+alias relocmainlocal   "svn relocate $SVN_MASTER $SVN_URL $trimdir"
+alias relocmainremote  "svn relocate $SVN_URL $SVN_MASTER $trimdir"
+
+alias relocbuildlocal  "svn relocate $SVN_MASTER $SVN_URL $trimbuild"
+alias relocbuildremote "svn relocate $SVN_URL $SVN_MASTER $trimbuild"
+
+alias relocdoclocal    "svn relocate $SVN_MASTER $SVN_URL $trimdoc"
+alias relocdocremote   "svn relocate $SVN_URL $SVN_MASTER $trimdoc"
+
+alias relocaalllocal   "svnrelocatemain; svnrelocatebuild; svnrelocatedoc"
+alias relocallremote   "svnrelocbackmain; svnrelocbackbuild; svnrelocbackdoc"
+
+alias svnupr	       "svnrelocateall; svnup; svnrelocbackall"
+
+alias showlatest       "svn log $trimdir -r HEAD:1 --limit 10"
+alias showlatestv      "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
+
+alias svnupbin	       "svn update $PERL_BIN"
+alias relocperllocal   "svn relocate $SVN_MASTER $SVN_URL $PERL_BIN"
+alias relocperlremote  "svn relocate $SVN_URL $SVN_MASTER $PERL_BIN"
+alias svnupbinr	       "svnrelocperl; svnupbin; svnrelocbackperl"
+
+alias sloghelp		'echo "\nUse slog and slogr if you are in the directory you wish to view the svn log of;\n\n\tslog 85123         - Will print all log entries from HEAD -> revision 85123\n\tslogr 85123 84444  - Will print the log entries starting at 85123  -> 84444\n\nUse slogurl and slogurlr when you have the repository URL and are not in a checked-out directory;\n\n\tslogurl svn://localhost/REPOS/trunk 84357\n\tslogurlr svn://localhost/REPOS/trunk 84405 84357\n\n" '
+alias slog 		'svn log -r HEAD:\!^ | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
+alias slogr 		'svn log -r \!:1\:\!:2 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
+alias slogurl 		'svn log \!:1 -r HEAD:\!:2 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
+alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
+
+
+#######################################################################################################################
+
+# RSYNC
+# Sync the files from source to destination
+alias sync    "rsync -avub --size-only --exclude '.svn' --exclude '*~'"
+alias syncdry "rsync -avubn --size-only --exclude '.svn' --exclude '*~'"
+
+# Run TRIM programs
+
+alias bulk       "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe "
+alias bulkloader bulk
+alias b          bulk -db $DBID
+alias origins    bulk -o "'*'" -action get -db $DBID
+alias orgget     bulk -o '\!^' -action get -db $DBID
+alias orgrun     bulk -o '\!^' -action run -db $DBID
+alias makerecs   "perl CreateManyRecords.pl --number \!^  --output out.txt"
+
+alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
+alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
+alias trimhelp   "hh $trimdir/doc/doc/DocPub/TRIM.chm &"
+alias wgs        "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe &"
+alias trimds     "$trimdir/$defArchCSharp/$defBuild/TrimDS.exe &"
+alias killtrim   "$trimdir/Automation/SmokeTest/killtrim.exe"
+alias nuke       "gosln;./NukeSolutions.bat"
+alias gensln     "gosln;./GenerateSolutions.bat"
+alias nukeandgen "nuke;gensln"
+
+# Build the correct solution
+
+set svexe = "/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
+alias sn "$svexe"
+alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
+
+# Run populate database
+alias popdb "cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
+alias reloadpopdb "popdb --load"
+
+alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
+alias getpath "perl $PERL_BIN/getPath.pl"
+alias sysinfo "systeminfo | perl -ne  'print unless /^\s+\[\d+\]/'"
+alias uptime  "systeminfo | grep -i 'boot time'"
+
+
+# Compile a script to an executable using Strawberry Perl's version of pp
+alias perlcompile   "/c/strawberry/perl/bin/pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o "
+alias sperl         "/c/strawberry/perl/bin/perl"
+
+alias xmlconf       "perl $PERL_BIN/xmlconfig.pl --file "
+alias xconf         "perl $PERL_BIN/xmlconfig.pl"
+alias xmlnoc        "perl $PERL_BIN/stripXMLcomments.pl"
+alias xmlformat     $PERL_BIN/xmlformat.pl
+alias xmlf          xmlformat
+
+alias trimconfig    perl $PERL_BIN/xmlconfig.pl --file $trimcfg
+alias shconf        trimconfig
+alias shconfig      trimconfig
+alias showconf      trimconfig
+alias restoreconfig "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg $trimcfgdir"
+alias goconfig      gocfg
+alias xmltrim       "perl xmlformat.pl $trimcfg"
+alias getconfig     "more $trimcfg"
+alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
+
+alias wixgen       perl $trimdir/trim/misc/Scripts/Perl/WixGenerator.pl
+
+# Lookup a perl function using perldoc
+alias perldoc   "/c/strawberry/perl/bin/perldoc.bat"
+alias perlfunc  "perldoc -f"
+
+
+################################################
+### PERL DATABASE ACCESS
+
+alias db          "perl $trimdir/trim/misc/Scripts/Perl/db/db.pl --database $dbSession"
+alias dbs         "db --list"
+alias dbid        "db -id"
+alias dbidall     "dbid ids"
+
+alias bobids      "dbid bob"
+alias bobidsr     "dbid bob -rev"
+alias bobs        bobids
+alias bobsr       bobidsr
+
+alias eventids    "dbid event"
+alias eventidsr   "dbid event -rev"
+alias events      eventids
+alias eventsr     eventidsr
+
+alias table       "db -table"
+alias tables      "db -g"
+alias tableids    "dbid table"
+alias tableidsr   "dbid table -rev"
+alias tids        tableids
+alias tidsr       tableidsr
+
+alias sql         db -sql
+alias gtable      "db -table"
+alias loceaddr    "db -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 1,2,4,24,27,28 -num -verbose"
+alias getrec      "db -num -row"
+alias getrecs     getrec
+alias dumpdb      db --dump_all
+alias grepdump    "db --dump_all | egrep -i "
+alias constraints "db -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY TABLE_NAME'"
+#alias tblconstraints "db -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS con WHERE con.TABLE_NAME = '\!^' ORDER BY CONSTRAINT_NAME'" 
+alias tblconstraints "db -sql 'SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY CONSTRAINT_NAME' | perl -ne 'if(/Test_80_SqlServer/){ if(/\!^/){ print }} else {print}'"
+
+alias locs	db --object_type LOCATION --unadorned
+alias locuri    locs --object_uri 
+alias locname   locs --object_name 
+
+alias recs	db --object_type RECORD --unadorned --max 60
+alias recuri    recs --object_uri 
+alias recname   recs --object_name 
+
+alias rectypes	  db --object_type RECTYPE --unadorned
+alias rectypeuri  rectypes --object_uri 
+alias rectypename rectypes --object_name 
+
+#-------------------------------------------------
+
+# FIGHTING THE SHELL EVERY STEP OF THE WAY :)
+alias mklocdata   "sql 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.uri = PER.lpLocUri' -col 22,23,28,27 -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
+alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
+
+# SQLITE
+set SQLITE_DB=C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db
+alias sqlite            "sqlite3.exe"
+alias sqliteq           "sqlite3.exe $SQLITE_DB"
+alias query		sqliteq
+alias sqlitedb          cygstart cmd.exe /c sqlite3.exe $SQLITE_DB 
+alias sqliteanal        "sqlite3_analyzer.exe"
+alias filepath          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitefp          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitem           sqlite3.exe $SQLITE_DB \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
+alias sqlmatch         'sqlitem \!^ |   perl -ne '"'"'  if(/^(\d+)\|(.+)$/){ print "-------------------------| $1 |--------------------------\n$2\n" }else{print}    '"'"
+
+# Query the SVN sqlite database for the UUID of a given checked out path
+alias sqliteuuid        "sqlite .svn/wc.db 'select uuid from REPOSITORY where id=1'"
+alias uuidupdate        "sqlite .svn/wc.db 'update REPOSITORY set uuid=\!^ where id=1'"
+alias repoinfo          "sqlite .svn/wc.db 'select * from REPOSITORY'"
+
+alias spell 'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
+alias spella 'echo "\!^" >> ~/words.txt; wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
+alias spellb 'echo "\!^" >> ~/words.txt; wn "\!^" -g -over -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:"'
+
+alias svndiff svn diff -r PREV
+
+#  You need to supply an argument, so just use an empty string, '', to get the aliases to work without an argument
+alias hklm "regtool list \\machine\\\!^"
+alias hkcu "regtool list \\user\\\!^"
+alias hkcr "regtool list \\root\\\!^"
+
+alias totext      'iconv -f UTF-16 -t UTF-8 '
+alias fromunicode 'iconv -f UTF-16 -t UTF-8 '
+alias grepu       'fromunicode \!:2 | grep \!:1'
+alias grepui      'fromunicode \!:2 | grep -i \!:1'
+
+alias testtrim     "$trimdir/$defArch/$defBuild/testTrim.exe --test"
+alias trimtest     testtrim
+alias testhelp	   "$trimdir/$defArch/$defBuild/testTrim.exe --help"
+alias testcases    "$trimdir/$defArch/$defBuild/testTrim.exe --list"
+alias bld          "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type all --timeout 6000 --assert"
+alias bldapi       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type api --timeout 6000 --assert"
+alias bldsth       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type sth --timeout 6000 --assert"
+alias bldcont      "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type container --timeout 6000 --assert"
+
+alias bulkedocs "date; b -o Origin_Test_Record_ElectronicDocuments -a run; date"
+alias timeblk  "date; b -o Origin_Test_Bulk_Loader -a run; date"
+alias cleanblk "rm -rf 000000*; rm $DBID.*"
+
+alias psall     'ps -aelW'
+
+# Query windows services to see what is running or stopped
+alias svc_active        "sc query type= service"
+alias svc_inactive      "sc query type= service state= inactive"
+alias svc_all           "sc query type= service state= all"
+alias svc_drivers       "sc query type= driver"
+alias startsql          "sc start MSSQLSERVER"
+alias sqlstart          startsql
+alias querysql          "sc query MSSQLSERVER"
+alias sqlquery          querysql
+alias services		"svc_all | grep DISPLAY"
+alias servicesrun	"svc_active | grep DISPLAY"
+
+# Run Management Studio
+alias mstudio		"/c/Program\ Files\ \(x86\)/Microsoft\ SQL\ Server/100/Tools/Binn/VSShell/Common7/IDE/Ssms.exe &"
+alias sqlms		mstudio
+
+# Run Remote Desktop
+alias rdp		"/c/windows/system32/mstsc.exe &"
+alias remote		rdp
+alias remotedesk	rdp
+alias rdesktop		rdp
+
+####################################################################
+### GIT commands
+
+alias gitpush        "git push origin master"
+alias gitnewrepo     "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
+alias gitcommit      "git commit -a"
+alias gitdiff        "git diff"
+alias gitdiffbc      "git difftool"
+alias gitmerge       "git mergetool"
+alias gitpull        "git pull"
+alias gitstatus      "git status"
+alias gitcheckout    "git clone $GIT_URL""plibauer/aliases.git"
+alias checkout        gitcheckout
+alias commit	      gitcommit
+alias status          gitstatus
+alias gitsetrepo     "get remote set-url origin git@github.com:plibauer/aliases.git"
+alias gitconfig      "git config -l"
+alias gitsshtest     "ssh -T git@""$GIT_HOST"
+alias gitforceupdate "git fetch --all; git reset --hard origin/master"
+alias gitcommitsome  "git add -i"
+alias gitremove      "git rm"
+alias gitundo        "git reset HEAD"
+alias gitsetproxy    "setenv HTTP_PROXY http://proxy.aus.hp.com:8080; setenv HTTPS_PROXY https://proxy.aus.hp.com:8080"
+alias gitunsetproxy  "setenv HTTP_PROXY;setenv HTTPS_PROXY "
+alias gitcheckproxy  "setenv | grep PROXY"
+
+# If a file has been deleted locally, you can restore it using the following and providing the filename as the argument
+alias gitrestore  "git checkout HEAD \!^"
+
+# Setup BeyondCompare as the diff/merge tool
+set BC3 = "C:/Program Files (x86)/Beyond Compare 3/bcomp.exe"
+alias gitconfigdiff  'git config --global diff.tool bc3; git config --global difftool.bc3.path "$BC3" '
+alias gitconfigmerge 'git config --global merge.tool bc3; git config --global mergetool.bc3.path "$BC3" '
+
+#-------------------------------------------------------------------
+
+alias ldapa    "/bin/ldapadd.exe -x -D 'cn=Manager,dc=libauer,dc=com' -W -f \!^"
+
+# WGET an entire HTML site
+alias wgetall		"wget -r -l 0 -p " 
+alias wgetallhttp	"wget -r -l 0 -p http://\!^" 
+
+# Show internet settings
+alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings"'
+
+# Run a local http server from the current directory;
+# Python 2.x
+alias httplocal	"cd ~; python -m SimpleHTTPServer"
+alias http	httplocal
+# Python 3.x
+alias http3	"cd ~; python -m http.server"
+
+# Edit a file with emacs and detach
+alias emacs	"emacs \!^ &"
+
+# Change the mount prefix if required
+alias mountcygwin	"mount -s --change-cygdrive-prefix /"
+
+# Invoke an admin command prompt
+alias command  cygstart cmd.exe
+
+##############################################################################
+###########################         IDOL          ############################
+
+alias goidol            "cd $IDOL_DIR"
+
+alias goidols           "cd $IDOL_DIR/TRIM\ IDOL\ Service"
+alias idolscfg          "more $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
+alias editidolscfg      "vi $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
+
+alias goidolc1          "cd $IDOL_DIR/TRIM\ Content\ Service\ 1"
+alias idolc1cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
+alias editidolc1cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
+
+alias goidolc2          "cd $IDOL_DIR/TRIM\ Content\ Service\ 2"
+alias idolc2cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
+alias editidolc2cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
+
+alias icurl             'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
+alias idolrecs          'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=999" --noproxy "*" --silent'
+alias idolrecsdb        'curl "http://localhost:11000/action=query&text=*&databasematch=' "\!^" '&MaxResults=999" --noproxy "*" --silent'
+alias idolstatus        'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent | xmlformat.pl'
+alias idolquery         'curl "http://localhost:11000/action=query&text=' "\!^" '&databasematch=' "$idolDb" '" --noproxy "*" --silent | xmlformat.pl'
+alias idolq             idolquery 
+alias irecs             "idolrecs | xmlformat.pl"
+alias irecsdb           "idolrecs \!^ | xmlformat.pl"
+alias removedb          'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
+alias removedocs        'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
+alias idologa1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
+alias idologa2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/application.log"
+alias idologi1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
+alias idologi2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/index.log"
+alias idologq1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
+alias idologq2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/query.log"
+
+##############################################################################
+######################         BUILD ALIASES          ########################
 
 set msbuildexe = "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe"
 if ($defCompiler == "VS2013") then
@@ -64,6 +627,7 @@ else if ($defCompiler == "VS2008") then
   set VSVER = 9.0
 endif
 
+alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/bin/dumpbin.exe"
 alias touchcopy  "touch $trimdir/trim/src/CopyFiles/CopyFiles.cpp"
 set buildLog       = "${REPOS_ROOT}:/TEMP/TRIM-$revision-$defArch-$defBuild.log"
 set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$revision-$defArch-$defBuild.log"
@@ -143,7 +707,6 @@ alias clnsln '    echo $logSeparator;                                           
       }                                                                                                                    \\
     }                                                                                                                      \\
  '" '"
-
 
 alias bldcsharp 'echo $logSeparator;                                                                                       \\
     echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.build"                                    \\
@@ -341,147 +904,10 @@ alias bldproj ' echo \!:1                                                       
     }                                                                                                                      \\
  '"'"
 
-
-
 alias tailbldlog "tail -f /c/tmp/TRIM-$revision-$defArch-$defBuild.log"
 
-
-set autocorrect=1
-set autolist=ambiguous
-unset autologout
-set complete=enhance
-set correct=cmd
-set echo_style=both
-set ellipsis
-set fignore=(.o \~)
-set histdup=erase
-set history=50000
-set histfile=~/.history
-set savehist=( $history merge )
-unset ignoreeof
-set listjobs=long
-set listmaxrows=23
-#set noglob
-set notify=1
-set rmstar=1
-set showdots=1
-set symlinks=expand
-
-
-# Tell less to leave the output displayed
-setenv LESS "-X"
-
-# Set directory colours
-setenv LS_COLORS 'no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:'
-
-alias lc  "ls --color"
-alias ll  "ls --color -l"
-alias lt  "ls --color -lt"
-alias la  "ls --color -al"
-alias lat "ls --color -alt"
-alias ++ pushd
-alias -- popd
-alias d dirs
-alias h history
-alias j jobs
-
-
-
-alias display "setenv DISPLAY :0.0"
-alias disp1 "setenv DISPLAY :1.0"
-alias d "setenv | grep DISPLAY"
-alias newpath  'setenv PATH "\!^:$PATH"'
-
-alias lh "ll -t \!^ | head "
-alias head10 "ll -t | head "
-alias head20 "ll -t | head -20"
-alias head30 "ll -t | head -30"
-alias headt "ll -t | head -\!^"
-
-
-alias findalias "alias | grep -i "
-alias falias findalias
-
-#  In order for updatedb to work with the program files directories, create the following links;
-#
-#    /c>ln -s Program\ Files programfiles
-#    /c>ln -s Program\ Files\ \(x86\) programfilesx86
-#
-#  You must also make sure that the cygdrive prefix has been setup correctly in /etc/fstab, namely;
-#
-#    none / cygdrive binary,posix=0,user 0 0
-#
-alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development'"
-
-
-alias locate   "locate -d /home/plibauer/locatedb"
-alias locatei  "locate -i -d /home/plibauer/locatedb"
-alias loc       locate
-alias loci	locatei
-alias trimfind   "loc \!^ | grep -i $cygtrimdir"
-alias trimfindi  "loci \!^ | grep -i $cygtrimdir"
-
-alias flushdns "ipconfig /flushdns"
-alias more less
-
-
-
-set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
-
-alias gocfg        "cd $trimcfgdir"
-
-alias goexe     "cd $trimdir/$defArch/$defBuild"
-alias gobin     goexe
-alias gocs      "cd $trimdir/$defArchCSharp/$defBuild"
-alias goany     gocs
-alias goanycpu  gocs
-alias gomsi     "cd $trimdir/msi/$defArch/en-us"
-alias gotest    "cd $trimdir/trim/test"
-alias goauto    "cd $trimdir/Automation"
-alias gosrc     "cd $trimdir/trim/src"
-alias gosln     "cd $trimdir/trim/sln"
-alias gotrim    "cd $trimdir/trim"
-alias gotrimlog "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
-alias goauto    "cd $trimdir/Automation"
-alias gobulk    "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
-alias goblk     gobulk
-alias gob       "cd $trimdir/trim/CSharp/BulkLoader"
-alias golog     "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
-alias gologs    golog
-alias goaudit   "cd $trimdir/$defArch/$defBuild/ServerData/$DBID/AuditLogs"
-alias gotrimdslog       "cd /c/Users/plibauer/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
-alias shlog  showlog
-alias gotmp    "cd /c/tmp"
-alias godox    "cd $trimdir/xtra/Doxygen/runDoxygen"
-alias gosmoke  "cd $trimdir/Automation/Smoketest"
-alias goperl   "cd $trimdir/trim/misc/Scripts/Perl"
-alias gop      "cd $PERL_BIN"
-alias gosetup  "cd $trimdir/trim/wix/Setup.exe"
-alias gowix    "cd $trimdir/trim/wix"
-alias gowixbin "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
-alias gowin    "cd /c/Users/plibauer"
-alias gowint   "cd /c/Users/plibauer.TRIM"
-alias gowork   "cd $WINHOME/Work"
-alias goworkh  "cd $WINHOME/Work/HPIT"
-alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
-alias godownloads "cd /c/Users/plibauer/Downloads"
-alias goroam  "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
-
-alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
-alias trace    "tracert"
-alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/bin/dumpbin.exe"
-
-
-alias x11  "cd /c/cygwin/usr/X11R6/bin"
-#alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
-alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
-alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
- 
-alias evlog_clean "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
-alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
-alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
-alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
-alias revert popd
+##############################################################################
+#######################         BUILD LOGS          ##########################
 
 alias wglog_partial ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup*                                 \\
  | head -1                                                                                                                 \\
@@ -559,435 +985,4 @@ alias cleanlog  ' cat \!^                                                       
       print "$_\n";                                                                                                                                               \\
    } ' "' "'                                                                                                                                                      \\
  > wg_log_clean.txt '
-
-alias refresh "C:/sysinternals/Bginfo.exe"
-
-alias ff            "find . -name "
-alias ifind         'find . -iname "\!^" '
-alias pfind2k8      "perl $PERL_BIN/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
-alias pfind         "perl $PERL_BIN/find_project_files.vs2010.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
-alias projfind      "perl $PERL_BIN/find_project_files.vs2010.pl -s "
-alias pf pfind
-alias grep          "grep --perl-regexp"
-alias grep_examples "cat /c/Users/libauer/grep_examples.txt"
-alias grepe grep_examples
-alias messages      'cat $trimdir/trim/TRIMMessages.txt | grep -i '
-alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
-alias properties    'cat $trimdir/trim/src/DD/properties.txt | grep -i '
-alias viewprop      'view $trimdir/trim/src/DD/properties.txt'
-alias propids       'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | grep -i '
-alias database      'cat $trimdir/trim/src/DD/DATABASE.TXT | grep -i '
-alias viewdb        'view $trimdir/trim/src/DD/DATABASE.TXT'
-
-alias dce  ContentExtraction
-alias dox  "/c/Program\ Files\ \(x86\)/doxygen/bin/doxygen"
-alias dwiz "/c/Program\ Files/doxygen/bin/doxywizard"
-alias aperl "/c/Perl/bin/perl"
-alias wperl aperl
-alias vmperl "/c/Program\ Files\ \(x86\)/VMware/VMware\ vSphere\ CLI/Perl/bin/perl"
-alias govsphere "cd /c/Program\ Files\ \(x86\)/VMware/VMware\ vSphere\ CLI/Perl/"
-
-# Path conversion using cygpath
-alias towin  'cygpath -t windows "\!^"'
-alias tounix 'cygpath -t unix    "\!^"'
-
-# Wix stuff
-#alias candle "/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
-#alias lit "/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
-alias msitrimi     "msiexec /i HPTRIM.msi /lv\* out.log"
-alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
-
-
-#######################################################################################################################
-
-# SVN
-alias hpsvn          "svn checkout https://svn.aus.hp.com/local/bio-im-trim/REPOS/trunk REPOS_trunk --username paul_libauer"
-alias svn            "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
-
-set trimbuild      = $trimdir/build/build
-set trimdoc        = $trimdir/doc/doc/DocPub
-
-# Updated the trim release we are working on
-alias svnup	          "svn update $trimdir; svn update $trimbuild; svn update $trimdoc"
-
-alias svnstatus      "(svn info $trimdir; svn info $trimdoc; svn info $trimbuild) | perl -ne 'print if /^Path|^URL:|^\n/;' "
-alias svnstatusfull  "(svn info $trimdir; svn info $trimdoc; svn info $trimbuild) | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
-alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
-alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
-alias logproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
-alias logrev         "logproc --rev"
-alias svnrev         logrev
-alias rev            logrev
-alias rdiff          logrev \!^ --diff \!:2
-alias revhead        logrev head
-alias revheadiff     logrev head --diff
-alias rhd	     revheadiff
-alias revchange      logproc --change
-alias change         logproc --change
-alias revchrange     logproc --change \!:1 --range \!:2
-alias changer        revchrange
-alias revchdiff      logproc --change \!^ --diff 
-alias revchdiffr     logproc --change \!:1 --diff --range \!:2
-alias changerd       revchdiffr
-alias logprocuser    logproc --get user
-alias logm           logproc --match 
-alias logmi          logproc --no_case --match 
-alias logmv          logproc --verbose --match 
-alias logmvi         logproc --no_case --verbose --match 
-alias match          logproc --no_case --limit 30 --match
-alias loga           "logproc --no_case --match \!:1 --author \!:2"
-alias logacs         "logproc --match \!:1 --author \!:2"
-alias logav          "logproc --verbose --match \!:1 --author \!:2"
-alias logavi         "logproc --no_case --verbose --match \!:1 --author \!:2"
-alias matchauth      "logproc --match \!:1 --author \!:2"
-alias matchauthor    "logproc --match \!:1 --author \!:2"    
-alias findfile       "logproc --find_file"
-alias logf           findfile
-alias users          logprocuser
-alias logprocschema  logproc --get schema
-alias schema         logprocschema
-alias svnlogupdate   logproc --update
-alias logupdate      svnlogupdate
-alias svnlogh        logproc --help
-alias logprocbranches logproc --get branch
-alias branches        logprocbranches
-#
-# If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
-# alias syncsvn	   "svnsync sync svn://localhost/"
-#
-alias syncsvn	    "svnsync sync $SVN_MIRROR"
-alias syncsvnhome   "svnsync sync $SVN_MIRROR svn://10.0.0.3/"
-alias syncsvnwork   "svnsync sync $SVN_MIRROR https://svn.aus.hp.com/local/bio-im-trim"
-alias syncsvnmaster syncsvnwork
-alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
-alias syncup        "syncsvn; logupdate"
-
-
-alias relocmainlocal   "svn relocate $SVN_MASTER $SVN_URL $trimdir"
-alias relocmainremote  "svn relocate $SVN_URL $SVN_MASTER $trimdir"
-
-alias relocbuildlocal  "svn relocate $SVN_MASTER $SVN_URL $trimbuild"
-alias relocbuildremote "svn relocate $SVN_URL $SVN_MASTER $trimbuild"
-
-alias relocdoclocal    "svn relocate $SVN_MASTER $SVN_URL $trimdoc"
-alias relocdocremote   "svn relocate $SVN_URL $SVN_MASTER $trimdoc"
-
-alias relocaalllocal   "svnrelocatemain; svnrelocatebuild; svnrelocatedoc"
-alias relocallremote   "svnrelocbackmain; svnrelocbackbuild; svnrelocbackdoc"
-
-alias svnupr	       "svnrelocateall; svnup; svnrelocbackall"
-
-alias showlatest       "svn log $trimdir -r HEAD:1 --limit 10"
-alias showlatestv      "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
-
-alias svnupbin	       "svn update $PERL_BIN"
-alias relocperllocal   "svn relocate $SVN_MASTER $SVN_URL $PERL_BIN"
-alias relocperlremote  "svn relocate $SVN_URL $SVN_MASTER $PERL_BIN"
-alias svnupbinr	       "svnrelocperl; svnupbin; svnrelocbackperl"
-
-alias sloghelp		'echo "\nUse slog and slogr if you are in the directory you wish to view the svn log of;\n\n\tslog 85123         - Will print all log entries from HEAD -> revision 85123\n\tslogr 85123 84444  - Will print the log entries starting at 85123  -> 84444\n\nUse slogurl and slogurlr when you have the repository URL and are not in a checked-out directory;\n\n\tslogurl svn://localhost/REPOS/trunk 84357\n\tslogurlr svn://localhost/REPOS/trunk 84405 84357\n\n" '
-alias slog 		'svn log -r HEAD:\!^ | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
-alias slogr 		'svn log -r \!:1\:\!:2 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
-alias slogurl 		'svn log \!:1 -r HEAD:\!:2 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
-alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
-
-
-#######################################################################################################################
-
-# RSYNC
-# Sync the files from source to destination
-alias sync    "rsync -avub --size-only --exclude '.svn' --exclude '*~'"
-alias syncdry "rsync -avubn --size-only --exclude '.svn' --exclude '*~'"
-
-
-# Run TRIM programs
-
-alias bulk       "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe "
-alias bulkloader bulk
-alias b          bulk -db $DBID
-alias origins    bulk -o "'*'" -action get -db $DBID
-alias orgget     bulk -o '\!^' -action get -db $DBID
-alias orgrun     bulk -o '\!^' -action run -db $DBID
-alias makerecs   "perl CreateManyRecords.pl --number \!^  --output out.txt"
-
-alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
-alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
-alias trimhelp   "hh $trimdir/doc/doc/DocPub/TRIM.chm &"
-alias wgs        "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe &"
-alias trimds     "$trimdir/$defArchCSharp/$defBuild/TrimDS.exe &"
-alias killtrim   "$trimdir/Automation/SmokeTest/killtrim.exe"
-alias nuke       "gosln;./NukeSolutions.bat"
-alias gensln     "gosln;./GenerateSolutions.bat"
-alias nukeandgen "nuke;gensln"
-
-# Build the correct solution
-
-set svexe = "/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
-alias sn "$svexe"
-alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
-
-# Run populate database
-alias popdb "cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
-alias reloadpopdb "popdb --load"
-
-alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
-alias getpath "perl $PERL_BIN/getPath.pl"
-alias sysinfo "systeminfo | perl -ne  'print unless /^\s+\[\d+\]/'"
-alias uptime  "systeminfo | grep -i 'boot time'"
-
-
-# Compile a script to an executable using Strawberry Perl's version of pp
-alias perlcompile   "/c/strawberry/perl/bin/pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o "
-alias sperl         "/c/strawberry/perl/bin/perl"
-
-alias xmlconf       "perl $PERL_BIN/xmlconfig.pl --file "
-alias xconf         "perl $PERL_BIN/xmlconfig.pl"
-alias xmlnoc        "perl $PERL_BIN/stripXMLcomments.pl"
-alias xmlformat     $PERL_BIN/xmlformat.pl
-alias xmlf          xmlformat
-
-alias trimconfig    perl $PERL_BIN/xmlconfig.pl --file $trimcfg
-alias shconf        trimconfig
-alias shconfig      trimconfig
-alias showconf      trimconfig
-alias restoreconfig "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg $trimcfgdir"
-alias goconfig      gocfg
-alias xmltrim       "perl xmlformat.pl $trimcfg"
-alias getconfig     "more $trimcfg"
-alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
-
-alias wixgen       perl $trimdir/trim/misc/Scripts/Perl/WixGenerator.pl
-
-# Lookup a perl function using perldoc
-alias perldoc   "/c/strawberry/perl/bin/perldoc.bat"
-alias perlfunc  "perldoc -f"
-
-
-################################################
-### PERL DATABASE ACCESS
-
-alias db          "perl $trimdir/trim/misc/Scripts/Perl/db/db.pl"
-alias dbs         "db --list"
-alias dbid        "db -id"
-alias dbidall     "dbid ids"
-
-alias bobids      "dbid bob"
-alias bobidsr     "dbid bob -rev"
-alias bobs        bobids
-alias bobsr       bobidsr
-
-alias eventids    "dbid event"
-alias eventidsr   "dbid event -rev"
-alias events      eventids
-alias eventsr     eventidsr
-
-alias table       "db -table"
-alias tables      "db -g"
-alias tableids    "dbid table"
-alias tableidsr   "dbid table -rev"
-alias tids        tableids
-alias tidsr       tableidsr
-
-alias sql         db -sql
-alias gtable      "db -table"
-alias loceaddr    "db -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 1,2,4,24,27,28 -num -verbose"
-alias getrec      "db -num -row"
-alias getrecs     getrec
-alias dumpdb      db --dump_all
-alias grepdump    "db --dump_all | egrep -i "
-alias constraints "db -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY TABLE_NAME'"
-#alias tblconstraints "db -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS con WHERE con.TABLE_NAME = '\!^' ORDER BY CONSTRAINT_NAME'" 
-alias tblconstraints "db -sql 'SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY CONSTRAINT_NAME' | perl -ne 'if(/Test_80_SqlServer/){ if(/\!^/){ print }} else {print}'"
-
-alias locs	db --object_type LOCATION --unadorned
-alias locuri    locs --object_uri 
-alias locname   locs --object_name 
-
-alias recs	db --object_type RECORD --unadorned --max 60
-alias recuri    recs --object_uri 
-alias recname   recs --object_name 
-
-alias rectypes	  db --object_type RECTYPE --unadorned
-alias rectypeuri  rectypes --object_uri 
-alias rectypename rectypes --object_name 
-
-#-------------------------------------------------
-
-# FIGHTING THE SHELL EVERY STEP OF THE WAY :)
-alias mklocdata   "sql 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.uri = PER.lpLocUri' -col 22,23,28,27 -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
-alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
-
-# SQLITE
-set SQLITE_DB=C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db
-alias sqlite            "sqlite3.exe"
-alias sqliteq           "sqlite3.exe $SQLITE_DB"
-alias query		sqliteq
-alias sqlitedb          cygstart cmd.exe /c sqlite3.exe $SQLITE_DB 
-alias sqliteanal        "sqlite3_analyzer.exe"
-alias filepath          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
-alias sqlitefp          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
-alias sqlitem           sqlite3.exe $SQLITE_DB \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
-alias sqlmatch         'sqlitem \!^ |   perl -ne '"'"'  if(/^(\d+)\|(.+)$/){ print "-------------------------| $1 |--------------------------\n$2\n" }else{print}    '"'"
-
-# Query the SVN sqlite database for the UUID of a given checked out path
-alias sqliteuuid        "sqlite .svn/wc.db 'select uuid from REPOSITORY where id=1'"
-alias uuidupdate        "sqlite .svn/wc.db 'update REPOSITORY set uuid=\!^ where id=1'"
-alias repoinfo          "sqlite .svn/wc.db 'select * from REPOSITORY'"
-
-alias spell 'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
-alias spella 'echo "\!^" >> ~/words.txt; wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
-alias spellb 'echo "\!^" >> ~/words.txt; wn "\!^" -g -over -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:"'
-
-alias svndiff svn diff -r PREV
-
-#  You need to supply an argument, so just use an empty string, '', to get the aliases to work without an argument
-alias hklm "regtool list \\machine\\\!^"
-alias hkcu "regtool list \\user\\\!^"
-alias hkcr "regtool list \\root\\\!^"
-
-
-alias totext      'iconv -f UTF-16 -t UTF-8 '
-alias fromunicode 'iconv -f UTF-16 -t UTF-8 '
-alias grepu       'fromunicode \!:2 | grep \!:1'
-alias grepui      'fromunicode \!:2 | grep -i \!:1'
-
-
-
-
-alias testtrim     "$trimdir/$defArch/$defBuild/testTrim.exe --test"
-alias trimtest     testtrim
-alias testhelp	   "$trimdir/$defArch/$defBuild/testTrim.exe --help"
-alias testcases    "$trimdir/$defArch/$defBuild/testTrim.exe --list"
-alias bld          "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type all --timeout 6000 --assert"
-alias bldapi       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type api --timeout 6000 --assert"
-alias bldsth       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type sth --timeout 6000 --assert"
-alias bldcont      "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type container --timeout 6000 --assert"
-
-alias bulkedocs "date; b -o Origin_Test_Record_ElectronicDocuments -a run; date"
-alias timeblk  "date; b -o Origin_Test_Bulk_Loader -a run; date"
-alias cleanblk "rm -rf 000000*; rm $DBID.*"
-
-alias psall     'ps -aelW'
-
-# Query windows services to see what is running or stopped
-alias svc_active        "sc query type= service"
-alias svc_inactive      "sc query type= service state= inactive"
-alias svc_all           "sc query type= service state= all"
-alias svc_drivers       "sc query type= driver"
-alias startsql          "sc start MSSQLSERVER"
-alias sqlstart          startsql
-alias querysql          "sc query MSSQLSERVER"
-alias sqlquery          querysql
-alias services		"svc_all | grep DISPLAY"
-alias servicesrun	"svc_active | grep DISPLAY"
-
-# Run Management Studio
-alias mstudio		"/c/Program\ Files\ \(x86\)/Microsoft\ SQL\ Server/100/Tools/Binn/VSShell/Common7/IDE/Ssms.exe &"
-alias sqlms		mstudio
-
-# Run Remote Desktop
-alias rdp		"/c/windows/system32/mstsc.exe &"
-alias remote		rdp
-alias remotedesk	rdp
-alias rdesktop		rdp
-
-
-####################################################################
-### GIT commands
-
-alias gitpush        "git push origin master"
-alias gitnewrepo     "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
-alias gitcommit      "git commit -a"
-alias gitdiff        "git diff"
-alias gitdiffbc      "git difftool"
-alias gitmerge       "git mergetool"
-alias gitpull        "git pull"
-alias gitstatus      "git status"
-alias gitcheckout    "git clone $GIT_URL""plibauer/aliases.git"
-alias checkout        gitcheckout
-alias commit	      gitcommit
-alias status          gitstatus
-alias gitsetrepo     "get remote set-url origin git@github.com:plibauer/aliases.git"
-alias gitconfig      "git config -l"
-alias gitsshtest     "ssh -T git@""$GIT_HOST"
-alias gitforceupdate "git fetch --all; git reset --hard origin/master"
-alias gitcommitsome  "git add -i"
-alias gitremove      "git rm"
-alias gitundo        "git reset HEAD"
-alias gitsetproxy    "setenv HTTP_PROXY http://proxy.aus.hp.com:8080; setenv HTTPS_PROXY https://proxy.aus.hp.com:8080"
-alias gitunsetproxy  "setenv HTTP_PROXY;setenv HTTPS_PROXY "
-alias gitcheckproxy  "setenv | grep PROXY"
-
-# If a file has been deleted locally, you can restore it using the following and providing the filename as the argument
-alias gitrestore  "git checkout HEAD \!^"
-
-# Setup BeyondCompare as the diff/merge tool
-set BC3 = "C:/Program Files (x86)/Beyond Compare 3/bcomp.exe"
-alias gitconfigdiff  'git config --global diff.tool bc3; git config --global difftool.bc3.path "$BC3" '
-alias gitconfigmerge 'git config --global merge.tool bc3; git config --global mergetool.bc3.path "$BC3" '
-
-
-#-------------------------------------------------------------------
-
-
-alias ldapa    "/bin/ldapadd.exe -x -D 'cn=Manager,dc=libauer,dc=com' -W -f \!^"
-
-# WGET an entire HTML site
-alias wgetall		"wget -r -l 0 -p " 
-alias wgetallhttp	"wget -r -l 0 -p http://\!^" 
-
-# Show internet settings
-alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings"'
-
-# Run a local http server from the current directory;
-# Python 2.x
-alias httplocal	"cd ~; python -m SimpleHTTPServer"
-alias http	httplocal
-# Python 3.x
-alias http3	"cd ~; python -m http.server"
-
-# Edit a file with emacs and detach
-alias emacs	"emacs \!^ &"
-
-# Change the mount prefix if required
-alias mountcygwin	"mount -s --change-cygdrive-prefix /"
-
-# Invoke an admin command prompt
-alias command  cygstart cmd.exe
-
-##############################################################################
-###########################         IDOL          ############################
-
-
-alias goidol            "cd $IDOL_DIR"
-
-alias goidols           "cd $IDOL_DIR/TRIM\ IDOL\ Service"
-alias idolscfg          "more $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
-alias editidolscfg      "vi $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
-
-alias goidolc1          "cd $IDOL_DIR/TRIM\ Content\ Service\ 1"
-alias idolc1cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
-alias editidolc1cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
-
-alias goidolc2          "cd $IDOL_DIR/TRIM\ Content\ Service\ 2"
-alias idolc2cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
-alias editidolc2cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
-
-alias icurl             'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
-alias idolrecs          'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=999" --noproxy "*" --silent'
-alias idolrecsdb        'curl "http://localhost:11000/action=query&text=*&databasematch=' "\!^" '&MaxResults=999" --noproxy "*" --silent'
-alias idolstatus        'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent | xmlformat.pl'
-alias idolquery         'curl "http://localhost:11000/action=query&text=' "\!^" '&databasematch=' "$idolDb" '" --noproxy "*" --silent | xmlformat.pl'
-alias idolq             idolquery 
-alias irecs             "idolrecs | xmlformat.pl"
-alias irecsdb           "idolrecs \!^ | xmlformat.pl"
-alias removedb          'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
-alias removedocs        'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
-alias idologa1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
-alias idologa2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/application.log"
-alias idologi1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
-alias idologi2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/index.log"
-alias idologq1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
-alias idologq2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/query.log"
-
 
