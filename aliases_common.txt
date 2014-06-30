@@ -240,8 +240,11 @@ alias svn            "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
 set trimbuild      = $trimdir/build/build
 set trimdoc        = $trimdir/doc/doc/DocPub
 
-# Updated the trim release we are working on
-alias svnup	          "svn update $trimdir; svn update $trimbuild; svn update $trimdoc"
+if ($revision  == "82") then
+    alias svnup  "svn update $trimdir"
+else  
+    alias svnup "svn update $trimdir; svn update $trimbuild; svn update $trimdoc" 
+endif
 
 alias svnstatus      "(svn info $trimdir; svn info $trimdoc; svn info $trimbuild) | perl -ne 'print if /^Path|^URL:|^\n/;' "
 alias svnstatusfull  "(svn info $trimdir; svn info $trimdoc; svn info $trimbuild) | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
