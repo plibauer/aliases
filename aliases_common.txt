@@ -453,7 +453,7 @@ alias mklocdata   "sql 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.
 alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
 
 # SQLITE
-set SQLITE_DB=C:/cygwin/home/plibauer/work/svnLogDatabase/svn.db
+set SQLITE_DB=$SVN_LOG_DB/svn.db
 alias sqlite            "sqlite3.exe"
 alias sqliteq           "sqlite3.exe $SQLITE_DB"
 alias query		sqliteq
