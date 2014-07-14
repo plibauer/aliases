@@ -1,8 +1,12 @@
 # Some example functions:
 # a) function settitle
-settitle ()
+# Arg1 : Release Version of Trim
+# Arg2 : Architecture (x86 or x64)
+# Arg3 : Build (Debug or Release)
+# Arg4 : Database ID
+setenvTitle ()
 {
-   echo -ne "\e]2;$@\a\e]1;$@\a";
+   echo -ne "\033]0;         REL=${1} ARCH=${2}, BUILD=${3}, DBID=${4}\007"
 }
 
 # b) function cd_func
