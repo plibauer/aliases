@@ -267,12 +267,13 @@ alias logmi          logproc --no_case --match
 alias logmv          logproc --verbose --match 
 alias logmvi         logproc --no_case --verbose --match 
 alias match          logproc --no_case --limit 30 --match
-alias loga           "logproc --no_case --match \!:1 --author \!:2"
-alias logacs         "logproc --match \!:1 --author \!:2"
-alias logav          "logproc --verbose --match \!:1 --author \!:2"
-alias logavi         "logproc --no_case --verbose --match \!:1 --author \!:2"
-alias matchauth      "logproc --match \!:1 --author \!:2"
-alias matchauthor    "logproc --match \!:1 --author \!:2"    
+alias loga           "logproc --no_case --author \!:1 --match \!:2" 
+alias logar          "logproc --no_case --author \!:1 --match \!:2 --revision \!:3" 
+alias logacs         "logproc --author \!:1 --match \!:2"
+alias logav          "logproc --verbose --author \!:1 --match \!:2"
+alias logavi         "logproc --no_case --verbose --author \!:1 --match \!:2"
+alias matchauth      "logproc --author \!:1 --match \!:2"
+alias matchauthor    "logproc --author \!:1 --match \!:2"
 alias findfile       "logproc --find_file"
 alias logf           findfile
 alias users          logprocuser
