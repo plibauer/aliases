@@ -5,6 +5,7 @@
 # \rm will call the real rm not the alias.
 
 alias_dir=~/aliases/bash
+alias gobash="cd $alias_dir"
 alias via="vi $alias_dir/bash_aliases"
 alias vib='vi ~/.bashrc'
 alias vif='vi $alias_dir/bash_functions'

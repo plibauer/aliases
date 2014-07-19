@@ -59,13 +59,13 @@ export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls:la:ll:h' # Ignore the ls command as w
 # export PROMPT_COMMAND="history -a"
 
 # Functions
-if [ -f "${HOME}/aliases/bash/bash_functions" ]; then
-   source "${HOME}/aliases/bash/bash_functions"
+if [ -f "${HOME}/aliases/bash/functions" ]; then
+   source "${HOME}/aliases/bash/functions"
 fi
 
 # Aliases
-if [ -f "${HOME}/aliases/bash/bash_aliases" ]; then
-   source "${HOME}/aliases/bash/bash_aliases"
+if [ -f "${HOME}/aliases/bash/aliases" ]; then
+   source "${HOME}/aliases/bash/aliases"
 fi
 
 # Set the command prompt

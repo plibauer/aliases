@@ -1,0 +1,8 @@
+alias goiview="cd /f/ABC_Iview;"
+alias iview="cd /f/ABC_Iview; ./PerlIView.pl"
+alias iviewsh="cd /f/ABC_Iview; ./PerlIView.pl --show"
+alias iviewr="cd /f/ABC_Iview; ./PerlIView.pl --refresh"
+alias iviewg="cd /f/ABC_Iview; ./PerlIView.pl --get"
+
+alias router="telnet 10.0.0.1"
+

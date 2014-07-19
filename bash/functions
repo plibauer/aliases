@@ -1,5 +1,4 @@
-# Some example functions:
-# a) function settitle
+# Function settitle
 # Arg1 : Release Version of Trim
 # Arg2 : Architecture (x86 or x64)
 # Arg3 : Build (Debug or Release)
@@ -7,6 +6,36 @@
 setenvTitle ()
 {
    echo -ne "\033]0;         REL=${1} ARCH=${2}, BUILD=${3}, DBID=${4}\007"
+}
+
+# Function set default environment
+# Arg1 : current revision (eg. 82)
+# Arg2 : DBID
+# Arg3 : Architecture (x86 or x64)
+# Arg4 : Default compiler (eg. VS2008, VS2013, ..)
+# Arg5 : Build (Debug or Release)
+setDefaultEnv ()
+{
+   unalias -a
+   alias_dir=~/aliases/bash
+   source $alias_dir/localEnvironment 
+
+   revision=${1}
+   DBID=${2}
+   defArch=${3}
+   defCompiler=${4}
+   defBuild=${5}
+   trimdir=$REPOS_ROOT":/$revision"
+   dbDefault=Test_"$revision"_SqlServer
+   dbSession=$dbDefault
+   cygtrimdir="/$REPOS_ROOT/$revision"
+   idolDb=TRIM_"$DBID"
+   trimcfgdir="$trimdir/trim/SharedTrimServerData/ServerData"
+   currentEnv=~/aliases/"$revision"environment
+
+   setenvTitle $trimdir $defArch $defBuild $DBID
+   source $alias_dir/bash_aliases
+   source $alias_dir/default
 }
 
 # b) function cd_func

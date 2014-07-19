@@ -1,0 +1,42 @@
+#
+#   COPY this file to ./localEnvironment and uncomment the section below that
+#   is relevant to the current environment
+#
+# -----------------------------------------------------------------------------
+# Work Machine
+#REPOS_ROOT=e
+#SVN_URL=svn://localhost
+#SVN_MIRROR=file:///e:/svn_mirror
+#SVN_MASTER=https://svn.aus.hp.com/local/bio-im-trim
+#  Whatever has been configured in .ssh/config pointing to proxy, 
+#  otherwise use normal entry below
+#GIT_HOST=gitproxy
+#GIT_URL="$GIT_HOST"":"
+#IDOL_DIR=/c/IDOL
+#PERL_BIN=C:/cygwin/home/plibauer/perl/bin
+#DEVENV_ROOT=""
+#SVN_LOG_DB=C:/svnLogDatabase
+# -----------------------------------------------------------------------------
+# Home Machine 
+#REPOS_ROOT=c
+#SVN_URL=svn://localhost
+#SVN_MIRROR=file:///f:/svn_mirror
+#SVN_MASTER=https://svn.aus.hp.com/local/bio-im-trim
+#GIT_HOST=github.com
+#GIT_URL=git://$GIT_HOST/
+#IDOL_DIR=/c/IDOL
+#PERL_BIN=C:/cygwin/home/plibauer/perl/bin
+#DEVENV_ROOT=""
+#SVN_LOG_DB=C:/svnLogDatabase
+# -----------------------------------------------------------------------------
+# Laptop
+#REPOS_ROOT=c
+#SVN_URL=https://localhost
+#SVN_MIRROR=file:///d:/svn_mirror
+#SVN_MASTER=https://svn.aus.hp.com/local/bio-im-trim
+#GIT_HOST=github.com
+#GIT_URL=git://$GIT_HOST/
+#IDOL_DIR=/c/IDOL
+#PERL_BIN=C:/cygwin/home/plibauer/perl/bin
+#DEVENV_ROOT="D:/Program Files (x86)/"
+#SVN_LOG_DB=C:/svnLogDatabase
