@@ -4,9 +4,10 @@
 # application.  To override the alias instruction use a \ before, ie
 # \rm will call the real rm not the alias.
 
-alias via='vi ~/.bash_aliases'
+alias_dir=~/aliases/bash
+alias via="vi $alias_dir/bash_aliases"
 alias vib='vi ~/.bashrc'
-alias vif='vi ~/.bash_functions'
+alias vif='vi $alias_dir/bash_functions'
 alias src='source ~/.bashrc'
 
 # Default to human readable figures
@@ -29,7 +30,6 @@ alias ll='ls -l'
 alias la='ls -lA'
 alias l='ls -CF'                              #
 alias h=history
-
 
 # Visual Studio and Build aliases
 # Allow a different standard path for devenv.exe
