@@ -1,19 +1,20 @@
 unalias '*'
-set alias_dir     = ~/aliases
+set alias_dir     = ~/aliases/tcsh
 
 source $alias_dir/aliases_local.txt
 
-set revision      = 80
-set DBID          = E1
+set revision      = 82
+set DBID          = G1
 set defArch       = x64
 set defCompiler   = VS2013
 set defBuild      = Debug
 set trimdir       = $REPOS_ROOT":/$revision"
 set dbDefault     = Test_"$revision"_SqlServer
+set dbSession     = $dbDefault
 set cygtrimdir    = "/$REPOS_ROOT/$revision"
 set idolDb        = TRIM_"$DBID"
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
-set currentEnv    = ~/aliases/"$revision"environment
+set currentEnv    = ~/$alias_dir/"$revision"environment
 
 source $alias_dir/aliases_common.txt
 source $alias_dir/aliases

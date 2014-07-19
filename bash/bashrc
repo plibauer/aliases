@@ -41,10 +41,16 @@ export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
 # HISTIGNORE is a colon-delimited list of patterns which should be excluded.
 # The '&' is a special pattern which suppresses duplicate entries.
 # export HISTIGNORE=$'[ \t]*:&:[fb]g:exit'
-# export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls' # Ignore the ls command as well
+export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls:la:ll:h' # Ignore the ls command as well
+
 #
 # Whenever displaying the prompt, write the previous line to disk
 # export PROMPT_COMMAND="history -a"
+
+# Functions
+if [ -f "${HOME}/.bash_functions" ]; then
+   source "${HOME}/.bash_functions"
+fi
 
 # Aliases
 if [ -f "${HOME}/.bash_aliases" ]; then
@@ -58,7 +64,11 @@ fi
 # Paranoid: neither group nor others have any perms:
 # umask 077
 
-# Functions
-if [ -f "${HOME}/.bash_functions" ]; then
-   source "${HOME}/.bash_functions"
-fi
+# Set the command prompt
+# The first version sets the xterm title too
+#PS1="\[\e]0;\w\a\]\[\e[32m\]\h \[\e[33m\]\w\[\e[0m\]> "
+PS1="\[\e[32m\]\h \[\e[33m\]\w\[\e[0m\]> "
+
+# Always set the drive prefix to just /, not "/cygdrive"
+# This has now been configured in /etc/fstab, so no need to do it here
+#mount --change-cygdrive-prefix /

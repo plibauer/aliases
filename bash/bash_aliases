@@ -4,8 +4,10 @@
 # application.  To override the alias instruction use a \ before, ie
 # \rm will call the real rm not the alias.
 
-# Set the command prompt
-PS1="\[\e]0;\w\a\]\[\e[32m\]\h \[\e[33m\]\w\[\e[0m\]> "
+alias via='vi ~/.bash_aliases'
+alias vib='vi ~/.bashrc'
+alias vif='vi ~/.bash_functions'
+alias src='source ~/.bashrc'
 
 # Default to human readable figures
 alias df='df -h'
@@ -28,5 +30,14 @@ alias la='ls -lA'
 alias l='ls -CF'                              #
 alias h=history
 
-alias via='vi ~/.bash_aliases'
-alias src='source ~/.bashrc'
+
+# Visual Studio and Build aliases
+# Allow a different standard path for devenv.exe
+if [ -z "$DEVENV_ROOT" ]; then
+  export DEVENV_ROOT="C:/Program Files (x86)"
+fi
+
+export defArchCSharp="AnyCPU"
+if [ "$defCompiler" == "VS2008" ]; then
+  export defArchCSharp=$defArch
+fi
