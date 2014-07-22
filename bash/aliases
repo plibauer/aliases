@@ -6,9 +6,9 @@
 
 alias_dir=~/aliases/bash
 alias gobash="cd $alias_dir"
-alias via="vi $alias_dir/bash_aliases"
+alias via="vi $alias_dir/aliases"
 alias vib='vi ~/.bashrc'
-alias vif='vi $alias_dir/bash_functions'
+alias vif="vi $alias_dir/functions"
 alias src='source ~/.bashrc'
 
 # Default to human readable figures
@@ -32,7 +32,14 @@ alias la='ls -lA'
 alias l='ls -CF'                              #
 alias h=history
 
-# Visual Studio and Build aliases
+alias view=vi
+alias winhome='cd /c/Users/plibauer'
+alias home=winhome
+
+# ----------------------------------------------------------------------------
+#
+#                       Visual Studio and Build aliases
+#
 # Allow a different standard path for devenv.exe
 if [ -z "$DEVENV_ROOT" ]; then
   export DEVENV_ROOT="C:/Program Files (x86)"
@@ -42,3 +49,7 @@ export defArchCSharp="AnyCPU"
 if [ "$defCompiler" == "VS2008" ]; then
   export defArchCSharp=$defArch
 fi
+
+export defproj=ALL_BUILD
+
+# ----------------------------------------------------------------------------
