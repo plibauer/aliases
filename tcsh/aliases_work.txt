@@ -41,6 +41,7 @@ alias scrub           "perl c:/cygwin/home/plibauer/perl/bin/scrub.pl --file"
 alias tailj           "tail `cat /c/tmp/journalname.txt`"
 alias tjournal        "tail -50 `cat /c/tmp/journalname.txt`"
 alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
+alias viwiki          "vi \!^; scrub  \!^"
 alias mj              "less `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
 
 alias vj              ' echo -n "\!*" | /bin/perl -ne  '"'"'                                                                  \\
