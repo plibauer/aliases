@@ -40,6 +40,7 @@ alias view	vi
 alias home 	"cd /home/plibauer"
 alias via  	"vi $alias_file"
 alias viw       "vi $alias_dir/aliases_work.txt"
+alias vih       "vi $alias_dir/aliases_home.txt"
 alias vs2012    "set defCompiler = VS2012; source $alias_file"
 alias vs2008    "set defCompiler = VS2008; source $alias_file"
 alias x86  	"set defArch = x86; source $alias_file; settitle"

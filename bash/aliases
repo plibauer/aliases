@@ -5,6 +5,7 @@
 # \rm will call the real rm not the alias.
 
 alias_dir=~/aliases/bash
+alias_file=$alias_dir/aliases
 alias gobash="cd $alias_dir"
 alias via="vi $alias_dir/aliases"
 alias vib='vi ~/.bashrc'
@@ -51,5 +52,21 @@ if [ "$defCompiler" == "VS2008" ]; then
 fi
 
 export defproj=ALL_BUILD
+alias settitle="setenvTitle $trimdir $defArch $defBuild $DBID"
+alias vs2013="export defCompiler=VS2013; source $alias_file"
+alias vs2008="export defCompiler=VS2008; source $alias_file"
+alias x86="export defArch=x86; source $alias_file; settitle"
+alias x64="export defArch=x64; source $alias_file; settitle"
+alias debug="export defBuild=Debug; source $alias_file; settitle"
+alias release="export defBuild=Release; source $alias_file; settitle"
+
+#alias whichenv="echo 'TRIMDIR   = $trimdir';          \\
+#                 echo 'ARCH      = $defArch';          \\
+#                 echo 'BUILD     = $defBuild';         \\
+#                 echo 'DBID      = $DBID';             \\
+#                 echo 'DBSession = $dbSession';        \\
+#                 echo 'IDOLDB    = $idolDb';           \\
+#                 echo 'SVNLOGDB  = $SVN_LOG_DB';       \\
+#"
 
 # ----------------------------------------------------------------------------

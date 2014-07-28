@@ -9,3 +9,5 @@ alias iviewr		"cd /f/ABC_Iview; ./PerlIView.pl --refresh"
 alias iviewg		"cd /f/ABC_Iview; ./PerlIView.pl --get"
 
 alias router		"telnet 10.0.0.1"
+alias httpd             'cd /c/LightTPD; ./LightTPD.exe -f conf/lighttpd.conf' 
+alias stophttpd         "taskkill /f /IM lighttpd.exe; taskkill /f /IM php-cgi.exe"
