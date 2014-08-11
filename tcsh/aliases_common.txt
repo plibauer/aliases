@@ -13,7 +13,7 @@ alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
 #alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${defBuild}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
 
-alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}\007"'
+alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}, DBSESSION=${dbSession}\007"'
 alias settitledir 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}    `/bin/pwd`\007"'
 
 # Allow a different standard path for devenv.exe
@@ -49,7 +49,7 @@ alias debug  	"set defBuild = Debug; source $alias_file; settitle"
 alias release  	"set defBuild = Release; source $alias_file; settitle"
 alias dbdefault "set dbSession = $dbDefault; source $alias_file"
 alias dbcurrent echo $dbSession
-alias dbsession "set dbSession = \!^; source $alias_file"
+alias dbsession "set dbSession = \!^; source $alias_file; settitle"
 alias src       "source $alias_file"
 alias src71     "source $alias_dir/71environment"
 alias src72     "source $alias_dir/72environment"
@@ -482,6 +482,7 @@ alias testcases    "$trimdir/$defArch/$defBuild/testTrim.exe --list"
 alias bld          "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type all --timeout 6000 --assert"
 alias bldapi       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type api --timeout 6000 --assert"
 alias bldsth       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type sth --timeout 6000 --assert"
+alias bldrecs      "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type apirec --timeout 6000 --assert"
 alias bldcont      "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type container --timeout 6000 --assert"
 
 alias bulkedocs "date; b -o Origin_Test_Record_ElectronicDocuments -a run; date"
