@@ -317,6 +317,11 @@ alias slogr 		'svn log -r \!:1\:\!:2 | perl -e ' "'" ' @in = <>; while($l = shif
 alias slogurl 		'svn log \!:1 -r HEAD:\!:2 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
 alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($l = shift @in){chomp $l; if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ print "$1\t$2\t$5 $3\t"}  elsif($l =~ /^\-\-\-/){ print "\n"} else { $l =~ s/^\s+|\s+$//g; print " $l"} } '  "'"
 
+#######################################################################################################################
+
+# ALM 
+alias alm    "perl $PERL_BIN/ALMPlugin/ALM_Tool.pl"
+alias cr     alm --cr
 
 #######################################################################################################################
 
