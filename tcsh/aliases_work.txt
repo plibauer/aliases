@@ -10,17 +10,17 @@ alias winemacs    "/c/Program\ Files\ \(x86\)/XEmacs/XEmacs-21.4.21/i586-pc-win3
 #########################################################################################
 ###  JOURNAL shortcuts
 
-alias updatewiki      "rsync -avz //twrwebsvr/NewWiki/ /d/RDWiki/"
+alias updatewiki      "rsync -avz //twrwebsvr/NewWiki/ /e/BACKUP/RDWiki/"
 alias gowiki          "cd //twrwebsvr/NewWiki/data/pages"
 alias gowikij         "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer"
 alias gowikibackup    "cd /d/backup/RDWiki/data/pages/wiki/paul_libauer"
 alias goproj          "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects"
 alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
 
-alias grepjd          ' ls //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer          \\
-| /bin/perl -e '"'"'                                                                 \\
-%m = (jan,"01",feb,"02",mar,"03",apr,"04",may,"05",jun,"06",jul,"07",aug,"08",sep,"09","oct",10,nov,11,dec,12);     \\
-my $match=join "|", keys %m;                                                                                        \\
+alias grepjd          ' ls //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journals/*/*                                \\
+| /bin/perl -e '"'"'                                                                                                    \\
+%m = (jan,"01",feb,"02",mar,"03",apr,"04",may,"05",jun,"06",jul,"07",aug,"08",sep,"09","oct",10,nov,11,dec,12);         \\
+my $match=join "|", keys %m;                                                                                            \\
     while(<>){                                                                                                          \\
       chomp;                                                                                                            \\
       if(/($match).*(\d\d\d\d).txt$/){                                                                                  \\
@@ -30,12 +30,14 @@ my $match=join "|", keys %m;                                                    
       }                                                                                                                 \\
     }                                                                                                                   \\
    for(sort {$b<=>$a} keys %ordered){                                                                                   \\
-     print "//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/$ordered{$_}\n";                                           \\
+#     print "//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/$ordered{$_}\n";                                           \\
+     print "$ordered{$_}\n";                                           \\
    }                                                                                                                    \\
  '"'" 
 alias search 	      "grep -i \!^ `grepjd` | perl -ne 's|//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/||; print'" 
 
-alias mkjourn         "echo '//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/'$DATE'.txt' | perl -ne 'print lc ' > /c/tmp/journalname.txt; source ${currentEnv}"
+#alias mkjourn         "echo '//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/'$DATE'.txt' | perl -ne 'print lc ' > /c/tmp/journalname.txt; source ${currentEnv}"
+alias mkjourn         'echo "$DATE" | perl -ne '"'"' chomp;/^(\w+)(\d{4})$/ and do {$m= lc $1;$y=$2; print "//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journals/$y/$m$y.txt"} ' "' "' > /c/tmp/journalname.txt; source ${currentEnv}'
 alias rmjourn         "rm /c/tmp/journalname.txt"
 alias scrub           "perl c:/cygwin/home/plibauer/perl/bin/scrub.pl --file"
 alias tailj           "tail `cat /c/tmp/journalname.txt`"
@@ -51,9 +53,9 @@ alias vj              ' echo -n "\!*" | /bin/perl -ne  '"'"'                    
      }                                                                                                                        \\
      if($y =~ /^\d{2}$/) { $y = "20".$y };                                                                                    \\
      if($y !~ /^\d{4}$/) { print "BAD YEAR: $y\n"; exit }                                                                     \\
-     $file = "//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/$month$y.txt";                                                 \\
+     $file = "//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                                 \\
      if(not -e $file) { print "File $file doesnt exist?\n"; exit; }                                                           \\
-     print "cat //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/$month$y.txt";                                               \\
+     print "cat //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                               \\
  ' "' "' | /bin/sh | vim -R - '  
 
 alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
