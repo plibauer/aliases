@@ -16,7 +16,7 @@ set idolDb        = TRIM_"$DBID"
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
 set currentEnv    = ~/$alias_dir/"$revision"environment
 
-source $alias_dir/aliases_common.txt
 source $alias_dir/aliases
+source $alias_dir/aliases_common.txt
 
 settitle
