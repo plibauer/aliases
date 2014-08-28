@@ -13,8 +13,9 @@
 #set DEVENV_ROOT = "C:/Program Files (x86)"
 #set SVN_LOG_DB  = C:/svnLogDatabase
 #set ALM_DB      = C:/ALMDatabase
+#set ALM_PROXY   = http://proxy.aus.hp.com:8080
 
-# Home Machine (Hexcore)
+# Home Machine 
 #set REPOS_ROOT  = c
 #set SVN_URL     = svn://localhost
 #set SVN_MIRROR  = file:///f:/svn_mirror
@@ -26,6 +27,7 @@
 #set DEVENV_ROOT = "C:/Program Files (x86)""
 #set SVN_LOG_DB  = C:/svnLogDatabase
 #set ALM_DB      = C:/ALMDatabase
+#set ALM_PROXY   = http://127.0.0.1:8080
 
 # Laptop
 #set REPOS_ROOT  = c
@@ -39,4 +41,4 @@
 #set DEVENV_ROOT = "D:/Program Files (x86)/"
 #set SVN_LOG_DB  = C:/svnLogDatabase
 #set ALM_DB      = C:/ALMDatabase
-
+#set ALM_PROXY   = http://proxy.aus.hp.com:8080

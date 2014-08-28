@@ -138,7 +138,8 @@ alias trimfind   "loc \!^ | grep -i $cygtrimdir"
 alias trimfindi  "loci \!^ | grep -i $cygtrimdir"
 
 alias flushdns "ipconfig /flushdns"
-alias more less
+# -R turns off ANSI escape sequence rubbish
+alias more less -R
 
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
@@ -319,7 +320,7 @@ alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($
 #######################################################################################################################
 
 # ALM 
-alias alm    "perl $ALM_DB/ALM_Tool.pl"
+alias alm    "perl $ALM_DB/ALM_Tool.pl --proxy $ALM_PROXY"
 alias cr     alm --cr
 
 #######################################################################################################################
