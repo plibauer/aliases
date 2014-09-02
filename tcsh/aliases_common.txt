@@ -634,6 +634,10 @@ set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$revision-$defArch-$defBuil
 set buildLogWix    = "${REPOS_ROOT}:/TEMP/WIX-$revision-$defArch-$defBuild.log"
 set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
 
+alias bldlog    "tail -f $buildLog.build"
+alias bldlogcs  "tail -f $buildLogCSharp.build"
+alias bldlogwix "tail -f $buildLogWix"
+
 alias bldsln '  echo $logSeparator;                                                                                        \\
    echo -n "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build" \\
  | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
@@ -904,10 +908,9 @@ alias bldproj ' echo \!:1                                                       
     }                                                                                                                      \\
  '"'"
 
-alias tailbldlog "tail -f /c/tmp/TRIM-$revision-$defArch-$defBuild.log"
 
 ##############################################################################
-#######################         BUILD LOGS          ##########################
+#######################         LOG VIEWING         ##########################
 
 alias wglog_partial ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup*                                 \\
  | head -1                                                                                                                 \\
