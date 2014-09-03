@@ -452,10 +452,14 @@ alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD
 
 # SQLITE
 set SQLITE_DB=$SVN_LOG_DB/svn.db
+set SQLITE_ALM=$ALM_DB/database/ALM.db
+
 alias sqlite            "sqlite3.exe"
 alias sqliteq           "sqlite3.exe $SQLITE_DB"
+alias almsqlite         "sqlite3.exe $SQLITE_ALM"
 alias query		sqliteq
 alias sqlitedb          cygstart cmd.exe /c sqlite3.exe $SQLITE_DB 
+alias almsqlitedb       cygstart cmd.exe /c sqlite3.exe $SQLITE_ALM 
 alias sqliteanal        "sqlite3_analyzer.exe"
 alias filepath          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
 alias sqlitefp          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
