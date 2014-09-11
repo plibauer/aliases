@@ -323,8 +323,9 @@ alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($
 #######################################################################################################################
 
 # ALM 
-alias alm    "perl $ALM_DB/ALMTool.pl --proxy $ALM_PROXY"
-alias cr     alm --cr
+alias alm        "perl $ALM_DB/ALMTool.pl --proxy $ALM_PROXY"
+alias almschema  alm --schema
+alias cr         alm --cr
 
 #######################################################################################################################
 
