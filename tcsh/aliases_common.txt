@@ -324,6 +324,9 @@ alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($
 
 # ALM 
 alias alm        "perl $ALM_DB/ALMTool.pl --proxy $ALM_PROXY"
+alias almlib     alm libauer owner sub cycle release invest
+alias almlibw    almlib state -width 105
+alias almlibauer alm libauer
 alias almschema  alm --schema
 alias cr         alm --cr
 
@@ -473,6 +476,7 @@ alias sqliteuuid        "sqlite .svn/wc.db 'select uuid from REPOSITORY where id
 alias uuidupdate        "sqlite .svn/wc.db 'update REPOSITORY set uuid=\!^ where id=1'"
 alias repoinfo          "sqlite .svn/wc.db 'select * from REPOSITORY'"
 
+alias howtospell 'echo "\!^" | aspell -a'
 alias spell 'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
 alias spella 'echo "\!^" >> ~/words.txt; wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
 alias spellb 'echo "\!^" >> ~/words.txt; wn "\!^" -g -over -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:"'
