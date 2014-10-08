@@ -129,7 +129,7 @@ alias falias findalias
 #
 #    none / cygdrive binary,posix=0,user 0 0
 #
-alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development'"
+alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development /e/oracle'"
 
 alias locate   "locate -d /home/plibauer/locatedb"
 alias locatei  "locate -i -d /home/plibauer/locatedb"
@@ -462,6 +462,8 @@ set SQLITE_ALM=$ALM_DB/database/ALM.db
 alias sqlite            "sqlite3.exe"
 alias sqliteq           "sqlite3.exe $SQLITE_DB"
 alias almsqlite         "sqlite3.exe $SQLITE_ALM"
+alias crmatch           almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'0\'\"
+alias crmatchdesc       almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'1\'\"
 alias query		sqliteq
 alias sqlitedbopen      cygstart cmd.exe /c sqlite3.exe
 alias sqlitedb          cygstart cmd.exe /c sqlite3.exe $SQLITE_DB 
