@@ -194,7 +194,7 @@ alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
  
 alias evlog_clean "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
-alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events" | egrep -iv "No events waiting at workgroup" '
+alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events|No events waiting at workgroup" '
 alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
 alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
 alias revert popd
@@ -1017,6 +1017,8 @@ alias cleanlog  ' cat \!^                                                       
       /select\s+top\s+30\s+uri\s+from\s+tseventdat/i and next;                                                                                                    \\
       /SELECT\s+\*\s+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(code\s+=/i and next;                                                                         \\
       /SELECT\s+TOP\s+30\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt/i and next;                                                           \\
+      /SELECT\s+uri,edDateTime,edEventType.+FROM\sTSEVENTDAT.+rownum\s<\s501/i and next;                                                                          \\
+      /SELECT\s+uri,edDateTime,edEventType.+FROM\sTSEVENTDAT WHERE uri IN\s+\( SELECT TOP 500 uri FROM TSEVENTDAT/i and next;                                     \\
       /SELECT\s+COUNT_BIG\(uri\)\s+ FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri/i and next;                                                     \\
       /SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)/i and next;                                                       \\
       /SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI/i and next;                                                     \\
