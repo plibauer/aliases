@@ -340,7 +340,12 @@ alias syncdry "rsync -avubn --size-only --exclude '.svn' --exclude '*~'"
 
 # Run TRIM programs
 
-alias bulk       "$trimdir/$defArchCSharp/$defBuild/BulkLoader.exe "
+set bulkloader = BulkLoader.exe
+if ($revision > 81) then
+    set bulkloader = TRIMBulkLoader.exe 
+endif
+
+alias bulk       "$trimdir/$defArchCSharp/$defBuild/$bulkloader"
 alias bulkloader bulk
 alias b          bulk -db $DBID
 alias origins    bulk -o "'*'" -action get -db $DBID
@@ -991,7 +996,7 @@ alias wglog  ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgro
       #print $log;                                                                                                         \\
       #next;                                                                                                               \\
       if($log =~ /                                                                                                         \\
-select\s+top\s+30\s+uri\s+from\s+tseventdat|                                                                               \\
+select\s+top\s+\d+\s+uri\s+from\s+tseventdat|                                                                               \\
 SELECT\s+\*\s+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(code\s+=|                                                    \\
 SELECT\s+TOP\s+30\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt|                                      \\
 SELECT\s+COUNT_BIG\(uri\)\s+ FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri|                                \\
