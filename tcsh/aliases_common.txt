@@ -187,6 +187,7 @@ alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace    "tracert"
 alias route    "route.exe"
 alias addtrim  "route add 15.0.0.0 MASK 255.0.0.0 \!^ METRIC 26"
+alias netstat  "NETSTAT.EXE"
 
 alias x11  "cd /c/cygwin/usr/X11R6/bin"
 #alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
@@ -326,6 +327,7 @@ alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($
 # ALM 
 alias alm        "perl $ALM_DB/ALMTool.pl --proxy $ALM_PROXY"
 alias almlib     alm libauer owner sub cycle release invest
+alias almshort   alm \!:1 owner sub cycle release invest -width 105
 alias almlibw    almlib state -width 105
 alias almlibauer alm libauer
 alias almschema  alm --schema
