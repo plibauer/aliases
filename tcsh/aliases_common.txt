@@ -327,7 +327,7 @@ alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($
 # ALM 
 alias alm        "perl $ALM_DB/ALMTool.pl --proxy $ALM_PROXY"
 alias almlib     alm libauer owner sub cycle release invest
-alias almshort   alm \!:1 owner sub cycle release invest -width 105
+alias almshort   alm owner sub cycle release invest -width 105 --user
 alias almlibw    almlib state -width 105
 alias almlibauer alm libauer
 alias almschema  alm --schema
