@@ -145,43 +145,44 @@ alias more less -R
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
 alias gocfg        "cd $trimcfgdir"
-
-alias goexe     "cd $trimdir/$defArch/$defBuild"
-alias gobin     goexe
-alias gocs      "cd $trimdir/$defArchCSharp/$defBuild"
-alias goany     gocs
-alias goanycpu  gocs
-alias gomsi     "cd $trimdir/msi/$defArch/en-us"
-alias gotest    "cd $trimdir/trim/test"
-alias goauto    "cd $trimdir/Automation"
-alias gosrc     "cd $trimdir/trim/src"
-alias gosln     "cd $trimdir/trim/sln"
-alias gotrim    "cd $trimdir/trim"
-alias gotrimlog "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
-alias goauto    "cd $trimdir/Automation"
-alias gobulk    "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
-alias goblk     gobulk
-alias gob       "cd $trimdir/trim/CSharp/BulkLoader"
-alias golog     "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
-alias gologs    golog
-alias goaudit   "cd $trimdir/$defArch/$defBuild/ServerData/$DBID/AuditLogs"
-alias gotrimdslog       "cd /c/Users/plibauer/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
-alias shlog  showlog
-alias gotmp    "cd /c/tmp"
-alias godox    "cd $trimdir/xtra/Doxygen/runDoxygen"
-alias gosmoke  "cd $trimdir/Automation/Smoketest"
-alias goperl   "cd $trimdir/trim/misc/Scripts/Perl"
-alias gop      "cd $PERL_BIN"
-alias gosetup  "cd $trimdir/trim/wix/Setup.exe"
-alias gowix    "cd $trimdir/trim/wix"
-alias gowixbin "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
-alias gowin    "cd /c/Users/plibauer"
-alias gowint   "cd /c/Users/plibauer.TRIM"
-alias gowork   "cd $WINHOME/Work"
-alias goworkh  "cd $WINHOME/Work/HPIT"
+alias goexe        "cd $trimdir/$defArch/$defBuild"
+alias gobin        goexe
+alias gocs         "cd $trimdir/$defArchCSharp/$defBuild"
+alias goany        gocs
+alias goanycpu     gocs
+alias gomsi        "cd $trimdir/msi/$defArch/en-us"
+alias gotest       "cd $trimdir/trim/test"
+alias goauto       "cd $trimdir/Automation"
+alias gosrc        "cd $trimdir/trim/src"
+alias gosln        "cd $trimdir/trim/sln"
+alias gotrim       "cd $trimdir/trim"
+alias gotrimlog    "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
+alias goauto       "cd $trimdir/Automation"
+alias gobulk       "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
+alias goblk        gobulk
+alias gob          "cd $trimdir/trim/CSharp/BulkLoader"
+alias golog        "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
+alias gologs       golog
+alias goaudit      "cd $trimdir/$defArch/$defBuild/ServerData/$DBID/AuditLogs"
+alias gotrimdslog  "cd /c/Users/plibauer/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
+alias shlog        showlog
+alias gotmp        "cd /c/tmp"
+alias godox        "cd $trimdir/xtra/Doxygen/runDoxygen"
+alias gosmoke      "cd $trimdir/Automation/Smoketest"
+alias goperl       "cd $trimdir/trim/misc/Scripts/Perl"
+alias gop          "cd $PERL_BIN"
+alias goalm        "cd $PERL_BIN/ALMPlugin"
+alias gosvn        "cd $PERL_BIN/svnLogProcessor"
+alias gosetup      "cd $trimdir/trim/wix/Setup.exe"
+alias gowix        "cd $trimdir/trim/wix"
+alias gowixbin     "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
+alias gowin        "cd /c/Users/plibauer"
+alias gowint       "cd /c/Users/plibauer.TRIM"
+alias gowork       "cd $WINHOME/Work"
+alias goworkh      "cd $WINHOME/Work/HPIT"
 alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
-alias godownloads "cd /c/Users/plibauer/Downloads"
-alias goroam  "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
+alias godownloads  "cd /c/Users/plibauer/Downloads"
+alias goroam       "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
 
 alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace    "tracert"
