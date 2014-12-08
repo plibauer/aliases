@@ -335,7 +335,9 @@ alias almlibauer          alm libauer
 alias almschema           alm --schema
 alias cr                  alm --cr
 alias almupdate           alm_data_convert --update all --verbose
+alias almupdatehome       alm_data_convert --update all --verbose --proxy home
 alias almsync             alm_data_convert --update all --verbose
+alias almsynchome         alm_data_convert --update all --verbose --proxy home
 #######################################################################################################################
 
 # RSYNC
