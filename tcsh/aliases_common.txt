@@ -691,6 +691,8 @@ set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$revision-$defArch-$defBuil
 set buildLogWix    = "${REPOS_ROOT}:/TEMP/WIX-$revision-$defArch-$defBuild.log"
 set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
 
+alias ramdisk  "$trimdir/trim/scripts/createRamDisk.cmd"
+
 alias bldlog    "tail -f $buildLog.build"
 alias bldlogcs  "tail -f $buildLogCSharp.build"
 alias bldlogwix "tail -f $buildLogWix"
