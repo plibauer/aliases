@@ -570,7 +570,7 @@ alias gitforceupdate "git fetch --all; git reset --hard origin/master"
 alias gitcommitsome  "git add -i"
 alias gitremove      "git rm"
 alias gitundo        "git reset HEAD"
-alias gitsetproxy    "setenv HTTP_PROXY http://proxy.aus.hp.com:8080; setenv HTTPS_PROXY https://proxy.aus.hp.com:8080"
+alias gitsetproxy    "setenv HTTP_PROXY $PROXY; setenv HTTPS_PROXY $HTTPS_PROXY"
 alias gitunsetproxy  "setenv HTTP_PROXY;setenv HTTPS_PROXY "
 alias gitcheckproxy  "setenv | grep PROXY"
 
