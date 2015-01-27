@@ -551,6 +551,7 @@ alias rdesktop		rdp
 ####################################################################
 ### GIT commands
 
+alias gogit          "cd ~/aliases"
 alias gitpush        "git push origin master"
 alias gitnewrepo     "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
 alias gitcommit      "git commit -a"
@@ -573,6 +574,8 @@ alias gitundo        "git reset HEAD"
 alias gitsetproxy    "setenv HTTP_PROXY $PROXY; setenv HTTPS_PROXY $HTTPS_PROXY"
 alias gitunsetproxy  "setenv HTTP_PROXY;setenv HTTPS_PROXY "
 alias gitcheckproxy  "setenv | grep PROXY"
+alias gitconfigproxy "gogit; git config --global http.proxy $PROXY; git config --global https.proxy $HTTPS_PROXY"
+alias gitconfignoproxy "gogit; git config --global --unset http.proxy; git config --global --unset https.proxy"
 
 # If a file has been deleted locally, you can restore it using the following and providing the filename as the argument
 alias gitrestore  "git checkout HEAD \!^"
