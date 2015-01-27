@@ -175,7 +175,7 @@ alias goalm        "cd $PERL_BIN/ALMPlugin"
 alias gosvn        "cd $PERL_BIN/svnLogProcessor"
 alias gosetup      "cd $trimdir/trim/wix/Setup.exe"
 alias gowix        "cd $trimdir/trim/wix"
-alias gowixbin     "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
+alias gowixbin     "cd /c/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.8/bin"
 alias gowin        "cd /c/Users/plibauer"
 alias gowint       "cd /c/Users/plibauer.TRIM"
 alias gowork       "cd $WINHOME/Work"
@@ -987,7 +987,8 @@ alias wglog_partial ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIM
       #print $log;                                                                                                         \\
       #next;                                                                                                               \\
       if($log =~ /                                                                                                         \\
-select\s+top\s+30\s+uri\s+from\s+tseventdat                                                                                \\
+select\s+top\s+30\s+uri\s+from\s+tseventdat|                                                                               \\
+select\s+uri,code,value\s+from\s+tstwrsys                                                                                  \\
         /ix){                                                                                                              \\
          next;                                                                                                             \\
       }                                                                                                                    \\
@@ -1008,17 +1009,19 @@ alias wglog  ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgro
       #print $log;                                                                                                         \\
       #next;                                                                                                               \\
       if($log =~ /                                                                                                         \\
-select\s+top\s+\d+\s+uri\s+from\s+tseventdat|                                                                               \\
+select\s+top\s+\d+\s+uri\s+from\s+tseventdat|                                                                              \\
 SELECT\s+\*\s+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(code\s+=|                                                    \\
+select\s+uri,code,value\s+from\s+tstwrsys|                                                                                 \\
 SELECT\s+TOP\s+30\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt|                                      \\
 SELECT\s+COUNT_BIG\(uri\)\s+ FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri|                                \\
 SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)|                                  \\
 SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI|                                \\
 UPDATE\s+TSTWRSYS\s+SET\s+value\s+=\s+|                                                                                    \\
 SELECT\s+\*\s+ FROM\s+TSTASK\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tkTriggerDate|                                                \\
-select\s+uri\s+from\s+tsrecord\s+with\s+\(nolock\)\s+where\s+\(rcfileplanuri|                                              \\
-SELECT\s+TOP\s+20\s+A0.uri,A0.wesEscalatedOn,A0.wesEscalatedToUri,A0.wesActivityUri,A0.wesWaitSecs,A1.wacDueDate\s+FROM\s+TSWKESCALA|         \\
-SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rqDateCreated\s+BETWEEN \\
+select\s+uri\s+from\s+tsrecord\s+with\s*\(nolock\)\s*where\s*\(\s*rcfileplanuri|                                           \\
+SELECT\s+TOP\s+20\s+A0.uri,A0.wesEscalatedOn,A0.wesEscalatedToUri,A0.wesActivityUri,A0.wesWaitSecs,A1.wacDueDate\s+FROM\s+TSWKESCALA|                                                      \\
+SELECT\s+TOP\s+30\s+uri,tdoDesc,tdoAssigneeUri,tdoDueBy,tdoDoneAt,tdoPriority,tdoCreatedBy,tdoDateCreated,tdoEmailNotify,tdoEmailedOn,sysLastUpdated,sysLastUpdatedBy\s+FROM\s+TSTODOITEM| \\
+SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(\s*rqDateCreated\s+BETWEEN                                           \\
         /ix){                                                                                                              \\
          next;                                                                                                             \\
       }                                                                                                                    \\
