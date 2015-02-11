@@ -329,8 +329,10 @@ alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($
 alias alm                 "perl $ALM_DB/ALMTool.pl --proxy $PROXY"
 alias alm_data_convert    "perl $ALM_DB/data_convert.pl --proxy $PROXY"
 alias almlib              alm libauer owner submit cycle reserved team test found applies development state:\!\"closed\|duplicate\"
+alias almlibactive        alm libauer owner submit cycle reserved team test found applies development state:\!\"closed\|duplicate\|fixed\"
 alias almshort            alm owner sub cycle release invest -width 105 --user
-alias almlibw             almlib state -width 105
+alias almlibw             almlib -width 105
+alias almlibwa            almlibactive  -width 105
 alias almlibauer          alm libauer
 alias almschema           alm --schema
 alias cr                  alm --cr
