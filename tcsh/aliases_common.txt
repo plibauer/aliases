@@ -606,7 +606,7 @@ alias http	httplocal
 alias http3	"cd ~; python -m http.server"
 
 # Edit a file with emacs and detach
-alias emacs	"emacs \!^ &"
+alias emacsbackground	"emacs \!^ &"
 
 # Change the mount prefix if required
 alias mountcygwin	"mount -s --change-cygdrive-prefix /"
