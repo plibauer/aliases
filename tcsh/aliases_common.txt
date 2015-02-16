@@ -248,7 +248,7 @@ alias svn            "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
 set trimbuild      = $trimdir/build/build
 set trimdoc        = $trimdir/doc/doc/DocPub
 
-alias svnup          "svn update $trimdir"
+alias svnup          "svn update $trimdir; date "
 #alias svnstatus      "(svn info $trimdir; svn info $trimdoc; svn info $trimbuild) | perl -ne 'print if /^Path|^URL:|^\n/;' "
 alias svnstatus      "svn info $trimdir | perl -ne 'print if /^Path|^URL:|^\n/;' "
 alias svnstatusfull  "svn info $trimdir | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
