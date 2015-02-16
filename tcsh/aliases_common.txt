@@ -704,7 +704,7 @@ alias bldlog    "tail -f $buildLog.build"
 alias bldlogcs  "tail -f $buildLogCSharp.build"
 alias bldlogwix "tail -f $buildLogWix"
 
-alias bldsln '  echo $logSeparator;                                                                                        \\
+alias bldsln '  echo $logSeparator; date;                                                                                  \\
    echo -n "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build" \\
  | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
  | /bin/perl -e ' "' "'                                                                                                    \\
@@ -742,7 +742,7 @@ alias bldsln '  echo $logSeparator;                                             
       }                                                                                                                    \\
  '"'"
 
-alias clnsln '    echo $logSeparator;                                                                                      \\
+alias clnsln '    echo $logSeparator; date;                                                                                \\
     echo -n "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.clean"\\
  | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
  | /bin/perl -e ' "' "'                                                                                                    \\
@@ -778,7 +778,7 @@ alias clnsln '    echo $logSeparator;                                           
     }                                                                                                                      \\
  '" '"
 
-alias bldcsharp 'echo $logSeparator;                                                                                       \\
+alias bldcsharp 'echo $logSeparator; date;                                                                                  \\
     echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.build"                                    \\
  | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
  | /bin/perl -e ' "' "'                                                                                                    \\
@@ -853,7 +853,7 @@ alias clncsharp 'echo $logSeparator;                                            
     }                                                                                                                      \\
  '"'"
 
-alias bldwix 'echo $logSeparator;                                                                                          \\
+alias bldwix 'echo $logSeparator; date;                                                                                    \\
     echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix"                                             \\
  | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
  | /bin/perl -e ' "' "'                                                                                                    \\
