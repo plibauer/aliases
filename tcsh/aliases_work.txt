@@ -16,6 +16,7 @@ alias gowikij         "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer"
 alias gowikibackup    "cd /d/backup/RDWiki/data/pages/wiki/paul_libauer"
 alias goproj          "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects"
 alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
+alias vijournal       "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journal.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journal.txt"
 
 alias grepjd          ' ls //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journals/*/*                                \\
 | /bin/perl -e '"'"'                                                                                                    \\

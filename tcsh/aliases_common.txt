@@ -145,43 +145,44 @@ alias more less -R
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
 alias gocfg        "cd $trimcfgdir"
-
-alias goexe     "cd $trimdir/$defArch/$defBuild"
-alias gobin     goexe
-alias gocs      "cd $trimdir/$defArchCSharp/$defBuild"
-alias goany     gocs
-alias goanycpu  gocs
-alias gomsi     "cd $trimdir/msi/$defArch/en-us"
-alias gotest    "cd $trimdir/trim/test"
-alias goauto    "cd $trimdir/Automation"
-alias gosrc     "cd $trimdir/trim/src"
-alias gosln     "cd $trimdir/trim/sln"
-alias gotrim    "cd $trimdir/trim"
-alias gotrimlog "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
-alias goauto    "cd $trimdir/Automation"
-alias gobulk    "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
-alias goblk     gobulk
-alias gob       "cd $trimdir/trim/CSharp/BulkLoader"
-alias golog     "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
-alias gologs    golog
-alias goaudit   "cd $trimdir/$defArch/$defBuild/ServerData/$DBID/AuditLogs"
-alias gotrimdslog       "cd /c/Users/plibauer/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
-alias shlog  showlog
-alias gotmp    "cd /c/tmp"
-alias godox    "cd $trimdir/xtra/Doxygen/runDoxygen"
-alias gosmoke  "cd $trimdir/Automation/Smoketest"
-alias goperl   "cd $trimdir/trim/misc/Scripts/Perl"
-alias gop      "cd $PERL_BIN"
-alias gosetup  "cd $trimdir/trim/wix/Setup.exe"
-alias gowix    "cd $trimdir/trim/wix"
-alias gowixbin "cd /c/Program\ Files\ \(x86\)/Windows\ Installer\ XML\ v3/bin"
-alias gowin    "cd /c/Users/plibauer"
-alias gowint   "cd /c/Users/plibauer.TRIM"
-alias gowork   "cd $WINHOME/Work"
-alias goworkh  "cd $WINHOME/Work/HPIT"
+alias goexe        "cd $trimdir/$defArch/$defBuild"
+alias gobin        goexe
+alias gocs         "cd $trimdir/$defArchCSharp/$defBuild"
+alias goany        gocs
+alias goanycpu     gocs
+alias gomsi        "cd $trimdir/msi/$defArch/en-us"
+alias gotest       "cd $trimdir/trim/test"
+alias goauto       "cd $trimdir/Automation"
+alias gosrc        "cd $trimdir/trim/src"
+alias gosln        "cd $trimdir/trim/sln"
+alias gotrim       "cd $trimdir/trim"
+alias gotrimlog    "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
+alias goauto       "cd $trimdir/Automation"
+alias gobulk       "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
+alias goblk        gobulk
+alias gob          "cd $trimdir/trim/CSharp/BulkLoader"
+alias golog        "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
+alias gologs       golog
+alias goaudit      "cd $trimdir/$defArch/$defBuild/ServerData/$DBID/AuditLogs"
+alias gotrimdslog  "cd /c/Users/plibauer/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
+alias shlog        showlog
+alias gotmp        "cd /c/tmp"
+alias godox        "cd $trimdir/xtra/Doxygen/runDoxygen"
+alias gosmoke      "cd $trimdir/Automation/Smoketest"
+alias goperl       "cd $trimdir/trim/misc/Scripts/Perl"
+alias gop          "cd $PERL_BIN"
+alias goalm        "cd $PERL_BIN/ALMPlugin"
+alias gosvn        "cd $PERL_BIN/svnLogProcessor"
+alias gosetup      "cd $trimdir/trim/wix/Setup.exe"
+alias gowix        "cd $trimdir/trim/wix"
+alias gowixbin     "cd /c/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.8/bin"
+alias gowin        "cd /c/Users/plibauer"
+alias gowint       "cd /c/Users/plibauer.TRIM"
+alias gowork       "cd $WINHOME/Work"
+alias goworkh      "cd $WINHOME/Work/HPIT"
 alias goserverdata "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
-alias godownloads "cd /c/Users/plibauer/Downloads"
-alias goroam  "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
+alias godownloads  "cd /c/Users/plibauer/Downloads"
+alias goroam       "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
 
 alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace    "tracert"
@@ -325,14 +326,20 @@ alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($
 #######################################################################################################################
 
 # ALM 
-alias alm        "perl $ALM_DB/ALMTool.pl --proxy $ALM_PROXY"
-alias almlib     alm libauer owner sub cycle release invest
-alias almshort   alm owner sub cycle release invest -width 105 --user
-alias almlibw    almlib state -width 105
-alias almlibauer alm libauer
-alias almschema  alm --schema
-alias cr         alm --cr
-
+alias alm                 "perl $ALM_DB/ALMTool.pl --proxy $PROXY"
+alias alm_data_convert    "perl $ALM_DB/data_convert.pl --proxy $PROXY"
+alias almlib              alm libauer owner submit cycle reserved team test found applies development state:\!\"closed\|duplicate\"
+alias almlibactive        alm libauer owner submit cycle reserved team test found applies development state:\!\"closed\|duplicate\|fixed\"
+alias almshort            alm owner sub cycle release invest -width 105 --user
+alias almlibw             almlib -width 105
+alias almlibwa            almlibactive  -width 105
+alias almlibauer          alm libauer
+alias almschema           alm --schema
+alias cr                  alm --cr
+alias almupdate           alm_data_convert --update all --verbose
+alias almupdatehome       alm_data_convert --update all --verbose --proxy home
+alias almsync             alm_data_convert --update all --verbose
+alias almsynchome         alm_data_convert --update all --verbose --proxy home
 #######################################################################################################################
 
 # RSYNC
@@ -546,6 +553,7 @@ alias rdesktop		rdp
 ####################################################################
 ### GIT commands
 
+alias gogit          "cd ~/aliases"
 alias gitpush        "git push origin master"
 alias gitnewrepo     "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
 alias gitcommit      "git commit -a"
@@ -565,9 +573,11 @@ alias gitforceupdate "git fetch --all; git reset --hard origin/master"
 alias gitcommitsome  "git add -i"
 alias gitremove      "git rm"
 alias gitundo        "git reset HEAD"
-alias gitsetproxy    "setenv HTTP_PROXY http://proxy.aus.hp.com:8080; setenv HTTPS_PROXY https://proxy.aus.hp.com:8080"
+alias gitsetproxy    "setenv HTTP_PROXY $PROXY; setenv HTTPS_PROXY $HTTPS_PROXY"
 alias gitunsetproxy  "setenv HTTP_PROXY;setenv HTTPS_PROXY "
 alias gitcheckproxy  "setenv | grep PROXY"
+alias gitconfigproxy "gogit; git config --global http.proxy $PROXY; git config --global https.proxy $HTTPS_PROXY"
+alias gitconfignoproxy "gogit; git config --global --unset http.proxy; git config --global --unset https.proxy"
 
 # If a file has been deleted locally, you can restore it using the following and providing the filename as the argument
 alias gitrestore  "git checkout HEAD \!^"
@@ -685,6 +695,10 @@ set buildLog       = "${REPOS_ROOT}:/TEMP/TRIM-$revision-$defArch-$defBuild.log"
 set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$revision-$defArch-$defBuild.log"
 set buildLogWix    = "${REPOS_ROOT}:/TEMP/WIX-$revision-$defArch-$defBuild.log"
 set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
+
+alias ramdisk         "$trimdir/trim/scripts/createRamDisk.cmd"
+alias ramdiskrelease  "$trimdir/trim/scripts/createRamDisk.release.cmd"
+alias ramdiskr        ramdiskrelease
 
 alias bldlog    "tail -f $buildLog.build"
 alias bldlogcs  "tail -f $buildLogCSharp.build"
@@ -977,7 +991,8 @@ alias wglog_partial ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIM
       #print $log;                                                                                                         \\
       #next;                                                                                                               \\
       if($log =~ /                                                                                                         \\
-select\s+top\s+30\s+uri\s+from\s+tseventdat                                                                                \\
+select\s+top\s+30\s+uri\s+from\s+tseventdat|                                                                               \\
+select\s+uri,code,value\s+from\s+tstwrsys                                                                                  \\
         /ix){                                                                                                              \\
          next;                                                                                                             \\
       }                                                                                                                    \\
@@ -998,17 +1013,19 @@ alias wglog  ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgro
       #print $log;                                                                                                         \\
       #next;                                                                                                               \\
       if($log =~ /                                                                                                         \\
-select\s+top\s+\d+\s+uri\s+from\s+tseventdat|                                                                               \\
+select\s+top\s+\d+\s+uri\s+from\s+tseventdat|                                                                              \\
 SELECT\s+\*\s+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(code\s+=|                                                    \\
+select\s+uri,code,value\s+from\s+tstwrsys|                                                                                 \\
 SELECT\s+TOP\s+30\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt|                                      \\
 SELECT\s+COUNT_BIG\(uri\)\s+ FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri|                                \\
 SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)|                                  \\
 SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI|                                \\
 UPDATE\s+TSTWRSYS\s+SET\s+value\s+=\s+|                                                                                    \\
 SELECT\s+\*\s+ FROM\s+TSTASK\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tkTriggerDate|                                                \\
-select\s+uri\s+from\s+tsrecord\s+with\s+\(nolock\)\s+where\s+\(rcfileplanuri|                                              \\
-SELECT\s+TOP\s+20\s+A0.uri,A0.wesEscalatedOn,A0.wesEscalatedToUri,A0.wesActivityUri,A0.wesWaitSecs,A1.wacDueDate\s+FROM\s+TSWKESCALA|         \\
-SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rqDateCreated\s+BETWEEN \\
+select\s+uri\s+from\s+tsrecord\s+with\s*\(nolock\)\s*where\s*\(\s*rcfileplanuri|                                           \\
+SELECT\s+TOP\s+20\s+A0.uri,A0.wesEscalatedOn,A0.wesEscalatedToUri,A0.wesActivityUri,A0.wesWaitSecs,A1.wacDueDate\s+FROM\s+TSWKESCALA|                                                      \\
+SELECT\s+TOP\s+30\s+uri,tdoDesc,tdoAssigneeUri,tdoDueBy,tdoDoneAt,tdoPriority,tdoCreatedBy,tdoDateCreated,tdoEmailNotify,tdoEmailedOn,sysLastUpdated,sysLastUpdatedBy\s+FROM\s+TSTODOITEM| \\
+SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(\s*rqDateCreated\s+BETWEEN                                           \\
         /ix){                                                                                                              \\
          next;                                                                                                             \\
       }                                                                                                                    \\

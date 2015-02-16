@@ -13,7 +13,8 @@
 #set DEVENV_ROOT = "C:/Program Files (x86)"
 #set SVN_LOG_DB  = C:/svnLogDatabase
 #set ALM_DB      = C:/ALMDatabase
-#set ALM_PROXY   = http://proxy.aus.hp.com:8080
+#set PROXY       = http://proxy-sno.aus.hp.com:8080
+#set HTTPS_PROXY = https://proxy-sno.aus.hp.com:8080
 
 # Home Machine 
 #set REPOS_ROOT  = c
@@ -27,7 +28,8 @@
 #set DEVENV_ROOT = "C:/Program Files (x86)""
 #set SVN_LOG_DB  = C:/svnLogDatabase
 #set ALM_DB      = C:/ALMDatabase
-#set ALM_PROXY   = http://127.0.0.1:8080
+#set PROXY       = http://proxy-sno.aus.hp.com:8080
+#set HTTPS_PROXY = https://proxy-sno.aus.hp.com:8080
 
 # Laptop
 #set REPOS_ROOT  = c
@@ -41,4 +43,5 @@
 #set DEVENV_ROOT = "D:/Program Files (x86)/"
 #set SVN_LOG_DB  = C:/svnLogDatabase
 #set ALM_DB      = C:/ALMDatabase
-#set ALM_PROXY   = http://proxy.aus.hp.com:8080
+#set PROXY       = http://proxy-sno.aus.hp.com:8080
+#set HTTPS_PROXY = https://proxy-sno.aus.hp.com:8080
