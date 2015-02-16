@@ -704,7 +704,7 @@ alias bldlog    "tail -f $buildLog.build"
 alias bldlogcs  "tail -f $buildLogCSharp.build"
 alias bldlogwix "tail -f $buildLogWix"
 
-alias bldsln '  echo $logSeparator; date;                                                                                  \\
+alias buildsolution '  echo $logSeparator; date;                                                                           \\
    echo -n "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build" \\
  | /bin/perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
  | /bin/perl -e ' "' "'                                                                                                    \\
@@ -741,6 +741,7 @@ alias bldsln '  echo $logSeparator; date;                                       
         }                                                                                                                  \\
       }                                                                                                                    \\
  '"'"
+alias bldsln "buildsolution; date"
 
 alias clnsln '    echo $logSeparator; date;                                                                                \\
     echo -n "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.clean"\\
