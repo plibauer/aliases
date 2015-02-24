@@ -476,10 +476,10 @@ set SQLITE_ALM=$ALM_DB/database/ALM.db
 alias sqlite            "sqlite3.exe"
 alias sqliteq           "sqlite3.exe $SQLITE_DB"
 alias almsqlite         "sqlite3.exe $SQLITE_ALM"
-alias crmatch           almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'0\'\"
-alias crmatchdesc       almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'1\'\"
-alias almmatch          crmatch
-alias almmatchdesc      crmatchdesc
+alias crmatch           almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'0\' ORDER BY CAST\(id AS INTEGER\)\"
+alias crmatchdesc       almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'1\' ORDER BY CAST\(id AS INTEGER\)\"
+alias almmatch          "crmatch \!^ | uniq"
+alias almmatchdesc      "crmatchdesc \!^ | uniq"
 alias query		sqliteq
 alias sqlitedbopen      cygstart cmd.exe /c sqlite3.exe
 alias sqlitedb          cygstart cmd.exe /c sqlite3.exe $SQLITE_DB 
