@@ -336,10 +336,10 @@ alias almlibwa            almlibactive  -width 105
 alias almlibauer          alm libauer
 alias almschema           alm --schema
 alias cr                  alm --cr
-alias almupdate           alm_data_convert --update all --verbose
-alias almupdatehome       alm_data_convert --update all --verbose --proxy home
-alias almsync             alm_data_convert --update all --verbose
-alias almsynchome         alm_data_convert --update all --verbose --proxy home
+alias almupdate           alm_data_convert --update --verbose
+alias almupdatehome       alm_data_convert --update --verbose --proxy home
+alias almsync             alm_data_convert --update --verbose
+alias almsynchome         alm_data_convert --update --verbose --proxy home
 #######################################################################################################################
 
 # RSYNC
@@ -366,6 +366,8 @@ alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
 alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
 alias trimhelp   "hh $trimdir/doc/doc/DocPub/TRIM.chm &"
 alias wgs        "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe &"
+alias wgsnoevent "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe --noEvent &"
+alias trimevent  "$trimdir/$defArch/$defBuild/TRIMEvent --dbid $DBID --wgsId 001 --wgsPort 1137 &"
 alias trimds     "$trimdir/$defArchCSharp/$defBuild/TrimDS.exe &"
 alias killtrim   "$trimdir/Automation/SmokeTest/killtrim.exe"
 alias nuke       "gosln;./NukeSolutions.bat"
