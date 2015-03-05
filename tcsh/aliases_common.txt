@@ -327,6 +327,9 @@ alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($
 
 # ALM 
 alias alm                 "perl $ALM_DB/ALMTool.pl --proxy $PROXY"
+alias almmatch            "alm --match \!^ | grep summary"
+alias almmatchverbose     alm --match 
+alias almmatchv           almmatchverbose 
 alias alm_data_convert    "perl $ALM_DB/data_convert.pl --proxy $PROXY"
 alias almlib              alm libauer owner submit cycle reserved team test found applies development state:\!\"closed\|duplicate\"
 alias almlibactive        alm libauer owner submit cycle reserved team test found applies development state:\!\"closed\|duplicate\|fixed\"
@@ -480,8 +483,6 @@ alias sqliteq           "sqlite3.exe $SQLITE_DB"
 alias almsqlite         "sqlite3.exe $SQLITE_ALM"
 alias crmatch           almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'0\' ORDER BY CAST\(id AS INTEGER\)\"
 alias crmatchdesc       almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'1\' ORDER BY CAST\(id AS INTEGER\)\"
-alias almmatch          "crmatch \!^ | uniq"
-alias almmatchdesc      "crmatchdesc \!^ | uniq"
 alias query		sqliteq
 alias sqlitedbopen      cygstart cmd.exe /c sqlite3.exe
 alias sqlitedb          cygstart cmd.exe /c sqlite3.exe $SQLITE_DB 
