@@ -331,8 +331,8 @@ alias almmatch            "alm --match \!^ | grep summary"
 alias almmatchverbose     alm --match 
 alias almmatchv           almmatchverbose 
 alias alm_data_convert    "perl $ALM_DB/data_convert.pl --proxy $PROXY"
-alias almlib              alm libauer owner submit cycle reserved team test found applies development state:\!\"closed\|duplicate\"
-alias almlibactive        alm libauer owner submit cycle reserved team test found applies development state:\!\"closed\|duplicate\|fixed\"
+alias almlib              alm libauer owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\"
+alias almlibactive        alm libauer owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\|fixed\"
 alias almshort            alm owner sub cycle release invest -width 105 --user
 alias almlibw             almlib -width 105
 alias almlibwa            almlibactive  -width 105
