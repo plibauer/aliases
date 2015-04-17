@@ -176,6 +176,7 @@ alias gosvn        "cd $SVN_LOG_DB"
 alias gosetup      "cd $trimdir/trim/wix/Setup.exe"
 alias gowix        "cd $trimdir/trim/wix"
 alias gowixbin     "cd /c/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.8/bin"
+alias gopatch      "cd $trimdir/trim/wix/PatchGenerator"
 alias gowin        "cd /c/Users/plibauer"
 alias gowint       "cd /c/Users/plibauer.TRIM"
 alias gowork       "cd $WINHOME/Work"
@@ -376,6 +377,9 @@ alias killtrim   "$trimdir/Automation/SmokeTest/killtrim.exe"
 alias nuke       "gosln;./NukeSolutions.bat"
 alias gensln     "gosln;./GenerateSolutions.bat"
 alias nukeandgen "nuke;gensln"
+
+alias patchgen   "$trimdir/$defArchCSharp/$defBuild/PatchGenerator.exe"
+alias patch      patchgen
 
 # Build the correct solution
 
