@@ -15,6 +15,7 @@
 #set ALM_DB      = C:/ALMDatabase
 #set PROXY       = http://proxy-sno.aus.hp.com:8080
 #set HTTPS_PROXY = https://proxy-sno.aus.hp.com:8080
+#set WIX_DIR     = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.8"
 
 # Home Machine 
 #set REPOS_ROOT  = c
@@ -30,6 +31,7 @@
 #set ALM_DB      = C:/ALMDatabase
 #set PROXY       = http://proxy-sno.aus.hp.com:8080
 #set HTTPS_PROXY = https://proxy-sno.aus.hp.com:8080
+#set WIX_DIR     = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.8"
 
 # Laptop
 #set REPOS_ROOT  = c
@@ -45,3 +47,4 @@
 #set ALM_DB      = C:/ALMDatabase
 #set PROXY       = http://proxy-sno.aus.hp.com:8080
 #set HTTPS_PROXY = https://proxy-sno.aus.hp.com:8080
+#set WIX_DIR     = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.8"
