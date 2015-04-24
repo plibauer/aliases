@@ -102,6 +102,15 @@ alias rdwiki    "Robocopy.exe //twrwebsvr/NewWiki/ E:\\backup\\RDWiki /MIR /R:0"
 #alias vis             "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr.txt"
 #alias emacsolr        "winemacs z:/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
 
+#-----------------------------------------------------------
+
+# ssh into FEDORA linux VM
+set FEDORA = 15.146.221.56
+
+alias fedora	"ssh -l paul $FEDORA"
+
+#-----------------------------------------------------------
+
 # ssh into Ubuntu
 #set ubuntu = 15.146.221.194
 
