@@ -65,6 +65,7 @@ alias whichenv  "echo 'TRIMDIR   = $trimdir';          \\
                  echo 'IDOLDB    = $idolDb';           \\
                  echo 'SVNLOGDB  = $SVN_LOG_DB';       \\
 "
+alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 
 set autocorrect=1
