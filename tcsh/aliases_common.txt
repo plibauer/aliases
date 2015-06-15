@@ -256,6 +256,7 @@ alias svnstatus      "svn info $trimdir | perl -ne 'print if /^Path|^URL:|^\n/;'
 alias svnstatusfull  "svn info $trimdir | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
 alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
 alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
+alias svnrepoinfo    'cat $SVN_MIRROR_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
 alias logproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
 alias logrev         "logproc --rev"
 alias svnrev         logrev
