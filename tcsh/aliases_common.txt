@@ -280,6 +280,7 @@ alias match          logproc --no_case --limit 30 --match
 alias buildlabel     "match 'label.*\!^'"
 alias loga           "logproc --no_case --author \!:1 --match \!:2" 
 alias logar          "logproc --no_case --author \!:1 --match \!:2 --revision \!:3" 
+alias logalib        "logproc --no_case --author libauer --match \!:1"
 alias logacs         "logproc --author \!:1 --match \!:2"
 alias logav          "logproc --verbose --author \!:1 --match \!:2"
 alias logavi         "logproc --no_case --verbose --author \!:1 --match \!:2"
@@ -618,7 +619,7 @@ alias http	httplocal
 alias http3	"cd ~; python -m http.server"
 
 # Edit a file with emacs and detach
-alias emacsbackground	"emacs \!^ &"
+alias emacs	"emacs \!^ &"
 
 # Change the mount prefix if required
 alias mountcygwin	"mount -s --change-cygdrive-prefix /"
