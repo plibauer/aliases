@@ -57,6 +57,7 @@ alias src73     "source $alias_dir/73environment"
 alias src80     "source $alias_dir/80environment"
 alias src81     "source $alias_dir/81environment"
 alias src82     "source $alias_dir/82environment"
+alias src83     "source $alias_dir/83environment"
 alias whichenv  "echo 'TRIMDIR   = $trimdir';          \\
                  echo 'ARCH      = $defArch';          \\
                  echo 'BUILD     = $defBuild';         \\
