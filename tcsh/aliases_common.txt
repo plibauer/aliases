@@ -397,6 +397,7 @@ alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBu
 # Run populate database
 alias popdb "cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
 alias reloadpopdb "popdb --load"
+alias popdboracle popdb --db oracle64
 
 alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
 alias getpath "perl $PERL_BIN/getPath.pl"
