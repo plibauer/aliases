@@ -407,7 +407,7 @@ alias uptime  "systeminfo | grep -i 'boot time'"
 
 
 # Compile a script to an executable using Strawberry Perl's version of pp
-alias perlcompile   "/c/strawberry/perl/bin/pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o "
+alias perlcompile   "pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o "
 alias sperl         "/c/strawberry/perl/bin/perl"
 
 alias xmlconf       "perl $PERL_BIN/xmlconfig.pl --file "
