@@ -362,7 +362,7 @@ alias alm_data_convert    "perl $ALM_DB/data_convert.pl --proxy $PROXY"
 alias almlib              alm libauer owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\"
 alias almlibactive        alm libauer owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\|fixed\"
 alias almlibactivex       alm libauer \# severity issue_type investigation applies owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\|fixed\" 
-alias almlog		  'almlibactivex | perl -ne ' "'" ' /^(\d+)\s+\w+\s+(.+)/ and do print "CR$1 : $2\n"  '  "'" 
+alias almlog		  'almlibactivex -width 500 | perl -ne ' "'" ' /^(\d+)\s+\w+\s+(.+)/ and do print "CR$1 : $2\n"  '  "'" 
 alias almshort            alm owner sub cycle release invest -width 105 --user
 alias almlibw             almlib -width 105
 alias almlibwa            almlibactive  -width 105
