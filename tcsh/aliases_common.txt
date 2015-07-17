@@ -1,3 +1,10 @@
+#
+#  To use complex perl code involving pattern matching and $ variables, use the following template;
+#
+#      alias x  ' echo "some stuff here" | perl -ne ' "'" ' /(stuff)/ and do { print "$1\n" }  ' "'"
+#      perl -ne ' "'" '   ...   ' "'"
+#
+
 set prompt="%B%n %~>"
 set autologout
 set alias_file = $alias_dir/aliases_common.txt
@@ -225,6 +232,32 @@ alias viewprop      'view $trimdir/trim/src/DD/properties.txt'
 alias propids       'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | grep -i '
 alias database      'cat $trimdir/trim/src/DD/DATABASE.TXT | grep -i '
 alias viewdb        'view $trimdir/trim/src/DD/DATABASE.TXT'
+alias trimtables    'cat $trimdir/trim/src/DD/DATABASE.TXT                    \\
+| perl -e ' "'" '                                                             \\
+@in = <>;                                                                     \\
+my %tables;                                                                   \\
+my $max = 10;                                                                 \\
+for(@in) {                                                                    \\
+  chomp;                                                                      \\
+  s/nouri//gi;                                                                \\
+  s/basic(plusloc)*\s+\[/[/gi;                                                \\
+  s/sharedbobtype\(\w+\)//i;                                                  \\
+  s/sharedtableid\(\w+\)//i;                                                  \\
+  s/shared\([\w,\s]+\)//i;                                                    \\
+  s/obsoleteafter\(\d+\)//i;                                                  \\
+  s/^(table\s+[\d,\s]+)iot /$1/i;                                             \\
+  /^table\s+[\d,\s]+(\w+)[\s\d\%]+\[(.+)\]/ and do {                          \\
+     $tables{uc $1} = $2;                                                     \\
+     $l = length $1;                                                          \\
+     $max = ($l > $max) ? $l : $max;                                          \\
+  }                                                                           \\
+}                                                                             \\
+for(sort keys %tables) {                                                      \\
+   $sp = $max - length($_);                                                   \\
+   print $_.(" " x $sp).": ".$tables{$_}."\n";                                \\
+}                                                                             \\
+' "'" 
+alias shorttables 'trimtables | perl -ne  ' "'" ' /^(\w{1,8})\w*\s*:(.+)$/ and do { $sp = 8 - length($1); print  "TS$1".(" " x $sp)." :$2\n" }  ' "'" 
 
 alias dce  ContentExtraction
 alias dox  "/c/Program\ Files\ \(x86\)/doxygen/bin/doxygen"
