@@ -230,6 +230,29 @@ alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
 alias properties    'cat $trimdir/trim/src/DD/properties.txt | grep -i '
 alias viewprop      'view $trimdir/trim/src/DD/properties.txt'
 alias propids       'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | grep -i '
+
+alias enums         'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs  \\
+| perl -e ' "'" '                                                             \\
+while(<>){                                                                    \\
+  if(/^\s*(\w+)\s*=\s*(\d+)\s*,/){                                            \\
+    if($ids{$2}){                                                             \\
+       print "DUPLICATE? => $2\n";                                            \\
+       next;                                                                  \\
+    }                                                                         \\
+    $ids{$2}=$1;                                                              \\
+  }                                                                           \\
+}                                                                             \\
+my $max = (reverse sort {$a<=>$b} keys %ids)[0];                              \\
+for my $i (0 .. $max) {                                                       \\
+  if($ids{$i}){                                                               \\
+    print "$i\t".$ids{$i}."\n";                                               \\
+  }                                                                           \\
+  else {                                                                      \\
+    print "$i\n";                                                             \\
+  }                                                                           \\
+}                                                                             \\
+' "'"
+
 alias database      'cat $trimdir/trim/src/DD/DATABASE.TXT | grep -i '
 alias viewdb        'view $trimdir/trim/src/DD/DATABASE.TXT'
 alias trimtables    'cat $trimdir/trim/src/DD/DATABASE.TXT                    \\
