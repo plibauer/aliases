@@ -281,6 +281,7 @@ for(sort keys %tables) {                                                      \\
 }                                                                             \\
 ' "'" 
 alias shorttables 'trimtables | perl -ne  ' "'" ' /^(\w{1,8})\w*\s*:(.+)$/ and do { $sp = 8 - length($1); print  "TS$1".(" " x $sp)." :$2\n" }  ' "'" 
+alias tableinfo trimtables
 
 alias dce  ContentExtraction
 alias dox  "/c/Program\ Files\ \(x86\)/doxygen/bin/doxygen"
