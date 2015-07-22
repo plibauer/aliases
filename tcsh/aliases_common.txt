@@ -419,14 +419,15 @@ alias almmatch            "alm --match \!^ | grep summary"
 alias almmatchverbose     alm --match 
 alias almmatchv           almmatchverbose 
 alias alm_data_convert    "perl $ALM_DB/data_convert.pl --proxy $PROXY"
-alias almlib              alm libauer owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\"
+alias almlibauer          alm libauer owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\"
 alias almlibactive        alm libauer owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\|fixed\"
 alias almlibactivex       alm libauer \# severity issue_type investigation applies owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\|fixed\" 
 alias almlog		  'almlibactivex -width 500 | perl -ne ' "'" ' /^(\d+)\s+\w+\s+(.+)/ and do { $cr = $1; $sum = $2; $sum =~ s/\s+/ /g; print "CR$cr : $sum\n"; }  '  "'" 
 alias almshort            alm owner sub cycle release invest -width 105 --user
-alias almlibw             'almlib -width 105 | perl -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
-alias almlibwa            almlibactive  -width 105
-alias almlibauer          alm libauer
+alias almlib		  'almlibauer | perl -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
+alias almlibw             'almlibauer -width 105 | perl -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
+alias almlibwa            'almlibactive  -width 105 | perl -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
+alias almliball           alm libauer
 alias almschema           alm --schema
 alias cr                  alm --cr
 alias almupdate           alm_data_convert --update --verbose
