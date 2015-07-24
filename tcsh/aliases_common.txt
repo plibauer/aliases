@@ -152,6 +152,7 @@ alias flushdns "ipconfig /flushdns"
 alias more less -R
 
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
+set STATIC_REPO = TRIMStaticRepo
 
 alias gocfg              "cd $trimcfgdir"
 alias goexe              "cd $trimdir/$defArch/$defBuild"
@@ -181,7 +182,7 @@ alias shlog              showlog
 alias gotmp              "cd /c/tmp"
 alias godox              "cd $trimdir/xtra/Doxygen/runDoxygen"
 alias gosmoke            "cd $trimdir/Automation/Smoketest"
-alias goperl             "cd $trimdir/trim/misc/Scripts/Perl"
+alias goperl             "cd $trimdir/../$STATIC_REPO/libs/Perl"
 alias gop                "cd $PERL_BIN"
 alias goalm              "cd $PERL_BIN/ALMPlugin"
 alias gosvn              "cd $SVN_LOG_DB"
@@ -512,7 +513,7 @@ alias xmltrim       "perl xmlformat.pl $trimcfg"
 alias getconfig     "more $trimcfg"
 alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
 
-alias wixgen       perl $trimdir/trim/misc/Scripts/Perl/WixGenerator.pl
+alias wixgen       perl $trimdir/../$STATIC_REPO/libs/Perl/WixGenerator.pl
 
 # Lookup a perl function using perldoc
 alias perldoc   "/c/strawberry/perl/bin/perldoc.bat"
@@ -522,7 +523,7 @@ alias perlfunc  "perldoc -f"
 ################################################
 ### PERL DATABASE ACCESS
 
-alias db          "perl $trimdir/trim/misc/Scripts/Perl/db/db.pl --database $dbSession"
+alias db          "perl $trimdir/../$STATIC_REPO/libs/Perl/db/db.pl --version $revision"
 alias dbs         "db --list"
 alias dbid        "db -id"
 alias dbidall     "dbid ids"
