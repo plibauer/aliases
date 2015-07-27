@@ -523,7 +523,8 @@ alias perlfunc  "perldoc -f"
 ################################################
 ### PERL DATABASE ACCESS
 
-alias db          "perl $trimdir/../$STATIC_REPO/libs/Perl/db/db.pl --version $revision"
+alias dbpl        "perl $trimdir/../$STATIC_REPO/libs/Perl/db/db.pl"
+alias db          "dbpl --version $revision"
 alias dbs         "db --list"
 alias dbid        "db -id"
 alias dbidall     "dbid ids"
