@@ -187,6 +187,7 @@ alias gop                "cd $PERL_BIN"
 alias goalm              "cd $PERL_BIN/ALMPlugin"
 alias gosvn              "cd $SVN_LOG_DB"
 alias gosetup            "cd $trimdir/trim/wix/Setup.exe"
+alias gostatic 		 "cd $trimdir/../$STATIC_REPO"
 alias gowix              "cd $trimdir/trim/wix"
 alias gowixbin           "cd $WIX_DIR/bin"
 alias gopatch            "cd $trimdir/trim/wix/PatchGenerator"
@@ -513,7 +514,7 @@ alias xmltrim       "perl xmlformat.pl $trimcfg"
 alias getconfig     "more $trimcfg"
 alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
 
-alias wixgen       perl $trimdir/../$STATIC_REPO/libs/Perl/WixGenerator.pl
+alias wixgen       perl $trimdir/../$STATIC_REPO/libs/Perl/WIX/AutoGenerateWixFromHeat.pl
 
 # Lookup a perl function using perldoc
 alias perldoc   "/c/strawberry/perl/bin/perldoc.bat"
