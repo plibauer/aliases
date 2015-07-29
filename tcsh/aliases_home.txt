@@ -17,13 +17,14 @@ alias stophttpd         "taskkill /f /IM lighttpd.exe; taskkill /f /IM php-cgi.e
 set RDP_DIR = "C:\\Users\\plibauer\\Work\\RemoteDesktop"
 
 # Remote Desktop Aliases
-alias rdpwork	 "mstsc $RDP_DIR\\Libz620.rdp   &"
-alias cloudwgs1  "mstsc $RDP_DIR\\CloudWgs1.rdp &"
-alias cloudwgs2  "mstsc $RDP_DIR\\CloudWgs2.rdp &"
-alias clouddb    "mstsc $RDP_DIR\\CloudDB.rdp   &"
-alias cloudidol  "mstsc $RDP_DIR\\CloudIDOL.rdp &"
-alias cloudweb   "mstsc $RDP_DIR\\CloudWeb.rdp  &"
-alias cloudadfs  "mstsc $RDP_DIR\\CloudADFS.rdp &"
+alias rdpwork	 "mstsc $RDP_DIR\\Libz620.rdp        &"
+alias termserver "mstsc $RDP_DIR\\TerminalServer.rdp &"
+alias cloudwgs1  "mstsc $RDP_DIR\\CloudWgs1.rdp      &"
+alias cloudwgs2  "mstsc $RDP_DIR\\CloudWgs2.rdp      &"
+alias clouddb    "mstsc $RDP_DIR\\CloudDB.rdp        &"
+alias cloudidol  "mstsc $RDP_DIR\\CloudIDOL.rdp      &"
+alias cloudweb   "mstsc $RDP_DIR\\CloudWeb.rdp       &"
+alias cloudadfs  "mstsc $RDP_DIR\\CloudADFS.rdp      &"
 
 set RDWIKI_DIR = "G:/RDWiki"
 alias grepjd          ' ls $RDWIKI_DIR/data/pages/wiki/paul_libauer/journals/*/*                                        \\
