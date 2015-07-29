@@ -15,7 +15,9 @@ alias httpd             'cd /c/LightTPD; ./LightTPD.exe -f conf/lighttpd.conf'
 alias stophttpd         "taskkill /f /IM lighttpd.exe; taskkill /f /IM php-cgi.exe"
 
 set RDP_DIR = "C:\\Users\\plibauer\\Work\\RemoteDesktop"
+
 # Remote Desktop Aliases
+alias rdpwork	 "mstsc $RDP_DIR\\Libz620.rdp   &"
 alias cloudwgs1  "mstsc $RDP_DIR\\CloudWgs1.rdp &"
 alias cloudwgs2  "mstsc $RDP_DIR\\CloudWgs2.rdp &"
 alias clouddb    "mstsc $RDP_DIR\\CloudDB.rdp   &"
