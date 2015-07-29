@@ -76,12 +76,13 @@ alias rdwiki    "Robocopy.exe //twrwebsvr/NewWiki/ E:\\backup\\RDWiki /MIR /R:0"
 
 set RDP_DIR = "C:\\Users\\plibauer\\Work\\RemoteDesktop"
 # Remote Desktop Aliases
-alias cloudwgs1  "mstsc $RDP_DIR\\CloudWgs1.rdp &"
-alias cloudwgs2  "mstsc $RDP_DIR\\CloudWgs2.rdp &"
-alias clouddb    "mstsc $RDP_DIR\\CloudDB.rdp   &"
-alias cloudidol  "mstsc $RDP_DIR\\CloudIDOL.rdp &"
-alias cloudweb   "mstsc $RDP_DIR\\CloudWeb.rdp  &"
-alias cloudadfs  "mstsc $RDP_DIR\\CloudADFS.rdp &"
+alias termserver "mstsc $RDP_DIR\\TerminalServer.rdp &"
+alias cloudwgs1  "mstsc $RDP_DIR\\CloudWgs1.rdp      &"
+alias cloudwgs2  "mstsc $RDP_DIR\\CloudWgs2.rdp      &"
+alias clouddb    "mstsc $RDP_DIR\\CloudDB.rdp        &"
+alias cloudidol  "mstsc $RDP_DIR\\CloudIDOL.rdp      &"
+alias cloudweb   "mstsc $RDP_DIR\\CloudWeb.rdp       &"
+alias cloudadfs  "mstsc $RDP_DIR\\CloudADFS.rdp      &"
 
 
 #####################################################################################################################################################################################
