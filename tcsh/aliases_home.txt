@@ -14,6 +14,15 @@ alias router		"telnet 10.11.12.1"
 alias httpd             'cd /c/LightTPD; ./LightTPD.exe -f conf/lighttpd.conf' 
 alias stophttpd         "taskkill /f /IM lighttpd.exe; taskkill /f /IM php-cgi.exe"
 
+set RDP_DIR = "C:\\Users\\plibauer\\Work\\RemoteDesktop"
+# Remote Desktop Aliases
+alias cloudwgs1  "mstsc $RDP_DIR\\CloudWgs1.rdp &"
+alias cloudwgs2  "mstsc $RDP_DIR\\CloudWgs2.rdp &"
+alias clouddb    "mstsc $RDP_DIR\\CloudDB.rdp   &"
+alias cloudidol  "mstsc $RDP_DIR\\CloudIDOL.rdp &"
+alias cloudweb   "mstsc $RDP_DIR\\CloudWeb.rdp  &"
+alias cloudadfs  "mstsc $RDP_DIR\\CloudADFS.rdp &"
+
 set RDWIKI_DIR = "G:/RDWiki"
 alias grepjd          ' ls $RDWIKI_DIR/data/pages/wiki/paul_libauer/journals/*/*                                        \\
 | /bin/perl -e '"'"'                                                                                                    \\

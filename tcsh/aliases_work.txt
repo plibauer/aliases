@@ -74,24 +74,14 @@ alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
 # Backup RDWIKI pages
 alias rdwiki    "Robocopy.exe //twrwebsvr/NewWiki/ E:\\backup\\RDWiki /MIR /R:0"
 
-
-##############################################################################
-###########################         IDOL  (MOVED TO COMMON)         ############################
-
-
-#alias icurl		'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
-#alias idolrecs		'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=999" --noproxy "*" --silent'
-#alias idolstatus	'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent | xmlformat.pl'
-#alias irecs		"idolrecs | xmlformat.pl"
-#alias removedb		'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
-#alias removedocs	'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
-#alias idologa1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
-#alias idologa2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/application.log"
-#alias idologi1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
-#alias idologi2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/index.log"
-#alias idologq1		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
-#alias idologq2		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/query.log"
-
+set RDP_DIR = "C:\\Users\\plibauer\\Work\\RemoteDesktop"
+# Remote Desktop Aliases
+alias cloudwgs1  "mstsc $RDP_DIR\\CloudWgs1.rdp &"
+alias cloudwgs2  "mstsc $RDP_DIR\\CloudWgs2.rdp &"
+alias clouddb    "mstsc $RDP_DIR\\CloudDB.rdp   &"
+alias cloudidol  "mstsc $RDP_DIR\\CloudIDOL.rdp &"
+alias cloudweb   "mstsc $RDP_DIR\\CloudWeb.rdp  &"
+alias cloudadfs  "mstsc $RDP_DIR\\CloudADFS.rdp &"
 
 
 #####################################################################################################################################################################################
