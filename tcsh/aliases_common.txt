@@ -152,7 +152,7 @@ alias flushdns "ipconfig /flushdns"
 alias more less -R
 
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
-set STATIC_REPO = TRIMStaticRepo
+set STATIC_REPO = $trimdir\\..\\TRIMStaticRepo
 
 alias gocfg              "cd $trimcfgdir"
 alias goexe              "cd $trimdir/$defArch/$defBuild"
@@ -182,12 +182,12 @@ alias shlog              showlog
 alias gotmp              "cd /c/tmp"
 alias godox              "cd $trimdir/xtra/Doxygen/runDoxygen"
 alias gosmoke            "cd $trimdir/Automation/Smoketest"
-alias goperl             "cd $trimdir/../$STATIC_REPO/libs/Perl"
+alias goperl             "cd $STATIC_REPO/libs/Perl"
 alias gop                "cd $PERL_BIN"
 alias goalm              "cd $PERL_BIN/ALMPlugin"
 alias gosvn              "cd $SVN_LOG_DB"
 alias gosetup            "cd $trimdir/trim/wix/Setup.exe"
-alias gostatic 		 "cd $trimdir/../$STATIC_REPO"
+alias gostatic 		 "cd $STATIC_REPO"
 alias gowix              "cd $trimdir/trim/wix"
 alias gowixbin           "cd $WIX_DIR/bin"
 alias gopatch            "cd $trimdir/trim/wix/PatchGenerator"
@@ -376,28 +376,26 @@ alias mainlocal  ' echo `svn info $trimdir | grep "URL: http"` "AA" $SVN_URL "BB
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");   \\
  '"'"
 
-alias mainlocalx  ' echo `svn info $trimdir | grep "URL: http"` "AA" $SVN_URL "BB" $trimdir  \\
- | /bin/perl -ne ' "' "'                                                                     \\
-      /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and print "svn relocate $1 $2 $3\n";            \\
- '"'"
-
 alias localmain  ' echo `svn info $trimdir | grep "URL: svn"` "AA" $SVN_MASTER "BB" $trimdir  \\
  | /bin/perl -ne ' "' "'                                                                      \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");     \\
       exit;                                                                                   \\
  '"'"
 
-alias localmainx  ' echo `svn info $trimdir | grep "URL: svn"` "AA" $SVN_MASTER "BB" $trimdir  \\
- | /bin/perl -ne ' "' "'                                                                       \\
-      /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and print "svn relocate $1 $2 $3\n";              \\
+alias staticlocal ' echo `svn info $STATIC_REPO | grep "URL: http"` "AA" $SVN_URL "BB" $STATIC_REPO  \\
+ | /bin/perl -ne ' "' "'                                                                    \\
+      /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");   \\
  '"'"
 
+alias localstatic ' echo `svn info $STATIC_REPO | grep "URL: svn"` "AA" $SVN_MASTER "BB" $STATIC_REPO  \\
+ | /bin/perl -ne ' "' "'                                                                      \\
+      /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");     \\
+      exit;                                                                                   \\
+ '"'"
 
-alias relocmainlocal   mainlocal
-alias reloclocal       relocmainlocal
-alias relocmainremote  localmain
-alias relocremote      relocmainremote
-alias svnupr	       "reloclocal; svnup; relocremote"
+alias svnupr	       "mainlocal; svnup; localmain"
+alias svnstatic        "svn update $STATIC_REPO"
+alias svnstaticr       "staticlocal; svnup; localstatic"
 
 alias showlatest       "svn log $trimdir -r HEAD:1 --limit 10"
 alias showlatestv      "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
@@ -514,7 +512,7 @@ alias xmltrim       "perl xmlformat.pl $trimcfg"
 alias getconfig     "more $trimcfg"
 alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
 
-alias wixgen       perl $trimdir/../$STATIC_REPO/libs/Perl/WIX/AutoGenerateWixFromHeat.pl
+alias wixgen       perl $STATIC_REPO/libs/Perl/WIX/AutoGenerateWixFromHeat.pl
 
 # Lookup a perl function using perldoc
 alias perldoc   "/c/strawberry/perl/bin/perldoc.bat"
@@ -524,7 +522,7 @@ alias perlfunc  "perldoc -f"
 ################################################
 ### PERL DATABASE ACCESS
 
-alias dbpl        "perl $trimdir/../$STATIC_REPO/libs/Perl/db/db.pl"
+alias dbpl        "perl $STATIC_REPO/libs/Perl/db/db.pl"
 alias db          "dbpl --version $revision"
 alias dbs         "db --list"
 alias dbdetails   "dbpl --list --verbose"
