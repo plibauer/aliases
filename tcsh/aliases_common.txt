@@ -152,7 +152,7 @@ alias flushdns "ipconfig /flushdns"
 alias more less -R
 
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
-set STATIC_REPO = $trimdir\\..\\TRIMStaticRepo
+set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
 
 alias gocfg              "cd $trimcfgdir"
 alias goexe              "cd $trimdir/$defArch/$defBuild"
@@ -313,7 +313,6 @@ alias svn            "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
 set trimbuild      = $trimdir/build/build
 set trimdoc        = $trimdir/doc/doc/DocPub
 
-alias svnup          "svn update $trimdir; date "
 alias svnstat        "svn status . -q"
 alias svnstatus      "svn info $trimdir | perl -ne 'print if /^Path|^URL:|^\n/;' "
 alias svnstatusfull  "svn info $trimdir | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
@@ -393,9 +392,10 @@ alias localstatic ' echo `svn info $STATIC_REPO | grep "URL: svn"` "AA" $SVN_MAS
       exit;                                                                                   \\
  '"'"
 
+alias svnup            "svn update $trimdir; date "
 alias svnupr	       "mainlocal; svnup; localmain"
 alias svnstatic        "svn update $STATIC_REPO"
-alias svnstaticr       "staticlocal; svnup; localstatic"
+alias svnstaticr       "staticlocal; svnstatic; localstatic"
 
 alias showlatest       "svn log $trimdir -r HEAD:1 --limit 10"
 alias showlatestv      "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
