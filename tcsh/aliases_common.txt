@@ -1,6 +1,4 @@
 #
-#  To use complex perl code involving pattern matching and $ variables, use the following template;
-#
 #      alias x  ' echo "some stuff here" | perl -ne ' "'" ' /(stuff)/ and do { print "$1\n" }  ' "'"
 #      perl -ne ' "'" '   ...   ' "'"
 #
@@ -645,7 +643,7 @@ alias services		"svc_all | grep DISPLAY | sort"
 alias servicesrun	"svc_active | grep DISPLAY | sort"
 
 # Run Management Studio
-alias mstudio		"/c/Program\ Files\ \(x86\)/Microsoft\ SQL\ Server/100/Tools/Binn/VSShell/Common7/IDE/Ssms.exe &"
+alias mstudio		"/c/Program\ Files\ \(x86\)/Microsoft\ SQL\ Server/110/Tools/Binn/ManagementStudio/Ssms.exe &"
 alias sqlms		mstudio
 
 # Run Remote Desktop
