@@ -15,6 +15,15 @@ set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /c/python
 # This has now been configured in /etc/fstab, so no need to do it here
 #mount --change-cygdrive-prefix /
 
+set trimdir       = $REPOS_ROOT":/$revision"$defPatch
+set dbDefault     = Test_"$revision"_SqlServer
+set dbSession     = $dbDefault
+set cygtrimdir    = "/$REPOS_ROOT/$revision"$defPatch
+set idolDb        = TRIM_"$DBID"
+set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
+set currentEnv    = $alias_dir/"$revision"environment
+
+
 alias get_title 'xprop -id ${WINDOWID}  | perl -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
 alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
@@ -54,6 +63,11 @@ alias x86  	"set defArch = x86; source $alias_file; settitle"
 alias x64  	"set defArch = x64; source $alias_file; settitle"
 alias debug  	"set defBuild = Debug; source $alias_file; settitle"
 alias release  	"set defBuild = Release; source $alias_file; settitle"
+alias rtm       "set defPatch = _RTM; set defBuild = Release; source $alias_file; settitle"
+alias hf1       "set defPatch = _HF1; set defBuild = Release; source $alias_file; settitle"
+alias hf2       "set defPatch = _HF2; set defBuild = Release; source $alias_file; settitle"
+alias p1        "set defPatch = _P1; set defBuild = Release; source $alias_file; settitle"
+alias p2        "set defPatch = _P2; set defBuild = Release; source $alias_file; settitle"
 alias dbdefault "set dbSession = $dbDefault; source $alias_file"
 alias dbcurrent echo $dbSession
 alias dbsession "set dbSession = \!^; source $alias_file; settitle"
@@ -138,7 +152,7 @@ alias falias findalias
 #
 #    none / cygdrive binary,posix=0,user 0 0
 #
-alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development /e/oracle'"
+alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir $cygtrimdir/../TRIMStaticRepo /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development /e/oracle'"
 
 alias locate   "locate -d /home/plibauer/locatedb"
 alias locatei  "locate -i -d /home/plibauer/locatedb"
