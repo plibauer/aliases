@@ -67,7 +67,7 @@ alias showrevs        showrevisions
 
 alias showlog         'cat /c/tmp/finalbuilder.log | fromunicode | perl -ne '"'"'  s/^\s+//;  print "$_"; '"'"' | more '
 alias tailog          "tail -f /c/tmp/finalbuilder.log"
-alias rundox          "$trimdir/xtra/Doxygen/runDoxygen/bin/Debug/runDoxygen.exe"
+#alias rundox          "$trimdir/xtra/Doxygen/runDoxygen/bin/Debug/runDoxygen.exe"
 
 alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
 
