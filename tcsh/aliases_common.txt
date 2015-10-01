@@ -411,6 +411,7 @@ alias pushp2    'svn update --revision "\!^" "$SVNBASE"_P2'
 alias buildver  "perl $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $trimdir" 
 alias bver      'perl $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $SVNBASE"\!^"' 
 alias allvers   'bver ""; bver _RTM; bver _HF1; bver _HF2; bver _P1; bver _P2' 
+alias versall   allvers
 alias incrbuild "perl $STATIC_PERL/WIX/buildVersion.pl $trimdir"
 alias decrbuild "perl $STATIC_PERL/WIX/buildVersion.pl --decrement $trimdir"
 alias showbuild "perl $STATIC_PERL/WIX/buildVersion.pl --show $trimdir"
