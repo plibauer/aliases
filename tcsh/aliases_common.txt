@@ -386,14 +386,15 @@ alias syncup        "syncsvn; logupdate"
 #
 set SVNBASE = $REPOS_ROOT':'/$revision
 alias infowc    'svn info "\!^" --show-item wc-root --no-newline'
-alias inforev   'svn info "\!^" --show-item revision'
-alias infotrunk	'infowc "$SVNBASE"; echo -n "\t => @revision "; inforev "$SVNBASE"'
+alias inforev   'svn info "\!^" --show-item revision --no-newline'
+alias infotrunk	'infowc "$SVNBASE"; echo -n "\t\t => @revision "; inforev "$SVNBASE"'
 alias infortm	'infowc "$SVNBASE"_RTM; echo -n "\t => @revision "; inforev "$SVNBASE"_RTM'
 alias infohf1	'infowc "$SVNBASE"_HF1; echo -n "\t => @revision "; inforev "$SVNBASE"_HF1'
 alias infohf2	'infowc "$SVNBASE"_HF2; echo -n "\t => @revision "; inforev "$SVNBASE"_HF2'
 alias infop1	'infowc "$SVNBASE"_P1; echo -n "\t => @revision "; inforev "$SVNBASE"_P1'
 alias infop2	'infowc "$SVNBASE"_P2; echo -n "\t => @revision "; inforev "$SVNBASE"_P2'
-alias infoall   "infotrunk; infortm; infohf1; infohf2; infop1; infop2"
+alias infoall   "infotrunk; echo; infortm; echo; infohf1; echo; infohf2; echo; infop1; echo; infop2; echo"
+alias allinfo   infoall
 
 # 
 #  Update a branch to a particular revision
@@ -410,11 +411,25 @@ alias pushp2    'svn update --revision "\!^" "$SVNBASE"_P2'
 #
 alias buildver  "perl $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $trimdir" 
 alias bver      'perl $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $SVNBASE"\!^"' 
+alias bvers     'perl $STATIC_PERL/WIX/buildVersion.pl --show --compact --no_repos --root $SVNBASE"\!^"' 
 alias allvers   'bver ""; bver _RTM; bver _HF1; bver _HF2; bver _P1; bver _P2' 
 alias versall   allvers
 alias incrbuild "perl $STATIC_PERL/WIX/buildVersion.pl $trimdir"
+alias ihotfix   "perl $STATIC_PERL/WIX/buildVersion.pl --hotfix $trimdir"
 alias decrbuild "perl $STATIC_PERL/WIX/buildVersion.pl --decrement $trimdir"
+alias dhotfix   "perl $STATIC_PERL/WIX/buildVersion.pl --hotfix --decrement $trimdir"
+alias setbuild  "perl $STATIC_PERL/WIX/buildVersion.pl --build \!^ $trimdir"
 alias showbuild "perl $STATIC_PERL/WIX/buildVersion.pl --show $trimdir"
+
+#
+alias patchinfo ' infotrunk; echo -n ", Build "; bvers "";   \\
+                  infortm;   echo -n ", Build "; bvers _RTM; \\
+                  infohf1;   echo -n ", Build "; bvers _HF1; \\
+                  infohf2;   echo -n ", Build "; bvers _HF2; \\
+                  infop1;    echo -n ", Build "; bvers _P1;  \\
+                  infop2;    echo -n ", Build "; bvers _P2  \\
+' 
+
 #
 # Create Shortcuts to the solution files and Release/MSI directories
 #
