@@ -165,6 +165,7 @@ alias more less -R
 
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
+set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 
 alias gocfg              "cd $trimcfgdir"
 alias goexe              "cd $trimdir/$defArch/$defBuild"
@@ -394,12 +395,28 @@ alias infop1	'infowc "$SVNBASE"_P1; echo -n "\t => @revision "; inforev "$SVNBAS
 alias infop2	'infowc "$SVNBASE"_P2; echo -n "\t => @revision "; inforev "$SVNBASE"_P2'
 alias infoall   "infotrunk; infortm; infohf1; infohf2; infop1; infop2"
 
+# 
+#  Update a branch to a particular revision
+#
 alias pushrtm   'svn update --revision "\!^" "$SVNBASE"_RTM' 
 alias pushhf1   'svn update --revision "\!^" "$SVNBASE"_HF1' 
 alias pushhf2   'svn update --revision "\!^" "$SVNBASE"_HF2' 
 alias pushp1    'svn update --revision "\!^" "$SVNBASE"_P1' 
 alias pushp2    'svn update --revision "\!^" "$SVNBASE"_P2' 
 
+#
+#  Show the current build version for a branch or set
+#  or manipulate the build number
+#
+alias buildver  "perl $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $trimdir" 
+alias bver      'perl $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $SVNBASE"\!^"' 
+alias allvers   'bver ""; bver _RTM; bver _HF1; bver _HF2; bver _P1; bver _P2' 
+alias incrbuild "perl $STATIC_PERL/WIX/buildVersion.pl $trimdir"
+alias decrbuild "perl $STATIC_PERL/WIX/buildVersion.pl --decrement $trimdir"
+alias showbuild "perl $STATIC_PERL/WIX/buildVersion.pl --show $trimdir"
+#
+# Create Shortcuts to the solution files and Release/MSI directories
+#
 alias mkscutrel 'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/x64/Release";   mkshortcut -n  "\!^ Release"  "/$REPOS_ROOT/$revision"_"\!^/x64/Release"'
 alias mkscuten  'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us"; mkshortcut -n  "\!^ en-us"    "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us"'
 alias mkscutwix 'mkshortcut -n  "\!^ WIX.sln"        "/$REPOS_ROOT/$revision"_"\!^/trim/WIX.sln"'
