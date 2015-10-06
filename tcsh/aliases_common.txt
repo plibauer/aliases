@@ -404,7 +404,10 @@ alias pushhf1   'svn update --revision "\!^" "$SVNBASE"_HF1'
 alias pushhf2   'svn update --revision "\!^" "$SVNBASE"_HF2' 
 alias pushp1    'svn update --revision "\!^" "$SVNBASE"_P1' 
 alias pushp2    'svn update --revision "\!^" "$SVNBASE"_P2' 
+alias pushall   "pushrtm \!^; pushhf1 \!^; pushhf2 \!^; pushp1 \!^; pushp2 \!^;"
 
+alias robosync  'robocopy "\!:1" "\!:2" /ZB /MIR /COPYALL'
+alias robosyncall "robosync F:/83 E:/83; robosync F:/83_RTM E:/83_RTM; robosync F:/83_HF1 E:/83_HF1; robosync F:/83_HF2 E:/83_HF2; robosync F:/83_P1 E:/83_P1; robosync F:/83_P2 E:/83_P2;" 
 #
 #  Show the current build version for a branch or set
 #  or manipulate the build number
