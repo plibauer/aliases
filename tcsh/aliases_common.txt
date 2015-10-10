@@ -436,18 +436,22 @@ alias patchinfo ' infotrunk; echo -n ", Build "; bvers "";   \\
 #
 # Create Shortcuts to the solution files and Release/MSI directories
 #
-alias mkscutrel 'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/x64/Release";   mkshortcut -n  "\!^ Release"  "/$REPOS_ROOT/$revision"_"\!^/x64/Release"'
-alias mkscuten  'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us"; mkshortcut -n  "\!^ en-us"    "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us"'
+alias mkscutrel 'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/x64/Release";    mkshortcut -n  "\!^ Release"  "/$REPOS_ROOT/$revision"_"\!^/x64/Release"'
+alias mkscutany 'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/AnyCPU/Release"; mkshortcut -n  "\!^ AnyCPU"   "/$REPOS_ROOT/$revision"_"\!^/AnyCPU/Release"'
+alias mkscuten  'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us";  mkshortcut -n  "\!^ en-us"    "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us"'
 alias mkscutwix 'mkshortcut -n  "\!^ WIX.sln"        "/$REPOS_ROOT/$revision"_"\!^/trim/WIX.sln"'
 alias mkscutcs  'mkshortcut -n  "\!^ TrimCSharp.sln" "/$REPOS_ROOT/$revision"_"\!^/trim/TrimCSharp.sln"'
 alias mkscutcpp 'mkshortcut -n  "\!^ TRIM.sln"       "/$REPOS_ROOT/$revision"_"\!^/trim/sln/TRIM/x64/TRIM.sln"'
+alias mkscutset 'mkshortcut -n  "\!^ setup.exe"      "/$REPOS_ROOT/$revision"_"\!^/trim/wix/Setup.exe"'
+alias mkscutlbrk 'mkshortcut -n  "\!^ Z_____________________________________" "/$REPOS_ROOT/$revision"_"\!^"'
 
-alias scutsrtm  "mkscutrel RTM; mkscuten RTM; mkscutwix RTM; mkscutcs RTM; mkscutcpp RTM"
-alias scutshf1  "mkscutrel HF1; mkscuten HF1; mkscutwix HF1; mkscutcs HF1; mkscutcpp HF1"
-alias scutshf2  "mkscutrel HF2; mkscuten HF2; mkscutwix HF2; mkscutcs HF2; mkscutcpp HF2"
-alias scutsp1   "mkscutrel P1; mkscuten P1; mkscutwix P1; mkscutcs P1; mkscutcpp P1"
-alias scutsp2   "mkscutrel P2; mkscuten P2; mkscutwix P2; mkscutcs P2; mkscutcpp P2"
+alias scutsrtm  "mkscutrel RTM; mkscutany RTM; mkscuten RTM; mkscutwix RTM; mkscutcs RTM; mkscutcpp RTM; mkscutset RTM; mkscutlbrk RTM"
+alias scutshf1  "mkscutrel HF1; mkscutany HF1; mkscuten HF1; mkscutwix HF1; mkscutcs HF1; mkscutcpp HF1; mkscutset HF1; mkscutlbrk HF1"
+alias scutshf2  "mkscutrel HF2; mkscutany HF2; mkscuten HF2; mkscutwix HF2; mkscutcs HF2; mkscutcpp HF2; mkscutset HF2; mkscutlbrk HF2"
+alias scutsp1   "mkscutrel P1; mkscutany P1; mkscuten P1; mkscutwix P1; mkscutcs P1; mkscutcpp P1; mkscutset P1; mkscutlbrk P1"
+alias scutsp2   "mkscutrel P2; mkscutany P2; mkscuten P2; mkscutwix P2; mkscutcs P2; mkscutcpp P2; mkscutset P2; mkscutlbrk P2"
 alias scutsall  "scutsrtm; scutshf1; scutshf2; scutsp1; scutsp2"
+alias makeshortcuts scutsall
 
 #
 # -----------------------------------------------------------------
@@ -695,6 +699,25 @@ alias hkcr "regtool list \\root\\\!^"
 
 alias totext      'iconv -f UTF-16 -t UTF-8 '
 alias fromunicode 'iconv -f UTF-16 -t UTF-8 '
+alias convert2text 'file \!^ |  perl -ne '"'"'              \\
+$| = 1;                                                     \\
+while(<>){                                                  \\
+  chomp;                                                    \\
+  if(/^(.+):\s*data\s*$/){                                  \\
+    my $old = $1;                                           \\
+    next if $old =~ /^converted_/;                          \\
+    # Try to escape nasty characters in filename            \\
+    #$old =~ s/([^A-z0-9_\.-])/\\\\$1/g;                    \\
+    my $new = "converted_".$old;                            \\
+    #$new =~ s/[^A-z0-9_\.-]/_/g;                           \\
+    if(-e $new){ print "EXISTS - SKIPPING\n"; next; }       \\
+    print "Converting $old to ASCII  ... ";                 \\
+    system("iconv -f UTF-16 -t UTF-8 \"$old\" > \"$new\""); \\
+    print "DONE!\n";                                        \\
+  }                                                         \\
+}                                                           \\
+'"'"
+
 alias grepu       'fromunicode \!:2 | grep \!:1'
 alias grepui      'fromunicode \!:2 | grep -i \!:1'
 
@@ -877,9 +900,9 @@ endif
 
 alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/bin/dumpbin.exe"
 alias touchcopy  "touch $trimdir/trim/src/CopyFiles/CopyFiles.cpp"
-set buildLog       = "${REPOS_ROOT}:/TEMP/TRIM-$revision-$defArch-$defBuild.log"
-set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$revision-$defArch-$defBuild.log"
-set buildLogWix    = "${REPOS_ROOT}:/TEMP/WIX-$revision-$defArch-$defBuild.log"
+set buildLog       = "${REPOS_ROOT}:/TEMP/TRIM-$revision$defPatch-$defArch-$defBuild.log"
+set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$revision$defPatch-$defArch-$defBuild.log"
+set buildLogWix    = "${REPOS_ROOT}:/TEMP/WIX-$revision$defPatch-$defArch-$defBuild.log"
 set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
 
 alias ramdisk         "$trimdir/trim/scripts/createRamDisk.cmd"
