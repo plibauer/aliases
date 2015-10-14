@@ -5,7 +5,7 @@
 #set SVN_URL         = svn://localhost
 #set SVN_MIRROR_PATH = E:/svn_mirror
 #set SVN_MIRROR      = file:///$SVN_MIRROR_PATH
-#set SVN_MASTER      = https://svn.aus.hp.com/local/bio-im-trim
+#set SVN_MASTER      = https://csvn-aus.aus.hp.com:18490/local/bio-im-trim
 #  Whatever has been configured in .ssh/config pointing to proxy, otherwise use normal entry below 
 #set GIT_HOST        = gitproxy
 #set GIT_URL         = "$GIT_HOST"":"
@@ -16,31 +16,31 @@
 #set ALM_DB          = C:/ALMDatabase
 #set PROXY           = http://proxy-sno.aus.hp.com:8080
 #set HTTPS_PROXY     = https://proxy-sno.aus.hp.com:8080
-#set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.8"
+#set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10"
 
 # Home Machine 
 #set REPOS_ROOT      = c
 #set SVN_URL         = svn://localhost
 #set SVN_MIRROR_PATH = F:/svn_mirror
 #set SVN_MIRROR      = file:///$SVN_MIRROR_PATH
-#set SVN_MASTER      = https://svn.aus.hp.com/local/bio-im-trim
+#set SVN_MASTER      = https://csvn-aus.aus.hp.com:18490/local/bio-im-trim
 #set GIT_HOST        = github.com
 #set GIT_URL         = git://$GIT_HOST/
 #set IDOL_DIR        = /c/IDOL
 #set PERL_BIN        = C:/cygwin/home/plibauer/perl/bin
-#set DEVENV_ROOT     = "C:/Program Files (x86)""
+#set DEVENV_ROOT     = "C:/Program Files (x86)"
 #set SVN_LOG_DB      = C:/svnLogDatabase
 #set ALM_DB          = C:/ALMDatabase
 #set PROXY           = http://proxy-sno.aus.hp.com:8080
 #set HTTPS_PROXY     = https://proxy-sno.aus.hp.com:8080
-#set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.8"
+#set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10"
 
 # Laptop
 #set REPOS_ROOT      = c
 #set SVN_URL         = https://localhost
 #set SVN_MIRROR_PATH = D:/svn_mirror
 #set SVN_MIRROR      = file:///$SVN_MIRROR_PATH
-#set SVN_MASTER      = https://svn.aus.hp.com/local/bio-im-trim
+#set SVN_MASTER      = https://csvn-aus.aus.hp.com:18490/local/bio-im-trim
 #set GIT_HOST        = github.com
 #set GIT_URL         = git://$GIT_HOST/
 #set IDOL_DIR        = /c/IDOL
@@ -50,4 +50,4 @@
 #set ALM_DB          = C:/ALMDatabase
 #set PROXY           = http://proxy-sno.aus.hp.com:8080
 #set HTTPS_PROXY     = https://proxy-sno.aus.hp.com:8080
-#set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.8"
+#set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10"
