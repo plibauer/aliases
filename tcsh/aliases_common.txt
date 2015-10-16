@@ -333,29 +333,60 @@ alias svnstatusfull  "svn info $trimdir | perl -ne 'print unless /^(Working Copy
 alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
 alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
 alias svnrepoinfo    'cat $SVN_MIRROR_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
-alias showrevs       'svnstatus |                                             \\
-perl -ne '"'"' /^URL.+\/(REPOS\/.+)/ and do { open TMP,">C:/temp/svn_branch_x.txt"; print TMP "svn://localhost/$1\n"; close TMP }; ' "' "' && echo -n "\!:1 \!:2" | \\
-perl -e  '"'"'                                    \\
-  $| = 1;                                         \\
-  $in=<>;                                         \\
-  ($a,$b) = split /\s+/, $in;                     \\
-  open TMP,"C:/temp/svn_branch_x.txt";            \\
-  @u = <TMP>;                                     \\
-  close TMP;                                      \\
-  close TMP;                                      \\
-  $ans = shift @u;                                \\
-  chomp $ans;                                     \\
-  $cmd = "svn log $ans/$a -r HEAD:1 --limit $b";  \\
-  @out = `$cmd`;                                  \\
-  for(@out){                                      \\
-    if(/^r(\d+)/){                                \\
-       s/^r(\d+)/$1/;                             \\
-       print;                                     \\
-       next;                                      \\
-    }	                                          \\
-    next if /^(\s*|-+)$/;                         \\
-    print "\t$_";                                 \\
-  }                                               \\
+alias writeSvnBranch 'svnstatus | perl -ne '"'"' /^URL.+\/(REPOS\/.+)/ and do { print "svn://localhost/$1\n" }' "' "' > C:/temp/svn_branch_x.txt'
+alias showrevs       'writeSvnBranch && echo -n "\!*"      | processSvnLog'
+
+alias processSvnLog  'perl -e  '"'"'                     \\
+  $| = 1;                                                \\
+  chomp($currdir = `pwd`);                               \\
+  $currdir =~ s|^/./[^/]+/||;                            \\
+  $in=<>;                                                \\
+                                                         \\
+  if($in =~ /^(.+)\s+(\d+)\s+(list)$/i){                 \\
+     ($a,$b,$c) = ($1,$2,$3);                            \\
+  }                                                      \\
+  elsif($in =~ /^(.+)\s+(\d+)$/i){                       \\
+     ($a,$b,$c) = ($1,$2,"");                            \\
+  }                                                      \\
+  else {                                                 \\
+     ($a,$b,$c) = ($in, 10, "");                         \\
+  }                                                      \\
+                                                         \\
+  if($currdir ne ""){                                    \\
+    if($a !~ /^$currdir/) {                              \\
+        $a = $currdir."/$a";                             \\
+    }                                                    \\
+  }                                                      \\
+  $a =~ s|[/\\]$||;                                      \\
+                                                         \\
+  open TMP,"C:/temp/svn_branch_x.txt";                   \\
+  @u = <TMP>;                                            \\
+  close TMP;                                             \\
+  close TMP;                                             \\
+  $ans = shift @u;                                       \\
+  chomp $ans;                                            \\
+  print "TARGET => $ans/$a\n\n";                         \\
+  $cmd = "svn log \"$ans/$a\" -r HEAD:1 --limit $b";     \\
+  @out = `$cmd`;                                         \\
+                                                         \\
+  if($c eq "list"){                                      \\
+    for(@out){                                           \\
+      if(/^r(\d+)/){ push @list, $1; next }              \\
+    }                                                    \\
+    print join ",", @list;                               \\
+    print "\n";                                          \\
+    exit;                                                \\
+  }                                                      \\
+                                                         \\
+  for(@out){                                             \\
+    if(/^r(\d+)/){                                       \\
+       s/^r(\d+)/$1/;                                    \\
+       print;                                            \\
+       next;                                             \\
+    }	                                                 \\
+    next if /^(\s*|-+)$/;                                \\
+    print "\t$_";                                        \\
+  }                                                      \\
 '"'"
 
 alias logproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
