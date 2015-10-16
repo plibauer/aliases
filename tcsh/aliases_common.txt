@@ -353,7 +353,7 @@ alias processSvnLog  'perl -e  '"'"'                     \\
   }                                                      \\
                                                          \\
   if($currdir ne ""){                                    \\
-    if($a !~ /^$currdir/) {                              \\
+    if($a !~ m|^$currdir/|) {                            \\
         $a = $currdir."/$a";                             \\
     }                                                    \\
   }                                                      \\

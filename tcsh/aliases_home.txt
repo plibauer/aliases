@@ -25,6 +25,7 @@ alias clouddb    "mstsc $RDP_DIR\\CloudDB.rdp        &"
 alias cloudidol  "mstsc $RDP_DIR\\CloudIDOL.rdp      &"
 alias cloudweb   "mstsc $RDP_DIR\\CloudWeb.rdp       &"
 alias cloudadfs  "mstsc $RDP_DIR\\CloudADFS.rdp      &"
+alias build83 	 "mstsc $RDP_DIR\\Build83.rdp        &"
 
 set RDWIKI_DIR = "G:/RDWiki"
 alias grepjd          ' ls $RDWIKI_DIR/data/pages/wiki/paul_libauer/journals/*/*                                        \\
