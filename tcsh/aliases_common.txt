@@ -185,7 +185,7 @@ alias gotrimconfig       "cd $trimdir/trim/SharedTrimServerData/ServerData"
 alias gotrimlocalconfig  "cd $WINHOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM/$DBID/Configuration"
 alias golocal		 gotrimlocalconfig
 alias goauto             "cd $trimdir/Automation"
-alias gobulk             "cd $trimdir/Automation/Smoketest/BulkLoader/TestCases"
+alias gobulk             "cd $STATIC_REPO/TestData/BulkLoader/TestCases"
 alias goblk              gobulk
 alias gob                "cd $trimdir/trim/CSharp/BulkLoader"
 alias golog              "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
