@@ -590,7 +590,7 @@ for(@in){                                                   \\
 for(my $i=0; $i <= $#cr; $i++) {                            \\
   my ($cr,$sum) = ($cr[$i],$sum[$i]);                       \\
   $sum =~ s/\s{$minLen}//;                                  \\
-  print "CR$cr  $sum\n";                                    \\
+  print "CR$cr : $sum\n";                                   \\
 }                                                           \\
 '  "'" 
 alias almshort            alm owner sub cycle release invest -width 105 --user
