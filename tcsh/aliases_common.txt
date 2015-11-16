@@ -523,9 +523,9 @@ alias makeshortcuts scutsall
 alias mkscutrelt 'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/x64/Release";    mkshortcut -n  "Release_\!^"  "/$REPOS_ROOT/$revision"_"\!^/x64/Release"'
 alias mkscutanyt 'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/AnyCPU/Release"; mkshortcut -n  "AnyCPU_\!^"   "/$REPOS_ROOT/$revision"_"\!^/AnyCPU/Release"'
 alias mkscutent  'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us";  mkshortcut -n  "en-us_\!^"    "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us"'
-alias mkscutwixt 'mkshortcut -n  "WIX.sln_\!^"        "/$REPOS_ROOT/$revision"_"\!^/trim/WIX.sln"'
-alias mkscutcst  'mkshortcut -n  "TrimCSharp.sln_\!^" "/$REPOS_ROOT/$revision"_"\!^/trim/TrimCSharp.sln"'
-alias mkscutcppt 'mkshortcut -n  "TRIM.sln_\!^"       "/$REPOS_ROOT/$revision"_"\!^/trim/sln/TRIM/x64/TRIM.sln"'
+alias mkscutwixt 'mkshortcut -n  "WIX_\!^.sln"        "/$REPOS_ROOT/$revision"_"\!^/trim/WIX.sln"'
+alias mkscutcst  'mkshortcut -n  "TrimCSharp_\!^.sln" "/$REPOS_ROOT/$revision"_"\!^/trim/TrimCSharp.sln"'
+alias mkscutcppt 'mkshortcut -n  "TRIM_\!^.sln"       "/$REPOS_ROOT/$revision"_"\!^/trim/sln/TRIM/x64/TRIM.sln"'
 alias mkscutsett 'mkshortcut -n  "setup.exe_\!^"      "/$REPOS_ROOT/$revision"_"\!^/trim/wix/Setup.exe"'
 alias mkscutlbrkt 'mkshortcut -n  "Root_\!^ _____________________________________" "/$REPOS_ROOT/$revision"_"\!^"'
 
