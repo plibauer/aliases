@@ -77,6 +77,7 @@ alias src80     "source $alias_dir/80environment"
 alias src81     "source $alias_dir/81environment"
 alias src82     "source $alias_dir/82environment"
 alias src83     "source $alias_dir/83environment"
+alias src84     "source $alias_dir/84environment"
 alias whichenv  "echo 'TRIMDIR   = $trimdir';          \\
                  echo 'ARCH      = $defArch';          \\
                  echo 'BUILD     = $defBuild';         \\
@@ -439,6 +440,8 @@ alias branches        logprocbranches
 alias syncsvn	    "svnsync sync $SVN_MIRROR"
 alias syncsvnwork   "svnsync sync $SVN_MIRROR $SVN_MASTER"
 alias syncsvnmaster syncsvnwork
+alias synchouston   "svnsync sync $SVN_MIRROR $SVN_HOUSTON"
+alias synchou	    synchouston
 alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 alias syncup        "syncsvn; logupdate"
 #
