@@ -324,7 +324,6 @@ alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
 #######################################################################################################################
 
 # SVN
-alias hpsvn          "svn checkout $SVN_MASTER/REPOS/trunk REPOS_trunk --username paul_libauer"
 alias svn            "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
 
 set trimbuild      = $trimdir/build/build
@@ -336,7 +335,8 @@ alias svnstatusfull  "svn info $trimdir | perl -ne 'print unless /^(Working Copy
 
 alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
 alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
-alias svnrepoinfo    'cat $SVN_MIRROR_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
+alias svnrepoinfo    'cat $SVN_LAB_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
+alias svnrepoinfohou 'cat $SVN_MIRROR_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
 alias writeSvnBranch 'svnstatus | perl -ne '"'"' /^URL.+\/(REPOS\/.+)/ and do { print "svn://localhost/$1\n" }' "' "' > C:/temp/svn_branch_x.txt'
 alias showrevs       'writeSvnBranch && echo -n "\!*"      | processSvnLog'
 
@@ -437,12 +437,13 @@ alias branches        logprocbranches
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
 # alias syncsvn	   "svnsync sync svn://localhost/"
 #
-alias syncsvn	    "svnsync sync $SVN_MIRROR"
-alias syncsvnwork   "svnsync sync $SVN_MIRROR $SVN_MASTER"
-alias syncsvnmaster syncsvnwork
+alias syncsvn	    "svnsync sync $SVN_LAB"
+alias synclab       "svnsync sync $SVN_LAB $SVN_LAB_URI"
+alias syncsvnmaster synclab
 alias synchouston   "svnsync sync $SVN_MIRROR $SVN_HOUSTON"
 alias synchou	    synchouston
-alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
+alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB"
+alias remlockhou    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 alias syncup        "syncsvn; logupdate"
 #
 # -------------------- PATCHING aliases --------------------------
