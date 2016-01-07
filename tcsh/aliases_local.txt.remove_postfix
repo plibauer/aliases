@@ -3,20 +3,22 @@
 # Work Machine
 #set REPOS_ROOT      = e
 #set SVN_URL         = svn://localhost
+#set SVN_LOG_DB      = C:/svnLogDatabase
 #set SVN_LAB_PATH    = E:/svn_lab
 #set SVN_MIRROR_PATH = E:/svn_mirror
 #set SVN_LAB         = file:///$SVN_LAB_PATH
 #set SVN_MIRROR      = file:///$SVN_MIRROR_PATH
 #set SVN_LAB_URI     = svn://labsvn:1137/TRIM
-#set SVN_MASTER      = https://csvnhou-pro.houston.hp.com:18490/svn/bio-im-trim
 #set SVN_HOUSTON     = https://csvnhou-pro.houston.hp.com:18490/svn/bio-im-trim
+#
+#set SVN_MASTER      = $SVN_LAB
+#
 #  Whatever has been configured in .ssh/config pointing to proxy, otherwise use normal entry below 
 #set GIT_HOST        = gitproxy
 #set GIT_URL         = "$GIT_HOST"":"
 #set IDOL_DIR        = "/E/IDOL\ Development\ Deployment"
 #set PERL_BIN        = C:/cygwin/home/plibauer/perl/bin
 #set DEVENV_ROOT     = "C:/Program Files (x86)"
-#set SVN_LOG_DB      = C:/svnLogDatabase
 #set ALM_DB          = C:/ALMDatabase
 #set PROXY           = http://proxy-sno.aus.hp.com:8080
 #set HTTPS_PROXY     = https://proxy-sno.aus.hp.com:8080

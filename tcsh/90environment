@@ -3,13 +3,12 @@ set alias_dir     = ~/aliases/tcsh
 
 source $alias_dir/aliases_local.txt
 
-set revision      = 84
+set revision      = 90
 set DBID          = I1
 set defArch       = x64
 set defCompiler   = VS2013
 set defBuild      = Debug
 set defPatch      = ""
-set SVN_MASTER    = svn://labsvn:1137/TRIM
 
 source $alias_dir/aliases
 source $alias_dir/aliases_common.txt

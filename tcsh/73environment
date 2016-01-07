@@ -9,6 +9,7 @@ set defArch       = x64
 set defCompiler   = VS2008
 set defBuild      = Debug
 set defPatch      = ""
+set SVN_MASTER    = $SVN_HOUSTON
 
 source $alias_dir/aliases
 source $alias_dir/aliases_common.txt
