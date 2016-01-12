@@ -433,6 +433,30 @@ alias logupdate      svnlogupdate
 alias svnlogh        logproc --help
 alias logprocbranches logproc --get branch
 alias branches        logprocbranches
+
+#
+#  LAB Aliases
+#
+
+alias labproc        "perl $SVN_LAB_DB/svn_log_processor.pl"
+alias labrev	     labproc --rev
+alias labhead        labrev head
+alias labmatch       labproc --no_case --limit 30 --match
+alias labm           labproc --match
+alias labmi          labproc --no_case --match
+alias labmv          labproc --verbose --match
+alias labmvi         labproc --no_case --verbose --match
+alias laba           "labproc --no_case --author \!:1 --match \!:2"
+alias labar          "labproc --no_case --author \!:1 --match \!:2 --revision \!:3"
+alias labalib        "labproc --no_case --author libauer --match \!:1"
+alias labacs         "labproc --author \!:1 --match \!:2"
+alias labav          "labproc --verbose --author \!:1 --match \!:2"
+alias labavi         "labproc --no_case --verbose --author \!:1 --match \!:2"
+alias labauthor      "labproc --author \!:1 --match \!:2"
+alias labauth        labauthor
+alias labupdate      labproc --update --repo "svn://localhost:11111/REPOS"
+alias labhelp        labproc --help
+
 #
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
 # alias syncsvn	   "svnsync sync svn://localhost/"

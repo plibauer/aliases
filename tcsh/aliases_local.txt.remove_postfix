@@ -1,15 +1,16 @@
 # Put local aliases specific to this machine here
 #
 #set REPOS_ROOT      = e
-#set SVN_URL         = svn://localhost
-#set SVN_LOG_DB      = C:/svnLogDatabase
 #
 #set SVN_LAB_PATH    = E:/svn_lab
 #set SVN_LAB         = file:///$SVN_LAB_PATH
 #set SVN_LAB_URI     = svn://labsvn:1137/TRIM
+#set SVN_LAB_DB      = C:/svnLogDatabase_lab
 #
 #set SVN_MIRROR_PATH = E:/svn_mirror
 #set SVN_MIRROR      = file:///$SVN_MIRROR_PATH
+#set SVN_URL         = svn://localhost
+#set SVN_LOG_DB      = C:/svnLogDatabase
 #set SVN_HOUSTON     = https://csvnhou-pro.houston.hp.com:18490/svn/bio-im-trim
 #
 #set SVN_MASTER      = $SVN_LAB
