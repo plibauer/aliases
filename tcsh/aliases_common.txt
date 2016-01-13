@@ -50,9 +50,9 @@ endif
 
 set defproj = ALL_BUILD
 
-alias view	vi
 alias home 	"cd /home/plibauer"
 alias via  	"vi $alias_file"
+alias viewa  	"vi -R $alias_file"
 alias viw       "vi $alias_dir/aliases_work.txt"
 alias vih       "vi $alias_dir/aliases_home.txt"
 alias vs2012    "set defCompiler = VS2012; source $alias_file"
@@ -1020,15 +1020,14 @@ print "\n";                                                                     
 ##############################################################################
 ######################         BUILD ALIASES          ########################
 
-set msbuildexe = "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe"
 if ($defCompiler == "VS2013") then
   set VSVER = 12.0
   set msbuildexe = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
-else if ($defCompiler == "VS2012") then
-  set VSVER = 11.0
 else if ($defCompiler == "VS2008") then
   set VSVER = 9.0
+  set msbuildexe = "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe"
 endif
+set devenvexe = "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe"
 
 alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/bin/dumpbin.exe"
 alias touchcopy  "touch $trimdir/trim/src/CopyFiles/CopyFiles.cpp"
@@ -1049,12 +1048,12 @@ alias clnall	"clnsln; clncsharp; clnwix"
 
 alias buildtest1  '  echo $logSeparator; date;                                                                             \\
    echo "TEST build alias";                                                                                                \\
-   echo "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build" \\
+   echo "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build"                                               \\
 '
 
 alias buildtest2  'buildtest1 \\
- | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
- | perl -e ' "' "'                                                                                                    \\
+ | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
+ | perl -e ' "' "'                                                                                                         \\
       @l = <>;                                                                                                             \\
       $line = shift @l;                                                                                                    \\
                                                                                                                            \\
@@ -1071,7 +1070,7 @@ alias buildtest2  'buildtest1 \\
 
 
 alias buildsolution '  echo $logSeparator; date;                                                                           \\
-   echo -n "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build" \\
+   echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build"                                            \\
  | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
  | perl -e ' "' "'                                                                                                         \\
       @l = <>;                                                                                                             \\
@@ -1086,8 +1085,8 @@ alias buildsolution '  echo $logSeparator; date;                                
       print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\n"                   \\
  ' "' "'                                                                                                                   \\
  | dos2unix | /bin/sh                                                                                                      \\
- | perl -le "print q{$buildLog.build :: $trimdir}"                                                                    \\
- | perl -e ' "' "'                                                                                                    \\
+ | perl -le "print q{$buildLog.build :: $trimdir}"                                                                         \\
+ | perl -e ' "' "'                                                                                                         \\
       $| = 1;                                                                                                              \\
       use File::Tail;                                                                                                      \\
       @in = <>; $i = shift @in; chomp $i;                                                                                  \\
@@ -1103,7 +1102,7 @@ alias buildsolution '  echo $logSeparator; date;                                
           else { print "$log\n" }                                                                                          \\
         }                                                                                                                  \\
         elsif($log =~ /----- Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                             \\
-          if(length($log) > 100){ $log = substr($log,0,100); }                                                             \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                                             \\
           print "$log\n"                                                                                                   \\
         }                                                                                                                  \\
       }                                                                                                                    \\
@@ -1111,9 +1110,9 @@ alias buildsolution '  echo $logSeparator; date;                                
 alias bldsln "buildsolution; date"
 
 alias clnsln '    echo $logSeparator; date;                                                                                \\
-    echo -n "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.clean"\\
- | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
- | perl -e ' "' "'                                                                                                    \\
+    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.clean"                                           \\
+ | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
+ | perl -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
     $line = shift @l;                                                                                                      \\
     if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
@@ -1125,8 +1124,8 @@ alias clnsln '    echo $logSeparator; date;                                     
     print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /clean $db /project ALL_BUILD /out $bl &\n"                     \\
  ' "' "'                                                                                                                   \\
  | dos2unix | /bin/sh                                                                                                      \\
- | perl -le "print q{$buildLog.clean :: $trimdir}"                                                                    \\
- | perl -e ' "' "'                                                                                                    \\
+ | perl -le "print q{$buildLog.clean :: $trimdir}"                                                                         \\
+ | perl -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
     @in = <>;                                                                                                              \\
@@ -1140,16 +1139,16 @@ alias clnsln '    echo $logSeparator; date;                                     
       chomp $log;                                                                                                          \\
       if($log    =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print "$log\n"; exit; }                                       \\
       elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) {                                                        \\
-        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
+        if(length($log) > 200){ $log = substr($log,0,200); }                                                               \\
         print "$log\n"                                                                                                     \\
       }                                                                                                                    \\
     }                                                                                                                      \\
  '" '"
 
-alias bldcsharp 'echo $logSeparator; date;                                                                                  \\
-    echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.build"                                    \\
- | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
- | perl -e ' "' "'                                                                                                    \\
+alias bldcsharp 'echo $logSeparator; date;                                                                                 \\
+    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.build"                                     \\
+ | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
+ | perl -e ' "' "'                                                                                                         \\
      @l = <>;                                                                                                              \\
     $line = shift @l;                                                                                                      \\
     if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
@@ -1158,10 +1157,10 @@ alias bldcsharp 'echo $logSeparator; date;                                      
       $line =~ s/.exe(,.+)/.exe/;                                                                                          \\
       $ver=$td; $ver =~ s/^.:.//;                                                                                          \\
     }                                                                                                                      \\
-    print "touch $bl\n$line $td/trim/TRIMCSharp.sln /p:Configuration=$db /fl /flp:logfile=$bl /v:normal /m &\n" ' "' "'    \\
+    print "touch $bl\n$line $td/trim/TRIMCSharp.sln /build $db /out $bl &\n" ' "' "'                                       \\
  | dos2unix | /bin/sh                                                                                                      \\
- | perl -le "print q{$buildLogCSharp.build :: $trimdir}"                                                              \\
- | perl -e ' "' "'                                                                                                    \\
+ | perl -le "print q{$buildLogCSharp.build :: $trimdir}"                                                                   \\
+ | perl -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
     @in = <>;                                                                                                              \\
@@ -1172,21 +1171,23 @@ alias bldcsharp 'echo $logSeparator; date;                                      
     print "LOG FILE: $b\n";                                                                                                \\
     $file = File::Tail->new(name=>$b, interval=>1);                                                                        \\
     while(defined($log=$file->read)) {                                                                                     \\
-      chomp $log;                                                                                                          \\
-      if($log    =~ /^Time elapsed/i){ print "$log\n"; exit; }                                                             \\
-      elsif($log =~ /(\d+)>Done building target "Build" in project "(.+)"/) { print "$1\tDone building $2\n" }             \\
-      elsif($log =~ /^\s+\d+\s(Warning|Error)|\serror\s|\sfatal\s|\sfailed\s/i) {                                          \\
-        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
-        $log =~ s/^\s+(\d+)>/$1\t/;                                                                                        \\
-        print "$log\n"                                                                                                     \\
-      }                                                                                                                    \\
+        chomp $log;                                                                                                        \\
+        if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){                                        \\
+          $total = $1 + $2 + $3;                                                                                           \\
+          if($total > 40){ print "$log\n"; exit; }                                                                         \\
+          else { print "$log\n" }                                                                                          \\
+        }                                                                                                                  \\
+        elsif($log =~ /----- Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                             \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                                             \\
+          print "$log\n"                                                                                                   \\
+        }                                                                                                                  \\
     }                                                                                                                      \\
  '"'"
 
 alias clncsharp 'echo $logSeparator;                                                                                       \\
-    echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.clean"                                    \\
- | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
- | perl -e ' "' "'                                                                                                    \\
+    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.clean"                                     \\
+ | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
+ | perl -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
     $line = shift @l;                                                                                                      \\
     if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
@@ -1196,10 +1197,10 @@ alias clncsharp 'echo $logSeparator;                                            
       $ver=$td;                                                                                                            \\
       $ver =~ s/^.:.//;                                                                                                    \\
     }                                                                                                                      \\
-    print "touch $bl\n$line $td/trim/TRIMCSharp.sln /t:Clean /p:Configuration=$db /fl /flp:logfile=$bl /v:normal /m &\n" ' "' "' \\
+    print "touch $bl\n$line $td/trim/TRIMCSharp.sln /clean $db /out $bl &\n" ' "' "'                                       \\
  | dos2unix | /bin/sh                                                                                                      \\
- | perl -le "print q{$buildLogCSharp.clean :: $trimdir}"                                                              \\
- | perl -e ' "' "'                                                                                                    \\
+ | perl -le "print q{$buildLogCSharp.clean :: $trimdir}"                                                                   \\
+ | perl -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
     @in = <>;                                                                                                              \\
@@ -1211,20 +1212,18 @@ alias clncsharp 'echo $logSeparator;                                            
     $file = File::Tail->new(name=>$b, interval=>0);                                                                        \\
     while(defined($log=$file->read)) {                                                                                     \\
       chomp $log;                                                                                                          \\
-      if($log    =~ /^Time elapsed/i){ print "$log\n"; exit; }                                                             \\
-      if($log    =~ /(\d+)>Done building target "Clean" in project "(.+)"/) { print "$1\tDone cleaning $2\n" }             \\
-      elsif($log =~ /^\s+\d+\s(Warning|Error)|\serror\s|\sfatal\s|\sfailed/i){                                             \\
-        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
-        $log =~ s/^\s+(\d+)>/$1\t/;                                                                                        \\
-        print "$log\n";                                                                                                    \\
+      if($log    =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print "$log\n"; exit; }                                       \\
+      elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) {                                                        \\
+        if(length($log) > 200){ $log = substr($log,0,200); }                                                               \\
+        print "$log\n"                                                                                                     \\
       }                                                                                                                    \\
     }                                                                                                                      \\
  '"'"
 
 alias bldwix 'echo $logSeparator; date;                                                                                    \\
-    echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix"                                             \\
- | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
- | perl -e ' "' "'                                                                                                    \\
+    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix.build"                                        \\
+ | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
+ | perl -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
     $line = shift @l;                                                                                                      \\
     if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
@@ -1233,10 +1232,10 @@ alias bldwix 'echo $logSeparator; date;                                         
       $line =~ s/.exe(,.+)/.exe/;                                                                                          \\
       $ver=$td; $ver =~ s/^.:.//;                                                                                          \\
     }                                                                                                                      \\
-    print "touch $bl\n$line $td/trim/WIX.sln /p:Configuration=$db /p:Platform=$da /fl /flp:logfile=$bl /v:normal /m &\n" ' "' "' \\
+    print "touch $bl\n$line $td/trim/WIX.sln /build \"$db|$da\" /out $bl &\n" ' "' "'                                      \\
  | dos2unix | /bin/sh                                                                                                      \\
- | perl -le "print q{$buildLogWix :: $trimdir}"                                                                       \\
- | perl -e ' "' "'                                                                                                    \\
+ | perl -le "print q{$buildLogWix.build :: $trimdir}"                                                                      \\
+ | perl -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
     @in = <>;                                                                                                              \\
@@ -1248,19 +1247,22 @@ alias bldwix 'echo $logSeparator; date;                                         
     $file = File::Tail->new(name=>$b, interval=>1);                                                                        \\
     while(defined($log=$file->read)) {                                                                                     \\
       chomp $log;                                                                                                          \\
-      if($log =~ /^Time elapsed/i){ print "$log\n"; exit; }                                                                \\
-      if($log =~ /due to false condition|Input files:|previous bind inputs|warning CNDL1118/i) { next; }                   \\
-      if($log =~ /Build started|error|fatal|failed|warning|Done Building Project.+wixproj\"/i) {                           \\
-        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
-        print "$log\n"                                                                                                     \\
-      }                                                                                                                    \\
+        if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){                                        \\
+          $total = $1 + $2 + $3;                                                                                           \\
+          if($total > 20){ print "$log\n"; exit; }                                                                         \\
+          else { print "$log\n" }                                                                                          \\
+        }                                                                                                                  \\
+        elsif($log =~ /----- Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                             \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                                             \\
+          print "$log\n"                                                                                                   \\
+        }                                                                                                                  \\
     }                                                                                                                      \\
  '"'"
 
-alias bldsetup 'echo $logSeparator; date;                                                                                    \\
-    echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix"                                             \\
- | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
- | perl -e ' "' "'                                                                                                    \\
+alias bldsetup 'echo $logSeparator; date;                                                                                  \\
+    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix.setup"                                        \\
+ | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
+ | perl -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
     $line = shift @l;                                                                                                      \\
     if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
@@ -1269,10 +1271,10 @@ alias bldsetup 'echo $logSeparator; date;                                       
       $line =~ s/.exe(,.+)/.exe/;                                                                                          \\
       $ver=$td; $ver =~ s/^.:.//;                                                                                          \\
     }                                                                                                                      \\
-    print "touch $bl\n$line $td/trim/WIX.sln /p:Configuration=$db /p:Platform=$da /t:\"Setup Tools\\SetupExecutable\" /fl /flp:logfile=$bl /v:normal /m &\n" ' "' "' \\
+    print "touch $bl\n$line $td/trim/WIX.sln /build \"$db|$da\" /project SetupExecutable /out $bl &\n" ' "' "'             \\
  | dos2unix | /bin/sh                                                                                                      \\
- | perl -le "print q{$buildLogWix :: $trimdir}"                                                                       \\
- | perl -e ' "' "'                                                                                                    \\
+ | perl -le "print q{$buildLogWix.setup :: $trimdir}"                                                                      \\
+ | perl -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
     @in = <>;                                                                                                              \\
@@ -1283,20 +1285,23 @@ alias bldsetup 'echo $logSeparator; date;                                       
     print "LOG FILE: $b\n";                                                                                                \\
     $file = File::Tail->new(name=>$b, interval=>1);                                                                        \\
     while(defined($log=$file->read)) {                                                                                     \\
-      chomp $log;                                                                                                          \\
-      if($log =~ /^Time elapsed/i){ print "$log\n"; exit; }                                                                \\
-      if($log =~ /due to false condition|Input files:|previous bind inputs|warning CNDL1118/i) { next; }                   \\
-      if($log =~ /Build started|error|fatal|failed|warning|Done Building Project.+wixproj\"/i) {                           \\
-        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
-        print "$log\n"                                                                                                     \\
-      }                                                                                                                    \\
+        chomp $log;                                                                                                        \\
+        if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){                                        \\
+          $total = $1 + $2 + $3;                                                                                           \\
+          if($total > 8){ print "$log\n"; exit; }                                                                          \\
+          else { print "$log\n" }                                                                                          \\
+        }                                                                                                                  \\
+        elsif($log =~ /----- Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                             \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                                             \\
+          print "$log\n"                                                                                                   \\
+        }                                                                                                                  \\
     }                                                                                                                      \\
  '"'"
 
 alias clnwix 'echo $logSeparator;                                                                                          \\
-    echo -n "$msbuildexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix"                                             \\
- | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                    \\
- | perl -e ' "' "'                                                                                                    \\
+    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix.clean"                                        \\
+ | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
+ | perl -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
     $line = shift @l;                                                                                                      \\
     if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                                                   \\
@@ -1306,10 +1311,10 @@ alias clnwix 'echo $logSeparator;                                               
       $ver=$td;                                                                                                            \\
       $ver =~ s/^.:.//;                                                                                                    \\
     }                                                                                                                      \\
-    print "touch $bl\n$line $td/trim/WIX.sln /p:Configuration=$db /p:Platform=$da /t:Clean /fl /flp:logfile=$bl /v:normal /m &\n" ' "' "' \\
+    print "touch $bl\n$line $td/trim/WIX.sln /clean \"$db|$da\" /out $bl &\n" ' "' "'                                      \\
  | dos2unix | /bin/sh                                                                                                      \\
- | perl -le "print q{$buildLogWix :: $trimdir}"                                                                       \\
- | perl -e ' "' "'                                                                                                    \\
+ | perl -le "print q{$buildLogWix.clean :: $trimdir}"                                                                      \\
+ | perl -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
     @in = <>;                                                                                                              \\
@@ -1321,10 +1326,9 @@ alias clnwix 'echo $logSeparator;                                               
     $file = File::Tail->new(name=>$b, interval=>1);                                                                        \\
     while(defined($log=$file->read)) {                                                                                     \\
       chomp $log;                                                                                                          \\
-      if($log =~ /^Time elapsed/i){ print "$log\n"; exit; }                                                                \\
-      if($log =~ /due to false condition|Input files:|previous bind inputs/i) { next; }                                    \\
-      if($log =~ /Build started|error|fatal|failed|warning/i) {                                                            \\
-        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
+      if($log    =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print "$log\n"; exit; }                                       \\
+      elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) {                                                        \\
+        if(length($log) > 200){ $log = substr($log,0,200); }                                                               \\
         print "$log\n"                                                                                                     \\
       }                                                                                                                    \\
     }                                                                                                                      \\
@@ -1332,9 +1336,9 @@ alias clnwix 'echo $logSeparator;                                               
 
 alias bldproj ' echo \!:1                                                                                                  \\
     > /c/tmp/__x;                                                                                                          \\
-    echo "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog" \\
+    echo "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog"                                                    \\
     >> /c/tmp/__x;                                                                                                         \\
-   perl -e  '"'"'                                                                                                     \\
+   perl -e  '"'"'                                                                                                          \\
     open F,"/c/tmp/__x"  ;                                                                                                 \\
     @in=<F>;close F;                                                                                                       \\
     $proj = shift @in;                                                                                                     \\
@@ -1353,8 +1357,8 @@ alias bldproj ' echo \!:1                                                       
     }                                                                                                                      \\
     print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project $proj /out $bl &\n"  '"'"'                  \\
  | dos2unix | /bin/sh                                                                                                      \\
- | perl -le "print q{$buildLog :: $trimdir}"                                                                          \\
- | perl -e '"'"'                                                                                                      \\
+ | perl -le "print q{$buildLog :: $trimdir}"                                                                               \\
+ | perl -e '"'"'                                                                                                           \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
     @in = <>;                                                                                                              \\
@@ -1372,7 +1376,7 @@ alias bldproj ' echo \!:1                                                       
         else { print "$log\n" }                                                                                            \\
       }                                                                                                                    \\
       elsif($log =~ /Build started|error|fatal|failed/i) {                                                                 \\
-        if(length($log) > 100){ $log = substr($log,0,100); }                                                               \\
+        if(length($log) > 200){ $log = substr($log,0,200); }                                                               \\
         print "$log\n"                                                                                                     \\
       }                                                                                                                    \\
     }                                                                                                                      \\
@@ -1384,7 +1388,7 @@ alias bldproj ' echo \!:1                                                       
 
 alias wglog_partial ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup*                                 \\
  | head -1                                                                                                                 \\
- | perl -e ' "' "'                                                                                                    \\
+ | perl -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
     @in = <>;                                                                                                              \\
