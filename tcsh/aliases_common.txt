@@ -70,14 +70,13 @@ alias dbdefault "set dbSession = $dbDefault; source $alias_file"
 alias dbcurrent echo $dbSession
 alias dbsession "set dbSession = \!^; source $alias_file; settitle"
 alias src       "source $alias_file"
-alias src71     "source $alias_dir/71environment"
-alias src72     "source $alias_dir/72environment"
-alias src73     "source $alias_dir/73environment"
 alias src80     "source $alias_dir/80environment"
 alias src81     "source $alias_dir/81environment"
 alias src82     "source $alias_dir/82environment"
 alias src83     "source $alias_dir/83environment"
-alias src84     "source $alias_dir/84environment"
+alias src90     "source $alias_dir/90environment"
+alias src91     "source $alias_dir/91environment"
+alias src92     "source $alias_dir/92environment"
 alias whichenv  "echo 'TRIMDIR   = $trimdir';          \\
                  echo 'ARCH      = $defArch';          \\
                  echo 'BUILD     = $defBuild';         \\
