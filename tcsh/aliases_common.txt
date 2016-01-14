@@ -439,6 +439,7 @@ alias branches        logprocbranches
 
 alias labproc        "perl $SVN_LAB_DB/svn_log_processor.pl"
 alias labrev	     labproc --rev
+alias lab	     labrev
 alias labhead        labrev head
 alias labmatch       labproc --no_case --limit 30 --match
 alias labm           labproc --match
