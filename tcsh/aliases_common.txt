@@ -336,7 +336,7 @@ alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
 alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
 alias svnrepoinfo    'cat $SVN_LAB_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
 alias svnrepoinfohou 'cat $SVN_MIRROR_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
-alias writeSvnBranch 'svnstatus | perl -ne '"'"' /^URL.+\/(REPOS\/.+)/ and do { print "svn://localhost/$1\n" }' "' "' > C:/temp/svn_branch_x.txt'
+alias writeSvnBranch 'svnstatus | perl -ne '"'"' /^URL:\s+(.+)\/(REPOS\/.+)/ and do { print "$1/$2\n" }' "' "' > C:/temp/svn_branch_x.txt'
 alias showrevs       'writeSvnBranch && echo -n "\!*"      | processSvnLog'
 
 alias processSvnLog  'perl -e  '"'"'                     \\
@@ -1068,6 +1068,18 @@ alias buildtest2  'buildtest1 \\
       print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\n"                   \\
  '"'"
 
+#  TURN OFF OFFICE ADDIN LOADING AFTER A CSHARP BUILD
+alias noaddins ' perl -e ' "' "'                                                        \\
+   %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",                        \\
+              "MS Project" => "HP.HPRM.OfficeIntegration.Project",                      \\
+              Outlook      => "HP.HPRM.OfficeIntegration.Outlook",                      \\
+              PowerPoint   => "HP.HPRM.OfficeIntegration.PowerPoint",                   \\
+              Word         => "HP.HPRM.OfficeIntegration.Word");                        \\
+  for (sort keys %addins) {                                                             \\
+     my $key = "HKCU\\Software\\Microsoft\\Office\\".$_."\\Addins\\".$addins{$_};       \\
+     print "ADDIN $_ : ".`REG ADD "$key" /v LoadBehavior /t REG_DWORD /d 0 /f`;           \\
+  }                                                                                     \\
+ '"'"
 
 alias buildsolution '  echo $logSeparator; date;                                                                           \\
    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build"                                            \\
