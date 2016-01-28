@@ -1080,6 +1080,17 @@ alias noaddins ' perl -e ' "' "'                                                
      print "Updated load behaviour for Addin $_ : ".`REG ADD "$key" /v LoadBehavior /t REG_DWORD /d 0 /f`;           \\
   }                                                                                                                  \\
  '"'"
+alias addins   ' perl -e ' "' "'                                                                                     \\
+   %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",                                                     \\
+              "MS Project" => "HP.HPRM.OfficeIntegration.Project",                                                   \\
+              Outlook      => "HP.HPRM.OfficeIntegration.Outlook",                                                   \\
+              PowerPoint   => "HP.HPRM.OfficeIntegration.PowerPoint",                                                \\
+              Word         => "HP.HPRM.OfficeIntegration.Word");                                                     \\
+  for (sort keys %addins) {                                                                                          \\
+     my $key = "HKCU\\Software\\Microsoft\\Office\\".$_."\\Addins\\".$addins{$_};                                    \\
+     print `REG QUERY "$key" /v LoadBehavior`;                                                                       \\
+  }                                                                                                                  \\
+ '"'"
 
 alias buildsolution '  echo $logSeparator; date;                                                                           \\
    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build"                                            \\
