@@ -1069,16 +1069,16 @@ alias buildtest2  'buildtest1 \\
  '"'"
 
 #  TURN OFF OFFICE ADDIN LOADING AFTER A CSHARP BUILD
-alias noaddins ' perl -e ' "' "'                                                        \\
-   %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",                        \\
-              "MS Project" => "HP.HPRM.OfficeIntegration.Project",                      \\
-              Outlook      => "HP.HPRM.OfficeIntegration.Outlook",                      \\
-              PowerPoint   => "HP.HPRM.OfficeIntegration.PowerPoint",                   \\
-              Word         => "HP.HPRM.OfficeIntegration.Word");                        \\
-  for (sort keys %addins) {                                                             \\
-     my $key = "HKCU\\Software\\Microsoft\\Office\\".$_."\\Addins\\".$addins{$_};       \\
-     print "ADDIN $_ : ".`REG ADD "$key" /v LoadBehavior /t REG_DWORD /d 0 /f`;           \\
-  }                                                                                     \\
+alias noaddins ' perl -e ' "' "'                                                                                     \\
+   %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",                                                     \\
+              "MS Project" => "HP.HPRM.OfficeIntegration.Project",                                                   \\
+              Outlook      => "HP.HPRM.OfficeIntegration.Outlook",                                                   \\
+              PowerPoint   => "HP.HPRM.OfficeIntegration.PowerPoint",                                                \\
+              Word         => "HP.HPRM.OfficeIntegration.Word");                                                     \\
+  for (sort keys %addins) {                                                                                          \\
+     my $key = "HKCU\\Software\\Microsoft\\Office\\".$_."\\Addins\\".$addins{$_};                                    \\
+     print "Updated load behaviour for Addin $_ : ".`REG ADD "$key" /v LoadBehavior /t REG_DWORD /d 0 /f`;           \\
+  }                                                                                                                  \\
  '"'"
 
 alias buildsolution '  echo $logSeparator; date;                                                                           \\
@@ -1195,6 +1195,7 @@ alias bldcsharp 'echo $logSeparator; date;                                      
         }                                                                                                                  \\
     }                                                                                                                      \\
  '"'"
+alias bldcsh 'bldcsharp; noaddins'
 
 alias clncsharp 'echo $logSeparator;                                                                                       \\
     echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.clean"                                     \\
