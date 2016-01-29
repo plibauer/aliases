@@ -392,46 +392,36 @@ alias processSvnLog  'perl -e  '"'"'                     \\
   }                                                      \\
 '"'"
 
-alias logproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
-alias logrev         "logproc --rev"
-alias svnrev         logrev
-alias rev            logrev
-alias rdiff          logrev \!^ --diff \!:2
-alias revhead        logrev head
-alias revheadiff     logrev head --diff
-alias rhd	     revheadiff
-alias revchange      logproc --change
-alias change         logproc --change
-alias revchrange     logproc --change \!:1 --range \!:2
-alias changer        revchrange
-alias revchdiff      logproc --change \!^ --diff 
-alias revchdiffr     logproc --change \!:1 --diff --range \!:2
-alias changerd       revchdiffr
-alias logprocuser    logproc --get user
-alias logm           logproc --match 
-alias logmi          logproc --no_case --match 
-alias logmv          logproc --verbose --match 
-alias logmvi         logproc --no_case --verbose --match 
-alias match          logproc --no_case --limit 30 --match
-alias buildlabel     "match 'label.*\!^'"
-alias loga           "logproc --no_case --author \!:1 --match \!:2" 
-alias logar          "logproc --no_case --author \!:1 --match \!:2 --revision \!:3" 
-alias logalib        "logproc --no_case --author libauer --match \!:1"
-alias logacs         "logproc --author \!:1 --match \!:2"
-alias logav          "logproc --verbose --author \!:1 --match \!:2"
-alias logavi         "logproc --no_case --verbose --author \!:1 --match \!:2"
-alias matchauth      "logproc --author \!:1 --match \!:2"
-alias matchauthor    "logproc --author \!:1 --match \!:2"
-alias findfile       "logproc --find_file"
-alias logf           findfile
-alias users          logprocuser
-alias logprocschema  logproc --get schema
-alias schema         logprocschema
-alias svnlogupdate   logproc --update
-alias logupdate      svnlogupdate
-alias svnlogh        logproc --help
-alias logprocbranches logproc --get branch
-alias branches        logprocbranches
+alias houproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
+alias hourev         "houproc --rev"
+alias hourdiff       hourev \!^ --diff \!:2
+alias hourevheadiff  hourev head --diff
+alias hourhd	     hourevheadiff
+alias hourevchange   houproc --change
+alias houchange      houproc --change
+alias hourevchrange  houproc --change \!:1 --range \!:2
+alias houchanger     hourevchrange
+alias hourevchdiff   houproc --change \!^ --diff 
+alias hourevchdiffr  houproc --change \!:1 --diff --range \!:2
+alias houchangerd    hourevchdiffr
+alias houuser        houproc --get user
+alias houlogm        houproc --match 
+alias houlogmi       houproc --no_case --match 
+alias houlogmv       houproc --verbose --match 
+alias houlogmvi      houproc --no_case --verbose --match 
+alias houmatch       houproc --no_case --limit 30 --match
+alias houbuildlabel  "houmatch 'label.*\!^'"
+alias houloga        "houproc --no_case --author \!:1 --match \!:2" 
+alias houlogar       "houproc --no_case --author \!:1 --match \!:2 --revision \!:3" 
+alias houlogalib     "houproc --no_case --author libauer --match \!:1"
+alias houlogacs      "houproc --author \!:1 --match \!:2"
+alias houlogav       "houproc --verbose --author \!:1 --match \!:2"
+alias houlogavi      "houproc --no_case --verbose --author \!:1 --match \!:2"
+alias matchauth      "houproc --author \!:1 --match \!:2"
+alias matchauthor    "houproc --author \!:1 --match \!:2"
+alias houfindfile    "houproc --find_file"
+alias houschema      houproc --get schema
+alias houupdate      houproc --update
 
 #
 #  LAB Aliases
@@ -453,9 +443,36 @@ alias labacs         "labproc --author \!:1 --match \!:2"
 alias labav          "labproc --verbose --author \!:1 --match \!:2"
 alias labavi         "labproc --no_case --verbose --author \!:1 --match \!:2"
 alias labauthor      "labproc --author \!:1 --match \!:2"
+alias labfindfile    "labproc --find_file"
 alias labauth        labauthor
+alias labschema	     labproc --get schema
 alias labupdate      labproc --update --repo "svn://localhost:11111/REPOS"
 alias labhelp        labproc --help
+
+
+#  MASTER SVN aliases
+
+alias rev	     labrev
+alias revhead        labrev head
+alias match 	     labmatch
+alias logm           labm
+alias logmi          labmi
+alias logmv          labmv
+alias logmvi         labmvi
+alias loga           laba
+alias logar          labar
+alias logalib        labalib
+alias logacs         labacs
+alias logav          labav
+alias logavi         labavi
+alias findfile       labfindfile
+alias logf           findfile
+alias logprocuser    labproc --get user
+alias users          logprocuser
+alias schema         labschema
+alias logupdate      labupdate
+alias svnlogh        labproc --help
+alias branches       labproc --get branch
 
 #
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
