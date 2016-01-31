@@ -394,9 +394,8 @@ alias processSvnLog  'perl -e  '"'"'                     \\
 
 alias houproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
 alias hourev         "houproc --rev"
-alias hourdiff       hourev \!^ --diff \!:2
-alias hourevheadiff  hourev head --diff
-alias hourhd	     hourevheadiff
+alias houdiff        hourev \!^ --diff \!:2
+alias hourevhead     hourev head
 alias hourevchange   houproc --change
 alias houchange      houproc --change
 alias hourevchrange  houproc --change \!:1 --range \!:2
