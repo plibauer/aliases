@@ -1045,6 +1045,11 @@ else if ($defCompiler == "VS2008") then
 endif
 set devenvexe = "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe"
 
+alias shortcuttrim 'echo "Creating shortcut to $defArch TRIM.sln" && mkshortcut -n "$revision""_$defArch""_TRIM.sln" "/$REPOS_ROOT/$revision/trim/sln/TRIM/$defArch/TRIM.sln"'
+alias shortcutcs   'echo "Creating shortcut to TRIMCSharp.sln"    && mkshortcut -n "$revision""_TrimCSharp.sln"      "/$REPOS_ROOT/$revision/trim/TrimCSharp.sln"'
+alias shortcutwix  'echo "Creating shortcut to WIX.sln"           && mkshortcut -n "$revision""_WIX.sln"             "/$REPOS_ROOT/$revision/trim/WIX.sln"'
+alias makeshortcuts "shortcuttrim;shortcutcs;shortcutwix"
+
 alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/bin/dumpbin.exe"
 alias touchcopy  "touch $trimdir/trim/src/CopyFiles/CopyFiles.cpp"
 set buildLog       = "${REPOS_ROOT}:/TEMP/TRIM-$revision$defPatch-$defArch-$defBuild.log"
