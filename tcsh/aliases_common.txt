@@ -15,7 +15,15 @@ set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /c/python
 
 set trimdir       = $REPOS_ROOT":/$revision"$defPatch
 set dbDefault     = Test_"$revision"_SqlServer
-set dbSession     = $dbDefault
+
+if (! $?dbSession) then       
+  set dbSession   = $dbDefault
+else
+  if ("$dbSession" == "")  then
+     set dbSession   = $dbDefault
+  endif
+endif
+
 set cygtrimdir    = "/$REPOS_ROOT/$revision"$defPatch
 set idolDb        = TRIM_"$DBID"
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
@@ -756,7 +764,7 @@ alias perlfunc  "perldoc -f"
 ################################################
 ### PERL DATABASE ACCESS
 
-alias dbpl        "perl $STATIC_REPO/libs/Perl/db/db.pl"
+alias dbpl        "perl $STATIC_REPO/libs/Perl/db/db.pl --database $dbSession"
 alias db          "dbpl --version $revision"
 alias dbs         "db --list"
 alias dbdetails   "dbpl --list --verbose"
