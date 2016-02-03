@@ -74,7 +74,7 @@ alias hf1       "set defPatch = _HF1; set defBuild = Release; source $alias_file
 alias hf2       "set defPatch = _HF2; set defBuild = Release; source $alias_file; settitle"
 alias p1        "set defPatch = _P1; set defBuild = Release; source $alias_file; settitle"
 alias p2        "set defPatch = _P2; set defBuild = Release; source $alias_file; settitle"
-alias dbdefault "set dbSession = $dbDefault; source $alias_file"
+alias dbdefault "set dbSession = $dbDefault; source $alias_file; settitle"
 alias dbcurrent echo $dbSession
 alias dbsession "set dbSession = \!^; source $alias_file; settitle"
 alias src       "source $alias_file"
