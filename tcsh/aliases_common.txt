@@ -1199,7 +1199,7 @@ alias clnsln '    echo $logSeparator; date;                                     
     }                                                                                                                      \\
  '" '"
 
-alias bldcsharp 'echo $logSeparator; date;                                                                                 \\
+alias buildcsharp 'echo $logSeparator; date;                                                                                 \\
     echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.build"                                     \\
  | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
  | perl -e ' "' "'                                                                                                         \\
@@ -1237,7 +1237,7 @@ alias bldcsharp 'echo $logSeparator; date;                                      
         }                                                                                                                  \\
     }                                                                                                                      \\
  '"'"
-alias bldcsh 'bldcsharp; noaddins'
+alias bldcsharp 'buildcsharp; noaddins'
 
 alias clncsharp 'echo $logSeparator;                                                                                       \\
     echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.clean"                                     \\
