@@ -1135,6 +1135,13 @@ alias buildsolution '  echo $logSeparator; date;                                
         $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                       \\
         $line =~ s/.exe(,.+)/.exe/;                                                                                        \\
         $ver=$td; $ver =~ s/^.:.//;                                                                                        \\
+        open T,">$bl.cmd_line";                                                                                            \\
+        print T "$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl\n";                           \\
+        close T;                                                                                                           \\
+      }                                                                                                                    \\
+      else {                                                                                                               \\
+        print "echo \"Invalid input : $line?\"";                                                                           \\
+        exit;                                                                                                              \\
       }                                                                                                                    \\
       print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\n"                   \\
  ' "' "'                                                                                                                   \\
@@ -1146,7 +1153,10 @@ alias buildsolution '  echo $logSeparator; date;                                
       @in = <>; $i = shift @in; chomp $i;                                                                                  \\
       if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                         \\
       $ver =~ s/^.:.//;                                                                                                    \\
-      print "LOG FILE: $b\n";                                                                                              \\
+      # print the command line to console                                                                                  \\
+      open C, "$b.cmd_line"; @cl = <C>; close C;                                                                           \\
+      print "COMMAND LINE: @cl";                                                                                           \\
+      print "LOG FILE    : $b\n";                                                                                          \\
       $file = File::Tail->new(name=>$b, interval=>1);                                                                      \\
       while(defined($log=$file->read)) {                                                                                   \\
         chomp $log;                                                                                                        \\
