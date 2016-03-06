@@ -244,7 +244,7 @@ alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* |
 alias refresh "C:/sysinternals/Bginfo.exe"
 
 alias ff            "find . -name "
-alias ifind         'find . -iname "\!^" '
+alias ifind         'find . -iname \!^\* '
 alias pfind2k8      "perl $PERL_BIN/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
 alias pfind         "perl $PERL_BIN/find_project_files.vs2010.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
 alias projfind      "perl $PERL_BIN/find_project_files.vs2010.pl -s "
@@ -945,6 +945,9 @@ alias gitunsetproxy  "setenv HTTP_PROXY;setenv HTTPS_PROXY "
 alias gitcheckproxy  "setenv | grep PROXY"
 alias gitconfigproxy "gogit; git config --global http.proxy $PROXY; git config --global https.proxy $HTTPS_PROXY"
 alias gitconfignoproxy "gogit; git config --global --unset http.proxy; git config --global --unset https.proxy"
+#
+alias gitwork	     "gitconfigproxy; git remote set-url origin gitproxy:plibauer/aliases.git"
+alias githome	     "gitconfignoproxy; gitsetrepo"
 
 # If a file has been deleted locally, you can restore it using the following and providing the filename as the argument
 alias gitrestore  "git checkout HEAD \!^"
@@ -1136,6 +1139,13 @@ alias buildsolution '  echo $logSeparator; date;                                
         $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                       \\
         $line =~ s/.exe(,.+)/.exe/;                                                                                        \\
         $ver=$td; $ver =~ s/^.:.//;                                                                                        \\
+        open T,">$bl.cmd_line";                                                                                            \\
+        print T "$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl\n";                           \\
+        close T;                                                                                                           \\
+      }                                                                                                                    \\
+      else {                                                                                                               \\
+        print "echo \"Invalid input : $line?\"";                                                                           \\
+        exit;                                                                                                              \\
       }                                                                                                                    \\
       print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\n"                   \\
  ' "' "'                                                                                                                   \\
@@ -1147,7 +1157,10 @@ alias buildsolution '  echo $logSeparator; date;                                
       @in = <>; $i = shift @in; chomp $i;                                                                                  \\
       if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                         \\
       $ver =~ s/^.:.//;                                                                                                    \\
-      print "LOG FILE: $b\n";                                                                                              \\
+      # print the command line to console                                                                                  \\
+      open C, "$b.cmd_line"; @cl = <C>; close C;                                                                           \\
+      print "COMMAND LINE: @cl";                                                                                           \\
+      print "LOG FILE    : $b\n";                                                                                          \\
       $file = File::Tail->new(name=>$b, interval=>1);                                                                      \\
       while(defined($log=$file->read)) {                                                                                   \\
         chomp $log;                                                                                                        \\
