@@ -454,7 +454,7 @@ alias labauthor      "labproc --author \!:1 --match \!:2"
 alias labfindfile    "labproc --find_file"
 alias labauth        labauthor
 alias labschema	     labproc --get schema
-alias labupdate      labproc --update --repo "svn://localhost:11111/REPOS"
+alias labupdate      labproc --update --repo "$SVN_LAB_URI/REPOS"
 alias labhelp        labproc --help
 
 
@@ -488,6 +488,7 @@ alias branches       labproc --get branch
 #
 alias syncsvn	    "svnsync sync $SVN_LAB"
 alias synclab       "svnsync sync $SVN_LAB $SVN_LAB_URI"
+alias synclabwork   "svnsync sync $SVN_LAB svn://labsvn:1137/TRIM"
 alias syncsvnmaster synclab
 alias synchouston   "svnsync sync $SVN_MIRROR $SVN_HOUSTON"
 alias synchou	    synchouston
