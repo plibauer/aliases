@@ -27,7 +27,7 @@ alias cloudweb   "mstsc $RDP_DIR\\CloudWeb.rdp       &"
 alias cloudadfs  "mstsc $RDP_DIR\\CloudADFS.rdp      &"
 alias build83 	 "mstsc $RDP_DIR\\Build83.rdp        &"
 
-set RDWIKI_DIR = "G:/RDWiki"
+set RDWIKI_DIR = "D:/BACKUP-MASTER/RDWIKI-BACKUP/RDWiki"
 alias grepjd          ' ls $RDWIKI_DIR/data/pages/wiki/paul_libauer/journals/*/*                                        \\
 | /bin/perl -e '"'"'                                                                                                    \\
 %m = (jan,"01",feb,"02",mar,"03",apr,"04",may,"05",jun,"06",jul,"07",aug,"08",sep,"09","oct",10,nov,11,dec,12);         \\
@@ -44,7 +44,7 @@ my $match=join "|", keys %m;                                                    
      print "$ordered{$_}\n";                                                                                            \\
    }                                                                                                                    \\
  '"'"
-alias search          "grep -i \!^ `grepjd` | perl -ne 's|^.+/data/pages/wiki/paul_libauer/||; print'"
+alias search          "grep -i \!^ `grepjd` | perl -ne 's|^.+/data/pages/wiki/paul_libauer/journals||; print'"
 
 alias vj              ' echo -n "<$RDWIKI_DIR> \!*" | /bin/perl -ne  '"'"'                                                    \\
      /^<(.+)> ([A-z]+)\s*(\d+)*/ and do { ($path,$m,$y) = ($1,$2,$3) };                                                       \\
