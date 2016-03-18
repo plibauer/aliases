@@ -682,10 +682,10 @@ alias almlibwa            'almlibactive  -width 105 | perl -ne ' "'" ' chomp; if
 alias almliball           alm libauer
 alias almschema           alm --schema
 alias cr                  alm --cr
-alias almupdate           alm_data_convert --update --verbose
-alias almupdatehome       alm_data_convert --update --verbose --proxy home
-alias almsync             alm_data_convert --update --verbose
-alias almsynchome         alm_data_convert --update --verbose --proxy home
+alias almupdate           alm_data_convert --http_server $ALM_SYNC_URL --update --verbose
+alias almupdatehome       "almupdate --proxy home"
+alias almsync             almupdate
+alias almsynchome         almupdatehome
 #######################################################################################################################
 
 # RSYNC
