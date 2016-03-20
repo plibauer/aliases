@@ -495,6 +495,10 @@ alias synchou	    synchouston
 alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB"
 alias remlockhou    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 alias syncup        "syncsvn; logupdate"
+
+# Setup the documentation directory
+alias makedocotrunk 'mkdir -p $SVNBASE/doc/doc; cd -p $SVNBASE/doc/doc; svn co $SVN_LAB_URI/REPOS/doc/trunk/DocPub' 
+
 #
 # -------------------- PATCHING aliases --------------------------
 #
@@ -509,6 +513,10 @@ alias infop1	'infowc "$SVNBASE"_P1; echo -n "\t => @revision "; inforev "$SVNBAS
 alias infop2	'infowc "$SVNBASE"_P2; echo -n "\t => @revision "; inforev "$SVNBASE"_P2'
 alias infoall   "infotrunk; echo; infortm; echo; infohf1; echo; infohf2; echo; infop1; echo; infop2; echo"
 alias allinfo   infoall
+
+# SETUP Documentation directories 
+alias makedocopatch 'mkdir -p "$SVNBASE"_"\!^/doc/doc"; cd "$SVNBASE"_"\!^/doc/doc"; svn co $SVN_LAB_URI/REPOS/doc/trunk/DocPub'
+alias makedocoall "makedocopatch P1; makedocopatch P2; makedocopatch HF1; makedocopatch HF2; makedocopatch RTM;" 
 
 # 
 #  Update a branch to a particular revision
@@ -674,10 +682,10 @@ alias almlibwa            'almlibactive  -width 105 | perl -ne ' "'" ' chomp; if
 alias almliball           alm libauer
 alias almschema           alm --schema
 alias cr                  alm --cr
-alias almupdate           alm_data_convert --update --verbose
-alias almupdatehome       alm_data_convert --update --verbose --proxy home
-alias almsync             alm_data_convert --update --verbose
-alias almsynchome         alm_data_convert --update --verbose --proxy home
+alias almupdate           alm_data_convert --http_server $ALM_SYNC_URL --update --verbose
+alias almupdatehome       "almupdate --proxy home"
+alias almsync             almupdate
+alias almsynchome         almupdatehome
 #######################################################################################################################
 
 # RSYNC
@@ -1062,7 +1070,7 @@ alias shortcuttrim 'echo "Creating shortcut to $defArch TRIM.sln" && mkshortcut 
 alias shortcutcs   'echo "Creating shortcut to TRIMCSharp.sln"    && mkshortcut -n "$revision""_TrimCSharp.sln"      "/$REPOS_ROOT/$revision/trim/TrimCSharp.sln"'
 alias shortcutwix  'echo "Creating shortcut to WIX.sln"           && mkshortcut -n "$revision""_WIX.sln"             "/$REPOS_ROOT/$revision/trim/WIX.sln"'
 alias shortcutmsi  'echo "Creating shortcut to $defArch MSIs"     && mkshortcut -n "$revision""_$defArch""_MSIs"     "/$REPOS_ROOT/$revision/msi/$defArch/en-us"'
-alias makeshortcuts "shortcuttrim;shortcutcs;shortcutwix;shortcutmsi"
+alias makeshortcutscurrent "shortcuttrim;shortcutcs;shortcutwix;shortcutmsi"
 
 alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/bin/dumpbin.exe"
 alias touchcopy  "touch $trimdir/trim/src/CopyFiles/CopyFiles.cpp"

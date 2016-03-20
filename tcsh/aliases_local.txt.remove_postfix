@@ -22,6 +22,7 @@
 #set PERL_BIN        = C:/cygwin/home/plibauer/perl/bin
 #set DEVENV_ROOT     = "C:/Program Files (x86)"
 #set ALM_DB          = C:/ALMDatabase
+#set ALM_SYNC_URL    = http://16.146.169.29:8080
 #set PROXY           = http://web-proxy.au.hpecorp.net:8080
 #set HTTPS_PROXY     = https://web-proxy.au.hpecorp.net:8080
 #set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10"
