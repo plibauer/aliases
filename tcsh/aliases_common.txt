@@ -1083,11 +1083,12 @@ alias ramdisk         "$trimdir/trim/scripts/createRamDisk.cmd"
 alias ramdiskrelease  "$trimdir/trim/scripts/createRamDisk.release.cmd"
 alias ramdiskr        ramdiskrelease
 
-alias bldlog    "tail -f $buildLog.build"
-alias bldlogcs  "tail -f $buildLogCSharp.build"
-alias bldlogwix "tail -f $buildLogWix"
-alias bldall	"bldsln; bldcsharp; bldwix"
-alias clnall	"clnsln; clncsharp; clnwix"
+alias bldlog     	"tail -f $buildLog.build"
+alias bldlogcs   	"tail -f $buildLogCSharp.build"
+alias bldlogwix  	"tail -f $buildLogWix"
+alias bldall 		"bldsln; bldcsharp; bldwix"
+alias clnall 		"clnsln; clncsharp; clnwix"
+alias clnallboth	"release; clnall; debug; clnall"
 
 alias buildtest1  '  echo $logSeparator; date;                                                                             \\
    echo "TEST build alias";                                                                                                \\
