@@ -250,8 +250,14 @@ alias pfind         "perl $PERL_BIN/find_project_files.vs2010.pl -s $trimdir/tri
 alias projfind      "perl $PERL_BIN/find_project_files.vs2010.pl -s "
 alias pf pfind
 alias grep          "grep --perl-regexp"
-alias grep_examples "cat /c/Users/libauer/grep_examples.txt"
-alias grepe grep_examples
+#
+#
+# These aliases will produce a command line that can be used to search unicode and ascii files simultaneously. Useful when searching Visual Studio source
+alias grepunicode   'perl -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", split //,$a1; print "grep -as \"$a1\|$b\" \*/\*\n" '"'  \!:1 \!:2  " 
+alias grepunicodei  'perl -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", split //,$a1; print "grep -ais \"$a1\|$b\" \*/\*\n" '"'  \!:1 \!:2  " 
+alias grepuni       grepunicodei
+#
+#
 alias messages      'cat $trimdir/trim/TRIMMessages.txt | grep -i '
 alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
 alias properties    'cat $trimdir/trim/src/DD/properties.txt | grep -i '
