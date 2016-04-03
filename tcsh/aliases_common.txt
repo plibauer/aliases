@@ -1063,7 +1063,10 @@ print "\n";                                                                     
 ##############################################################################
 ######################         BUILD ALIASES          ########################
 
-if ($defCompiler == "VS2013") then
+if ($defCompiler == "VS2015") then
+  set VSVER = 14.0
+  set msbuildexe = "C:/Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe"
+else if ($defCompiler == "VS2013") then
   set VSVER = 12.0
   set msbuildexe = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
 else if ($defCompiler == "VS2008") then
