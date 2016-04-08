@@ -630,7 +630,7 @@ alias localstatic ' echo `svn info $STATIC_REPO | grep "URL: svn"` "AA" $SVN_MAS
       exit;                                                                                   \\
  '"'"
 
-alias svnup            "svn update $trimdir; date "
+alias svnup            "svn update $trimdir; date; svn update $trimdir/doc/doc/DocPub; date; "
 alias svnupr	       "mainlocal; svnup; localmain"
 alias svnstatic        "svn update $STATIC_REPO"
 alias svnstaticr       "staticlocal; svnstatic; localstatic"
