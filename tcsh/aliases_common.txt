@@ -1097,7 +1097,7 @@ alias ramdiskr        ramdiskrelease
 alias bldlog     	"tail -f $buildLog.build"
 alias bldlogcs   	"tail -f $buildLogCSharp.build"
 alias bldlogwix  	"tail -f $buildLogWix"
-alias bldall 		"bldsln; bldcsharp; bldwix"
+alias bldall 		"date; bldsln; bldcsharp; bldwix; date"
 alias clnall 		"clnsln; clncsharp; clnwix"
 alias clnallboth	"release; clnall; debug; clnall"
 
