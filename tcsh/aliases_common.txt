@@ -436,6 +436,8 @@ alias matchauthor    "houproc --author \!:1 --match \!:2"
 alias houfindfile    "houproc --find_file"
 alias houschema      houproc --get schema
 alias houupdate      houproc --update
+alias houlook	     svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url
+alias hourelocaterepo 'echo "\n>svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url > url.txt\n<... edit url.txt ...>   (make sure not to add a newline to the end - use textpad)\n>svnadmin setrevprop $SVN_MIRROR_PATH -r0 svn:sync-from-url url.txt\n" '
 
 #
 #  LAB Aliases
@@ -462,6 +464,8 @@ alias labauth        labauthor
 alias labschema	     labproc --get schema
 alias labupdate      labproc --update --repo "$SVN_LAB_URI/REPOS"
 alias labhelp        labproc --help
+alias lablook	     svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url
+alias labrelocaterepo 'echo "\n>svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url > url.txt\n<... edit url.txt ...>   (make sure not to add a newline to the end - use textpad)\n>svnadmin setrevprop $SVN_LAB_PATH -r0 svn:sync-from-url url.txt\n" '
 
 
 #  MASTER SVN aliases
