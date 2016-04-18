@@ -11,7 +11,7 @@
 #set SVN_MIRROR      = file:///$SVN_MIRROR_PATH
 #set SVN_URL         = svn://localhost
 #set SVN_LOG_DB      = C:/svnLogDatabase
-#set SVN_HOUSTON     = https://csvnhou-pro.houston.hp.com:18490/svn/bio-im-trim
+#set SVN_HOUSTON     = https://csvnhou-pro.houston.hpecorp.net:18490/svn/bio-im-trim
 #
 #set SVN_MASTER      = $SVN_LAB
 #
