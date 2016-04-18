@@ -79,6 +79,7 @@ alias dbcurrent echo $dbSession
 alias dbsession "set dbSession = \!^; source $alias_file; settitle"
 alias src       "source $alias_file"
 set dbDefault     = Test_"$revision"_SqlServer
+alias src73     "source $alias_dir/73environment; dbsession Test_73_SqlServer"
 alias src80     "source $alias_dir/80environment; dbsession Test_80_SqlServer"
 alias src81     "source $alias_dir/81environment; dbsession Test_81_SqlServer"
 alias src82     "source $alias_dir/82environment; dbsession Test_82_SqlServer"
