@@ -1495,6 +1495,7 @@ alias bldproj ' echo \!:1                                                       
 ##############################################################################
 #######################         LOG VIEWING         ##########################
 
+alias wglogtail 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
 alias wglog_partial ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup*                                 \\
  | head -1                                                                                                                 \\
  | perl -e ' "' "'                                                                                                         \\
