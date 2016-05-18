@@ -16,6 +16,7 @@ alias goted		"cd $TED"
 alias ted		"perl $PERL_BIN/TED_Talks.pl --find \!^"
 alias tedfind		ted
 alias tedlist		"perl $PERL_BIN/TED_Talks.pl --list"
+alias tedupdate         "perl $PERL_BIN/TED_Talks.pl --update"
 
 alias router		"telnet 10.11.12.1"
 alias httpd             'cd /c/LightTPD; ./LightTPD.exe -f conf/lighttpd.conf' 
