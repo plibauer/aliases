@@ -7,7 +7,7 @@ set prompt="%B%n %~>"
 set autologout
 set alias_file = $alias_dir/aliases_common.txt
 
-set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /c/python27 /c/rakudo/bin /bin $path:q )
+set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /c/python27 /c/rakudo/bin /bin /usr/bin /sbin /usr/sbin $path:q )
 
 # Always set the drive prefix to just /, not "/cygdrive"
 # This has now been configured in /etc/fstab, so no need to do it here
