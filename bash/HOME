@@ -1,3 +1,6 @@
+alias winhome='cd /c/Users/plibauer'
+alias home=winhome
+
 alias goiview="cd /f/ABC_Iview;"
 alias iview="cd /f/ABC_Iview; ./PerlIView.pl"
 alias iviewsh="cd /f/ABC_Iview; ./PerlIView.pl --show"

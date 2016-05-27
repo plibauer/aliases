@@ -1,3 +1,6 @@
+alias winhome='cd /c/Users/plibauer'
+alias home=winhome
+
 # Set the $DATE variable for use in editing wiki journal
 set DATE = `date +%B%Y`
 

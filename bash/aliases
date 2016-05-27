@@ -32,41 +32,4 @@ alias ll='ls -l'
 alias la='ls -lA'
 alias l='ls -CF'                              #
 alias h=history
-
 alias view=vi
-alias winhome='cd /c/Users/plibauer'
-alias home=winhome
-
-# ----------------------------------------------------------------------------
-#
-#                       Visual Studio and Build aliases
-#
-# Allow a different standard path for devenv.exe
-if [ -z "$DEVENV_ROOT" ]; then
-  export DEVENV_ROOT="C:/Program Files (x86)"
-fi
-
-export defArchCSharp="AnyCPU"
-if [ "$defCompiler" == "VS2008" ]; then
-  export defArchCSharp=$defArch
-fi
-
-export defproj=ALL_BUILD
-alias settitle="setenvTitle $trimdir $defArch $defBuild $DBID"
-alias vs2013="export defCompiler=VS2013; source $alias_file"
-alias vs2008="export defCompiler=VS2008; source $alias_file"
-alias x86="export defArch=x86; source $alias_file; settitle"
-alias x64="export defArch=x64; source $alias_file; settitle"
-alias debug="export defBuild=Debug; source $alias_file; settitle"
-alias release="export defBuild=Release; source $alias_file; settitle"
-
-#alias whichenv="echo 'TRIMDIR   = $trimdir';          \\
-#                 echo 'ARCH      = $defArch';          \\
-#                 echo 'BUILD     = $defBuild';         \\
-#                 echo 'DBID      = $DBID';             \\
-#                 echo 'DBSession = $dbSession';        \\
-#                 echo 'IDOLDB    = $idolDb';           \\
-#                 echo 'SVNLOGDB  = $SVN_LOG_DB';       \\
-#"
-
-# ----------------------------------------------------------------------------
