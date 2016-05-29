@@ -1,8 +1,8 @@
-# Some example alias instructions
-# If these are enabled they will be used instead of any instructions
-# they may mask.  For example, alias rm='rm -i' will mask the rm
-# application.  To override the alias instruction use a \ before, ie
-# \rm will call the real rm not the alias.
+# Make the cygwin perl the default
+PATH="/bin:/sbin:/usr/sbin:${PATH}"
+
+# alias rm='rm -i' will mask the rm  application.  To override the alias instruction 
+# use a \ before, ie. \rm will call the real rm not the alias.
 
 alias_dir=~/aliases/bash
 alias_file=$alias_dir/aliases
