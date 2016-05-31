@@ -72,3 +72,6 @@ fi
 # The first version sets the xterm title too
 #PS1="\[\e]0;\w\a\]\[\e[32m\]\h \[\e[33m\]\w\[\e[0m\]> "
 PS1="\[\e[32m\]\h \[\e[33m\]\w\[\e[0m\]> "
+
+# Allow CNTRL+V pasting
+stty lnext ^q stop undef start undef

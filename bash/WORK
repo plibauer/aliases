@@ -4,7 +4,7 @@ alias home=winhome
 # Set the $DATE variable for use in editing wiki journal
 set DATE = `date +%B%Y`
 
-PATH=/c/Users/plibauer/perl/bin:$PATH:/c/Python26
+PATH=/usr/bin/perl:$PATH
 
 ##############################################################################
 #########################  JOURNAL shortcuts  ################################
