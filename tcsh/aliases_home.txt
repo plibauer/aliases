@@ -6,6 +6,8 @@ set TED = /e/TED_Videos
 
 alias syncsvnhome   "svnsync sync $SVN_MIRROR $SVN_MASTER_HOME"
 
+alias vlc 	    "/c/Program\ Files/VideoLAN/VLC/vlc.exe"
+
 alias goiview 		"cd /f/ABC_Iview;"
 alias iview 		"cd /f/ABC_Iview; ./PerlIView.pl"
 alias iviewsh	 	"cd /f/ABC_Iview; ./PerlIView.pl --show"
@@ -14,6 +16,7 @@ alias iviewg		"cd /f/ABC_Iview; ./PerlIView.pl --get"
 
 alias goted		"cd $TED"
 alias ted		"perl $PERL_BIN/TED_Talks.pl --find \!^"
+alias tedview		"perl $PERL_BIN/TED_Talks.pl --view "
 alias tedfind		ted
 alias tedlist		"perl $PERL_BIN/TED_Talks.pl --list"
 alias teddate		tedlist --sort date
