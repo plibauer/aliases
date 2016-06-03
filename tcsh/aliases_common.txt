@@ -635,12 +635,13 @@ alias localstatic ' echo `svn info $STATIC_REPO | grep "URL: svn"` "AA" $SVN_MAS
       exit;                                                                                   \\
  '"'"
 
-alias svnup            "svn update $trimdir; date; svn update $trimdir/doc/doc/DocPub; date; "
+alias svnup            "svn update $trimdir; date; svn update $trimdir/doc/doc/DocPub;"
 alias svnupr	       "mainlocal; svnup; localmain"
 alias svnstatic        "svn update $STATIC_REPO"
 alias svnstaticr       "staticlocal; svnstatic; localstatic"
 alias svnuphouston	svnstatic
 alias svnuphoulocal	svnstaticr
+alias svnupall         "date; svnup; date; svnstatic; date;"
 
 alias showlatest       "svn log $trimdir -r HEAD:1 --limit 10"
 alias showlatestv      "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
