@@ -665,9 +665,8 @@ alias almmatch            "alm --match \!^ | grep summary"
 alias almmatchverbose     alm --match 
 alias almmatchv           almmatchverbose 
 alias alm_data_convert    "perl $ALM_DB/data_convert.pl --proxy $PROXY"
-alias almlibauer          alm libauer owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\"
-alias almlibactive        alm libauer owner submit cycle reserved team test found target development state:\!\"closed\|duplicate\|fixed\"
-alias almlibactivex       alm libauer \# severity issue_type investigation applies owner submit cycle reserved team test found development state:\!\"closed\|duplicate\|fixed\" 
+alias almlibauer          alm --user active_owner:libauer submit cycle reserved team test found target development state:\!\"closed\|duplicate\"
+alias almlibactivex       alm --user active_owner:libauer owner assigned \# severity issue_type investigation applies target submit cycle reserved team test found development state:\!\"closed\|duplicate\" 
 alias almlog		  'almlibactivex -width 500 |       \\
 perl -e ' "'" '                                             \\
 my @in = <>;                                                \\
