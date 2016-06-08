@@ -816,7 +816,6 @@ alias tidsr       tableidsr
 
 alias sql         db -sql
 alias gtable      "db -table"
-alias loceaddr    "db -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 1,2,4,24,27,28 -num -verbose"
 alias getrec      "db -num -row"
 alias getrecs     getrec
 alias dumpdb      db --dump_all
@@ -828,6 +827,8 @@ alias tblconstraints "db -sql 'SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINT
 alias locs	db --object_type LOCATION --unadorned
 alias locuri    locs --object_uri 
 alias locname   locs --object_name 
+alias loceaddr  "db -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 1,2,24,26,27,28 -num -verbose"
+alias locations db -table TSLOCATION -col 1,2
 
 alias recs	db --object_type RECORD --unadorned --max 60
 alias recuri    recs --object_uri 
