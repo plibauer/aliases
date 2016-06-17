@@ -987,6 +987,19 @@ set BC3 = "C:/Program Files (x86)/Beyond Compare 3/bcomp.exe"
 alias gitconfigdiff  'git config --global diff.tool bc3; git config --global difftool.bc3.path "$BC3" '
 alias gitconfigmerge 'git config --global merge.tool bc3; git config --global mergetool.bc3.path "$BC3" '
 
+
+####################################################################
+### MOJOLICIOUS commands
+
+alias cpanm	     cpanm.bat
+alias cpanp          cpanp.bat 
+alias dbicadmin      dbicadmin.bat
+alias hypnotoad      hypnotoad.bat 
+alias hypnostop      hypnotoad.bat --stop 
+alias morbo          C:/Strawberry/perl/bin/morbo.bat 
+alias morbohelp      C:/Strawberry/perl/bin/morbo.bat --help
+alias mojo           mojo.bat
+
 #-------------------------------------------------------------------
 
 alias ldapa    "/bin/ldapadd.exe -x -D 'cn=Manager,dc=libauer,dc=com' -W -f \!^"

@@ -3,6 +3,7 @@ setenv DISPLAY :0.0
 set path = ( /c/Users/plibauer/Work/Perl/bin  $path:q )
 set SVN_MASTER_HOME = "svn://10.11.12.2/"
 set TED = /e/TED_Videos
+set TEDAPP = $PERL_BIN/TED/TED_Talks.pl
 
 alias syncsvnhome   "svnsync sync $SVN_MIRROR $SVN_MASTER_HOME"
 
@@ -15,16 +16,16 @@ alias iviewr		"cd /f/ABC_Iview; ./PerlIView.pl --refresh"
 alias iviewg		"cd /f/ABC_Iview; ./PerlIView.pl --get"
 
 alias goted		"cd $TED"
-alias ted		"perl $PERL_BIN/TED_Talks.pl --find \!^"
-alias tedview		"perl $PERL_BIN/TED_Talks.pl --view "
+alias ted		"perl $TEDAPP --find \!^"
+alias tedview		"perl $TEDAPP --view "
 alias tedfind		ted
-alias tedlist		"perl $PERL_BIN/TED_Talks.pl --list"
+alias tedlist		"perl $TEDAPP --list"
 alias teddate		tedlist --sort date
 alias tedtalk		tedlist --sort talk
 alias tedtime		tedlist --sort time
 alias tedauthor		tedlist --sort name
-alias tedhelp		"perl $PERL_BIN/TED_Talks.pl --help"
-alias tedupdate         "perl $PERL_BIN/TED_Talks.pl --update"
+alias tedhelp		"perl $TEDAPP --help"
+alias tedupdate         "perl $TEDAPP --update"
 
 alias router		"telnet 10.11.12.1"
 alias httpd             'cd /c/LightTPD; ./LightTPD.exe -f conf/lighttpd.conf' 
