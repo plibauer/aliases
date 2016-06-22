@@ -238,7 +238,15 @@ alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
  
 alias evlog_clean "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
-alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh | egrep -iv "processing  buffered events|No events waiting at workgroup" '
+
+alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* \\
+ | head -1                                                                        \\
+ | perl -ne '"'"' chomp; print "tail -f $_";  ' "' "'                             \\
+ | /bin/sh                                                                        \\
+ | egrep -iv                                                                      \\
+"processing  buffered events|\\
+No events waiting at workgroup" '
+
 alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
 alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
 
@@ -250,20 +258,20 @@ alias pfind2k8      "perl $PERL_BIN/find_project_files.pl -s $trimdir/trim/sln/T
 alias pfind         "perl $PERL_BIN/find_project_files.vs2010.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
 alias projfind      pfind
 alias pf pfind
-alias grep          "grep --perl-regexp"
+alias pgrep          "grep --perl-regexp"
 #
 #
 # These aliases will produce a command line that can be used to search unicode and ascii files simultaneously. Useful when searching Visual Studio source
-alias grepunicode   'perl -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", split //,$a1; print "grep -as \"$a1\|$b\" \*/\*\n" '"'  \!:1 \!:2  " 
-alias grepunicodei  'perl -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", split //,$a1; print "grep -ais \"$a1\|$b\" \*/\*\n" '"'  \!:1 \!:2  " 
+alias grepunicode   'perl -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", split //,$a1; print "pgrep -as \"$a1\|$b\" \*/\*\n" '"'  \!:1 \!:2  " 
+alias grepunicodei  'perl -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", split //,$a1; print "pgrep -ais \"$a1\|$b\" \*/\*\n" '"'  \!:1 \!:2  " 
 alias grepuni       grepunicodei
 #
 #
-alias messages      'cat $trimdir/trim/TRIMMessages.txt | grep -i '
+alias messages      'cat $trimdir/trim/TRIMMessages.txt | pgrep -i '
 alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
-alias properties    'cat $trimdir/trim/src/DD/properties.txt | grep -i '
+alias properties    'cat $trimdir/trim/src/DD/properties.txt | pgrep -i '
 alias viewprop      'view $trimdir/trim/src/DD/properties.txt'
-alias propids       'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | grep -i '
+alias propids       'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | pgrep -i '
 
 alias enums         'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs  \\
 | perl -e ' "'" '                                                             \\
@@ -287,7 +295,7 @@ for my $i (0 .. $max) {                                                       \\
 }                                                                             \\
 ' "'"
 
-alias database      'cat $trimdir/trim/src/DD/DATABASE.TXT | grep -i '
+alias database      'cat $trimdir/trim/src/DD/DATABASE.TXT | pgrep -i '
 alias viewdb        'view $trimdir/trim/src/DD/DATABASE.TXT'
 alias trimtables    'cat $trimdir/trim/src/DD/DATABASE.TXT                    \\
 | perl -e ' "'" '                                                             \\
@@ -613,23 +621,23 @@ alias makeshortcutst scutsallt
 #
 # -----------------------------------------------------------------
 #
-alias mainlocal  ' echo `svn info $trimdir | grep "URL: http"` "AA" $SVN_URL "BB" $trimdir  \\
+alias mainlocal  ' echo `svn info $trimdir | pgrep "URL: http"` "AA" $SVN_URL "BB" $trimdir  \\
  | perl -ne ' "' "'                                                                    \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");   \\
  '"'"
 
-alias localmain  ' echo `svn info $trimdir | grep "URL: svn"` "AA" $SVN_MASTER "BB" $trimdir  \\
+alias localmain  ' echo `svn info $trimdir | pgrep "URL: svn"` "AA" $SVN_MASTER "BB" $trimdir  \\
  | perl -ne ' "' "'                                                                      \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");     \\
       exit;                                                                                   \\
  '"'"
 
-alias staticlocal ' echo `svn info $STATIC_REPO | grep "URL: http"` "AA" $SVN_URL "BB" $STATIC_REPO  \\
+alias staticlocal ' echo `svn info $STATIC_REPO | pgrep "URL: http"` "AA" $SVN_URL "BB" $STATIC_REPO  \\
  | perl -ne ' "' "'                                                                    \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");   \\
  '"'"
 
-alias localstatic ' echo `svn info $STATIC_REPO | grep "URL: svn"` "AA" $SVN_MASTER "BB" $STATIC_REPO  \\
+alias localstatic ' echo `svn info $STATIC_REPO | pgrep "URL: svn"` "AA" $SVN_MASTER "BB" $STATIC_REPO  \\
  | perl -ne ' "' "'                                                                      \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");     \\
       exit;                                                                                   \\
@@ -661,7 +669,7 @@ alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | perl -e ' "'" ' @in = <>; while($
 
 # ALM 
 alias alm                 "perl $ALM_DB/ALMTool.pl --proxy $PROXY"
-alias almmatch            "alm --match \!^ | grep summary"
+alias almmatch            "alm --match \!^ | pgrep summary"
 alias almmatchverbose     alm --match 
 alias almmatchv           almmatchverbose 
 alias alm_data_convert    "perl $ALM_DB/data_convert.pl --proxy $PROXY"
@@ -757,7 +765,7 @@ alias popdboracle popdb --db oracle64
 alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
 alias getpath "perl $PERL_BIN/getPath.pl"
 alias sysinfo "systeminfo | perl -ne  'print unless /^\s+\[\d+\]/'"
-alias uptime  "systeminfo | grep -i 'boot time'"
+alias uptime  "systeminfo | pgrep -i 'boot time'"
 
 
 # Compile a script to an executable using Strawberry Perl's version of pp
@@ -901,8 +909,8 @@ while(<>){                                                  \\
 }                                                           \\
 '"'"
 
-alias grepu       'fromunicode \!:2 | grep \!:1'
-alias grepui      'fromunicode \!:2 | grep -i \!:1'
+alias grepu       'fromunicode \!:2 | pgrep \!:1'
+alias grepui      'fromunicode \!:2 | pgrep -i \!:1'
 
 alias testtrim     "$trimdir/$defArch/$defBuild/testTrim.exe --test"
 alias trimtest     testtrim
@@ -934,8 +942,8 @@ alias startsql          "sc start MSSQLSERVER"
 alias sqlstart          startsql
 alias querysql          "sc query MSSQLSERVER"
 alias sqlquery          querysql
-alias services		"svc_all | grep DISPLAY | sort"
-alias servicesrun	"svc_active | grep DISPLAY | sort"
+alias services		"svc_all | pgrep DISPLAY | sort"
+alias servicesrun	"svc_active | pgrep DISPLAY | sort"
 
 # Run Management Studio
 alias mstudio		"/c/Program\ Files\ \(x86\)/Microsoft\ SQL\ Server/110/Tools/Binn/ManagementStudio/Ssms.exe &"
@@ -972,7 +980,7 @@ alias gitremove      "git rm"
 alias gitundo        "git reset HEAD"
 alias gitsetproxy    "setenv HTTP_PROXY $PROXY; setenv HTTPS_PROXY $HTTPS_PROXY"
 alias gitunsetproxy  "setenv HTTP_PROXY;setenv HTTPS_PROXY "
-alias gitcheckproxy  "setenv | grep PROXY"
+alias gitcheckproxy  "setenv | pgrep PROXY"
 alias gitconfigproxy "gogit; git config --global http.proxy $PROXY; git config --global https.proxy $HTTPS_PROXY"
 alias gitconfignoproxy "gogit; git config --global --unset http.proxy; git config --global --unset https.proxy"
 #
@@ -1512,79 +1520,60 @@ alias bldproj ' echo \!:1                                                       
 ##############################################################################
 #######################         LOG VIEWING         ##########################
 
-alias wglogtail 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* | head -1 |  perl -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
-alias wglog_partial ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup*                                 \\
- | head -1                                                                                                                 \\
- | perl -e ' "' "'                                                                                                         \\
-    $| = 1;                                                                                                                \\
-    use File::Tail;                                                                                                        \\
-    @in = <>;                                                                                                              \\
-    $i = shift @in;                                                                                                        \\
-    chomp $i;                                                                                                              \\
-    $file = File::Tail->new(name=>$i, interval=>0, maxinterval=>2);                                                        \\
-    while(defined($log=$file->read)) {                                                                                     \\
-      #print $log;                                                                                                         \\
-      #next;                                                                                                               \\
-      if($log =~ /                                                                                                         \\
-select\s+top\s+30\s+uri\s+from\s+tseventdat|                                                                               \\
-select\s+uri,code,value\s+from\s+tstwrsys                                                                                  \\
-        /ix){                                                                                                              \\
-         next;                                                                                                             \\
-      }                                                                                                                    \\
-      print $log;                                                                                                          \\
-    }                                                                                                                      \\
-'"'"
 
-alias wglog  ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup*                                        \\
- | head -1                                                                                                                 \\
- | perl -e ' "' "'                                                                                                    \\
-    $| = 1;                                                                                                                \\
-    use File::Tail;                                                                                                        \\
-    @in = <>;                                                                                                              \\
-    $i = shift @in;                                                                                                        \\
-    chomp $i;                                                                                                              \\
-    $file = File::Tail->new(name=>$i, interval=>0, maxinterval=>2);                                                        \\
-    while(defined($log=$file->read)) {                                                                                     \\
-      #print $log;                                                                                                         \\
-      #next;                                                                                                               \\
-      if($log =~ /                                                                                                         \\
-select\s+top\s+\d+\s+uri\s+from\s+tseventdat|                                                                              \\
-SELECT\s+\*\s+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(code\s+=|                                                    \\
-select\s+uri,code,value\s+from\s+tstwrsys|                                                                                 \\
-SELECT\s+TOP\s+30\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt|                                      \\
-SELECT\s+COUNT_BIG\(uri\)\s+ FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri|                                \\
-SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)|                                  \\
-SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI|                                \\
-UPDATE\s+TSTWRSYS\s+SET\s+value\s+=\s+|                                                                                    \\
-SELECT\s+\*\s+ FROM\s+TSTASK\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tkTriggerDate|                                                \\
-select\s+uri\s+from\s+tsrecord\s+with\s*\(nolock\)\s*where\s*\(\s*rcfileplanuri|                                           \\
-SELECT\s+TOP\s+20\s+A0.uri,A0.wesEscalatedOn,A0.wesEscalatedToUri,A0.wesActivityUri,A0.wesWaitSecs,A1.wacDueDate\s+FROM\s+TSWKESCALA|                                                      \\
-SELECT\s+TOP\s+30\s+uri,tdoDesc,tdoAssigneeUri,tdoDueBy,tdoDoneAt,tdoPriority,tdoCreatedBy,tdoDateCreated,tdoEmailNotify,tdoEmailedOn,sysLastUpdated,sysLastUpdatedBy\s+FROM\s+TSTODOITEM| \\
-SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(\s*rqDateCreated\s+BETWEEN                                           \\
-        /ix){                                                                                                              \\
-         next;                                                                                                             \\
-      }                                                                                                                    \\
-      print $log;                                                                                                          \\
-    }                                                                                                                      \\
-'"'"
+
+alias wglogfull 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
+ | head -1                                                                            \\
+ | perl -ne '"'"' chomp; print "tail -f $_"; ' "' "'                                  \\
+ | /bin/sh '
+
+set LOGBASIC = "(SELECT\s+TOP\s+\d+.+FROM\s+TSEVENTDAT|"
+set LOGBASIC = $LOGBASIC"SELECT.+FROM\s+TSTWRSYS\s+WITH)"
+
+alias wglogbasic ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
+ | head -1                                                                              \\
+ | perl -ne ' "' "' chomp; print "tail -f $_";  ' "' "'                                 \\
+ | /bin/sh                                                                              \\
+ | grep -Eiv $LOGBASIC ' 
+
+
+set LOGSTART  = "("
+set LOG1  = "SELECT\s+TOP\s+\d+.+FROM\s+(TSEVENTDAT|TSTODOITEM|TSWKACTIVI)"
+set LOG2  = "|SELECT.+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(\s+code\s+="
+set LOG3  = ""
+set LOG4  = "|SELECT\s+COUNT_BIG\(uri\)\s+FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri"
+set LOG5  = "|SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)"
+set LOG6  = "|UPDATE\s+TSTWRSYS\s+SET\s+value\s+=\s+"
+set LOG7  = "|SELECT\s+uri\s+FROM\s+TSRECORD\s+WITH\s*\(NOLOCK\)\s*WHERE\s*\(\s*rcfileplanuri"
+set LOG8  = "|SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE"
+set LOG9  = "|SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI"
+set LOG10 = "|INSERT\s+INTO\s+TSXMLDATA"
+set LOGEND = ")"
+
+alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
+ | head -1                                                                        \\
+ | perl -ne ' "' "' chomp; print "tail -f $_";  ' "' "'                           \\
+ | /bin/sh                                                                        \\
+ | grep -Eiv "$LOGSTART$LOG1$LOG2$LOG3$LOG4$LOG5$LOG6$LOG7$LOG8$LOG9$LOG10$LOGEND" '
+
 
 alias cleanlog  ' cat \!^                                                                                                                                       \\
  | perl -e ' "' "'                                                                                                                                           \\
     $| = 1;                                                                                                                                                       \\
    while(<>){                                                                                                                                                     \\
       chomp;                                                                                                                                                      \\
-      /select\s+top\s+30\s+uri\s+from\s+tseventdat/i and next;                                                                                                    \\
+      /select\s+top\s+\d+\s+uri\s+from\s+tseventdat/i and next;                                                                                                    \\
       /SELECT\s+\*\s+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(code\s+=/i and next;                                                                         \\
-      /SELECT\s+TOP\s+30\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt/i and next;                                                           \\
-      /SELECT\s+uri,edDateTime,edEventType.+FROM\sTSEVENTDAT.+rownum\s<\s501/i and next;                                                                          \\
-      /SELECT\s+uri,edDateTime,edEventType.+FROM\sTSEVENTDAT WHERE uri IN\s+\( SELECT TOP 500 uri FROM TSEVENTDAT/i and next;                                     \\
+      /SELECT\s+TOP\s+\d+\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt/i and next;                                                           \\
+      /SELECT\s+uri,edDateTime,edEventType.+FROM\sTSEVENTDAT.+rownum\s<\s\d+/i and next;                                                                          \\
+      /SELECT\s+uri,edDateTime,edEventType.+FROM\sTSEVENTDAT WHERE uri IN\s+\( SELECT TOP \d+ uri FROM TSEVENTDAT/i and next;                                     \\
       /SELECT\s+COUNT_BIG\(uri\)\s+ FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri/i and next;                                                     \\
       /SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)/i and next;                                                       \\
       /SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI/i and next;                                                     \\
       /UPDATE\s+TSTWRSYS\s+SET\s+value\s+=\s+/i and next;                                                                                                         \\
       /SELECT\s+\*\s+ FROM\s+TSTASK\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tkTriggerDate/i and next;                                                                     \\
       /select\s+uri\s+from\s+tsrecord\s+with\s+\(nolock\)\s+where\s+\(rcfileplanuri/i and next;                                                                   \\
-      /SELECT\s+TOP\s+20\s+A0.uri,A0.wesEscalatedOn,A0.wesEscalatedToUri,A0.wesActivityUri,A0.wesWaitSecs,A1.wacDueDate\s+FROM\s+TSWKESCALA/i and next;           \\
+      /SELECT\s+TOP\s+\d+\s+A0.uri,A0.wesEscalatedOn,A0.wesEscalatedToUri,A0.wesActivityUri,A0.wesWaitSecs,A1.wacDueDate\s+FROM\s+TSWKESCALA/i and next;           \\
       /SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rqDateCreated\s+BETWEEN /i and next; \\
       /ExecTransaction:[\w-]+:\d+\s+EvpLastRunDate\s*$/i and next;                                                                                                \\
       /logout:\s+machine=.+,\s+username=.+/i and next;                                                                                                            \\
