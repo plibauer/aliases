@@ -1,0 +1,16 @@
+unalias '*'
+set alias_dir     = ~/aliases/tcsh
+
+source $alias_dir/aliases_local.txt
+
+set revision      = 91
+set DBID          = J1
+set defArch       = x64
+set defCompiler   = VS2013
+set defBuild      = Debug
+set defPatch      = ""
+
+source $alias_dir/aliases
+source $alias_dir/aliases_common.txt
+
+settitle
