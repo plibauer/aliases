@@ -1032,6 +1032,11 @@ alias http3	"cd ~; python -m http.server"
 # Edit a file with emacs and detach
 alias emacs	"emacs \!^ &"
 
+####################################################################
+### ATOM COMMANDS 
+alias atomkeys	cat \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
+
+
 # Change the mount prefix if required
 alias mountcygwin	"mount -s --change-cygdrive-prefix /"
 
