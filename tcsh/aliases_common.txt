@@ -731,6 +731,7 @@ alias origins    bulk -o "'*'" -action get -db $DBID
 alias orgget     bulk -o '\!^' -action get -db $DBID
 alias orgrun     bulk -o '\!^' -action run -db $DBID
 alias makerecs   "perl CreateManyRecords.pl --number \!^  --output out.txt"
+alias makecontainers bulk testtrim bulkLoader --type container --timeout 6000 --assert --inplace --containers 1 --perContainer 256
 
 alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
 alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
@@ -912,15 +913,16 @@ while(<>){                                                  \\
 alias grepu       'fromunicode \!:2 | pgrep \!:1'
 alias grepui      'fromunicode \!:2 | pgrep -i \!:1'
 
-alias testtrim     "$trimdir/$defArch/$defBuild/testTrim.exe --test"
-alias trimtest     testtrim
-alias testhelp	   "$trimdir/$defArch/$defBuild/testTrim.exe --help"
-alias testcases    "$trimdir/$defArch/$defBuild/testTrim.exe --list"
-alias bld          "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type all --timeout 6000 --assert"
-alias bldapi       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type api --timeout 6000 --assert"
-alias bldsth       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type sth --timeout 6000 --assert"
-alias bldrecs      "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type apirec --timeout 6000 --assert"
-alias bldcont      "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type container --timeout 6000 --assert"
+alias testtrim       "$trimdir/$defArch/$defBuild/testTrim.exe"
+alias trimtest       testtrim
+alias testhelp	     testtrim --help
+alias testcases      testtrim --list
+alias bld            testtrim --test bulkLoader --type all --timeout 6000 --assert
+alias bldapi         testtrim --test bulkLoader --type api --timeout 6000 --assert
+alias bldsth         testtrim --test bulkLoader --type sth --timeout 6000 --assert
+alias bldrecs        testtrim --test bulkLoader --type apirec --timeout 6000 --assert
+alias bldcont        testtrim --test bulkLoader --type container --timeout 6000 --assert
+alias makecontainers testtrim --test bulkLoader --type container --timeout 6000 --assert --inplace --containers \!:1 --perContainer \!:2
 
 # CSharp testing
 alias testcs       "$trimdir/$defArchCSharp/$defBuild/TestTrimCs.exe --test"
