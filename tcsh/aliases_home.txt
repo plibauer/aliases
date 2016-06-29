@@ -1,4 +1,4 @@
-setenv DISPLAY :0.0
+#setenv DISPLAY :0.0
 
 set path = ( /c/Users/plibauer/Work/Perl/bin  $path:q )
 set SVN_MASTER_HOME = "svn://10.11.12.2/"
