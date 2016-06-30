@@ -797,7 +797,7 @@ alias wixgen        perl $STATIC_PERL/WIX/AutoGenerateWixFromHeat.pl
 alias perldoc   "/c/strawberry/perl/bin/perldoc.bat"
 alias perlfunc  "perldoc -f"
 
-alias vsprofile	    perl $STATIC_PERL/misc/VS_Profiling_addin.pl
+alias unicode	    perl $STATIC_PERL/misc/unicodeTools.pl
 
 
 ################################################
