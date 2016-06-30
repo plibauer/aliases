@@ -1037,8 +1037,9 @@ alias emacs	"emacs \!^ &"
 
 ####################################################################
 ### ATOM COMMANDS 
-alias atomkeys	   cat \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
-alias viatomkeys   vi \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
+alias atomkeys		cat \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
+alias viatomkeys   	vi \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
+alias viatom		viatomkeys
 
 
 # Change the mount prefix if required
