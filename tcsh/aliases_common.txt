@@ -209,7 +209,7 @@ alias shlog              showlog
 alias gotmp              "cd /c/tmp"
 alias godox              "cd $trimdir/xtra/Doxygen/runDoxygen"
 alias gosmoke            "cd $trimdir/Automation/Smoketest"
-alias goperl             "cd $STATIC_REPO/libs/Perl"
+alias goperl             "cd $STATIC_PERL"
 alias gop                "cd $PERL_BIN"
 alias goalm              "cd $ALM_DB"
 alias gosvn              "cd $SVN_LOG_DB"
@@ -790,17 +790,19 @@ alias xmltrim       "perl xmlformat.pl $trimcfg"
 alias getconfig     "more $trimcfg"
 alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
 
-alias wixgen       perl $STATIC_REPO/libs/Perl/WIX/AutoGenerateWixFromHeat.pl
+alias wixgen        perl $STATIC_PERL/WIX/AutoGenerateWixFromHeat.pl
 
 # Lookup a perl function using perldoc
 alias perldoc   "/c/strawberry/perl/bin/perldoc.bat"
 alias perlfunc  "perldoc -f"
 
+alias vsprofile	    perl $STATIC_PERL/misc/VS_Profiling_addin.pl
+
 
 ################################################
 ### PERL DATABASE ACCESS
 
-alias dbpl        "perl $STATIC_REPO/libs/Perl/db/db.pl --database $dbSession"
+alias dbpl        "perl $STATIC_PERL/db/db.pl --database $dbSession"
 alias db          "dbpl --version $revision"
 alias dbs         "db --list"
 alias dbdetails   "dbpl --list --verbose"
@@ -1034,7 +1036,8 @@ alias emacs	"emacs \!^ &"
 
 ####################################################################
 ### ATOM COMMANDS 
-alias atomkeys	cat \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
+alias atomkeys	   cat \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
+alias viatomkeys   vi \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
 
 
 # Change the mount prefix if required
