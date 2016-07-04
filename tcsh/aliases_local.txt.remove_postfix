@@ -26,6 +26,7 @@
 #set PROXY           = http://web-proxy.au.hpecorp.net:8080
 #set HTTPS_PROXY     = https://web-proxy.au.hpecorp.net:8080
 #set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10"
+#set WIKI_DIR        = C:/Users/plibauer/Dropbox/Work/Wiki/paul_libauer
 
 # Home and Laptop Machines need these changes
 #set GIT_HOST        = github.com

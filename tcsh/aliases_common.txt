@@ -152,6 +152,71 @@ alias headt "ll -t | head -\!^"
 alias findalias "alias | grep -i "
 alias falias findalias
 
+
+#################################################################################
+#  JOURNAL ALIASES
+
+# Set the $DATE variable to allow creation of new journal files
+set DATE = `date +%B%Y`
+
+alias gowikij         "cd $WIKI_DIR"
+alias goproj          "cd $WIKI_DIR/projects"
+alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
+alias vijournal       "vi $WIKI_DIR/journal.txt; scrub $WIKI_DIR/journal.txt"
+
+alias grepjd          ' ls $WIKI_DIR/journals/*/*                                                                       \\
+| /bin/perl -e '"'"'                                                                                                    \\
+%m = (jan,"01",feb,"02",mar,"03",apr,"04",may,"05",jun,"06",jul,"07",aug,"08",sep,"09","oct",10,nov,11,dec,12);         \\
+my $match=join "|", keys %m;                                                                                            \\
+    while(<>){                                                                                                          \\
+      chomp;                                                                                                            \\
+      if(/($match).*(\d\d\d\d).txt$/){                                                                                  \\
+        $mon=$m{$1};                                                                                                    \\
+        $y=$2;                                                                                                          \\
+        $ordered{"$y$mon"} = $_;                                                                                        \\
+      }                                                                                                                 \\
+    }                                                                                                                   \\
+   for(sort {$b<=>$a} keys %ordered){                                                                                   \\
+     print "$ordered{$_}\n";                                                                                            \\
+   }                                                                                                                    \\
+ '"'"
+alias search          "grep -i \!^ `grepjd` | perl -ne 's|$WIKI_DIR/||; print'"   
+
+alias mkjourn         'echo "$DATE $WIKI_DIR"                                     \\
+| perl -ne '"'"'                                                                  \\
+  chomp;                                                                          \\
+  /^(\w+)(\d{4}) (.+)$/ and do {                                                  \\
+     $m= lc $1;                                                                   \\
+     $y=$2;                                                                       \\
+     $path=$3;                                                                    \\
+     print "$path/journals/$y/$m$y.txt"                                           \\
+  } ' "' "'                                                                       \\
+> /c/tmp/journalname.txt; source ${currentEnv}'
+
+alias rmjourn         "rm /c/tmp/journalname.txt"
+alias scrub           "perl $PERL_BIN/scrub.pl --file"
+alias tailj           "tail `cat /c/tmp/journalname.txt`"
+alias tjournal        "tail -50 `cat /c/tmp/journalname.txt`"
+alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
+alias viwiki          "vi \!^; scrub  \!^"
+alias mj              "less `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
+
+alias vj              ' echo -n "\!* $WIKI_DIR" | /bin/perl -ne  '"'"'                                                        \\
+     /^([A-z]+)\s*(\d+) (.+)/ and do { ($m,$y,$path) = ($1,$2,$3) };                                                          \\
+     foreach("january","february","march","april","may","june","july","august","september","october","november","december"){  \\
+         if($_ =~ /^$m/i) { $month = $_; last; }                                                                              \\
+     }                                                                                                                        \\
+     if($y =~ /^\d{2}$/) { $y = "20".$y };                                                                                    \\
+     if($y !~ /^\d{4}$/) { print "BAD YEAR: $y\n"; exit }                                                                     \\
+     $file = "$path/journals/$y/$month$y.txt";                                                                                \\
+     if(not -e $file) { print "File $file doesnt exist?\n"; exit; }                                                           \\
+     print "cat $path/journals/$y/$month$y.txt";                                                                              \\
+ ' "' "' | /bin/sh | vim -R - '
+
+alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
+
+
+#################################################################################
 # Following assumes that /c/rakudo/bin is on the path
 alias perl6 perl6.bat
 

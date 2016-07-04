@@ -1,69 +1,22 @@
 #setenv DISPLAY libauer:0.0
 
-# Set the $DATE variable for use in editing wiki journal
-set DATE = `date +%B%Y`
-
 set path = ( /c/Python26 /c/Users/plibauer/perl/bin  $path:q )
 
 alias winemacs    "/c/Program\ Files\ \(x86\)/XEmacs/XEmacs-21.4.21/i586-pc-win32/xemacs.exe"
 
 #########################################################################################
 ###  JOURNAL shortcuts
+set WIKIWEB = //twrwebsvr/NewWiki
+alias updatewiki      "rsync -avz $WIKIWEB/ /e/BACKUP/RDWiki/"
+alias gowiki          "cd $WIKIWEB/data/pages"
 
-alias updatewiki      "rsync -avz //twrwebsvr/NewWiki/ /e/BACKUP/RDWiki/"
-alias gowiki          "cd //twrwebsvr/NewWiki/data/pages"
-alias gowikij         "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer"
-alias gowikibackup    "cd /d/backup/RDWiki/data/pages/wiki/paul_libauer"
-alias goproj          "cd //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects"
-alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
-alias vijournal       "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journal.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journal.txt"
-
-alias grepjd          ' ls //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journals/*/*                                \\
-| /bin/perl -e '"'"'                                                                                                    \\
-%m = (jan,"01",feb,"02",mar,"03",apr,"04",may,"05",jun,"06",jul,"07",aug,"08",sep,"09","oct",10,nov,11,dec,12);         \\
-my $match=join "|", keys %m;                                                                                            \\
-    while(<>){                                                                                                          \\
-      chomp;                                                                                                            \\
-      if(/($match).*(\d\d\d\d).txt$/){                                                                                  \\
-        $mon=$m{$1};                                                                                                    \\
-        $y=$2;                                                                                                          \\
-        $ordered{"$y$mon"} = $_;                                                                                        \\
-      }                                                                                                                 \\
-    }                                                                                                                   \\
-   for(sort {$b<=>$a} keys %ordered){                                                                                   \\
-#     print "//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/$ordered{$_}\n";                                           \\
-     print "$ordered{$_}\n";                                           \\
-   }                                                                                                                    \\
- '"'" 
-alias search 	      "grep -i \!^ `grepjd` | perl -ne 's|//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/||; print'" 
-
-#alias mkjourn         "echo '//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/'$DATE'.txt' | perl -ne 'print lc ' > /c/tmp/journalname.txt; source ${currentEnv}"
-alias mkjourn         'echo "$DATE" | perl -ne '"'"' chomp;/^(\w+)(\d{4})$/ and do {$m= lc $1;$y=$2; print "//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journals/$y/$m$y.txt"} ' "' "' > /c/tmp/journalname.txt; source ${currentEnv}'
-alias rmjourn         "rm /c/tmp/journalname.txt"
-alias scrub           "perl c:/cygwin/home/plibauer/perl/bin/scrub.pl --file"
-alias tailj           "tail `cat /c/tmp/journalname.txt`"
-alias tjournal        "tail -50 `cat /c/tmp/journalname.txt`"
-alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
-alias viwiki          "vi \!^; scrub  \!^"
-alias mj              "less `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
-
-alias vj              ' echo -n "\!*" | /bin/perl -ne  '"'"'                                                                  \\
-     /^([A-z]+)\s*(\d+)*/ and do { ($m,$y) = ($1,$2) };                                                                          \\
-     foreach("january","february","march","april","may","june","july","august","september","october","november","december"){  \\
-         if($_ =~ /^$m/i) { $month = $_; last; }                                                                              \\
-     }                                                                                                                        \\
-     if($y =~ /^\d{2}$/) { $y = "20".$y };                                                                                    \\
-     if($y !~ /^\d{4}$/) { print "BAD YEAR: $y\n"; exit }                                                                     \\
-     $file = "//twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                                 \\
-     if(not -e $file) { print "File $file doesnt exist?\n"; exit; }                                                           \\
-     print "cat //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                               \\
- ' "' "' | /bin/sh | vim -R - '  
-
-alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
-alias showrevisions   "cat ~/winhome/Documents/HPRM-release-versions.txt"
-alias showrevs        showrevisions
+# Backup RDWIKI pages
+alias rdwiki    "Robocopy.exe $WIKIWEB/ E:\\backup\\RDWiki /MIR /R:0"
 
 #########################################################################################
+
+alias showrevisions   "cat ~/winhome/Documents/HPRM-release-versions.txt"
+alias showrevs        showrevisions
 
 alias showlog         'cat /c/tmp/finalbuilder.log | fromunicode | perl -ne '"'"'  s/^\s+//;  print "$_"; '"'"' | more '
 alias tailog          "tail -f /c/tmp/finalbuilder.log"
@@ -71,8 +24,6 @@ alias tailog          "tail -f /c/tmp/finalbuilder.log"
 
 alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
 
-# Backup RDWIKI pages
-alias rdwiki    "Robocopy.exe //twrwebsvr/NewWiki/ E:\\backup\\RDWiki /MIR /R:0"
 
 set RDP_DIR = "C:\\Users\\plibauer\\Work\\RemoteDesktop"
 # Remote Desktop Aliases
