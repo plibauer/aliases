@@ -293,6 +293,7 @@ alias godownloads        "cd /c/Users/plibauer/Downloads"
 alias goroam             "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
 alias godropbox		 "cd /c/Users/plibauer/DropBox"
 alias godrop		 godropbox
+alias godropp            "cd /c/Users/plibauer/DropBox/Software/Scripts/Perl"
 
 alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace    "tracert"
