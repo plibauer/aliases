@@ -1,6 +1,6 @@
 #setenv DISPLAY libauer:0.0
 
-set path = ( /c/Python26 /c/Users/plibauer/perl/bin  $path:q )
+set path = ( /c/Python26 $CYG_WIN_HOME/perl/bin  $path:q )
 
 alias winemacs    "/c/Program\ Files\ \(x86\)/XEmacs/XEmacs-21.4.21/i586-pc-win32/xemacs.exe"
 
@@ -26,7 +26,7 @@ alias tailog          "tail -f /c/tmp/finalbuilder.log"
 alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
 
 
-set RDP_DIR = "C:\\Users\\plibauer\\Work\\RemoteDesktop"
+set RDP_DIR = "$WIN_HOME\\Work\\RemoteDesktop"
 # Remote Desktop Aliases
 alias termserver "mstsc $RDP_DIR\\TerminalServer.rdp &"
 alias cloudwgs1  "mstsc $RDP_DIR\\CloudWgs1.rdp      &"
@@ -76,7 +76,7 @@ alias fedora	"ssh -l paul $FEDORA"
 #alias instrestore       scurl "solr/instance/restore?name=\!^"
 #alias instget	 	scurl "solr/instance/get"
 #alias instgetname	scurl "solr/instance/get?name=\!^"
-#alias instlog	 	scurl "solr/instance/log?name=\!^ |  perl c:/Users/plibauer/perl/bin/formatSolrResponse.pl"
+#alias instlog	 	scurl "solr/instance/log?name=\!^ |  perl $WIN_HOME/perl/bin/formatSolrResponse.pl"
 #alias solrinst   	scurl "solr/instance/\!^"
 
 #

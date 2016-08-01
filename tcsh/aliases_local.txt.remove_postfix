@@ -1,20 +1,24 @@
-# Put local aliases specific to this machine here
-#
+#  Put local aliases specific to this machine here
+
 #set REPOS_ROOT      = e
-#
+
 #set SVN_LAB_PATH    = E:/svn_lab
 #set SVN_LAB         = file:///$SVN_LAB_PATH
 #set SVN_LAB_URI     = svn://labsvn:1137/TRIM
 #set SVN_LAB_DB      = C:/svnLogDatabase_lab
-#
+
 #set SVN_MIRROR_PATH = E:/svn_mirror
 #set SVN_MIRROR      = file:///$SVN_MIRROR_PATH
 #set SVN_URL         = svn://localhost
 #set SVN_LOG_DB      = C:/svnLogDatabase
 #set SVN_HOUSTON     = https://csvnhou-pro.houston.hpecorp.net:18490/svn/bio-im-trim
-#
+
 #set SVN_MASTER      = $SVN_LAB
-#
+
+#  Work and home will probably have different User directories
+#set WIN_HOME        = C:/Users/plibauer
+#set CYG_WIN_HOME    = /c/Users/plibauer
+
 #  Whatever has been configured in .ssh/config pointing to proxy, otherwise use normal entry below 
 #set GIT_HOST        = gitproxy
 #set GIT_URL         = "$GIT_HOST"":"
@@ -26,8 +30,9 @@
 #set PROXY           = http://web-proxy.au.hpecorp.net:8080
 #set HTTPS_PROXY     = https://web-proxy.au.hpecorp.net:8080
 #set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10"
-#set WIKI_DIR        = C:/Users/plibauer/Dropbox/Work/Wiki/paul_libauer
+#set WIKI_DIR        = $WIN_HOME/Dropbox/Work/Wiki/paul_libauer
 
-# Home and Laptop Machines need these changes
+#  Home and Laptop Machines need these changes
 #set GIT_HOST        = github.com
 #set GIT_URL         = git://$GIT_HOST/
+

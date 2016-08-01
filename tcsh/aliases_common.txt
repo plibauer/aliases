@@ -59,7 +59,7 @@ endif
 
 set defproj = ALL_BUILD
 
-alias home 	"cd /home/plibauer"
+alias home 	"cd $WIN_HOME"
 alias via  	"vi $alias_file"
 alias viewa  	"vi -R $alias_file"
 alias viw       "vi $alias_dir/aliases_work.txt"
@@ -230,10 +230,10 @@ alias perl6 perl6.bat
 #
 #    none / cygdrive binary,posix=0,user 0 0
 #
-alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir $cygtrimdir/../TRIMStaticRepo /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development /e/oracle'"
+alias update "updatedb --findoptions='-follow' --output='$WIN_HOME/locatedb' --localpaths='$cygtrimdir $cygtrimdir/../TRIMStaticRepo /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development /e/oracle'"
 
-alias locate   "locate -d /home/plibauer/locatedb"
-alias locatei  "locate -i -d /home/plibauer/locatedb"
+alias locate   "locate -d $WIN_HOME/locatedb"
+alias locatei  "locate -i -d $WIN_HOME/locatedb"
 alias loc       locate
 alias loci	locatei
 alias trimfind   "loc \!^ | grep -i $cygtrimdir"
@@ -286,16 +286,15 @@ alias gostatic 		 "cd $STATIC_REPO"
 alias gowix              "cd $trimdir/trim/wix"
 alias gowixbin           "cd $WIX_DIR/bin"
 alias gopatch            "cd $trimdir/trim/wix/PatchGenerator"
-alias gowin              "cd /c/Users/plibauer"
-alias gowint             "cd /c/Users/plibauer.TRIM"
+alias gowin              "cd $WIN_HOME"
 alias gowork             "cd $WINHOME/Work"
 alias goworkh            "cd $WINHOME/Work/HPIT"
 alias goserverdata       "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
-alias godownloads        "cd /c/Users/plibauer/Downloads"
-alias goroam             "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
-alias godropbox		 "cd /c/Users/plibauer/DropBox"
+alias godownloads        "cd $WIN_HOME/Downloads"
+alias goroam             "cd $WIN_HOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
+alias godropbox		 "cd $WIN_HOME/DropBox"
 alias godrop		 godropbox
-alias godropp            "cd /c/Users/plibauer/DropBox/Software/Scripts/Perl"
+alias godropp            "cd $WIN_HOME/DropBox/Software/Scripts/Perl"
 
 alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace    "tracert"
