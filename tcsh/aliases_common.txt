@@ -408,11 +408,12 @@ alias towin  'cygpath -t windows "\!^"'
 alias tounix 'cygpath -t unix    "\!^"'
 
 # Wix stuff
-#alias candle "/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
-#alias lit "/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
-alias msitrimi     "msiexec /i HPTRIM.msi /lv\* out.log"
-alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
-
+#alias candle 	"/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
+#alias lit 	"/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
+alias msitrimi     	"msiexec /i HPTRIM.msi /lv\* out.log"
+alias msitrimu     	"msiexec /x HPTRIM.msi /lv\* out.log"
+alias admininstall 	"msiexec /a \!:1 TARGETDIR=\!:2 /qn /l \!:1.log"
+alias admininstallhelp 	'echo "\nFrom a cygwin prompt;\n\n\t> admininstall ABC.msi <targetpath>\n\n<targetpath> must be a windows path, Eg. E:\\tmp\\extract\nSo, to extract the MSI Setup.msi to C:/temp/mydir;\n\n\t> admininstall Setup.msi C:\\\\temp\\\\mydir\n"'
 
 #######################################################################################################################
 
