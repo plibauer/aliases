@@ -7,7 +7,8 @@ set prompt="%B%n %~>"
 set autologout
 set alias_file = $alias_dir/aliases_common.txt
 
-set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /c/python27 /c/rakudo/bin /bin /usr/bin /sbin /usr/sbin $path:q )
+#set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /c/python27 /c/rakudo/bin /bin /usr/bin /sbin /usr/sbin $path:q )
+set path = ( "/c/program files/TortoiseSVN/bin" /c/Strawberry/perl/bin /bin /usr/bin /sbin /usr/sbin $path:q )
 
 # Always set the drive prefix to just /, not "/cygdrive"
 # This has now been configured in /etc/fstab, so no need to do it here
@@ -58,7 +59,7 @@ endif
 
 set defproj = ALL_BUILD
 
-alias home 	"cd /home/plibauer"
+alias home 	"cd $WIN_HOME"
 alias via  	"vi $alias_file"
 alias viewa  	"vi -R $alias_file"
 alias viw       "vi $alias_dir/aliases_work.txt"
@@ -152,6 +153,71 @@ alias headt "ll -t | head -\!^"
 alias findalias "alias | grep -i "
 alias falias findalias
 
+
+#################################################################################
+#  JOURNAL ALIASES
+
+# Set the $DATE variable to allow creation of new journal files
+set DATE = `date +%B%Y`
+
+alias gowikij         "cd $WIKI_DIR"
+alias goproj          "cd $WIKI_DIR/projects"
+alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
+alias vijournal       "vi $WIKI_DIR/journal.txt; scrub $WIKI_DIR/journal.txt"
+
+alias grepjd          ' ls $WIKI_DIR/journals/*/*                                                                       \\
+| /bin/perl -e '"'"'                                                                                                    \\
+%m = (jan,"01",feb,"02",mar,"03",apr,"04",may,"05",jun,"06",jul,"07",aug,"08",sep,"09","oct",10,nov,11,dec,12);         \\
+my $match=join "|", keys %m;                                                                                            \\
+    while(<>){                                                                                                          \\
+      chomp;                                                                                                            \\
+      if(/($match).*(\d\d\d\d).txt$/){                                                                                  \\
+        $mon=$m{$1};                                                                                                    \\
+        $y=$2;                                                                                                          \\
+        $ordered{"$y$mon"} = $_;                                                                                        \\
+      }                                                                                                                 \\
+    }                                                                                                                   \\
+   for(sort {$b<=>$a} keys %ordered){                                                                                   \\
+     print "$ordered{$_}\n";                                                                                            \\
+   }                                                                                                                    \\
+ '"'"
+alias search          "grep -i \!^ `grepjd` | perl -ne 's|$WIKI_DIR/||; print'"   
+
+alias mkjourn         'echo "$DATE $WIKI_DIR"                                     \\
+| perl -ne '"'"'                                                                  \\
+  chomp;                                                                          \\
+  /^(\w+)(\d{4}) (.+)$/ and do {                                                  \\
+     $m= lc $1;                                                                   \\
+     $y=$2;                                                                       \\
+     $path=$3;                                                                    \\
+     print "$path/journals/$y/$m$y.txt"                                           \\
+  } ' "' "'                                                                       \\
+> /c/tmp/journalname.txt; source ${currentEnv}'
+
+alias rmjourn         "rm /c/tmp/journalname.txt"
+alias scrub           "perl $PERL_BIN/scrub.pl --file"
+alias tailj           "tail -50 `cat /c/tmp/journalname.txt`"
+alias tjournal        "tail `cat /c/tmp/journalname.txt`"
+alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
+alias viwiki          "vi \!^; scrub  \!^"
+alias mj              "less `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
+
+alias vj              ' echo -n "\!* $WIKI_DIR" | /bin/perl -ne  '"'"'                                                        \\
+     /^([A-z]+)\s*(\d+) (.+)/ and do { ($m,$y,$path) = ($1,$2,$3) };                                                          \\
+     foreach("january","february","march","april","may","june","july","august","september","october","november","december"){  \\
+         if($_ =~ /^$m/i) { $month = $_; last; }                                                                              \\
+     }                                                                                                                        \\
+     if($y =~ /^\d{2}$/) { $y = "20".$y };                                                                                    \\
+     if($y !~ /^\d{4}$/) { print "BAD YEAR: $y\n"; exit }                                                                     \\
+     $file = "$path/journals/$y/$month$y.txt";                                                                                \\
+     if(not -e $file) { print "File $file doesnt exist?\n"; exit; }                                                           \\
+     print "cat $path/journals/$y/$month$y.txt";                                                                              \\
+ ' "' "' | /bin/sh | vim -R - '
+
+alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
+
+
+#################################################################################
 # Following assumes that /c/rakudo/bin is on the path
 alias perl6 perl6.bat
 
@@ -164,10 +230,10 @@ alias perl6 perl6.bat
 #
 #    none / cygdrive binary,posix=0,user 0 0
 #
-alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir $cygtrimdir/../TRIMStaticRepo /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development /e/oracle'"
+alias update "updatedb --findoptions='-follow' --output='$WIN_HOME/locatedb' --localpaths='$cygtrimdir $cygtrimdir/../TRIMStaticRepo /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development /e/oracle'"
 
-alias locate   "locate -d /home/plibauer/locatedb"
-alias locatei  "locate -i -d /home/plibauer/locatedb"
+alias locate   "locate -d $WIN_HOME/locatedb"
+alias locatei  "locate -i -d $WIN_HOME/locatedb"
 alias loc       locate
 alias loci	locatei
 alias trimfind   "loc \!^ | grep -i $cygtrimdir"
@@ -181,6 +247,7 @@ set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
 set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 
+alias goa		 cd ~/aliases/tcsh
 alias gocfg              "cd $trimcfgdir"
 alias goexe              "cd $trimdir/$defArch/$defBuild"
 alias gobin              goexe
@@ -191,6 +258,7 @@ alias gomsi              "cd $trimdir/msi/$defArch/en-us"
 alias gotest             "cd $trimdir/trim/test"
 alias goauto             "cd $trimdir/Automation"
 alias gosrc              "cd $trimdir/trim/src"
+alias gocsharp           "cd $trimdir/trim/CSharp"
 alias gosln              "cd $trimdir/trim/sln"
 alias gotrim             "cd $trimdir/trim"
 alias gotrimlog          "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
@@ -201,7 +269,7 @@ alias golocal		 gotrimlocalconfig
 alias goauto             "cd $trimdir/Automation"
 alias gobulk             "cd $STATIC_REPO/TestData/BulkLoader/TestCases"
 alias goblk              gobulk
-alias gob                "cd $trimdir/trim/CSharp/BulkLoader"
+alias gob                "cd $trimdir/trim/CSharp/TRIMBulkLoader"
 alias golog              "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
 alias gologs             golog
 alias goaudit            "cd $trimdir/$defArch/$defBuild/ServerData/$DBID/AuditLogs"
@@ -209,7 +277,7 @@ alias shlog              showlog
 alias gotmp              "cd /c/tmp"
 alias godox              "cd $trimdir/xtra/Doxygen/runDoxygen"
 alias gosmoke            "cd $trimdir/Automation/Smoketest"
-alias goperl             "cd $STATIC_REPO/libs/Perl"
+alias goperl             "cd $STATIC_PERL"
 alias gop                "cd $PERL_BIN"
 alias goalm              "cd $ALM_DB"
 alias gosvn              "cd $SVN_LOG_DB"
@@ -218,13 +286,15 @@ alias gostatic 		 "cd $STATIC_REPO"
 alias gowix              "cd $trimdir/trim/wix"
 alias gowixbin           "cd $WIX_DIR/bin"
 alias gopatch            "cd $trimdir/trim/wix/PatchGenerator"
-alias gowin              "cd /c/Users/plibauer"
-alias gowint             "cd /c/Users/plibauer.TRIM"
+alias gowin              "cd $WIN_HOME"
 alias gowork             "cd $WINHOME/Work"
 alias goworkh            "cd $WINHOME/Work/HPIT"
 alias goserverdata       "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
-alias godownloads        "cd /c/Users/plibauer/Downloads"
-alias goroam             "cd /c/Users/plibauer/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
+alias godownloads        "cd $WIN_HOME/Downloads"
+alias goroam             "cd $WIN_HOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
+alias godropbox		 "cd $WIN_HOME/DropBox"
+alias godrop		 godropbox
+alias godropp            "cd $WIN_HOME/DropBox/Software/Scripts/Perl"
 
 alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace    "tracert"
@@ -338,11 +408,12 @@ alias towin  'cygpath -t windows "\!^"'
 alias tounix 'cygpath -t unix    "\!^"'
 
 # Wix stuff
-#alias candle "/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
-#alias lit "/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
-alias msitrimi     "msiexec /i HPTRIM.msi /lv\* out.log"
-alias msitrimu     "msiexec /x HPTRIM.msi /lv\* out.log"
-
+#alias candle 	"/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
+#alias lit 	"/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
+alias msitrimi     	"msiexec /i HPTRIM.msi /lv\* out.log"
+alias msitrimu     	"msiexec /x HPTRIM.msi /lv\* out.log"
+alias admininstall 	"msiexec /a \!:1 TARGETDIR=\!:2 /qn /l \!:1.log"
+alias admininstallhelp 	'echo "\nFrom a cygwin prompt;\n\n\t> admininstall ABC.msi <targetpath>\n\n<targetpath> must be a windows path, Eg. E:\\tmp\\extract\nSo, to extract the MSI Setup.msi to C:/temp/mydir;\n\n\t> admininstall Setup.msi C:\\\\temp\\\\mydir\n"'
 
 #######################################################################################################################
 
@@ -731,6 +802,7 @@ alias origins    bulk -o "'*'" -action get -db $DBID
 alias orgget     bulk -o '\!^' -action get -db $DBID
 alias orgrun     bulk -o '\!^' -action run -db $DBID
 alias makerecs   "perl CreateManyRecords.pl --number \!^  --output out.txt"
+alias makecontainers bulk testtrim bulkLoader --type container --timeout 6000 --assert --inplace --containers 1 --perContainer 256
 
 alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
 alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
@@ -759,7 +831,8 @@ alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBu
 
 # Run populate database
 alias popdb "cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
-alias reloadpopdb "popdb --load"
+alias restorepopdb "popdb --load"
+alias reloadpopdb restorepopdb
 alias popdboracle popdb --db oracle64
 
 alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
@@ -771,6 +844,7 @@ alias uptime  "systeminfo | pgrep -i 'boot time'"
 # Compile a script to an executable using Strawberry Perl's version of pp
 alias perlcompile   "pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o "
 alias sperl         "/c/strawberry/perl/bin/perl"
+alias perltidy	    "perltidy.bat \!:1 -o C:/tmp/perltidy.out; cp C:/tmp/perltidy.out \!:1"
 
 alias xmlconf       "perl $PERL_BIN/xmlconfig.pl --file "
 alias xconf         "perl $PERL_BIN/xmlconfig.pl"
@@ -788,17 +862,19 @@ alias xmltrim       "perl xmlformat.pl $trimcfg"
 alias getconfig     "more $trimcfg"
 alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
 
-alias wixgen       perl $STATIC_REPO/libs/Perl/WIX/AutoGenerateWixFromHeat.pl
+alias wixgen        perl $STATIC_PERL/WIX/AutoGenerateWixFromHeat.pl
 
 # Lookup a perl function using perldoc
 alias perldoc   "/c/strawberry/perl/bin/perldoc.bat"
 alias perlfunc  "perldoc -f"
 
+alias unicode	    perl $STATIC_PERL/misc/unicodeTools.pl
+
 
 ################################################
 ### PERL DATABASE ACCESS
 
-alias dbpl        "perl $STATIC_REPO/libs/Perl/db/db.pl --database $dbSession"
+alias dbpl        "perl $STATIC_PERL/db/db.pl --database $dbSession"
 alias db          "dbpl --version $revision"
 alias dbs         "db --list"
 alias dbdetails   "dbpl --list --verbose"
@@ -912,15 +988,16 @@ while(<>){                                                  \\
 alias grepu       'fromunicode \!:2 | pgrep \!:1'
 alias grepui      'fromunicode \!:2 | pgrep -i \!:1'
 
-alias testtrim     "$trimdir/$defArch/$defBuild/testTrim.exe --test"
-alias trimtest     testtrim
-alias testhelp	   "$trimdir/$defArch/$defBuild/testTrim.exe --help"
-alias testcases    "$trimdir/$defArch/$defBuild/testTrim.exe --list"
-alias bld          "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type all --timeout 6000 --assert"
-alias bldapi       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type api --timeout 6000 --assert"
-alias bldsth       "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type sth --timeout 6000 --assert"
-alias bldrecs      "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type apirec --timeout 6000 --assert"
-alias bldcont      "$trimdir/$defArch/$defBuild/testTrim.exe --test bulkLoader --type container --timeout 6000 --assert"
+alias testtrim       "$trimdir/$defArch/$defBuild/testTrim.exe"
+alias trimtest       testtrim
+alias testhelp	     testtrim --help
+alias testcases      testtrim --list
+alias bld            testtrim --test bulkLoader --type all --timeout 6000 --assert
+alias bldapi         testtrim --test bulkLoader --type api --timeout 6000 --assert
+alias bldsth         testtrim --test bulkLoader --type sth --timeout 6000 --assert
+alias bldrecs        testtrim --test bulkLoader --type apirec --timeout 6000 --assert
+alias bldcont        testtrim --test bulkLoader --type container --timeout 6000 --assert
+alias makecontainers testtrim --test bulkLoader --type container --timeout 6000 --assert --inplace --containers \!:1 --perContainer \!:2
 
 # CSharp testing
 alias testcs       "$trimdir/$defArchCSharp/$defBuild/TestTrimCs.exe --test"
@@ -1028,6 +1105,13 @@ alias http3	"cd ~; python -m http.server"
 
 # Edit a file with emacs and detach
 alias emacs	"emacs \!^ &"
+
+####################################################################
+### ATOM COMMANDS 
+alias atomkeys		cat \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
+alias viatomkeys   	vi \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
+alias viatom		viatomkeys
+
 
 # Change the mount prefix if required
 alias mountcygwin	"mount -s --change-cygdrive-prefix /"

@@ -1,6 +1,6 @@
-setenv DISPLAY :0.0
+#setenv DISPLAY :0.0
 
-set path = ( /c/Users/plibauer/Work/Perl/bin  $path:q )
+set path = ( $CYG_WIN_HOME/Work/Perl/bin  $path:q )
 set SVN_MASTER_HOME = "svn://10.11.12.2/"
 set TED = /e/TED_Videos
 set TEDAPP = $PERL_BIN/TED/TED_Talks.pl
