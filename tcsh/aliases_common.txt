@@ -1303,9 +1303,9 @@ alias buildsolution '  echo $logSeparator; date;                                
       $file = File::Tail->new(name=>$b, interval=>1);                                                                      \\
       while(defined($log=$file->read)) {                                                                                   \\
         chomp $log;                                                                                                        \\
-        if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){                                        \\
-          $total = $1 + $2 + $3;                                                                                           \\
-          if($total > 40){ print "$log\n"; exit; }                                                                         \\
+        if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date,\s(\d+)\sskipped/){                       \\
+          $total = $1 + $2 + $3 + $4;                                                                                      \\
+          if($total > 30){ print "$log\n"; exit; }                                                                         \\
           else { print "$log\n" }                                                                                          \\
         }                                                                                                                  \\
         elsif($log =~ /----- Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                             \\
