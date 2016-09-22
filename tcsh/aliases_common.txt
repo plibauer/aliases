@@ -774,6 +774,7 @@ alias almlibwa            'almlibactive  -width 105 | perl -ne ' "'" ' chomp; if
 alias almliball           alm libauer
 alias almschema           alm --schema
 alias cr                  alm --cr
+alias crsum               alm --summary --cr
 alias almupdate           alm_data_convert --http_server $ALM_SYNC_URL --update --verbose
 alias almupdatehome       "almupdate --proxy home"
 alias almsync             almupdate
@@ -915,6 +916,7 @@ alias loceaddr  "db -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EAD
 alias locations db -table TSLOCATION -col 1,2
 
 alias recs	db --object_type RECORD --unadorned --max 60
+alias records   recs
 alias recuri    recs --object_uri 
 alias recname   recs --object_name 
 
