@@ -1029,7 +1029,7 @@ alias querysql          "sc query MSSQLSERVER"
 alias sqlquery          querysql
 alias services		"svc_all | pgrep DISPLAY | sort"
 alias servicesrun	"svc_active | pgrep DISPLAY | sort"
-alias svcgrep		"svc_all | pgrep -i \!^ | sort"
+alias svcgrep		"svc_all | pgrep DISPLAY | pgrep -i \!^ | sort"
 
 # Run Management Studio
 alias mstudio		"/c/Program\ Files\ \(x86\)/Microsoft\ SQL\ Server/110/Tools/Binn/ManagementStudio/Ssms.exe &"
