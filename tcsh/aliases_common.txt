@@ -96,6 +96,7 @@ alias whichenv  "echo 'TRIMDIR   = $trimdir';          \\
                  echo 'IDOLDB    = $idolDb';           \\
                  echo 'SVNLOGDB  = $SVN_LOG_DB';       \\
 "
+alias showenv  whichenv
 alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 
@@ -1111,7 +1112,7 @@ alias emacs	"emacs \!^ &"
 
 ####################################################################
 ### ATOM COMMANDS 
-alias atomkeys		cat \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
+alias atomkeys		cat \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt 
 alias viatomkeys   	vi \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
 alias viatom		viatomkeys
 
