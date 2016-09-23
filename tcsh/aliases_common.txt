@@ -25,6 +25,11 @@ else
   endif
 endif
 
+#  Need to define this early so we can look up the dataset ID
+alias dbpl        "perl $STATIC_PERL/db/db.pl --database $dbSession"
+alias dbid        "dbpl --get_dbid"
+set DBID = `dbid`
+
 set cygtrimdir    = "/$REPOS_ROOT/$revision"$defPatch
 set idolDb        = TRIM_"$DBID"
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
@@ -876,27 +881,28 @@ alias unicode	    perl $STATIC_PERL/misc/unicodeTools.pl
 ################################################
 ### PERL DATABASE ACCESS
 
-alias dbpl        "perl $STATIC_PERL/db/db.pl --database $dbSession"
+# dbpl is defined at the start of the file
+
 alias db          "dbpl --version $revision"
 alias dbs         "db --list"
 alias dbdetails   "dbpl --list --verbose"
-alias dbid        "db -id"
-alias dbidall     "dbid ids"
+alias dataset	  'dbid | perl -ne  '"'"' print "DBID => $_\n"  '"'"
 
-alias bobids      "dbid bob"
-alias bobidsr     "dbid bob -rev"
+alias bobids      "db --id bob"
+alias bobidsr     "db --id bob -rev"
 alias bobs        bobids
 alias bobsr       bobidsr
+alias dbidall     "db --id all"
 
-alias eventids    "dbid event"
-alias eventidsr   "dbid event -rev"
+alias eventids    "db --id event"
+alias eventidsr   "db --id event -rev"
 alias events      eventids
 alias eventsr     eventidsr
 
 alias table       "db -table"
-alias tables      "db -g"
-alias tableids    "dbid table"
-alias tableidsr   "dbid table -rev"
+alias tables      "db -get_tables"
+alias tableids    "db --id table"
+alias tableidsr   "db --id table -rev"
 alias tids        tableids
 alias tidsr       tableidsr
 
@@ -1024,7 +1030,7 @@ alias querysql          "sc query MSSQLSERVER"
 alias sqlquery          querysql
 alias services		"svc_all | pgrep DISPLAY | sort"
 alias servicesrun	"svc_active | pgrep DISPLAY | sort"
-alias svcgrep		"svc_all | pgrep -i \!^ | sort"
+alias svcgrep		"svc_all | pgrep DISPLAY | pgrep -i \!^ | sort"
 
 # Run Management Studio
 alias mstudio		"/c/Program\ Files\ \(x86\)/Microsoft\ SQL\ Server/110/Tools/Binn/ManagementStudio/Ssms.exe &"
