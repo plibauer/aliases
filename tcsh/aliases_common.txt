@@ -14,6 +14,9 @@ set path = ( "/c/program files/TortoiseSVN/bin" /c/Strawberry/perl/bin /bin /usr
 # This has now been configured in /etc/fstab, so no need to do it here
 #mount --change-cygdrive-prefix /
 
+set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
+set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
+
 set trimdir       = $REPOS_ROOT":/$revision"$defPatch
 set dbDefault     = Test_"$revision"_SqlServer
 
@@ -250,8 +253,6 @@ alias flushdns "ipconfig /flushdns"
 alias more less -R
 
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
-set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
-set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 
 alias goa		 cd ~/aliases/tcsh
 alias gocfg              "cd $trimcfgdir"
