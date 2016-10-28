@@ -874,6 +874,8 @@ alias getconfig     "more $trimcfg"
 alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
 
 alias wixgen        perl $STATIC_PERL/WIX/AutoGenerateWixFromHeat.pl
+alias makewix       perl $STATIC_PERL/WIX/makeWixComponents.pl
+alias wixcomponents makewix
 
 # Lookup a perl function using perldoc
 alias perldoc   "/c/strawberry/perl/bin/perldoc.bat"
