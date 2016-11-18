@@ -1,0 +1,15 @@
+unalias '*'
+set alias_dir     = ~/aliases/tcsh
+
+source $alias_dir/aliases_local.txt
+
+set revision      = 92
+set defArch       = x64
+set defCompiler   = VS2015
+set defBuild      = Debug
+set defPatch      = ""
+
+source $alias_dir/aliases
+source $alias_dir/aliases_common.txt
+
+settitle
