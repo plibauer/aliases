@@ -878,7 +878,7 @@ alias makewix       perl $STATIC_PERL/WIX/makeWixComponents.pl
 alias wixcomponents makewix
 
 # Lookup a perl function using perldoc
-alias perldoc   "/c/strawberry/perl/bin/perldoc.bat" \!:1 | more
+alias perldoc   "/c/strawberry/perl/bin/perldoc.bat \!:1 | more"
 alias perlfunc  "perldoc -f"
 
 alias unicode	    perl $STATIC_PERL/misc/unicodeTools.pl
