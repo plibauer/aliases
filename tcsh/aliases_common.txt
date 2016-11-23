@@ -611,6 +611,12 @@ alias infop2	'infowc "$SVNBASE"_P2; echo -n "\t => @revision "; inforev "$SVNBAS
 alias infoall   "infotrunk; echo; infortm; echo; infohf1; echo; infohf2; echo; infop1; echo; infop2; echo"
 alias allinfo   infoall
 
+alias patchgen   	"$trimdir/$defArchCSharp/$defBuild/PatchGenerator.exe"
+alias patch      	patchgen
+alias msipcs		"$trimdir/$defArchCSharp/$defBuild/MsiProperties.exe"
+alias pcodes    	msipcs
+alias productcodes 	msipcs
+
 # SETUP Documentation directories 
 alias makedocopatch 'mkdir -p "$SVNBASE"_"\!^/doc/doc"; cd "$SVNBASE"_"\!^/doc/doc"; svn co $SVN_LAB_URI/REPOS/doc/trunk/DocPub'
 alias makedocoall "makedocopatch P1; makedocopatch P2; makedocopatch HF1; makedocopatch HF2; makedocopatch RTM;" 
@@ -831,8 +837,6 @@ alias nuke       "gosln;./NukeSolutions.bat"
 alias gensln     "gosln;./GenerateSolutions.bat"
 alias nukeandgen "nuke;gensln"
 
-alias patchgen   "$trimdir/$defArchCSharp/$defBuild/PatchGenerator.exe"
-alias patch      patchgen
 
 # Build the correct solution
 
