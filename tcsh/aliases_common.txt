@@ -649,6 +649,7 @@ alias decrbuild "perl $STATIC_PERL/WIX/buildVersion.pl --decrement $trimdir"
 alias dhotfix   "perl $STATIC_PERL/WIX/buildVersion.pl --hotfix --decrement $trimdir"
 alias setbuild  "perl $STATIC_PERL/WIX/buildVersion.pl --build \!^ $trimdir"
 alias showbuild "perl $STATIC_PERL/WIX/buildVersion.pl --show $trimdir"
+alias buildversion showbuild
 
 alias revert    "perl $STATIC_PERL/WIX/buildVersion.pl --revert $trimdir"
 alias revbld    'perl $STATIC_PERL/WIX/buildVersion.pl --revert --root $SVNBASE"\!^"'
