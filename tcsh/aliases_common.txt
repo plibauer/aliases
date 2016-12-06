@@ -795,6 +795,15 @@ alias almsync             almupdate
 alias almsynchome         almupdatehome
 alias almcheckdates	  alm_data_convert --http_server $ALM_SYNC_URL --sanity_check
 alias almfixdefects	  almupdate --use_remote --type defect
+alias almsanitycheckhelp  'echo                                               \\
+"\n                                                                         \\
+\t1. Run almcheckdates                                                             \\
+\t2. Copy sanityCheckOutput.txt to : ~/Dropbox/Work                            \\
+\t3. Wait a couple of minutes for it to be processed                           \\
+\t4. Run almfixdefects to download defectResults.txt and update local files    \\
+\n\n"                                                                         \\
+'                                                                             \\
+alias sanityhelp	  almsanitycheckhelp
 
 #######################################################################################################################
 
