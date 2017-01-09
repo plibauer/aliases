@@ -616,6 +616,9 @@ alias patch      	patchgen
 alias msipcs		"$trimdir/$defArchCSharp/$defBuild/MsiProperties.exe"
 alias pcodes    	msipcs
 alias productcodes 	msipcs
+alias findcomp	        "perl $STATIC_PERL/WIX/findComponentRefs.pl"
+alias findcomponents	findcomp
+alias wixfindcomp	findcomp
 
 # SETUP Documentation directories 
 alias makedocopatch 'mkdir -p "$SVNBASE"_"\!^/doc/doc"; cd "$SVNBASE"_"\!^/doc/doc"; svn co $SVN_LAB_URI/REPOS/doc/trunk/DocPub'
