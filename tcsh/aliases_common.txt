@@ -433,6 +433,7 @@ set trimdoc        = $trimdir/doc/doc/DocPub
 alias svnstat        "svn status . -q"
 alias svnstatus      "svn info $trimdir | perl -ne 'print if /^Path|^URL:|^\n/;' "
 alias svnstatusfull  "svn info $trimdir | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
+alias svninfo	     svnstatus
 
 alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
 alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
