@@ -612,7 +612,7 @@ alias infop2	'infowc "$SVNBASE"_P2; echo -n "\t => @revision "; inforev "$SVNBAS
 alias infoall   "infotrunk; echo; infortm; echo; infohf1; echo; infohf2; echo; infop1; echo; infop2; echo"
 alias allinfo   infoall
 
-alias patchgen   	"$trimdir/$defArchCSharp/$defBuild/PatchGenerator.exe"
+alias patchgen   	"$trimdir/$defArchCSharp/$defBuild/PatchGenerator.exe &"
 alias patch      	patchgen
 alias msipcs		"$trimdir/$defArchCSharp/$defBuild/MsiProperties.exe"
 alias pcodes    	msipcs
