@@ -617,9 +617,22 @@ alias patch      	patchgen
 alias msipcs		"$trimdir/$defArchCSharp/$defBuild/MsiProperties.exe"
 alias pcodes    	msipcs
 alias productcodes 	msipcs
-alias findcomp	        "perl $STATIC_PERL/WIX/findComponentRefs.pl"
-alias findcomponents	findcomp
+alias findcomp	        "perl $STATIC_PERL/WIX/findComponentRefs.pl -d $SVNBASE"
+alias findcomponents	"perl $STATIC_PERL/WIX/findComponentRefs.pl"
 alias wixfindcomp	findcomp
+alias findcomphelp      'echo                                               \\
+"\n                                                                         \\
+\t1. >findcomponents -d E:/91 tsj                                           \\
+\t2. findcomp is equivalent to;                                             \\
+\t       >findcomponents -d <Repo path>                                     \\
+\t   for the  current environment                                           \\
+\t3. Multiple components to search;                                         \\
+\t       >findcomp CSH.htm sdk.dll                                          \\
+\t4. Specify components to search on from a file;                           \\
+\t       >findcomp -input components.txt                                    \\
+\t4. For more detailed help, >findcomp -help                                \\
+\n\n"                                                                       \\
+'                                                                           \\
 
 # SETUP Documentation directories 
 alias makedocopatch 'mkdir -p "$SVNBASE"_"\!^/doc/doc"; cd "$SVNBASE"_"\!^/doc/doc"; svn co $SVN_LAB_URI/REPOS/doc/trunk/DocPub'
