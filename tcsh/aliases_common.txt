@@ -617,7 +617,7 @@ alias patch      	patchgen
 alias msipcs		"$trimdir/$defArchCSharp/$defBuild/MsiProperties.exe"
 alias pcodes    	msipcs
 alias productcodes 	msipcs
-alias findcomp	        "perl $STATIC_PERL/WIX/findComponentRefs.pl"
+alias findcomp	        "perl $STATIC_PERL/WIX/findComponentRefs.pl -d $SVNBASE"
 alias findcomponents	findcomp
 alias wixfindcomp	findcomp
 
