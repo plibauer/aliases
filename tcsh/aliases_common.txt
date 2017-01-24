@@ -436,7 +436,7 @@ alias svnstatusfull  "svn info $trimdir | perl -ne 'print unless /^(Working Copy
 alias svninfo	     svnstatus
 
 alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
-alias svnlogrev      'svn log svn://localhost/REPOS/trunk -v -r "\!^":"\!^"'
+alias svnlogrev      'svn log $SVN_LAB_URI/REPOS/trunk -v -r "\!^":"\!^"'
 alias svnrepoinfo    'cat $SVN_LAB_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
 alias svnrepoinfohou 'cat $SVN_MIRROR_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
 alias writeSvnBranch 'svnstatus | perl -ne '"'"' /^URL:\s+(.+)\/(REPOS\/.+)/ and do { print "$1/$2\n" }' "' "' > C:/temp/svn_branch_x.txt'
