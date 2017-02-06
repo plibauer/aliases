@@ -204,6 +204,7 @@ alias mkjourn         'echo "$DATE $WIKI_DIR"                                   
 > /c/tmp/journalname.txt; source ${currentEnv}'
 
 alias rmjourn         "rm /c/tmp/journalname.txt"
+alias newjourn        "rmjourn; mkjourn"
 alias scrub           "perl $PERL_BIN/scrub.pl --file"
 alias tailj           "tail -50 `cat /c/tmp/journalname.txt`"
 alias tjournal        "tail `cat /c/tmp/journalname.txt`"
