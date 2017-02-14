@@ -1070,6 +1070,8 @@ alias services		"service_all | pgrep DISPLAY | sort"
 alias servicesrun	"service_all | pgrep DISPLAY | sort"
 alias svcgrep		"service_all | pgrep DISPLAY | pgrep -i \!^ | sort"
 alias servicefind       "service_all | pgrep -i -A 5 -B 1 \!^"
+alias findservice       servicefind 
+alias serviceinfo	"sc qc \!^"
 
 # Run Management Studio
 alias mstudio		"/c/Program\ Files\ \(x86\)/Microsoft\ SQL\ Server/110/Tools/Binn/ManagementStudio/Ssms.exe &"
