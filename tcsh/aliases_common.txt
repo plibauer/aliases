@@ -1058,17 +1058,18 @@ alias cleanblk "rm -rf 000000*; rm $DBID.*"
 alias psall     'ps -aelW'
 
 # Query windows services to see what is running or stopped
-alias svc_active        "sc query type= service"
-alias svc_inactive      "sc query type= service state= inactive"
-alias svc_all           "sc query type= service state= all"
-alias svc_drivers       "sc query type= driver"
+alias service_active        "sc query type= service"
+alias service_inactive      "sc query type= service state= inactive"
+alias service_all           "sc query type= service state= all"
+alias service_drivers       "sc query type= driver"
 alias startsql          "sc start MSSQLSERVER"
 alias sqlstart          startsql
 alias querysql          "sc query MSSQLSERVER"
 alias sqlquery          querysql
-alias services		"svc_all | pgrep DISPLAY | sort"
-alias servicesrun	"svc_active | pgrep DISPLAY | sort"
-alias svcgrep		"svc_all | pgrep DISPLAY | pgrep -i \!^ | sort"
+alias services		"service_all | pgrep DISPLAY | sort"
+alias servicesrun	"service_all | pgrep DISPLAY | sort"
+alias svcgrep		"service_all | pgrep DISPLAY | pgrep -i \!^ | sort"
+alias servicefind       "service_all | pgrep -i -A 5 -B 1 \!^"
 
 # Run Management Studio
 alias mstudio		"/c/Program\ Files\ \(x86\)/Microsoft\ SQL\ Server/110/Tools/Binn/ManagementStudio/Ssms.exe &"
