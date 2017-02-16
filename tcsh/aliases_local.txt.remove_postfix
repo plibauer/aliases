@@ -1,6 +1,7 @@
 #  Put local aliases specific to this machine here
 
 #set REPOS_ROOT      = e
+#set LOCAL_SQLSVR    = LIBXXX
 
 #set SVN_LAB_PATH    = E:/svn_lab
 #set SVN_LAB         = file:///$SVN_LAB_PATH

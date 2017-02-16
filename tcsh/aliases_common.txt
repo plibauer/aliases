@@ -19,6 +19,7 @@ set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 
 set trimdir       = $REPOS_ROOT":/$revision"$defPatch
 set dbDefault     = Test_"$revision"_SqlServer
+set dbDefServer   = $LOCAL_SQLSVR
 
 if (! $?dbSession) then       
   set dbSession   = $dbDefault
@@ -28,10 +29,21 @@ else
   endif
 endif
 
+if (! $?dbServer) then       
+  set dbServer   = $dbDefServer
+else
+  if ("$dbServer" == "")  then
+     set dbServer   = $dbDefServer
+  endif
+endif
+
 #  Need to define this early so we can look up the dataset ID
-alias dbpl        "perl $STATIC_PERL/db/db.pl --database $dbSession"
+alias dbpl        "perl $STATIC_PERL/db/db.pl --server $dbServer --database $dbSession"
 alias dbid        "dbpl --get_dbid"
-set DBID = `dbid`
+
+if ("$LOCAL_SQLSVR" == "$dbServer") then
+  set DBID = `dbid`
+endif
 
 set cygtrimdir    = "/$REPOS_ROOT/$revision"$defPatch
 set idolDb        = TRIM_"$DBID"
@@ -44,7 +56,7 @@ alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
 #alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${defBuild}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
 
-alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}, DBSESSION=${dbSession}\007"'
+alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}, DBSESSION=${dbSession}, DBSERVER=${dbServer}\007"'
 alias settitledir 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}    `/bin/pwd`\007"'
 
 # Allow a different standard path for devenv.exe
@@ -83,31 +95,32 @@ alias hf1       "set defPatch = _HF1; set defBuild = Release; source $alias_file
 alias hf2       "set defPatch = _HF2; set defBuild = Release; source $alias_file; settitle"
 alias p1        "set defPatch = _P1; set defBuild = Release; source $alias_file; settitle"
 alias p2        "set defPatch = _P2; set defBuild = Release; source $alias_file; settitle"
-alias dbdefault "set dbSession = $dbDefault; source $alias_file; settitle"
+alias dbdefault "set dbSession = $dbDefault; set dbServer = $dbDefServer; source $alias_file; settitle"
 alias dbcurrent echo $dbSession
 alias dbsession "set dbSession = \!^; source $alias_file; settitle"
+alias dbserver  "set dbServer = \!^; source $alias_file; settitle"
 alias src       "source $alias_file"
 set dbDefault     = Test_"$revision"_SqlServer
-alias src73     "source $alias_dir/73environment; dbsession Test_73_SqlServer"
-alias src80     "source $alias_dir/80environment; dbsession Test_80_SqlServer"
-alias src81     "source $alias_dir/81environment; dbsession Test_81_SqlServer"
-alias src82     "source $alias_dir/82environment; dbsession Test_82_SqlServer"
-alias src83     "source $alias_dir/83environment; dbsession Test_83_SqlServer"
-alias src90     "source $alias_dir/90environment; dbsession Test_90_SqlServer"
-alias src91     "source $alias_dir/91environment; dbsession Test_91_SqlServer"
-alias src92     "source $alias_dir/92environment; dbsession Test_92_SqlServer"
+alias src73     "source $alias_dir/73environment; dbsession Test_73_SqlServer; "
+alias src80     "source $alias_dir/80environment; dbsession Test_80_SqlServer; "
+alias src81     "source $alias_dir/81environment; dbsession Test_81_SqlServer; "
+alias src82     "source $alias_dir/82environment; dbsession Test_82_SqlServer; "
+alias src83     "source $alias_dir/83environment; dbsession Test_83_SqlServer; "
+alias src90     "source $alias_dir/90environment; dbsession Test_90_SqlServer; "
+alias src91     "source $alias_dir/91environment; dbsession Test_91_SqlServer; "
+alias src92     "source $alias_dir/92environment; dbsession Test_92_SqlServer; "
 alias whichenv  "echo 'TRIMDIR   = $trimdir';          \\
                  echo 'ARCH      = $defArch';          \\
                  echo 'BUILD     = $defBuild';         \\
                  echo 'DBID      = $DBID';             \\
                  echo 'DBSession = $dbSession';        \\
+                 echo 'DBServer  = $dbServer';         \\
                  echo 'IDOLDB    = $idolDb';           \\
                  echo 'SVNLOGDB  = $SVN_LOG_DB';       \\
 "
 alias showenv  whichenv
 alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
-
 
 set autocorrect=1
 set autolist=ambiguous
@@ -919,55 +932,101 @@ alias unicode	    perl $STATIC_PERL/misc/unicodeTools.pl
 ################################################
 ### PERL DATABASE ACCESS
 
+alias dbhelp      'echo                                                            \\
+"\n                                                                                \\
+\t whichenv             : displays current settings                                \\
+\t dbsession <value>    : sets the database to run against                         \\
+\t dbserver  <value>    : sets the database instance to use                        \\
+\t db        <options>  : general db operations                                    \\
+\t dbs                  : list available databases for current SERVER ($dbServer)  \\
+\t dbdetails            : as above, but with verbose outout                        \\
+\t dbsql     <string>   : run the SQL specified by double quoted <string>          \\
+\t                                                                                 \\
+\t add -verbose to any command to see what is actually being run                   \\
+\t                                                                                 \\
+\t EXAMPLE                                                                         \\
+\t   Set the server to SQL2016  :  >dbserver SQL2016                               \\
+\t   Set the database to TEST91 :  >dbsession TEST91                               \\
+\t                                                                                 \\
+\t   Query the number of rows in the TSRECORD table;                               \\
+\t   (The ^ is a double quote)                                                     \\
+\t                                                                                 \\
+\t   >dbsql ^SELECT COUNT(*) FROM TSRECORD^ --verbose  --unadorned                 \\
+                                                                                   \\
+SERVER            : SQL2016                                                        \\
+DATABASE          : TEST91                                                         \\
+CONNECTION STRING : dbi:ODBC:driver={SQL Server};Server=SQL2016;Database=TEST91;Trusted_Connection=Yes \\
+SQL QUERY         : SELECT COUNT(*) FROM TSRECORD                                  \\
+MAX COLUMN WIDTH  : UNDEFINED                                                      \\
+NUMBER OF ROWS    : 1                                                              \\
+NUMBER OF COLUMNS : 1                                                              \\
+                                                                                   \\
+ 306                                                                               \\
+                                                                                   \\
+\tFor more detailed help, db -help                                                 \\
+\n\n"                                                                              \\
+'                                                                                  \\
+
+# Unadorned perl script to allow connections to other servers
+alias dbquery        "perl $STATIC_PERL/db/db.pl --server $dbServer"
+
 # dbpl is defined at the start of the file
 
-alias db          "dbpl --version $revision"
-alias dbs         "db --list"
-alias dbdetails   "dbpl --list --verbose"
+alias db          dbpl
+alias dbv         "dbpl --version $revision"
+alias dbs         "dbquery --database tempdb --list"
+alias dbdetails   "dbquery --database tempdb --list --verbose"
 alias dataset	  'dbid | perl -ne  '"'"' print "DBID => $_\n"  '"'"
 
-alias bobids      "db --id bob"
-alias bobidsr     "db --id bob -rev"
+alias bobids      "dbv --id bob"
+alias bobidsr     "dbv --id bob -rev"
 alias bobs        bobids
 alias bobsr       bobidsr
-alias dbidall     "db --id all"
+alias dbidall     "dbv --id all"
 
-alias eventids    "db --id event"
-alias eventidsr   "db --id event -rev"
+alias eventids    "dbv --id event"
+alias eventidsr   "dbv --id event -rev"
 alias events      eventids
 alias eventsr     eventidsr
 
-alias table       "db -table"
-alias tables      "db -get_tables"
-alias tableids    "db --id table"
-alias tableidsr   "db --id table -rev"
+alias table       "dbv -table"
+alias tables      "dbv -get_tables"
+alias tableids    "dbv --id table"
+alias tableidsr   "dbv --id table -rev"
 alias tids        tableids
 alias tidsr       tableidsr
 
-alias sql         db -sql
-alias gtable      "db -table"
-alias getrec      "db -num -row"
+alias dbsql       dbv -sql
+alias sql         dbv -sql
+alias gtable      "dbv -table"
+alias getrec      "dbv -num -row"
 alias getrecs     getrec
-alias dumpdb      db --dump_all
-alias grepdump    "db --dump_all | egrep -i "
-alias constraints "db -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY TABLE_NAME'"
-#alias tblconstraints "db -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS con WHERE con.TABLE_NAME = '\!^' ORDER BY CONSTRAINT_NAME'" 
-alias tblconstraints "db -sql 'SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY CONSTRAINT_NAME' | perl -ne 'if(/Test_80_SqlServer/){ if(/\!^/){ print }} else {print}'"
+alias dumpdb      dbv --dump_all
+alias grepdump    "dbv --dump_all | egrep -i "
+alias constraints "dbv -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY TABLE_NAME'"
+#alias tblconstraints "dbv -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS con WHERE con.TABLE_NAME = '\!^' ORDER BY CONSTRAINT_NAME'" 
+alias tblconstraints "dbv -sql 'SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY CONSTRAINT_NAME' | perl -ne 'if(/Test_80_SqlServer/){ if(/\!^/){ print }} else {print}'"
 
 alias locs	db --object_type LOCATION --unadorned
-alias locuri    locs --object_uri 
-alias locname   locs --object_name 
-alias loceaddr  "db -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 1,2,24,26,27,28 -num -verbose"
-alias locations db -table TSLOCATION -col 1,2
+alias locsv	dbv --object_type LOCATION --unadorned
+alias locuri    locsv --object_uri 
+alias locname   locsv --object_name 
+alias loceaddr  "dbv -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 1,2,24,26,27,28 -num -verbose"
+
+alias locations  db  -table TSLOCATION -col 1,2
+alias locationsv dbv -table TSLOCATION -col 1,2
 
 alias recs	db --object_type RECORD --unadorned --max 60
+alias recsv	dbv --object_type RECORD --unadorned --max 60
 alias records   recs
-alias recuri    recs --object_uri 
-alias recname   recs --object_name 
+alias recordsv  recsv
+alias recuri    recsv --object_uri 
+alias recname   recsv--object_name 
 
 alias rectypes	  db --object_type RECTYPE --unadorned
-alias rectypeuri  rectypes --object_uri 
-alias rectypename rectypes --object_name 
+alias rectypesv	  dbv --object_type RECTYPE --unadorned
+alias rectypeuri  rectypesv --object_uri 
+alias rectypename rectypesv --object_name 
 
 #-------------------------------------------------
 
