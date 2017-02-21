@@ -996,8 +996,9 @@ alias tableidsr   "dbv --id table -rev"
 alias tids        tableids
 alias tidsr       tableidsr
 
-alias dbsql       dbv -sql
-alias sql         dbv -sql
+alias dbsql       db -sql
+alias sql         dbsql
+alias sqlv        dbv -sql
 alias gtable      "dbv -table"
 alias getrec      "dbv -num -row"
 alias getrecs     getrec
@@ -1031,8 +1032,8 @@ alias rectypename rectypesv --object_name
 #-------------------------------------------------
 
 # FIGHTING THE SHELL EVERY STEP OF THE WAY :)
-alias mklocdata   "sql 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.uri = PER.lpLocUri' -col 22,23,28,27 -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
-alias mkpersondata "sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
+alias mklocdata   "sqlv 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.uri = PER.lpLocUri' -col 22,23,28,27 -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
+alias mkpersondata "sqlv 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
 
 # SQLITE
 set SQLITE_DB=$SVN_LOG_DB/svn.db
