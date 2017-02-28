@@ -452,7 +452,7 @@ alias svninfo	     svnstatus
 alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
 alias svnlogrev      'svn log $SVN_LAB_URI/REPOS/trunk -v -r "\!^":"\!^"'
 alias svnrepoinfo    'cat $SVN_LAB_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
-alias svnrepoinfohou 'cat $SVN_MIRROR_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
+alias svnrepoinfostat 'cat $SVN_MIRROR_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
 alias writeSvnBranch 'svnstatus | perl -ne '"'"' /^URL:\s+(.+)\/(REPOS\/.+)/ and do { print "$1/$2\n" }' "' "' > C:/temp/svn_branch_x.txt'
 alias showrevs       'writeSvnBranch && echo -n "\!*"      | processSvnLog'
 
@@ -509,37 +509,37 @@ alias processSvnLog  'perl -e  '"'"'                     \\
   }                                                      \\
 '"'"
 
-alias houproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
-alias hourev         "houproc --rev"
-alias houdiff        hourev \!^ --diff \!:2
-alias hourevhead     hourev head
-alias hourevchange   houproc --change
-alias houchange      houproc --change
-alias hourevchrange  houproc --change \!:1 --range \!:2
-alias houchanger     hourevchrange
-alias hourevchdiff   houproc --change \!^ --diff 
-alias hourevchdiffr  houproc --change \!:1 --diff --range \!:2
-alias houchangerd    hourevchdiffr
-alias houuser        houproc --get user
-alias houlogm        houproc --match 
-alias houlogmi       houproc --no_case --match 
-alias houlogmv       houproc --verbose --match 
-alias houlogmvi      houproc --no_case --verbose --match 
-alias houmatch       houproc --no_case --limit 30 --match
-alias houbuildlabel  "houmatch 'label.*\!^'"
-alias houloga        "houproc --no_case --author \!:1 --match \!:2" 
-alias houlogar       "houproc --no_case --author \!:1 --match \!:2 --revision \!:3" 
-alias houlogalib     "houproc --no_case --author libauer --match \!:1"
-alias houlogacs      "houproc --author \!:1 --match \!:2"
-alias houlogav       "houproc --verbose --author \!:1 --match \!:2"
-alias houlogavi      "houproc --no_case --verbose --author \!:1 --match \!:2"
-alias matchauth      "houproc --author \!:1 --match \!:2"
-alias matchauthor    "houproc --author \!:1 --match \!:2"
-alias houfindfile    "houproc --find_file"
-alias houschema      houproc --get schema
-alias houupdate      houproc --update
-alias houlook	     svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url
-alias hourelocaterepo 'echo "\n>svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url > url.txt\n<... edit url.txt ...>   (make sure not to add a newline to the end - use textpad)\n>svnadmin setrevprop $SVN_MIRROR_PATH -r0 svn:sync-from-url url.txt\n" '
+alias statproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
+alias statrev         "statproc --rev"
+alias statdiff        statrev \!^ --diff \!:2
+alias statrevhead     statrev head
+alias statrevchange   statproc --change
+alias statchange      statproc --change
+alias statrevchrange  statproc --change \!:1 --range \!:2
+alias statchanger     statrevchrange
+alias statrevchdiff   statproc --change \!^ --diff 
+alias statrevchdiffr  statproc --change \!:1 --diff --range \!:2
+alias statchangerd    statrevchdiffr
+alias statuser        statproc --get user
+alias statlogm        statproc --match 
+alias statlogmi       statproc --no_case --match 
+alias statlogmv       statproc --verbose --match 
+alias statlogmvi      statproc --no_case --verbose --match 
+alias statmatch       statproc --no_case --limit 30 --match
+alias statbuildlabel  "statmatch 'label.*\!^'"
+alias statloga        "statproc --no_case --author \!:1 --match \!:2" 
+alias statlogar       "statproc --no_case --author \!:1 --match \!:2 --revision \!:3" 
+alias statlogalib     "statproc --no_case --author libauer --match \!:1"
+alias statlogacs      "statproc --author \!:1 --match \!:2"
+alias statlogav       "statproc --verbose --author \!:1 --match \!:2"
+alias statlogavi      "statproc --no_case --verbose --author \!:1 --match \!:2"
+alias matchauth      "statproc --author \!:1 --match \!:2"
+alias matchauthor    "statproc --author \!:1 --match \!:2"
+alias statfindfile    "statproc --find_file"
+alias statschema      statproc --get schema
+alias statupdate      statproc --update
+alias statlook	     svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url
+alias statrelocaterepo 'echo "\n>svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url > url.txt\n<... edit url.txt ...>   (make sure not to add a newline to the end - use textpad)\n>svnadmin setrevprop $SVN_MIRROR_PATH -r0 svn:sync-from-url url.txt\n" '
 
 #
 #  LAB Aliases
@@ -602,10 +602,10 @@ alias syncsvn	    "svnsync sync $SVN_LAB"
 alias synclab       "svnsync sync $SVN_LAB $SVN_LAB_URI"
 alias synclabwork   "svnsync sync $SVN_LAB svn://labsvn:1137/TRIM"
 alias syncsvnmaster synclab
-alias synchouston   "svnsync sync $SVN_MIRROR $SVN_HOUSTON"
-alias synchou	    synchouston
+alias syncstatic   "svnsync sync $SVN_MIRROR $SVN_STATIC"
+alias syncstat	    syncstatic
 alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB"
-alias remlockhou    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
+alias remlockstat    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
 alias syncup        "syncsvn; logupdate"
 
 # Setup the documentation directory
@@ -763,8 +763,7 @@ alias svnup            "svn update $trimdir; date; svn update $trimdir/doc/doc/D
 alias svnupr	       "mainlocal; svnup; localmain"
 alias svnstatic        "svn update $STATIC_REPO"
 alias svnstaticr       "staticlocal; svnstatic; localstatic"
-alias svnuphouston	svnstatic
-alias svnuphoulocal	svnstaticr
+alias svnupstatic	svnstatic
 alias svnupall         "date; svnup; date; svnstatic; date;"
 
 alias showlatest       "svn log $trimdir -r HEAD:1 --limit 10"

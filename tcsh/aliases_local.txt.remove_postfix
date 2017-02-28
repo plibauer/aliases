@@ -14,10 +14,10 @@
 #set SVN_LOG_DB      = C:/svnLogDatabase
 #
 # FOR WORK
-#set SVN_HOUSTON     = https://csvnhou-pro.houston.hpecorp.net:18490/svn/bio-im-trim
+#set SVN_STATIC     = svn://labsvn:1137/Static
 #
 # FOR HOME
-set SVN_HOUSTON     = svn://10.11.12.2
+set SVN_STATIC     = svn://10.11.12.2
 #
 
 #set SVN_MASTER      = $SVN_LAB
