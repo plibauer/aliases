@@ -539,7 +539,7 @@ alias statfindfile    "statproc --find_file"
 alias statschema      statproc --get schema
 alias statupdate      statproc --update
 alias statlook	     svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url
-alias statrelocaterepo 'echo "\n>svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url > url.txt\n<... edit url.txt ...>   (make sure not to add a newline to the end - use textpad)\n>svnadmin setrevprop $SVN_MIRROR_PATH -r0 svn:sync-from-url url.txt\n" '
+alias statrelocaterepo 'echo "\n>svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url > url.txt\n<... edit url.txt ...>   (make sure not to add a newline to the end - use textpad, or vi -b ...)\n>svnadmin setrevprop $SVN_MIRROR_PATH -r0 svn:sync-from-url url.txt\n" '
 
 #
 #  LAB Aliases
@@ -567,7 +567,7 @@ alias labschema	     labproc --get schema
 alias labupdate      labproc --update --repo "$SVN_LAB_URI/REPOS"
 alias labhelp        labproc --help
 alias lablook	     svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url
-alias labrelocaterepo 'echo "\n>svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url > url.txt\n<... edit url.txt ...>   (make sure not to add a newline to the end - use textpad)\n>svnadmin setrevprop $SVN_LAB_PATH -r0 svn:sync-from-url url.txt\n" '
+alias labrelocaterepo 'echo "\n>svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url > url.txt\n<... edit url.txt ...>   (make sure not to add a newline to the end - use textpad, or vi -b ...)\n>svnadmin setrevprop $SVN_LAB_PATH -r0 svn:sync-from-url url.txt\n" '
 
 
 #  MASTER SVN aliases
