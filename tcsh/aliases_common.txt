@@ -449,13 +449,29 @@ alias svnstatus      "svn info $trimdir | perl -ne 'print if /^Path|^URL:|^\n/;'
 alias svnstatusfull  "svn info $trimdir | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
 alias svninfo	     svnstatus
 
-alias svnrevcurrent  'svn log -v -r "\!^":"\!^"'
-alias svnlogrev      'svn log $SVN_LAB_URI/REPOS/trunk -v -r "\!^":"\!^"'
-alias svnrepoinfo    'cat $SVN_LAB_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
-alias svnrepoinfostat 'cat $SVN_MIRROR_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
+alias svnrevcurrent   'svn log -v -r "\!^":"\!^"'
+alias svnlogrev       'svn log $SVN_LAB_URI/REPOS/trunk -v -r "\!^":"\!^"'
+alias svnrepoinfo     'cat $SVN_LAB_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
+alias svnrepoinfostat 'cat $SVN_STATIC_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
+alias repoinfo        svnrepoinfo
+alias repoinfostat    svnrepoinfostat
+alias svnservers      'echo                              \\
+"\nLOCAL SERVERS:                                        \\
+\tLAB URL    : $LOCAL_SVN_LAB                            \\
+\tSTATIC URL : $LOCAL_SVN_STATIC                         \\
+\nREMOTE SERVERS:\n                                      \\
+\tLAB URL    : $SVN_LAB_URI                              \\
+\tSTATIC URL : $SVN_STATIC                               \\
+"'
+
+alias serviceadd    'echo "\nLOCAL LAB server : $LOCAL_SVN_LAB (set the PORT# below accordingly)"; \\
+perl -e ' "'"' print "sc delete svnlab\nsc create svnlab binpath= \"\\\"C:\\Program Files\\TortoiseSVN\\bin\\svnserve.exe\\\" --service -r E:\\svn_lab --listen-port PORT\# --compression 0\" displayname= \"Subversion Server LAB\" depend= Tcpip start= auto\n"  '"'" ' ;                                     \\
+echo "\nLOCAL STATIC server : $LOCAL_SVN_STATIC (set the PORT# below accordingly)";              \\
+perl -e ' "'"' print "sc delete svnstatic\nsc create svnstatic binpath= \"\\\"C:\\Program Files\\TortoiseSVN\\bin\\svnserve.exe\\\" --service -r E:\\svn_static --listen-port PORT\# --compression 0\" displayname= \"Subversion Server STATIC\" depend= Tcpip start= auto\n"  '"'" 
+alias svnservices     serviceadd
+
 alias writeSvnBranch 'svnstatus | perl -ne '"'"' /^URL:\s+(.+)\/(REPOS\/.+)/ and do { print "$1/$2\n" }' "' "' > C:/temp/svn_branch_x.txt'
 alias showrevs       'writeSvnBranch && echo -n "\!*"      | processSvnLog'
-
 alias processSvnLog  'perl -e  '"'"'                     \\
   $| = 1;                                                \\
   chomp($currdir = `pwd`);                               \\
@@ -533,13 +549,13 @@ alias statlogalib     "statproc --no_case --author libauer --match \!:1"
 alias statlogacs      "statproc --author \!:1 --match \!:2"
 alias statlogav       "statproc --verbose --author \!:1 --match \!:2"
 alias statlogavi      "statproc --no_case --verbose --author \!:1 --match \!:2"
-alias matchauth      "statproc --author \!:1 --match \!:2"
-alias matchauthor    "statproc --author \!:1 --match \!:2"
+alias matchauth       "statproc --author \!:1 --match \!:2"
+alias matchauthor     "statproc --author \!:1 --match \!:2"
 alias statfindfile    "statproc --find_file"
 alias statschema      statproc --get schema
 alias statupdate      statproc --update
-alias statlook	     svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url
-alias statrelocaterepo 'echo "\n>svnlook pg --revprop -r0 $SVN_MIRROR_PATH svn:sync-from-url > url.txt\n<... edit url.txt ...>   (make sure not to add a newline to the end - use textpad, or vi -b ...)\n>svnadmin setrevprop $SVN_MIRROR_PATH -r0 svn:sync-from-url url.txt\n" '
+alias statlook	      svnlook pg --revprop -r0 $SVN_STATIC_PATH svn:sync-from-url
+alias statrelocaterepo 'echo "\n>svnlook pg --revprop -r0 $SVN_STATIC_PATH svn:sync-from-url > url.txt\n<... edit url.txt ...>   (make sure not to add a newline to the end - use textpad, or vi -b ...)\n>svnadmin setrevprop $SVN_STATIC_PATH -r0 svn:sync-from-url url.txt\n" '
 
 #
 #  LAB Aliases
@@ -598,14 +614,14 @@ alias branches       labproc --get branch
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
 # alias syncsvn	   "svnsync sync svn://localhost/"
 #
-alias syncsvn	    "svnsync sync $SVN_LAB"
-alias synclab       "svnsync sync $SVN_LAB $SVN_LAB_URI"
-alias synclabwork   "svnsync sync $SVN_LAB svn://labsvn:1137/TRIM"
+alias syncsvn	    "svnsync sync $SVN_LAB_FILE"
+alias synclab       "svnsync sync $SVN_LAB_FILE $SVN_LAB_URI"
+alias synclabwork   "svnsync sync $SVN_LAB_FILE svn://labsvn:1137/TRIM"
 alias syncsvnmaster synclab
-alias syncstatic   "svnsync sync $SVN_MIRROR $SVN_STATIC"
+alias syncstatic   "svnsync sync $SVN_STATIC_FILE $SVN_STATIC"
 alias syncstat	    syncstatic
-alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB"
-alias remlockstat    "svn propdel svn:sync-lock --revprop -r 0 $SVN_MIRROR"
+alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB_FILE"
+alias remlockstat    "svn propdel svn:sync-lock --revprop -r 0 $SVN_STATIC_FILE"
 alias syncup        "syncsvn; logupdate"
 
 # Setup the documentation directory
@@ -737,23 +753,23 @@ alias makeshortcutst scutsallt
 #
 # -----------------------------------------------------------------
 #
-alias mainlocal  ' echo `svn info $trimdir | pgrep "URL: http"` "AA" $SVN_URL "BB" $trimdir  \\
+alias mainlocal  ' echo `svn info $trimdir | pgrep "URL: http"` "AA" $LOCAL_SVN_LAB "BB" $trimdir  \\
  | perl -ne ' "' "'                                                                    \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");   \\
  '"'"
 
-alias localmain  ' echo `svn info $trimdir | pgrep "URL: svn"` "AA" $SVN_MASTER "BB" $trimdir  \\
+alias localmain  ' echo `svn info $trimdir | pgrep "URL: svn"` "AA" $SVN_LAB_FILE "BB" $trimdir  \\
  | perl -ne ' "' "'                                                                      \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");     \\
       exit;                                                                                   \\
  '"'"
 
-alias staticlocal ' echo `svn info $STATIC_REPO | pgrep "URL: http"` "AA" $SVN_URL "BB" $STATIC_REPO  \\
+alias staticlocal ' echo `svn info $STATIC_REPO | pgrep "URL: http"` "AA" $LOCAL_SVN_STATIC "BB" $STATIC_REPO  \\
  | perl -ne ' "' "'                                                                    \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");   \\
  '"'"
 
-alias localstatic ' echo `svn info $STATIC_REPO | pgrep "URL: svn"` "AA" $SVN_MASTER "BB" $STATIC_REPO  \\
+alias localstatic ' echo `svn info $STATIC_REPO | pgrep "URL: svn"` "AA" $SVN_LAB_FILE "BB" $STATIC_REPO  \\
  | perl -ne ' "' "'                                                                      \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");     \\
       exit;                                                                                   \\
@@ -770,8 +786,8 @@ alias showlatest       "svn log $trimdir -r HEAD:1 --limit 10"
 alias showlatestv      "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
 
 alias svnupbin	       "svn update $PERL_BIN"
-alias relocperllocal   "svn relocate $SVN_MASTER $SVN_URL $PERL_BIN"
-alias relocperlremote  "svn relocate $SVN_URL $SVN_MASTER $PERL_BIN"
+alias relocperllocal   "svn relocate $SVN_LAB_FILE $LOCAL_SVN_STATIC $PERL_BIN"
+alias relocperlremote  "svn relocate $LOCAL_SVN_STATIC $SVN_LAB_FILE $PERL_BIN"
 alias svnupbinr	       "svnrelocperl; svnupbin; svnrelocbackperl"
 
 alias sloghelp		'echo "\nUse slog and slogr if you are in the directory you wish to view the svn log of;\n\n\tslog 85123         - Will print all log entries from HEAD -> revision 85123\n\tslogr 85123 84444  - Will print the log entries starting at 85123  -> 84444\n\nUse slogurl and slogurlr when you have the repository URL and are not in a checked-out directory;\n\n\tslogurl svn://localhost/REPOS/trunk 84357\n\tslogurlr svn://localhost/REPOS/trunk 84405 84357\n\n" '

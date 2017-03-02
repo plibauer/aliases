@@ -1,27 +1,20 @@
 #  Put local aliases specific to this machine here
 
-#set REPOS_ROOT      = e
-#set LOCAL_SQLSVR    = LIBXXX
+#set REPOS_ROOT       = e
+#set LOCAL_SQLSVR     = LIBXXX
+#set LOCAL_SVN_LAB    = svn://localhost
+#set LOCAL_SVN_STATIC = svn://localhost:5000
 
 #set SVN_LAB_PATH    = E:/svn_lab
-#set SVN_LAB         = file:///$SVN_LAB_PATH
+#set SVN_LAB_FILE    = file:///$SVN_LAB_PATH
 #set SVN_LAB_URI     = svn://labsvn:1137/TRIM
 #set SVN_LAB_DB      = C:/svnLogDatabase_lab
 
-#set SVN_MIRROR_PATH = E:/svn_mirror
-#set SVN_MIRROR      = file:///$SVN_MIRROR_PATH
-#set SVN_URL         = svn://localhost
+#set SVN_STATIC_PATH = E:/svn_mirror
+#set SVN_STATIC_FILE = file:///$SVN_MIRROR_PATH
 #set SVN_LOG_DB      = C:/svnLogDatabase
+#set SVN_STATIC_URI  = svn://labsvn:1137/Static
 #
-# FOR WORK
-#set SVN_STATIC     = svn://labsvn:1137/Static
-#
-# FOR HOME
-set SVN_STATIC     = svn://10.11.12.2
-#
-
-#set SVN_MASTER      = $SVN_LAB
-
 #  Work and home will probably have different User directories
 #set WIN_HOME        = C:/Users/plibauer
 #set CYG_WIN_HOME    = /c/Users/plibauer
