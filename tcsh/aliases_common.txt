@@ -116,7 +116,7 @@ alias whichenv  "echo 'TRIMDIR   = $trimdir';          \\
                  echo 'DBSession = $dbSession';        \\
                  echo 'DBServer  = $dbServer';         \\
                  echo 'IDOLDB    = $idolDb';           \\
-                 echo 'SVNLOGDB  = $SVN_LOG_DB';       \\
+                 echo 'SVNLOGDB  = $SVN_STATIC_DB';       \\
 "
 alias showenv  whichenv
 alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
@@ -301,7 +301,7 @@ alias gosmoke            "cd $trimdir/Automation/Smoketest"
 alias goperl             "cd $STATIC_PERL"
 alias gop                "cd $PERL_BIN"
 alias goalm              "cd $ALM_DB"
-alias gosvn              "cd $SVN_LOG_DB"
+alias gosvn              "cd $SVN_STATIC_DB"
 alias gosetup            "cd $trimdir/trim/wix/Setup.exe"
 alias gostatic 		 "cd $STATIC_REPO"
 alias gowix              "cd $trimdir/trim/wix"
@@ -525,7 +525,7 @@ alias processSvnLog  'perl -e  '"'"'                     \\
   }                                                      \\
 '"'"
 
-alias statproc        "perl $SVN_LOG_DB/svn_log_processor.pl"
+alias statproc        "perl $SVN_STATIC_DB/svn_log_processor.pl"
 alias statrev         "statproc --rev"
 alias statdiff        statrev \!^ --diff \!:2
 alias statrevhead     statrev head
@@ -1051,7 +1051,7 @@ alias mklocdata   "sqlv 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC
 alias mkpersondata "sqlv 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | perl -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
 
 # SQLITE
-set SQLITE_DB=$SVN_LOG_DB/svn.db
+set SQLITE_DB=$SVN_STATIC_DB/svn.db
 set SQLITE_ALM=$ALM_DB/database/ALM.db
 
 alias sqlite            "sqlite3.exe"

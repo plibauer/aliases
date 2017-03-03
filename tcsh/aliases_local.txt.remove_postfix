@@ -11,8 +11,8 @@
 #set SVN_LAB_DB      = C:/svnLogDatabase_lab
 
 #set SVN_STATIC_PATH = E:/svn_mirror
-#set SVN_STATIC_FILE = file:///$SVN_MIRROR_PATH
-#set SVN_LOG_DB      = C:/svnLogDatabase
+#set SVN_STATIC_FILE = file:///$SVN_STATIC_PATH
+#set SVN_STATIC_DB   = C:/svnLogDatabase
 #set SVN_STATIC_URI  = svn://labsvn:1137/Static
 #
 #  Work and home will probably have different User directories
