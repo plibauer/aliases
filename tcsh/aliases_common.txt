@@ -461,7 +461,7 @@ alias svnservers      'echo                              \\
 \tSTATIC URL : $LOCAL_SVN_STATIC                         \\
 \nREMOTE SERVERS:\n                                      \\
 \tLAB URL    : $SVN_LAB_URI                              \\
-\tSTATIC URL : $SVN_STATIC                               \\
+\tSTATIC URL : $SVN_STATIC_URI                           \\
 "'
 
 alias serviceadd    'echo "\nLOCAL LAB server : $LOCAL_SVN_LAB (set the PORT# below accordingly)"; \\
@@ -618,7 +618,7 @@ alias syncsvn	    "svnsync sync $SVN_LAB_FILE"
 alias synclab       "svnsync sync $SVN_LAB_FILE $SVN_LAB_URI"
 alias synclabwork   "svnsync sync $SVN_LAB_FILE svn://labsvn:1137/TRIM"
 alias syncsvnmaster synclab
-alias syncstatic   "svnsync sync $SVN_STATIC_FILE $SVN_STATIC"
+alias syncstatic   "svnsync sync $SVN_STATIC_FILE $SVN_STATIC_URI"
 alias syncstat	    syncstatic
 alias remlock	    "svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB_FILE"
 alias remlockstat    "svn propdel svn:sync-lock --revprop -r 0 $SVN_STATIC_FILE"
