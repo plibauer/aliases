@@ -1251,6 +1251,9 @@ alias command  cygstart cmd.exe
 alias esstart		"$ELASTIC_HOME/bin/elasticsearch.bat"
 alias esconfig		"cat $ELASTIC_HOME/config/elasticsearch.yml"
 alias goes              "cd $ELASTIC_HOME"
+alias kibana            "$KIBANA_HOME/bin/kibana.bat"
+alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
+alias gokibana          "cd $KIBANA_HOME"
 
 
 ##############################################################################
