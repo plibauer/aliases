@@ -36,3 +36,5 @@
 #set GIT_HOST        = github.com
 #set GIT_URL         = git://$GIT_HOST/
 
+# Elastic Search Settings
+#set ELASTIC_HOME    = E:/ElasticSearch/5.2.2
