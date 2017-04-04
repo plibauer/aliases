@@ -1246,6 +1246,14 @@ alias mountcygwin	"mount -s --change-cygdrive-prefix /"
 alias command  cygstart cmd.exe
 
 ##############################################################################
+#############################   ELASTICSEARCH  ###############################
+
+alias esstart		"$ELASTIC_HOME/bin/elasticsearch.bat"
+alias esconfig		"cat $ELASTIC_HOME/config/elasticsearch.yml"
+alias goes              "cd $ELASTIC_HOME"
+
+
+##############################################################################
 ###########################         IDOL          ############################
 
 alias goidol            "cd $IDOL_DIR"
