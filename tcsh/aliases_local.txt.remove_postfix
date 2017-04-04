@@ -38,4 +38,4 @@
 
 # Elastic Search Settings
 #set ELASTIC_HOME    = E:/ElasticSearch/5.2.2
-#set KIBANA_HOME     = $ELASTIC_HOME/Kibana/5.3.0
+#set KIBANA_HOME     = E:/ElasticSearch/Kibana/5.3.0
