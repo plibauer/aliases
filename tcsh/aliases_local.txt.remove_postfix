@@ -37,5 +37,5 @@
 #set GIT_URL         = git://$GIT_HOST/
 
 # Elastic Search Settings
-#set ELASTIC_HOME    = E:/ElasticSearch/5.2.2
+#set ELASTIC_HOME    = E:/ElasticSearch/5.3.0
 #set KIBANA_HOME     = E:/ElasticSearch/Kibana/5.3.0
