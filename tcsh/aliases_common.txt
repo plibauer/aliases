@@ -1256,6 +1256,7 @@ alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "cd $KIBANA_HOME"
 alias esget		'curl -XGET "http://localhost:9200/\!^"'
 alias esgetpretty	'curl -XGET "http://localhost:9200/\!^&pretty=true"'
+alias esgetexplain	'curl -XGET "http://localhost:9200/\!^&explain=true&pretty=true"'
 alias esgetindexes	'curl -XGET "http://localhost:9200/_aliases"'
 alias esgetall          esgetindexes
 alias esstats           esget _stats
