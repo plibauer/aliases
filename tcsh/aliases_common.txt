@@ -1254,6 +1254,12 @@ alias goes              "cd $ELASTIC_HOME"
 alias kibana            "$KIBANA_HOME/bin/kibana.bat"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "cd $KIBANA_HOME"
+alias esget		'curl -XGET "http://localhost:9200/\!^?pretty=1"'
+alias esgetindexes	'curl -XGET "http://localhost:9200/_aliases?pretty=1"'
+alias esgetall          esgetindexes
+alias esstats           esget _stats
+alias esput		'curl -XPUT "http://localhost:9200/\!^"'
+alias esdelete   	'curl -XDELETE "http://localhost:9200/\!^"'
 
 
 ##############################################################################
