@@ -1255,14 +1255,29 @@ alias kibana            "$KIBANA_HOME/bin/kibana.bat"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "cd $KIBANA_HOME"
 alias esget		'curl -XGET "http://localhost:9200/\!^"'
-alias esgetpretty	'curl -XGET "http://localhost:9200/\!^&pretty=true"'
-alias esgetexplain	'curl -XGET "http://localhost:9200/\!^&explain=true&pretty=true"'
-alias esgetindexes	'curl -XGET "http://localhost:9200/_aliases"'
+alias esgetpretty	'curl -XGET "http://localhost:9200/\!^?pretty=true"'
+alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
+alias esgetindexes	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
 alias esgetall          esgetindexes
-alias esstats           esget _stats
+alias esstats           esgetpretty _stats
 alias esput		'curl -XPUT "http://localhost:9200/\!^"'
 alias esdelete   	'curl -XDELETE "http://localhost:9200/\!^"'
+alias essearchall       esgetpretty _search
+alias essearchindex     esget "\!^/_search?pretty=true"
 
+
+alias eshelp            'echo                                                           \\
+"\n                                                                                     \\
+1. Show all indexes  [esgetindexes]                                                     \\
+     >curl -XGET http://localhost:9200/_aliases\?pretty=true                       \n   \\
+2. Show all entries for an index called <news> [essearchindex]                          \\
+     >curl -XGET http://localhost:9200/news/_search\?pretty=true                   \n   \\
+3. Add detailed explanation to queries (add double quotes around uri)  [esgetexplain]   \\
+    >curl -XGET http://localhost:9200/news/_search?explain=true\&pretty=true       \n   \\
+4. Delete an index called <news> [esdelete]                                             \\
+    >curl -XDELETE http://localhost:9200/news                                      \n   \\
+"                                                                                       \\
+' 
 
 ##############################################################################
 ###########################         IDOL          ############################
