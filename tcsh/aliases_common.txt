@@ -224,6 +224,7 @@ alias tjournal        "tail `cat /c/tmp/journalname.txt`"
 alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
 alias viwiki          "vi \!^; scrub  \!^"
 alias mj              "less `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
+alias textpad	      "TextPad.exe"
 
 alias vj              ' echo -n "\!* $WIKI_DIR" | /bin/perl -ne  '"'"'                                                        \\
      /^([A-z]+)\s*(\d+) (.+)/ and do { ($m,$y,$path) = ($1,$2,$3) };                                                          \\
