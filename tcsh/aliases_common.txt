@@ -1165,7 +1165,7 @@ alias gogit          "cd ~/aliases"
 alias gitpush        "git push origin master"
 alias gitnewrepo     "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
 alias gitcommit      "git commit -a"
-alias gitdiff        "git diff"
+alias gitdiff        "git diff | more"
 alias gitdiffbc      "git difftool"
 alias gitmerge       "git mergetool"
 alias gitpull        "git pull"
@@ -1265,6 +1265,7 @@ alias esput		'curl -XPUT "http://localhost:9200/\!^"'
 alias esdelete   	'curl -XDELETE "http://localhost:9200/\!^"'
 alias essearchall       esgetpretty _search
 alias essearchindex     esget "\!^/_search?pretty=true"
+alias esindexinfo       esget "\!^/_settings,_mapping?pretty=true"
 
 
 alias eshelp            'echo                                                           \\
@@ -1277,6 +1278,8 @@ alias eshelp            'echo                                                   
     >curl -XGET http://localhost:9200/news/_search?explain=true\&pretty=true       \n   \\
 4. Delete an index called <news> [esdelete]                                             \\
     >curl -XDELETE http://localhost:9200/news                                      \n   \\
+5. Show the settings for a given index <news> [esindxsettings]                          \\
+    >curl -XGET http://localhost:9200/news/_settings                               \n   \\
 "                                                                                       \\
 ' 
 
