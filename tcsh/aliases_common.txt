@@ -1224,12 +1224,19 @@ alias wgetallhttp	"wget -r -l 0 -p http://\!^"
 # Show internet settings
 alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings"'
 
+
+####################################################################
+### PYTHON COMMANDS
 # Run a local http server from the current directory;
 # Python 2.x
 alias httplocal	"cd ~; python -m SimpleHTTPServer"
 alias http	httplocal
 # Python 3.x
 alias http3	"cd ~; python -m http.server"
+alias pythonmodules "pip freeze"
+alias pymods pythonmodules
+
+#-------------------------------------------------------------------
 
 # Edit a file with emacs and detach
 alias emacs	"emacs \!^ &"
