@@ -186,6 +186,7 @@ alias gowikij         "cd $WIKI_DIR"
 alias goproj          "cd $WIKI_DIR/projects"
 alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
 alias vijournal       "vi $WIKI_DIR/journal.txt; scrub $WIKI_DIR/journal.txt"
+alias vip             "vi $JOURNAL_DIR/DIARY.txt; scrub $JOURNAL_DIR/DIARY.txt"
 
 alias grepjd          ' ls $WIKI_DIR/journals/*/*                                                                       \\
 | /bin/perl -e '"'"'                                                                                                    \\
