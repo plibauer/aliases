@@ -186,6 +186,7 @@ alias gowikij         "cd $WIKI_DIR"
 alias goproj          "cd $WIKI_DIR/projects"
 alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
 alias vijournal       "vi $WIKI_DIR/journal.txt; scrub $WIKI_DIR/journal.txt"
+alias vip             "vi $JOURNAL_DIR/DIARY.txt; scrub $JOURNAL_DIR/DIARY.txt"
 
 alias grepjd          ' ls $WIKI_DIR/journals/*/*                                                                       \\
 | /bin/perl -e '"'"'                                                                                                    \\
@@ -224,6 +225,7 @@ alias tjournal        "tail `cat /c/tmp/journalname.txt`"
 alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
 alias viwiki          "vi \!^; scrub  \!^"
 alias mj              "less `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
+alias textpad	      "TextPad.exe"
 
 alias vj              ' echo -n "\!* $WIKI_DIR" | /bin/perl -ne  '"'"'                                                        \\
      /^([A-z]+)\s*(\d+) (.+)/ and do { ($m,$y,$path) = ($1,$2,$3) };                                                          \\
@@ -253,10 +255,10 @@ alias perl6 perl6.bat
 #
 #    none / cygdrive binary,posix=0,user 0 0
 #
-alias update "updatedb --findoptions='-follow' --output='$WIN_HOME/locatedb' --localpaths='$cygtrimdir $cygtrimdir/../TRIMStaticRepo /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development /e/oracle'"
+alias update "updatedb --findoptions='-follow' --output='~/locatedb' --localpaths='$cygtrimdir $cygtrimdir/../TRIMStaticRepo /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development /e/oracle'"
 
-alias locate   "locate -d $WIN_HOME/locatedb"
-alias locatei  "locate -i -d $WIN_HOME/locatedb"
+alias locate   "locate -d ~/locatedb"
+alias locatei  "locate -i -d ~/locatedb"
 alias loc       locate
 alias loci	locatei
 alias trimfind   "loc \!^ | grep -i $cygtrimdir"
@@ -447,7 +449,7 @@ set trimdoc        = $trimdir/doc/doc/DocPub
 alias svnstat        "svn status . -q"
 alias svnstatus      "svn info $trimdir | perl -ne 'print if /^Path|^URL:|^\n/;' "
 alias svnstatusfull  "svn info $trimdir | perl -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
-alias svninfo	     svnstatus
+alias svninfo	     svnstatusfull
 
 alias svnrevcurrent   'svn log -v -r "\!^":"\!^"'
 alias svnlogrev       'svn log $SVN_LAB_URI/REPOS/trunk -v -r "\!^":"\!^"'
@@ -1168,7 +1170,7 @@ alias gogit          "cd ~/aliases"
 alias gitpush        "git push origin master"
 alias gitnewrepo     "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
 alias gitcommit      "git commit -a"
-alias gitdiff        "git diff"
+alias gitdiff        "git diff | more"
 alias gitdiffbc      "git difftool"
 alias gitmerge       "git mergetool"
 alias gitpull        "git pull"
@@ -1184,6 +1186,7 @@ alias gitforceupdate "git fetch --all; git reset --hard origin/master"
 alias gitcommitsome  "git add -i"
 alias gitremove      "git rm"
 alias gitundo        "git reset HEAD"
+alias gitrevert      "git checkout -- \!^"
 alias gitsetproxy    "setenv HTTP_PROXY $PROXY; setenv HTTPS_PROXY $HTTPS_PROXY"
 alias gitunsetproxy  "setenv HTTP_PROXY;setenv HTTPS_PROXY "
 alias gitcheckproxy  "setenv | pgrep PROXY"
@@ -1225,12 +1228,19 @@ alias wgetallhttp	"wget -r -l 0 -p http://\!^"
 # Show internet settings
 alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings"'
 
+
+####################################################################
+### PYTHON COMMANDS
 # Run a local http server from the current directory;
 # Python 2.x
 alias httplocal	"cd ~; python -m SimpleHTTPServer"
 alias http	httplocal
 # Python 3.x
 alias http3	"cd ~; python -m http.server"
+alias pythonmodules "pip freeze"
+alias pymods pythonmodules
+
+#-------------------------------------------------------------------
 
 # Edit a file with emacs and detach
 alias emacs	"emacs \!^ &"
@@ -1247,6 +1257,43 @@ alias mountcygwin	"mount -s --change-cygdrive-prefix /"
 
 # Invoke an admin command prompt
 alias command  cygstart cmd.exe
+
+##############################################################################
+########################   ELASTICSEARCH (elastic)  ##########################
+
+alias esstart		"$ELASTIC_HOME/bin/elasticsearch.bat &"
+alias esconfig		"cat $ELASTIC_HOME/config/elasticsearch.yml"
+alias goes              "cd $ELASTIC_HOME"
+alias kibana            "$KIBANA_HOME/bin/kibana.bat &"
+alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
+alias gokibana          "cd $KIBANA_HOME"
+alias esget		'curl -XGET "http://localhost:9200/\!^"'
+alias esgetpretty	'curl -XGET "http://localhost:9200/\!^?pretty=true"'
+alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
+alias esgetindexes	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
+alias esgetall          esgetindexes
+alias esstats           esgetpretty _stats
+alias esput		'curl -XPUT "http://localhost:9200/\!^"'
+alias esdelete   	'curl -XDELETE "http://localhost:9200/\!^"'
+alias essearchall       esgetpretty _search
+alias essearchindex     esget "\!^/_search?pretty=true"
+alias esindexinfo       esget "\!^/_settings,_mapping?pretty=true"
+
+
+alias eshelp            'echo                                                           \\
+"\n                                                                                     \\
+1. Show all indexes  [esgetindexes]                                                     \\
+     >curl -XGET http://localhost:9200/_aliases\?pretty=true                       \n   \\
+2. Show all entries for an index called <news> [essearchindex]                          \\
+     >curl -XGET http://localhost:9200/news/_search\?pretty=true                   \n   \\
+3. Add detailed explanation to queries (add double quotes around uri)  [esgetexplain]   \\
+    >curl -XGET http://localhost:9200/news/_search?explain=true\&pretty=true       \n   \\
+4. Delete an index called <news> [esdelete]                                             \\
+    >curl -XDELETE http://localhost:9200/news                                      \n   \\
+5. Show the settings for a given index <news> [esindxsettings]                          \\
+    >curl -XGET http://localhost:9200/news/_settings                               \n   \\
+"                                                                                       \\
+' 
 
 ##############################################################################
 ###########################         IDOL          ############################

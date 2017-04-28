@@ -31,8 +31,12 @@
 #set HTTPS_PROXY     = https://web-proxy.au.hpecorp.net:8080
 #set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10"
 #set WIKI_DIR        = $WIN_HOME/Dropbox/Work/Wiki/paul_libauer
+#set JOURNAL_DIR     = $WIN_HOME/Dropbox/Personal/journals
 
 #  Home and Laptop Machines need these changes
 #set GIT_HOST        = github.com
 #set GIT_URL         = git://$GIT_HOST/
 
+# Elastic Search Settings
+#set ELASTIC_HOME    = E:/ElasticSearch/5.3.0
+#set KIBANA_HOME     = E:/ElasticSearch/Kibana/5.3.0
