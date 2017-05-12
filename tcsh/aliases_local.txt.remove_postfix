@@ -29,7 +29,7 @@
 #set ALM_SYNC_URL    = http://10.46.177.35:8080
 #set PROXY           = http://web-proxy.au.hpecorp.net:8080
 #set HTTPS_PROXY     = https://web-proxy.au.hpecorp.net:8080
-#set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.10"
+#set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
 #set WIKI_DIR        = $WIN_HOME/Dropbox/Work/Wiki/paul_libauer
 #set JOURNAL_DIR     = $WIN_HOME/Dropbox/Personal/journals
 
