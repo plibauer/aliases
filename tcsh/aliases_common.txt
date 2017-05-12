@@ -255,7 +255,7 @@ alias perl6 perl6.bat
 #
 #    none / cygdrive binary,posix=0,user 0 0
 #
-alias update "updatedb --findoptions='-follow' --output='~/locatedb' --localpaths='$cygtrimdir $cygtrimdir/../TRIMStaticRepo /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows /e/Sharepoint_Development /e/oracle'"
+alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir $cygtrimdir/../TRIMStaticRepo /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows '"
 
 alias locate   "locate -d ~/locatedb"
 alias locatei  "locate -i -d ~/locatedb"
