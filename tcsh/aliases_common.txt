@@ -526,6 +526,7 @@ alias processSvnLog  'perl -e  '"'"'                     \\
     print "\t$_";                                        \\
   }                                                      \\
 '"'"
+alias showchanges     showrevs
 
 alias statproc        "perl $SVN_STATIC_DB/svn_log_processor.pl"
 alias statrev         "statproc --rev"
@@ -870,17 +871,18 @@ if ($revision > 81) then
     set bulkloader = TRIMBulkLoader.exe 
 endif
 
-alias bulk       "$trimdir/$defArchCSharp/$defBuild/$bulkloader"
-alias bulkloader bulk
-alias b          bulk -db $DBID
-alias origins    bulk -o "'*'" -action get -db $DBID
-alias orgget     bulk -o '\!^' -action get -db $DBID
-alias orgrun     bulk -o '\!^' -action run -db $DBID
-alias makerecs   "perl $PERL_BIN/CreateManyRecords.pl --number \!^  --output out.txt"
-alias makecontainers bulk testtrim bulkLoader --type container --timeout 6000 --assert --inplace --containers 1 --perContainer 256
-alias formatdat  perl $STATIC_PERL/misc/formatBulkLoaderDatFiles.pl --print  
-alias formatblk  formatdat
-alias parsedat   formatdat
+alias bulk              "$trimdir/$defArchCSharp/$defBuild/$bulkloader"
+alias bulkloader        bulk
+alias b                 bulk -db $DBID
+alias origins           bulk -o "'*'" -action get -db $DBID
+alias orgget            bulk -o '\!^' -action get -db $DBID
+alias orgrun            bulk -o '\!^' -action run -db $DBID
+alias makerecs          "perl $PERL_BIN/CreateManyRecords.pl"
+alias makerecsdefault   makerecs --number \!^  --output out.txt
+alias makecontainers    bulk testtrim bulkLoader --type container --timeout 6000 --assert --inplace --containers 1 --perContainer 256
+alias formatdat         perl $STATIC_PERL/misc/formatBulkLoaderDatFiles.pl --print  
+alias formatblk         formatdat
+alias parsedat          formatdat
 
 alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
 alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
