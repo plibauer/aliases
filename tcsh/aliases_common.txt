@@ -175,6 +175,9 @@ alias headt "ll -t | head -\!^"
 alias findalias "alias | grep -i "
 alias falias findalias
 
+alias fileinfo "7z l"
+alias checkfile fileinfo
+
 
 #################################################################################
 #  JOURNAL ALIASES
@@ -365,6 +368,7 @@ alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
 alias properties    'cat $trimdir/trim/src/DD/properties.txt | pgrep -i '
 alias viewprop      'view $trimdir/trim/src/DD/properties.txt'
 alias propids       'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | pgrep -i '
+alias propidx       'cat $trimdir/trim/src/Core/PRPpropertyFind.cpp | pgrep -i '
 
 alias enums         'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs  \\
 | perl -e ' "'" '                                                             \\
