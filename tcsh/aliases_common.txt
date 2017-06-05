@@ -789,8 +789,11 @@ alias svnup            "svn update $trimdir; date; svn update $trimdir/doc/doc/D
 alias svnupr	       "mainlocal; svnup; localmain"
 alias svnstatic        "svn update $STATIC_REPO"
 alias svnstaticr       "staticlocal; svnstatic; localstatic"
-alias svnupstatic	svnstatic
-alias svnupall         "date; svnup; date; svnstatic; date;"
+alias svnupstatic      svnstatic
+alias svnupperl        "svn update $STATIC_PERL"
+alias perlup           svnupperl
+alias pyup             "svn update $ELASTIC_HOME/../PythonClient"
+alias svnupall         "date; svnup; date; svnstatic; date; svnupperl; pyup; date;"
 
 alias showlatest       "svn log $trimdir -r HEAD:1 --limit 10"
 alias showlatestv      "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
@@ -1270,6 +1273,7 @@ alias command  cygstart cmd.exe
 alias esstart		"$ELASTIC_HOME/bin/elasticsearch.bat &"
 alias esconfig		"cat $ELASTIC_HOME/config/elasticsearch.yml"
 alias goes              "cd $ELASTIC_HOME"
+alias gopy              "cd $ELASTIC_HOME/../PythonClient"
 alias kibana            "$KIBANA_HOME/bin/kibana.bat &"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "cd $KIBANA_HOME"
