@@ -457,6 +457,9 @@ alias svninfo	     svnstatusfull
 
 alias svnrevcurrent   'svn log -v -r "\!^":"\!^"'
 alias svnlogrev       'svn log $SVN_LAB_URI/REPOS/trunk -v -r "\!^":"\!^"'
+alias svnlatest       'svn log -l 5 -v'
+alias svnlatestmore   'svn log -l 10 -v'
+alias svnlatestx      'svn log -l \!^ -v'
 alias svnrepoinfo     'cat $SVN_LAB_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
 alias svnrepoinfostat 'cat $SVN_STATIC_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
 alias repoinfo        svnrepoinfo
