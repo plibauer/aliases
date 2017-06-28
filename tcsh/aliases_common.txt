@@ -1281,7 +1281,11 @@ alias command  cygstart cmd.exe
 ##############################################################################
 ########################   ELASTICSEARCH (elastic)  ##########################
 
-alias esstart		"$ELASTIC_HOME/bin/elasticsearch.bat &"
+alias esinstall         "$ELASTIC_HOME/bin/elasticsearch-service.bat install"
+alias esstart		"$ELASTIC_HOME/bin/elasticsearch-service.bat start"
+alias esdemo            "$ELASTIC_HOME/bin/elasticsearch.bat"
+alias esstop		"$ELASTIC_HOME/bin/elasticsearch-service.bat stop"
+alias esremove	        "$ELASTIC_HOME/bin/elasticsearch-service.bat remove"
 alias esconfig		"cat $ELASTIC_HOME/config/elasticsearch.yml"
 alias goes              "cd $ELASTIC_HOME"
 alias gopy              "cd $ELASTIC_HOME/../PythonClient"
