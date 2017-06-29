@@ -1295,28 +1295,35 @@ alias gokibana          "cd $KIBANA_HOME"
 alias esget		'curl -XGET "http://localhost:9200/\!^"'
 alias esgetpretty	'curl -XGET "http://localhost:9200/\!^?pretty=true"'
 alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
-alias esgetindexes	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
+alias esgetaliases	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
+alias esgetindexes	python "$ELASTIC_HOME/../PythonClient/client.py"
+alias getindexes        esgetindexes
 alias docid             'curl -XGET "http://localhost:9200/$DEF_ELASTIC_INDX/_search?q=_id:\!^&pretty=true"'
 alias esgetall          esgetindexes
 alias esstats           esgetpretty _stats
+alias getsettings       esgetpretty "\!^/_settings"
+alias getmappings       esgetpretty "\!^/_mappings"
+alias esindexinfo       esgetpretty \!^
+alias indexinfo         esgetpretty \!^
 alias esput		'curl -XPUT "http://localhost:9200/\!^"'
 alias esdelete   	'curl -XDELETE "http://localhost:9200/\!^"'
 alias essearchall       esgetpretty _search
 alias essearchindex     esget "\!^/_search?pretty=true"
+alias searchindex       essearchindex
 alias esindexinfo       esget "\!^/_settings,_mapping?pretty=true"
 
 
 alias eshelp            'echo                                                           \\
 "\n                                                                                     \\
-1. Show all indexes  [esgetindexes]                                                     \\
+1. Show all index aliases [esgetaliases]                                                \\
      >curl -XGET http://localhost:9200/_aliases\?pretty=true                       \n   \\
-2. Show all entries for an index called <news> [essearchindex]                          \\
+2. Show all entries for an index called <news> [essearchindex news]                     \\
      >curl -XGET http://localhost:9200/news/_search\?pretty=true                   \n   \\
 3. Add detailed explanation to queries (add double quotes around uri)  [esgetexplain]   \\
     >curl -XGET http://localhost:9200/news/_search?explain=true\&pretty=true       \n   \\
-4. Delete an index called <news> [esdelete]                                             \\
+4. Delete an index called <news> [esdelete news]                                        \\
     >curl -XDELETE http://localhost:9200/news                                      \n   \\
-5. Show the settings for a given index <news> [esindxsettings]                          \\
+5. Show the settings for a given index <news> [esindxsettings news]                     \\
     >curl -XGET http://localhost:9200/news/_settings                               \n   \\
 "                                                                                       \\
 ' 
