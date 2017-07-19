@@ -6,6 +6,7 @@
 set prompt="%B%n %~>"
 set autologout
 set alias_file = $alias_dir/aliases_common.txt
+set alias_local = $alias_dir/aliases_local.txt
 
 #set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /c/python27 /c/rakudo/bin /bin /usr/bin /sbin /usr/sbin $path:q )
 set path = ( "/c/program files/TortoiseSVN/bin" /c/Strawberry/perl/bin /bin /usr/bin /sbin /usr/sbin $path:q )
@@ -81,6 +82,7 @@ set defproj = ALL_BUILD
 
 alias home 	"cd $WIN_HOME"
 alias via  	"vi $alias_file"
+alias vil	"vi $alias_local"
 alias viewa  	"vi -R $alias_file"
 alias viw       "vi $alias_dir/aliases_work.txt"
 alias vih       "vi $alias_dir/aliases_home.txt"
@@ -1513,12 +1515,11 @@ alias buildsolution '  echo $logSeparator; date;                                
       $file = File::Tail->new(name=>$b, interval=>1);                                                                      \\
       while(defined($log=$file->read)) {                                                                                   \\
         chomp $log;                                                                                                        \\
-        if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date,\s(\d+)\sskipped/){                       \\
-          $total = $1 + $2 + $3 + $4;                                                                                      \\
-          if($total > 30){ print "$log\n"; exit; }                                                                         \\
-          else { print "$log\n" }                                                                                          \\
+        if($log =~ /^={10}\s+Build:/){                                                                                     \\
+           print "$log\n";                                                                                                 \\
+           exit;                                                                                                           \\
         }                                                                                                                  \\
-        elsif($log =~ /----- Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                             \\
+        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                           \\
           if(length($log) > 200){ $log = substr($log,0,200); }                                                             \\
           print "$log\n"                                                                                                   \\
         }                                                                                                                  \\
