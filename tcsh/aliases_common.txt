@@ -1590,12 +1590,11 @@ alias buildcsharp 'echo $logSeparator; date;                                    
     $file = File::Tail->new(name=>$b, interval=>1);                                                                        \\
     while(defined($log=$file->read)) {                                                                                     \\
         chomp $log;                                                                                                        \\
-        if($log =~ /Build:\s(\d+)\ssucceeded,\s(\d+)\sfailed,\s(\d+)\sup-to-date/){                                        \\
-          $total = $1 + $2 + $3;                                                                                           \\
-          if($total > 40){ print "$log\n"; exit; }                                                                         \\
-          else { print "$log\n" }                                                                                          \\
+        if($log =~ /^={10}\s+Build:/){                                                                                     \\
+           print "$log\n";                                                                                                 \\
+           exit;                                                                                                           \\
         }                                                                                                                  \\
-        elsif($log =~ /----- Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                             \\
+        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                           \\
           if(length($log) > 200){ $log = substr($log,0,200); }                                                             \\
           print "$log\n"                                                                                                   \\
         }                                                                                                                  \\
