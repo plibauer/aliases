@@ -3,6 +3,8 @@ set alias_dir     = ~/aliases/tcsh
 
 source $alias_dir/aliases_local.txt
 
+set REPOS_ROOT    = C
+
 set revision      = 92
 set defArch       = x64
 set defCompiler   = VS2015

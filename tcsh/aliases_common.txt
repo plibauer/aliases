@@ -1429,6 +1429,7 @@ alias bldlog     	"tail -f $buildLog.build"
 alias bldlogcs   	"tail -f $buildLogCSharp.build"
 alias bldlogwix  	"tail -f $buildLogWix"
 alias bldall 		"date; bldsln; bldcsharp; bldwix; date"
+alias bldboth		"release; bldsln; debug; bldsln"
 alias clnall 		"clnsln; clncsharp; clnwix"
 alias clnallboth	"release; clnall; debug; clnall"
 
