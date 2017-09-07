@@ -336,6 +336,7 @@ alias x11  "pushd /c/cygwin/usr/X11R6/bin"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
 alias rmlogs "rm $trimdir/$defArch/$defBuild/ServerLocalData/Log/*.log"
+alias rmlogsboth "rm $trimdir/$defArch/{Debug,Release}/ServerLocalData/Log/*.log"
  
 alias evlog_clean "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
 
