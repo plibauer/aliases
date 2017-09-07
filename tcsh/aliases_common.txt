@@ -80,7 +80,7 @@ endif
 
 set defproj = ALL_BUILD
 
-alias home 	"cd $WIN_HOME"
+alias home 	"pushd $WIN_HOME"
 alias via  	"vi $alias_file"
 alias vil	"vi $alias_local"
 alias viewa  	"vi -R $alias_file"
@@ -159,6 +159,7 @@ alias la  "ls --color -al"
 alias lat "ls --color -alt"
 alias ++ pushd
 alias -- popd
+alias back popd
 alias d dirs
 alias h history
 alias j jobs
@@ -187,8 +188,8 @@ alias checkfile fileinfo
 # Set the $DATE variable to allow creation of new journal files
 set DATE = `date +%B%Y`
 
-alias gowikij         "cd $WIKI_DIR"
-alias goproj          "cd $WIKI_DIR/projects"
+alias gowikij         "pushd $WIKI_DIR"
+alias goproj          "pushd $WIKI_DIR/projects"
 alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
 alias vijournal       "vi $WIKI_DIR/journal.txt; scrub $WIKI_DIR/journal.txt"
 alias vip             "vi $JOURNAL_DIR/DIARY.txt; scrub $JOURNAL_DIR/DIARY.txt"
@@ -275,54 +276,54 @@ alias more less -R
 
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
-alias goa		 cd ~/aliases/tcsh
-alias gocfg              "cd $trimcfgdir"
-alias goexe              "cd $trimdir/$defArch/$defBuild"
+alias goa		 pushd ~/aliases/tcsh
+alias gocfg              "pushd $trimcfgdir"
+alias goexe              "pushd $trimdir/$defArch/$defBuild"
 alias gobin              goexe
-alias gocs               "cd $trimdir/$defArchCSharp/$defBuild"
+alias gocs               "pushd $trimdir/$defArchCSharp/$defBuild"
 alias goany              gocs
 alias goanycpu           gocs
-alias gomsi              "cd $trimdir/msi/$defArch/en-us"
-alias gotest             "cd $trimdir/trim/test"
-alias goauto             "cd $trimdir/Automation"
-alias gosrc              "cd $trimdir/trim/src"
-alias gocsharp           "cd $trimdir/trim/CSharp"
-alias gosln              "cd $trimdir/trim/sln"
-alias gotrim             "cd $trimdir/trim"
-alias gotrimlog          "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
-alias gotrimdslog        "cd $WINHOME/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
-alias gotrimconfig       "cd $trimdir/trim/SharedTrimServerData/ServerData"
-alias gotrimlocalconfig  "cd $WINHOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM/$DBID/Configuration"
+alias gomsi              "pushd $trimdir/msi/$defArch/en-us"
+alias gotest             "pushd $trimdir/trim/test"
+alias goauto             "pushd $trimdir/Automation"
+alias gosrc              "pushd $trimdir/trim/src"
+alias gocsharp           "pushd $trimdir/trim/CSharp"
+alias gosln              "pushd $trimdir/trim/sln"
+alias gotrim             "pushd $trimdir/trim"
+alias gotrimlog          "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
+alias gotrimdslog        "pushd $WINHOME/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
+alias gotrimconfig       "pushd $trimdir/trim/SharedTrimServerData/ServerData"
+alias gotrimlocalconfig  "pushd $WINHOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM/$DBID/Configuration"
 alias golocal		 gotrimlocalconfig
-alias goauto             "cd $trimdir/Automation"
-alias gobulk             "cd $STATIC_REPO/TestData/BulkLoader/TestCases"
+alias goauto             "pushd $trimdir/Automation"
+alias gobulk             "pushd $STATIC_REPO/TestData/BulkLoader/TestCases"
 alias goblk              gobulk
-alias gob                "cd $trimdir/trim/CSharp/TRIMBulkLoader"
+alias gob                "pushd $trimdir/trim/CSharp/TRIMBulkLoader"
 alias golog              "pushd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
 alias gologs             golog
-alias goaudit            "cd $trimdir/$defArch/$defBuild/ServerData/$DBID/AuditLogs"
+alias goaudit            "pushd $trimdir/$defArch/$defBuild/ServerData/$DBID/AuditLogs"
 alias shlog              showlog
-alias gotmp              "cd /c/tmp"
-alias godox              "cd $trimdir/xtra/Doxygen/runDoxygen"
-alias gosmoke            "cd $trimdir/Automation/Smoketest"
-alias goperl             "cd $STATIC_PERL"
-alias gop                "cd $PERL_BIN"
-alias goalm              "cd $ALM_DB"
-alias gosvn              "cd $SVN_STATIC_DB"
-alias gosetup            "cd $trimdir/trim/wix/Setup.exe"
-alias gostatic 		 "cd $STATIC_REPO"
-alias gowix              "cd $trimdir/trim/wix"
-alias gowixbin           "cd $WIX_DIR/bin"
-alias gopatch            "cd $trimdir/trim/wix/PatchGenerator"
-alias gowin              "cd $WIN_HOME"
-alias gowork             "cd $WINHOME/Work"
-alias goworkh            "cd $WINHOME/Work/HPIT"
-alias goserverdata       "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
-alias godownloads        "cd $WIN_HOME/Downloads"
-alias goroam             "cd $WIN_HOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
-alias godropbox		 "cd $WIN_HOME/DropBox"
+alias gotmp              "pushd /c/tmp"
+alias godox              "pushd $trimdir/xtra/Doxygen/runDoxygen"
+alias gosmoke            "pushd $trimdir/Automation/Smoketest"
+alias goperl             "pushd $STATIC_PERL"
+alias gop                "pushd $PERL_BIN"
+alias goalm              "pushd $ALM_DB"
+alias gosvn              "pushd $SVN_STATIC_DB"
+alias gosetup            "pushd $trimdir/trim/wix/Setup.exe"
+alias gostatic 		 "pushd $STATIC_REPO"
+alias gowix              "pushd $trimdir/trim/wix"
+alias gowixbin           "pushd $WIX_DIR/bin"
+alias gopatch            "pushd $trimdir/trim/wix/PatchGenerator"
+alias gowin              "pushd $WIN_HOME"
+alias gowork             "pushd $WINHOME/Work"
+alias goworkh            "pushd $WINHOME/Work/HPIT"
+alias goserverdata       "pushd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
+alias godownloads        "pushd $WIN_HOME/Downloads"
+alias goroam             "pushd $WIN_HOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
+alias godropbox		 "pushd $WIN_HOME/DropBox"
 alias godrop		 godropbox
-alias godropp            "cd $WIN_HOME/DropBox/Software/Scripts/Perl"
+alias godropp            "pushd $WIN_HOME/DropBox/Software/Scripts/Perl"
 
 alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace    "tracert"
@@ -330,10 +331,11 @@ alias route    "route.exe"
 alias addtrim  "route add 15.0.0.0 MASK 255.0.0.0 \!^ METRIC 26"
 alias netstat  "NETSTAT.EXE"
 
-alias x11  "cd /c/cygwin/usr/X11R6/bin"
+alias x11  "pushd /c/cygwin/usr/X11R6/bin"
 #alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
+alias rmlogs "rm $trimdir/$defArch/$defBuild/ServerLocalData/Log/*.log"
  
 alias evlog_clean "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
 
@@ -430,7 +432,7 @@ alias dwiz "/c/Program\ Files/doxygen/bin/doxywizard"
 alias aperl "/c/Perl/bin/perl"
 alias wperl aperl
 alias vmperl "/c/Program\ Files\ \(x86\)/VMware/VMware\ vSphere\ CLI/Perl/bin/perl"
-alias govsphere "cd /c/Program\ Files\ \(x86\)/VMware/VMware\ vSphere\ CLI/Perl/"
+alias govsphere "pushd /c/Program\ Files\ \(x86\)/VMware/VMware\ vSphere\ CLI/Perl/"
 
 # Path conversion using cygpath
 alias towin  'cygpath -t windows "\!^"'
@@ -926,10 +928,10 @@ alias nukeandgen "nuke;gensln"
 
 set svexe = "/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
 alias sn "$svexe"
-alias signSDK "cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
+alias signSDK "pushd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
 
 # Run populate database
-alias popdb "cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
+alias popdb "pushd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
 alias restorepopdb "popdb --load"
 alias reloadpopdb restorepopdb
 alias popdboracle popdb --db oracle64
@@ -1189,7 +1191,7 @@ alias rdesktop		rdp
 ####################################################################
 ### GIT commands
 
-alias gogit          "cd ~/aliases"
+alias gogit          "pushd ~/aliases"
 alias gitpush        "git push origin master"
 alias gitnewrepo     "mkdir \!^; cd \!^; git init; touch README; git add README; git commit -m 'first commit'; git remote add origin git@github.com:plibauer/\!^.git; git push origin master"
 alias gitcommit      "git commit -a"
@@ -1256,10 +1258,10 @@ alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\Current
 ### PYTHON COMMANDS
 # Run a local http server from the current directory;
 # Python 2.x
-alias httplocal	"cd ~; python -m SimpleHTTPServer"
+alias httplocal	"pushd ~; python -m SimpleHTTPServer"
 alias http	httplocal
 # Python 3.x
-alias http3	"cd ~; python -m http.server"
+alias http3	"pushd ~; python -m http.server"
 alias pythonmodules "pip freeze"
 alias pymods pythonmodules
 
@@ -1290,11 +1292,11 @@ alias esdemo            "$ELASTIC_HOME/bin/elasticsearch.bat"
 alias esstop		"$ELASTIC_HOME/bin/elasticsearch-service.bat stop"
 alias esremove	        "$ELASTIC_HOME/bin/elasticsearch-service.bat remove"
 alias esconfig		"cat $ELASTIC_HOME/config/elasticsearch.yml"
-alias goes              "cd $ELASTIC_HOME"
-alias gopy              "cd $ELASTIC_HOME/../PythonClient"
+alias goes              "pushd $ELASTIC_HOME"
+alias gopy              "pushd $ELASTIC_HOME/../PythonClient"
 alias kibana            "$KIBANA_HOME/bin/kibana.bat &"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
-alias gokibana          "cd $KIBANA_HOME"
+alias gokibana          "pushd $KIBANA_HOME"
 alias esget		'curl -XGET "http://localhost:9200/\!^"'
 alias esgetpretty	'curl -XGET "http://localhost:9200/\!^?pretty=true"'
 alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
@@ -1334,17 +1336,17 @@ alias eshelp            'echo                                                   
 ##############################################################################
 ###########################         IDOL          ############################
 
-alias goidol            "cd $IDOL_DIR"
+alias goidol            "pushd $IDOL_DIR"
 
-alias goidols           "cd $IDOL_DIR/TRIM\ IDOL\ Service"
+alias goidols           "pushd $IDOL_DIR/TRIM\ IDOL\ Service"
 alias idolscfg          "more $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
 alias editidolscfg      "vi $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
 
-alias goidolc1          "cd $IDOL_DIR/TRIM\ Content\ Service\ 1"
+alias goidolc1          "pushd $IDOL_DIR/TRIM\ Content\ Service\ 1"
 alias idolc1cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
 alias editidolc1cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
 
-alias goidolc2          "cd $IDOL_DIR/TRIM\ Content\ Service\ 2"
+alias goidolc2          "pushd $IDOL_DIR/TRIM\ Content\ Service\ 2"
 alias idolc2cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
 alias editidolc2cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
 
