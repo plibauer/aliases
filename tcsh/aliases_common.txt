@@ -15,22 +15,6 @@ set path = ( "/c/program files/TortoiseSVN/bin" /c/Strawberry/perl/bin /bin /usr
 # This has now been configured in /etc/fstab, so no need to do it here
 #mount --change-cygdrive-prefix /
 
-######################################################################################
-#  EXAMPLE ALIASES USING ADVANCED METHODS
-#
-#  1. Reference an environment variable, pass to inline perl script which reads an
-#     argument from the command line ($DBID in this case)
-
-alias example_1 'perl -e  ' "'" '                    \\
-     $p = "\"".$ENV{LOCALAPPDATA};                   \\
-     $p =~ s|\\|/|g;                                 \\
-     $p .= "Hewlett-Packard/HP TRIM/$ARGV[0]/Log\""; \\
-     print "$p\n"                                    \\
-'"'  $DBID  " 
-
-#
-#
-######################################################################################
 
 set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
 set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
@@ -94,6 +78,25 @@ set defArchCSharp = "AnyCPU"
 if ($defCompiler == "VS2008") then
     set defArchCSharp = $defArch
 endif
+
+
+######################################################################################
+#  EXAMPLE ALIASES USING ADVANCED METHODS
+#
+#  1. Reference an environment variable, pass to inline perl script which reads an
+#     argument from the command line ($DBID in this case)
+
+alias example_1 'perl -e  ' "'" '                    \\
+     $p = "\"".$ENV{LOCALAPPDATA};                   \\
+     $p =~ s|\\|/|g;                                 \\
+     $p .= "Hewlett-Packard/HP TRIM/$ARGV[0]/Log\""; \\
+     print "$p\n"                                    \\
+'"'  $DBID  " 
+
+#
+#
+######################################################################################
+
 
 set defproj = ALL_BUILD
 
