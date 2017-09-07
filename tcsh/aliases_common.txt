@@ -15,6 +15,23 @@ set path = ( "/c/program files/TortoiseSVN/bin" /c/Strawberry/perl/bin /bin /usr
 # This has now been configured in /etc/fstab, so no need to do it here
 #mount --change-cygdrive-prefix /
 
+######################################################################################
+#  EXAMPLE ALIASES USING ADVANCED METHODS
+#
+#  1. Reference an environment variable, pass to inline perl script which reads an
+#     argument from the command line ($DBID in this case)
+
+alias example_1 'perl -e  ' "'" '                    \\
+     $p = "\"".$ENV{LOCALAPPDATA};                   \\
+     $p =~ s|\\|/|g;                                 \\
+     $p .= "Hewlett-Packard/HP TRIM/$ARGV[0]/Log\""; \\
+     print "$p\n"                                    \\
+'"'  $DBID  " 
+
+#
+#
+######################################################################################
+
 set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
 set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 
@@ -324,6 +341,7 @@ alias goroam             "pushd $WIN_HOME/AppData/Roaming/Hewlett-Packard/HP\ TR
 alias godropbox		 "pushd $WIN_HOME/DropBox"
 alias godrop		 godropbox
 alias godropp            "pushd $WIN_HOME/DropBox/Software/Scripts/Perl"
+alias golocallog	 "pushd $WIN_HOME/AppData/Local/Hewlett-Packard/HP\ TRIM/$DBID/Log"
 
 alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace    "tracert"
@@ -336,6 +354,8 @@ alias x11  "pushd /c/cygwin/usr/X11R6/bin"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
 alias rmlogs "rm $trimdir/$defArch/$defBuild/ServerLocalData/Log/*.log"
+alias rmlogslocal "golocallog; rm -f *.log; back"
+
  
 alias evlog_clean "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
 
