@@ -1,4 +1,4 @@
-#setenv DISPLAY :0.0
+setenv DISPLAY :0.0
 
 set path = ( $CYG_WIN_HOME/Work/Perl/bin  $path:q )
 set TED = /e/TED_Videos
@@ -72,3 +72,10 @@ alias vj              ' echo -n "<$RDWIKI_DIR> \!*" | /bin/perl -ne  '"'"'      
      print "cat $path/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                           \\
  ' "' "' | /bin/sh | vim -R - '
 
+
+####################################################################################
+#  Coursera - Octave aliases
+
+# Setup a DISPLAY env variable and X environment
+alias xwin   "startxwin &"
+alias octave "octave --force-gui"
