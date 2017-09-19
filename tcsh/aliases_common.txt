@@ -955,7 +955,7 @@ alias sn "$svexe"
 alias signSDK "pushd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
 
 # Run populate database
-alias popdb "pushd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe; popd"
+alias popdb "pushd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe \!^; popd"
 alias restorepopdb "popdb --load"
 alias reloadpopdb restorepopdb
 alias popdboracle popdb --db oracle64
