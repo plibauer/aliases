@@ -123,14 +123,14 @@ alias dbsession "set dbSession = \!^; source $alias_file; settitle"
 alias dbserver  "set dbServer = \!^; source $alias_file; settitle"
 alias src       "source $alias_file"
 set dbDefault     = Test_"$revision"_SqlServer
-alias src73     "source $alias_dir/73environment; dbsession Test_73_SqlServer; "
-alias src80     "source $alias_dir/80environment; dbsession Test_80_SqlServer; "
-alias src81     "source $alias_dir/81environment; dbsession Test_81_SqlServer; "
-alias src82     "source $alias_dir/82environment; dbsession Test_82_SqlServer; "
-alias src83     "source $alias_dir/83environment; dbsession Test_83_SqlServer; "
-alias src90     "source $alias_dir/90environment; dbsession Test_90_SqlServer; "
-alias src91     "source $alias_dir/91environment; dbsession Test_91_SqlServer; "
-alias src92     "source $alias_dir/92environment; dbsession Test_92_SqlServer; "
+alias src73     "source $alias_dir/../73environment; dbsession Test_73_SqlServer; "
+alias src80     "source $alias_dir/../80environment; dbsession Test_80_SqlServer; "
+alias src81     "source $alias_dir/../81environment; dbsession Test_81_SqlServer; "
+alias src82     "source $alias_dir/../82environment; dbsession Test_82_SqlServer; "
+alias src83     "source $alias_dir/../83environment; dbsession Test_83_SqlServer; "
+alias src90     "source $alias_dir/../90environment; dbsession Test_90_SqlServer; "
+alias src91     "source $alias_dir/../91environment; dbsession Test_91_SqlServer; "
+alias src92     "source $alias_dir/../92environment; dbsession Test_92_SqlServer; "
 alias whichenv  "echo 'TRIMDIR   = $trimdir';          \\
                  echo 'ARCH      = $defArch';          \\
                  echo 'BUILD     = $defBuild';         \\
