@@ -352,6 +352,8 @@ alias trace    "tracert"
 alias route    "route.exe"
 alias addtrim  "route add 15.0.0.0 MASK 255.0.0.0 \!^ METRIC 26"
 alias netstat  "NETSTAT.EXE"
+alias usingports "netstat -abn"
+alias usingwgs   'netstat -abn | grep -A 1 ":1137"'
 
 alias x11  "pushd /c/cygwin/usr/X11R6/bin"
 #alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
