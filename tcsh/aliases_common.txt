@@ -954,18 +954,20 @@ alias nukeandgen "nuke;gensln"
 
 set svexe = "/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
 alias sn "$svexe"
-alias signSDK "pushd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
+alias signSDK 		"pushd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
 
 # Run populate database
-alias popdb "pushd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe \!^; popd"
-alias restorepopdb "popdb --load"
-alias reloadpopdb restorepopdb
-alias popdboracle popdb --db oracle64
+alias populatedb 	"$trimdir/$defArch/$defBuild/PopulateDatabase.exe"
+alias popx  		"pushd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe \!^; popd"
+alias popdb 		"popx x"
+alias restorepopdb 	"popx --load"
+alias reloadpopdb 	restorepopdb
+alias popdboracle 	"popx --db oracle64"
 
-alias getp    'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
-alias getpath "perl $PERL_BIN/getPath.pl"
-alias sysinfo "systeminfo | perl -ne  'print unless /^\s+\[\d+\]/'"
-alias uptime  "systeminfo | pgrep -i 'boot time'"
+alias getp    		'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
+alias getpath 		"perl $PERL_BIN/getPath.pl"
+alias sysinfo 		"systeminfo | perl -ne  'print unless /^\s+\[\d+\]/'"
+alias uptime  		"systeminfo | pgrep -i 'boot time'"
 
 
 # Compile a script to an executable using Strawberry Perl's version of pp
