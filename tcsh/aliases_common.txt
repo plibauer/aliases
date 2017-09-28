@@ -50,7 +50,7 @@ endif
 set cygtrimdir    = "/$REPOS_ROOT/$revision"$defPatch
 set idolDb        = TRIM_"$DBID"
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
-set currentEnv    = $alias_dir/"$revision"environment
+set currentEnv    = $alias_dir/../"$revision"environment
 
 
 alias get_title 'xprop -id ${WINDOWID}  | perl -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
@@ -131,14 +131,15 @@ alias src83     "source $alias_dir/../83environment; dbsession Test_83_SqlServer
 alias src90     "source $alias_dir/../90environment; dbsession Test_90_SqlServer; "
 alias src91     "source $alias_dir/../91environment; dbsession Test_91_SqlServer; "
 alias src92     "source $alias_dir/../92environment; dbsession Test_92_SqlServer; "
-alias whichenv  "echo 'TRIMDIR   = $trimdir';          \\
-                 echo 'ARCH      = $defArch';          \\
-                 echo 'BUILD     = $defBuild';         \\
-                 echo 'DBID      = $DBID';             \\
-                 echo 'DBSession = $dbSession';        \\
-                 echo 'DBServer  = $dbServer';         \\
-                 echo 'IDOLDB    = $idolDb';           \\
+alias whichenv  "echo 'TRIMDIR   = $trimdir';             \\
+                 echo 'ARCH      = $defArch';             \\
+                 echo 'BUILD     = $defBuild';            \\
+                 echo 'DBID      = $DBID';                \\
+                 echo 'DBSession = $dbSession';           \\
+                 echo 'DBServer  = $dbServer';            \\
+                 echo 'IDOLDB    = $idolDb';              \\
                  echo 'SVNLOGDB  = $SVN_STATIC_DB';       \\
+                 echo 'ELASTIC   = $DEF_ELASTIC_INDX';    \\
 "
 alias showenv  whichenv
 alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
@@ -1331,7 +1332,18 @@ alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=tr
 alias esgetaliases	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
 alias esgetindexes	python "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
 alias getindexes        esgetindexes
+
 alias docid             'curl -XGET "http://localhost:9200/$DEF_ELASTIC_INDX/_search?q=_id:\!^&pretty=true"'
+alias curlcontents      'curl -s -XPOST "http://localhost:9200/$DEF_ELASTIC_INDX/_search?q=uri:\!^&pretty=true"' 
+alias contents          'curlcontents \!^ | perl -ne '"'"' \\
+  if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){                  \\
+    @l=split /\\n/, $1;                                    \\
+    for(@l){                                               \\
+      s/\\"/"/g;                                           \\
+      print "$_\n";                                        \\
+    }                                                      \\
+  }  '"'"
+
 alias esgetall          esgetindexes
 alias esstats           esgetpretty _stats
 alias getsettings       esgetpretty "\!^/_settings"
