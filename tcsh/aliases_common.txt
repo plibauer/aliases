@@ -1467,10 +1467,14 @@ alias ramdisk         "$trimdir/trim/scripts/createRamDisk.cmd"
 alias ramdiskrelease  "$trimdir/trim/scripts/createRamDisk.release.cmd"
 alias ramdiskr        ramdiskrelease
 
+alias killtrim		"taskkill /F /IM TRIM.exe"
+alias killwgs 		"taskkill /F /IM TRIMWorkgroup.exe"
+alias killboth		"killtrim;killwgs"
 alias bldlog     	"tail -f $buildLog.build"
 alias bldlogcs   	"tail -f $buildLogCSharp.build"
 alias bldlogwix  	"tail -f $buildLogWix"
 alias bldall 		"date; bldsln; bldcsharp; bldwix; date"
+alias kbldall		"killboth; bldall"
 alias bldboth		"release; bldsln; debug; bldsln"
 alias clnall 		"clnsln; clncsharp; clnwix"
 alias clnallboth	"release; clnall; debug; clnall"
@@ -1569,6 +1573,7 @@ alias buildsolution '  echo $logSeparator; date;                                
       }                                                                                                                    \\
  '"'"
 alias bldsln "buildsolution; date"
+alias kbldsln "killboth; bldsln"
 
 alias clnsln '    echo $logSeparator; date;                                                                                \\
     echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.clean"                                           \\
@@ -1644,6 +1649,7 @@ alias buildcsharp 'echo $logSeparator; date;                                    
     }                                                                                                                      \\
  '"'"
 alias bldcsharp 'buildcsharp; noaddins'
+alias kbldcsharp "killboth; bldcsharp"
 
 alias clncsharp 'echo $logSeparator;                                                                                       \\
     echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.clean"                                     \\
@@ -1859,6 +1865,8 @@ alias bldproject 'echo $logSeparator; date;                                     
     }                                                                                                                      \\
  '"'"
 alias bldproj bldproject
+alias kbldproject  "killboth; bldproject"
+alias kbldproj	"killboth; bldproject"
 
 ##############################################################################
 #######################         LOG VIEWING         ##########################
