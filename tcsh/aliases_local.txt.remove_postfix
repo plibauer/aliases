@@ -1,5 +1,21 @@
 #  Put local aliases specific to this machine here
 
+# set USE_CORPORATE = 1
+# if ("$USE_CORPORATE" == "1") then
+# 
+#   # Use IP addresses or aliases
+#   set SVN_SERVER = svn://15.146.220.70:1137  or  svn://labsvn:1137
+#   set PROXY_SERVER = web-proxy.au.hpecorp.net:8080
+# 
+# else
+# 
+#   # When coming via the tunnel session
+#   set SVN_SERVER = svn://localhost:1000
+#   set PROXY_SERVER = 127.0.0.1:8080
+# 
+# endif
+
+
 #set REPOS_ROOT       = e
 #set LOCAL_SQLSVR     = LIBXXX
 #set LOCAL_SVN_LAB    = svn://localhost
@@ -7,13 +23,13 @@
 
 #set SVN_LAB_PATH    = E:/svn_lab
 #set SVN_LAB_FILE    = file:///$SVN_LAB_PATH
-#set SVN_LAB_URI     = svn://labsvn:1137/TRIM
 #set SVN_LAB_DB      = C:/svnLogDatabase_lab
+#set SVN_LAB_URI     = $SVN_SERVER/TRIM
 
 #set SVN_STATIC_PATH = E:/svn_mirror
 #set SVN_STATIC_FILE = file:///$SVN_STATIC_PATH
 #set SVN_STATIC_DB   = C:/svnLogDatabase
-#set SVN_STATIC_URI  = svn://labsvn:1137/Static
+#set SVN_STATIC_URI  = $SVN_SERVER/Static
 #
 #  Work and home will probably have different User directories
 #set WIN_HOME        = C:/Users/plibauer

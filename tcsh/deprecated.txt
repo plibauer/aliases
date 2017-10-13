@@ -1,0 +1,35 @@
+# =======================================================================================
+# aliases_home.txt
+setenv DISPLAY :0.0
+
+set TED = /e/TED_Videos
+set TEDAPP = $PERL_BIN/TED/TED_Talks.pl
+
+alias goiview           "cd /f/ABC_Iview;"
+alias iview             "cd /f/ABC_Iview; ./PerlIView.pl"
+alias iviewsh           "cd /f/ABC_Iview; ./PerlIView.pl --show"
+alias iviewr            "cd /f/ABC_Iview; ./PerlIView.pl --refresh"
+
+alias goted             "cd $TED"
+alias ted               "perl $TEDAPP --find \!^"
+alias tedview           "perl $TEDAPP --view "
+alias tedfind           ted
+alias tedlist           "perl $TEDAPP --list"
+alias teddate           tedlist --sort date
+alias tedtalk           tedlist --sort talk
+alias tedtime           tedlist --sort time
+alias tedauthor         tedlist --sort name
+alias tedhelp           "perl $TEDAPP --help"
+alias tedupdate         "perl $TEDAPP --update"
+
+alias httpd             'cd /c/LightTPD; ./LightTPD.exe -f conf/lighttpd.conf'
+alias stophttpd         "taskkill /f /IM lighttpd.exe; taskkill /f /IM php-cgi.exe"
+
+# =======================================================================================
+# aliases_common.txt
+
+# =======================================================================================
+# aliases_work.txt
+
+# =======================================================================================
+# =======================================================================================
