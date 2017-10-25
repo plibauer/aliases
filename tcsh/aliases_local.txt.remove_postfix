@@ -40,6 +40,7 @@
 #set GIT_URL         = "$GIT_HOST"":"
 #set IDOL_DIR        = "/E/IDOL\ Development\ Deployment"
 #set PERL_BIN        = C:/cygwin/home/plibauer/perl/bin
+#set PYTHON_HOME     = C:/cygwin/home/plibauer/python
 #set DEVENV_ROOT     = "C:/Program Files (x86)"
 #set ALM_DB          = C:/ALMDatabase
 #set ALM_SYNC_URL    = http://10.46.177.35:8080
