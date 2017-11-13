@@ -1,5 +1,10 @@
 set path = ( $CYG_WIN_HOME/Work/Perl/bin  $path:q )
 
+# PYTHON
+alias python3 "E:/Miniconda3/python.exe"
+alias conda3  "E:/Miniconda3/Scripts/conda.exe"
+alias activate3 "E:/Miniconda3/Scripts/activate"
+
 
 # Configure the TaskManager .bat files used for syncing SVN depending 
 # on whether we are using VPN or Bitvise

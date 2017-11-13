@@ -299,6 +299,7 @@ set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
 alias goa		 pushd ~/aliases/tcsh
 alias gocfg              "pushd $trimcfgdir"
+alias godoc		 "pushd $trimdir/doc/doc/DocPub"
 alias goexe              "pushd $trimdir/$defArch/$defBuild"
 alias gobin              goexe
 alias gocs               "pushd $trimdir/$defArchCSharp/$defBuild"
@@ -1288,12 +1289,15 @@ alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\Current
 ### PYTHON COMMANDS
 # Run a local http server from the current directory;
 # Python 2.x
-alias httplocal	"pushd ~; python -m SimpleHTTPServer"
-alias http	httplocal
+alias httplocal		"pushd ~; python -m SimpleHTTPServer"
+alias http		httplocal
+
 # Python 3.x
-alias http3	"pushd ~; python -m http.server"
-alias pythonmodules "pip freeze"
-alias pymods pythonmodules
+alias http3		"pushd ~; python -m http.server"
+alias pythonmodules 	pip freeze
+alias pymods 		pythonmodules
+alias pyconsole  	jupyter qtconsole
+alias pycon		pyconsole
 
 #-------------------------------------------------------------------
 
