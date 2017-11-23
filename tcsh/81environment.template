@@ -4,6 +4,7 @@ set alias_dir     = ~/aliases/tcsh
 source $alias_dir/aliases_local.txt
 
 set revision      = 81
+set folder	  = $revision
 set defArch       = x64
 set defCompiler   = VS2013
 set defBuild      = Debug

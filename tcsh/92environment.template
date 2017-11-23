@@ -6,6 +6,7 @@ source $alias_dir/aliases_local.txt
 set REPOS_ROOT    = C
 
 set revision      = 92
+set folder	  = $revision
 set defArch       = x64
 set defCompiler   = VS2015
 set defBuild      = Debug

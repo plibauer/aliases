@@ -19,7 +19,7 @@ set path = ( "/c/program files/TortoiseSVN/bin" /c/Strawberry/perl/bin /bin /usr
 set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
 set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 
-set trimdir       = $REPOS_ROOT":/$revision"$defPatch
+set trimdir       = $REPOS_ROOT":/$folder"$defPatch
 set dbDefault     = Test_"$revision"_SqlServer
 set dbDefServer   = $LOCAL_SQLSVR
 
@@ -47,10 +47,10 @@ if ("$LOCAL_SQLSVR" == "$dbServer") then
   set DBID = `dbid`
 endif
 
-set cygtrimdir    = "/$REPOS_ROOT/$revision"$defPatch
+set cygtrimdir    = "/$REPOS_ROOT/$folder"$defPatch
 set idolDb        = TRIM_"$DBID"
 set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
-set currentEnv    = $alias_dir/../"$revision"environment
+set currentEnv    = $alias_dir/../"$folder"environment
 
 
 alias get_title 'xprop -id ${WINDOWID}  | perl -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
@@ -701,7 +701,7 @@ alias makedocotrunk 'mkdir -p $SVNBASE/doc/doc; cd -p $SVNBASE/doc/doc; svn co $
 #
 # -------------------- PATCHING aliases --------------------------
 #
-set SVNBASE = $REPOS_ROOT':'/$revision
+set SVNBASE = $REPOS_ROOT':'/$folder
 alias infowc    'svn info "\!^" --show-item wc-root --no-newline'
 alias inforev   'svn info "\!^" --show-item revision --no-newline'
 alias infotrunk	'infowc "$SVNBASE"; echo -n "\t\t => @revision "; inforev "$SVNBASE"'
@@ -784,14 +784,14 @@ alias patchinfo ' infotrunk; echo -n ", Build "; bvers "";   \\
 #
 # Create Shortcuts to the solution files and Release/MSI directories
 #
-alias mkscutrel 'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/x64/Release";    mkshortcut -n  "\!^ Release"  "/$REPOS_ROOT/$revision"_"\!^/x64/Release"'
-alias mkscutany 'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/AnyCPU/Release"; mkshortcut -n  "\!^ AnyCPU"   "/$REPOS_ROOT/$revision"_"\!^/AnyCPU/Release"'
-alias mkscuten  'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us";  mkshortcut -n  "\!^ en-us"    "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us"'
-alias mkscutwix 'mkshortcut -n  "\!^ WIX.sln"        "/$REPOS_ROOT/$revision"_"\!^/trim/WIX.sln"'
-alias mkscutcs  'mkshortcut -n  "\!^ TrimCSharp.sln" "/$REPOS_ROOT/$revision"_"\!^/trim/TrimCSharp.sln"'
-alias mkscutcpp 'mkshortcut -n  "\!^ TRIM.sln"       "/$REPOS_ROOT/$revision"_"\!^/trim/sln/TRIM/x64/TRIM.sln"'
-alias mkscutset 'mkshortcut -n  "\!^ setup.exe"      "/$REPOS_ROOT/$revision"_"\!^/trim/wix/Setup.exe"'
-alias mkscutlbrk 'mkshortcut -n  "\!^ Root_____________________________________" "/$REPOS_ROOT/$revision"_"\!^"'
+alias mkscutrel 'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/x64/Release";    mkshortcut -n  "\!^ Release"  "/$REPOS_ROOT/$folder"_"\!^/x64/Release"'
+alias mkscutany 'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/AnyCPU/Release"; mkshortcut -n  "\!^ AnyCPU"   "/$REPOS_ROOT/$folder"_"\!^/AnyCPU/Release"'
+alias mkscuten  'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/msi/x64/en-us";  mkshortcut -n  "\!^ en-us"    "/$REPOS_ROOT/$folder"_"\!^/msi/x64/en-us"'
+alias mkscutwix 'mkshortcut -n  "\!^ WIX.sln"        "/$REPOS_ROOT/$folder"_"\!^/trim/WIX.sln"'
+alias mkscutcs  'mkshortcut -n  "\!^ TrimCSharp.sln" "/$REPOS_ROOT/$folder"_"\!^/trim/TrimCSharp.sln"'
+alias mkscutcpp 'mkshortcut -n  "\!^ TRIM.sln"       "/$REPOS_ROOT/$folder"_"\!^/trim/sln/TRIM/x64/TRIM.sln"'
+alias mkscutset 'mkshortcut -n  "\!^ setup.exe"      "/$REPOS_ROOT/$folder"_"\!^/trim/wix/Setup.exe"'
+alias mkscutlbrk 'mkshortcut -n  "\!^ Root_____________________________________" "/$REPOS_ROOT/$folder"_"\!^"'
 
 alias scutsrtm  "mkscutrel RTM; mkscutany RTM; mkscuten RTM; mkscutwix RTM; mkscutcs RTM; mkscutcpp RTM; mkscutset RTM; mkscutlbrk RTM"
 alias scutshf1  "mkscutrel HF1; mkscutany HF1; mkscuten HF1; mkscutwix HF1; mkscutcs HF1; mkscutcpp HF1; mkscutset HF1; mkscutlbrk HF1"
@@ -804,14 +804,14 @@ alias makeshortcuts scutsall
 #
 # Create Shortcuts to the solution files and Release/MSI directories based on TYPE
 #
-alias mkscutrelt 'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/x64/Release";    mkshortcut -n  "Release_\!^"  "/$REPOS_ROOT/$revision"_"\!^/x64/Release"'
-alias mkscutanyt 'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/AnyCPU/Release"; mkshortcut -n  "AnyCPU_\!^"   "/$REPOS_ROOT/$revision"_"\!^/AnyCPU/Release"'
-alias mkscutent  'mkdir -p "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us";  mkshortcut -n  "en-us_\!^"    "/$REPOS_ROOT/$revision"_"\!^/msi/x64/en-us"'
-alias mkscutwixt 'mkshortcut -n  "WIX_\!^.sln"        "/$REPOS_ROOT/$revision"_"\!^/trim/WIX.sln"'
-alias mkscutcst  'mkshortcut -n  "TrimCSharp_\!^.sln" "/$REPOS_ROOT/$revision"_"\!^/trim/TrimCSharp.sln"'
-alias mkscutcppt 'mkshortcut -n  "TRIM_\!^.sln"       "/$REPOS_ROOT/$revision"_"\!^/trim/sln/TRIM/x64/TRIM.sln"'
-alias mkscutsett 'mkshortcut -n  "setup.exe_\!^"      "/$REPOS_ROOT/$revision"_"\!^/trim/wix/Setup.exe"'
-alias mkscutlbrkt 'mkshortcut -n  "Root_\!^ _____________________________________" "/$REPOS_ROOT/$revision"_"\!^"'
+alias mkscutrelt 'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/x64/Release";    mkshortcut -n  "Release_\!^"  "/$REPOS_ROOT/$folder"_"\!^/x64/Release"'
+alias mkscutanyt 'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/AnyCPU/Release"; mkshortcut -n  "AnyCPU_\!^"   "/$REPOS_ROOT/$folder"_"\!^/AnyCPU/Release"'
+alias mkscutent  'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/msi/x64/en-us";  mkshortcut -n  "en-us_\!^"    "/$REPOS_ROOT/$folder"_"\!^/msi/x64/en-us"'
+alias mkscutwixt 'mkshortcut -n  "WIX_\!^.sln"        "/$REPOS_ROOT/$folder"_"\!^/trim/WIX.sln"'
+alias mkscutcst  'mkshortcut -n  "TrimCSharp_\!^.sln" "/$REPOS_ROOT/$folder"_"\!^/trim/TrimCSharp.sln"'
+alias mkscutcppt 'mkshortcut -n  "TRIM_\!^.sln"       "/$REPOS_ROOT/$folder"_"\!^/trim/sln/TRIM/x64/TRIM.sln"'
+alias mkscutsett 'mkshortcut -n  "setup.exe_\!^"      "/$REPOS_ROOT/$folder"_"\!^/trim/wix/Setup.exe"'
+alias mkscutlbrkt 'mkshortcut -n  "Root_\!^ _____________________________________" "/$REPOS_ROOT/$folder"_"\!^"'
 
 alias scutsrtmt  "mkscutrelt RTM; mkscutanyt RTM; mkscutent RTM; mkscutwixt RTM; mkscutcst RTM; mkscutcppt RTM; mkscutsett RTM; mkscutlbrkt RTM "
 alias scutshf1t  "mkscutrelt HF1; mkscutanyt HF1; mkscutent HF1; mkscutwixt HF1; mkscutcst HF1; mkscutcppt HF1; mkscutsett HF1; mkscutlbrkt HF1 "
@@ -1454,17 +1454,17 @@ else if ($defCompiler == "VS2008") then
 endif
 set devenvexe = "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe"
 
-alias shortcuttrim 'echo "Creating shortcut to $defArch TRIM.sln" && mkshortcut -n "$revision""_$defArch""_TRIM.sln" "/$REPOS_ROOT/$revision/trim/sln/TRIM/$defArch/TRIM.sln"'
-alias shortcutcs   'echo "Creating shortcut to TRIMCSharp.sln"    && mkshortcut -n "$revision""_TrimCSharp.sln"      "/$REPOS_ROOT/$revision/trim/TrimCSharp.sln"'
-alias shortcutwix  'echo "Creating shortcut to WIX.sln"           && mkshortcut -n "$revision""_WIX.sln"             "/$REPOS_ROOT/$revision/trim/WIX.sln"'
-alias shortcutmsi  'echo "Creating shortcut to $defArch MSIs"     && mkshortcut -n "$revision""_$defArch""_MSIs"     "/$REPOS_ROOT/$revision/msi/$defArch/en-us"'
+alias shortcuttrim 'echo "Creating shortcut to $defArch TRIM.sln" && mkshortcut -n "$folder""_$defArch""_TRIM.sln" "/$REPOS_ROOT/$folder/trim/sln/TRIM/$defArch/TRIM.sln"'
+alias shortcutcs   'echo "Creating shortcut to TRIMCSharp.sln"    && mkshortcut -n "$folder""_TrimCSharp.sln"      "/$REPOS_ROOT/$folder/trim/TrimCSharp.sln"'
+alias shortcutwix  'echo "Creating shortcut to WIX.sln"           && mkshortcut -n "$folder""_WIX.sln"             "/$REPOS_ROOT/$folder/trim/WIX.sln"'
+alias shortcutmsi  'echo "Creating shortcut to $defArch MSIs"     && mkshortcut -n "$folder""_$defArch""_MSIs"     "/$REPOS_ROOT/$folder/msi/$defArch/en-us"'
 alias makeshortcutscurrent "shortcuttrim;shortcutcs;shortcutwix;shortcutmsi"
 
 alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/bin/dumpbin.exe"
 alias touchcopy  "touch $trimdir/trim/src/CopyFiles/CopyFiles.cpp"
-set buildLog       = "${REPOS_ROOT}:/TEMP/TRIM-$revision$defPatch-$defArch-$defBuild.log"
-set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$revision$defPatch-$defArch-$defBuild.log"
-set buildLogWix    = "${REPOS_ROOT}:/TEMP/WIX-$revision$defPatch-$defArch-$defBuild.log"
+set buildLog       = "${REPOS_ROOT}:/TEMP/TRIM-$folder$defPatch-$defArch-$defBuild.log"
+set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$folder$defPatch-$defArch-$defBuild.log"
+set buildLogWix    = "${REPOS_ROOT}:/TEMP/WIX-$folder$defPatch-$defArch-$defBuild.log"
 set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
 
 alias ramdisk         "$trimdir/trim/scripts/createRamDisk.cmd"
