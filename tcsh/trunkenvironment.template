@@ -3,8 +3,6 @@ set alias_dir     = ~/aliases/tcsh
 
 source $alias_dir/aliases_local.txt
 
-set REPOS_ROOT    = E
-
 set revision      = 93
 set folder        = trunk
 set defArch       = x64
