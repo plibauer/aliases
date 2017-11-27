@@ -19,9 +19,10 @@ set path = ( "/c/program files/TortoiseSVN/bin" /c/Strawberry/perl/bin /bin /usr
 set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
 set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 
-set trimdir       = $REPOS_ROOT":/$folder"$defPatch
-set dbDefault     = Test_"$revision"_SqlServer
-set dbDefServer   = $LOCAL_SQLSVR
+set trimdir        = $REPOS_ROOT":/$folder"$defPatch
+set dbDefault      = Test_"$revision"_SqlServer
+set dbDefServer    = $LOCAL_SQLSVR
+set elasticDefault = hpecm_"$DBID" 
 
 if (! $?dbSession) then       
   set dbSession   = $dbDefault
@@ -89,7 +90,7 @@ endif
 alias example_1 'perl -e  ' "'" '                    \\
      $p = "\"".$ENV{LOCALAPPDATA};                   \\
      $p =~ s|\\|/|g;                                 \\
-     $p .= "Hewlett-Packard/HP TRIM/$ARGV[0]/Log\""; \\
+     $p .= "/Hewlett-Packard/HP TRIM/$ARGV[0]/Log\""; \\
      print "$p\n"                                    \\
 '"'  $DBID  " 
 
@@ -122,7 +123,6 @@ alias dbcurrent echo $dbSession
 alias dbsession "set dbSession = \!^; source $alias_file; settitle"
 alias dbserver  "set dbServer = \!^; source $alias_file; settitle"
 alias src       "source $alias_file"
-set dbDefault     = Test_"$revision"_SqlServer
 alias src73     "source $alias_dir/../73environment; dbsession Test_73_SqlServer; "
 alias src80     "source $alias_dir/../80environment; dbsession Test_80_SqlServer; "
 alias src81     "source $alias_dir/../81environment; dbsession Test_81_SqlServer; "
@@ -131,15 +131,18 @@ alias src83     "source $alias_dir/../83environment; dbsession Test_83_SqlServer
 alias src90     "source $alias_dir/../90environment; dbsession Test_90_SqlServer; "
 alias src91     "source $alias_dir/../91environment; dbsession Test_91_SqlServer; "
 alias src92     "source $alias_dir/../92environment; dbsession Test_92_SqlServer; "
+alias srctrunk  "source $alias_dir/../trunkenvironment; dbsession $dbDefault; "
 alias whichenv  "echo 'TRIMDIR   = $trimdir';             \\
                  echo 'ARCH      = $defArch';             \\
                  echo 'BUILD     = $defBuild';            \\
+                 echo 'FOLDER    = $folder';              \\
+                 echo 'REVISION  = $revision';            \\
                  echo 'DBID      = $DBID';                \\
                  echo 'DBSession = $dbSession';           \\
                  echo 'DBServer  = $dbServer';            \\
                  echo 'IDOLDB    = $idolDb';              \\
                  echo 'SVNLOGDB  = $SVN_STATIC_DB';       \\
-                 echo 'ELASTIC   = $DEF_ELASTIC_INDX';    \\
+                 echo 'ELASTIC   = $elasticDefault';      \\
 "
 alias showenv  whichenv
 alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
@@ -1337,8 +1340,8 @@ alias esgetaliases	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
 alias esgetindexes	python "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
 alias getindexes        esgetindexes
 
-alias docid             'curl -XGET "http://localhost:9200/$DEF_ELASTIC_INDX/_search?q=_id:\!^&pretty=true"'
-alias curlcontents      'curl -s -XPOST "http://localhost:9200/$DEF_ELASTIC_INDX/_search?q=uri:\!^&pretty=true"' 
+alias docid             'curl -XGET "http://localhost:9200/$elasticDefault/_search?q=_id:\!^&pretty=true"'
+alias curlcontents      'curl -s -XPOST "http://localhost:9200/$elasticDefault/_search?q=uri:\!^&pretty=true"' 
 alias contents          'curlcontents \!^ | perl -ne '"'"' \\
   if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){                  \\
     @l=split /\\n/, $1;                                    \\
