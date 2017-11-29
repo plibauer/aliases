@@ -22,7 +22,6 @@ set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 set trimdir        = $REPOS_ROOT":/$folder"$defPatch
 set dbDefault      = Test_"$revision"_SqlServer
 set dbDefServer    = $LOCAL_SQLSVR
-set elasticDefault = hpecm_"$DBID" 
 
 if (! $?dbSession) then       
   set dbSession   = $dbDefault
@@ -48,10 +47,11 @@ if ("$LOCAL_SQLSVR" == "$dbServer") then
   set DBID = `dbid`
 endif
 
-set cygtrimdir    = "/$REPOS_ROOT/$folder"$defPatch
-set idolDb        = TRIM_"$DBID"
-set trimcfgdir    = "$trimdir/trim/SharedTrimServerData/ServerData"
-set currentEnv    = $alias_dir/../"$folder"environment
+set cygtrimdir     = "/$REPOS_ROOT/$folder"$defPatch
+set idolDb         = TRIM_"$DBID"
+set elasticDefault = hpecm_"$DBID" 
+set trimcfgdir     = "$trimdir/trim/SharedTrimServerData/ServerData"
+set currentEnv     = $alias_dir/../"$folder"environment
 
 
 alias get_title 'xprop -id ${WINDOWID}  | perl -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
