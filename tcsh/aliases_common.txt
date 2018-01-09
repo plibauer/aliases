@@ -147,6 +147,7 @@ alias whichenv  "echo 'TRIMDIR   = $trimdir';             \\
 alias showenv  whichenv
 alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
+alias hosts	"cat C:/Windows/System32/drivers/etc/hosts"
 
 set autocorrect=1
 set autolist=ambiguous
