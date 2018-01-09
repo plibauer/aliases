@@ -148,6 +148,8 @@ alias showenv  whichenv
 alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 alias hosts	"cat C:/Windows/System32/drivers/etc/hosts"
+alias vhosts	"vi C:/Windows/System32/drivers/etc/hosts"
+alias vihosts   vhosts
 
 set autocorrect=1
 set autolist=ambiguous
