@@ -1,7 +1,7 @@
 set path = ( $CYG_WIN_HOME/Work/Perl/bin  $path:q )
 
 # PYTHON
-alias python3 "E:/Miniconda3/python.exe"
+alias pyconda3 "E:/Miniconda3/python.exe"
 alias conda3  "E:/Miniconda3/Scripts/conda.exe"
 alias activate3 "E:/Miniconda3/Scripts/activate"
 
@@ -22,10 +22,10 @@ alias rdpwork	 	"mstsc $RDP_DIR\\Libz620.rdp        &"
 alias work	 	rdpwork
 alias termserver 	"mstsc $RDP_DIR\\TerminalServer.rdp &"
 alias build83 	 	"mstsc $RDP_DIR\\Build83.rdp        &"
-# alias build90  	"mstsc $RDP_DIR\\Build90.rdp         &"
+alias build90  	        "mstsc $RDP_DIR\\Build90.rdp         &"
 alias build91 	 	"mstsc $RDP_DIR\\Build91.rdp        &"
 alias build92 	 	"mstsc $RDP_DIR\\Build92.rdp        &"
-# alias build93 	 "mstsc $RDP_DIR\\Build93.rdp        &"
+alias build93 	        "mstsc $RDP_DIR\\Build93.rdp        &"
 alias labsvn		"mstsc $RDP_DIR\\labsvn.rdp         &"
 alias labsign		"mstsc $RDP_DIR\\labsign.rdp         &"
 alias fileshare		"mstsc $RDP_DIR\\Fileshare.rdp      &"

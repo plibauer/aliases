@@ -8,8 +8,7 @@ set autologout
 set alias_file = $alias_dir/aliases_common.txt
 set alias_local = $alias_dir/aliases_local.txt
 
-#set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /c/python27 /c/rakudo/bin /bin /usr/bin /sbin /usr/sbin $path:q )
-set path = ( "/c/program files/TortoiseSVN/bin" /c/Strawberry/perl/bin /bin /usr/bin /sbin /usr/sbin $path:q )
+set path = ( "/c/program files/TortoiseSVN/bin" /c/Python36 /c/Strawberry/perl/bin /bin /usr/bin /sbin /usr/sbin $path:q )
 
 # Always set the drive prefix to just /, not "/cygdrive"
 # This has now been configured in /etc/fstab, so no need to do it here
@@ -1337,8 +1336,8 @@ alias goes              "pushd $ELASTIC_HOME"
 alias kibana            "$KIBANA_HOME/bin/kibana.bat &"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "pushd $KIBANA_HOME"
-alias esget		'curl -XGET "http://localhost:9200/\!^"'
-alias esgetpretty	'curl -XGET "http://localhost:9200/\!^?pretty=true"'
+alias esget		'curl -XGET "http://localhost:9200/\!^?pretty=true"'
+alias esgetraw		'curl -XGET "http://localhost:9200/\!^"'
 alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
 alias esgetaliases	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
 alias esgetindexes	python "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
@@ -1356,17 +1355,17 @@ alias contents          'curlcontents \!^ | perl -ne '"'"' \\
   }  '"'"
 
 alias esgetall          esgetindexes
-alias esstats           esgetpretty _stats
-alias getsettings       esgetpretty "\!^/_settings"
-alias getmappings       esgetpretty "\!^/_mappings"
-alias esindexinfo       esgetpretty \!^
-alias indexinfo         esgetpretty \!^
+alias esstats           esget _stats
+alias getsettings       esget "\!^/_settings"
+alias getmappings       esget "\!^/_mappings"
+alias esindexinfo       esget \!^
+alias indexinfo         esget \!^
 alias esput		'curl -XPUT "http://localhost:9200/\!^"'
 alias esdelete   	'curl -XDELETE "http://localhost:9200/\!^"'
-alias essearchall       esgetpretty _search
-alias essearchindex     esget "\!^/_search?pretty=true"
+alias essearchall       esget _search
+alias essearchindex     esget "\!^/_search"
 alias searchindex       essearchindex
-alias esindexinfo       esget "\!^/_settings,_mapping?pretty=true"
+alias esindexinfo       esget "\!^/_settings,_mapping"
 
 
 alias eshelp            'echo                                                           \\
