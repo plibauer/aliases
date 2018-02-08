@@ -150,6 +150,9 @@ alias hosts		"cat C:/Windows/System32/drivers/etc/hosts"
 alias vhosts		"vi C:/Windows/System32/drivers/etc/hosts"
 alias vihosts   	vhosts
 alias lansettings	"rundll32.exe shell32.dll,Control_RunDLL inetcpl.cpl,,4 &"
+alias netbiosname	nbtstat -A \!^
+alias windowsname   	netbiosname
+alias winhost		netbiosname
 
 set autocorrect=1
 set autolist=ambiguous
