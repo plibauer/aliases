@@ -1835,6 +1835,63 @@ alias clnwix 'echo $logSeparator;                                               
     }                                                                                                                      \\
  '"'"
 
+alias checkFor3rdParty 'echo $trimdir/trim/sln/ThirdPartySource/$defArch/ThirdPartySource.sln \\
+ | perl -ne '  "'  "'                                                                         \\
+   chomp;                                                                                     \\
+   if (not -e $_){                                                                            \\
+      print "\n  ***  $_ NOT FOUND!  *** \n\n"                                                \\
+   }                                                                                          \\
+ '"'"
+
+alias build3rdParty '  echo $logSeparator; date;                                                                                  \\
+   echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.3rdParty"                                                \\
+ | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                                \\
+ | perl -e ' "' "'                                                                                                                \\
+      @l = <>;                                                                                                                    \\
+      $line = shift @l;                                                                                                           \\
+      chomp $line;                                                                                                                \\
+      $line =~ s/\\\s+$//;                                                                                                        \\
+      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {                                                                       \\
+        $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                              \\
+        $line =~ s/.exe(,.+)/.exe/;                                                                                               \\
+        $ver=$td; $ver =~ s/^.:.//;                                                                                               \\
+        open T,">$bl.cmd_line";                                                                                                   \\
+        print T "$line $td/trim/sln/ThirdPartySource/$da/ThirdPartySource.sln /build $db /project ALL_BUILD /out $bl\n";          \\
+        close T;                                                                                                                  \\
+      }                                                                                                                           \\
+      else {                                                                                                                      \\
+        print "echo \"Invalid input : $line?\"";                                                                                  \\
+        exit;                                                                                                                     \\
+      }                                                                                                                           \\
+      print "touch $bl\n$line $td/trim/sln/ThirdPartySource/$da/ThirdPartySource.sln /build $db /project ALL_BUILD /out $bl &\n"  \\
+ ' "' "'                                                                                                                          \\
+ | dos2unix | /bin/sh                                                                                                             \\
+ | perl -le "print q{$buildLog.3rdParty :: $trimdir}"                                                                                \\
+ | perl -e ' "' "'                                                                                                                \\
+      $| = 1;                                                                                                                     \\
+      use File::Tail;                                                                                                             \\
+      @in = <>; $i = shift @in; chomp $i;                                                                                         \\
+      if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                                \\
+      $ver =~ s/^.:.//;                                                                                                           \\
+      # print the command line to console                                                                                         \\
+      open C, "$b.cmd_line"; @cl = <C>; close C;                                                                                  \\
+      print "COMMAND LINE: @cl";                                                                                                  \\
+      print "LOG FILE    : $b\n";                                                                                                 \\
+      $file = File::Tail->new(name=>$b, interval=>1);                                                                             \\
+      while(defined($log=$file->read)) {                                                                                          \\
+        chomp $log;                                                                                                               \\
+        if($log =~ /^={10}\s+Build:/){                                                                                            \\
+           print "$log\n";                                                                                                        \\
+           exit;                                                                                                                  \\
+        }                                                                                                                         \\
+        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                                  \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                                                    \\
+          print "$log\n"                                                                                                          \\
+        }                                                                                                                         \\
+      }                                                                                                                           \\
+ '"'"
+
+
 alias bldproject 'echo $logSeparator; date;                                                                                \\
     echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.proj,PROJ=\!:1"                                  \\
  | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
