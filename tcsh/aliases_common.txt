@@ -1538,12 +1538,12 @@ alias addins   ' perl -e ' "' "'                                                
   }                                                                                                                  \\
  '"'"
 
-alias checkForSolution ' perl -e ' "' "'                                                                             \\
-  if (not -e "$trimdir/trim/sln/TRIM/$defArch/TRIM.sln") {                                                           \\
-    print "\n ***  TRIM.sln NOT FOUND  *** \n\nDo you need to run GenerateSolutions.bat?\n\n";                        \\
-    exit 1;                                                                                                          \\
-  }                                                                                                                  \\
-  exit 0;                                                                                                            \\
+alias checkForSolution 'echo $trimdir/trim/sln/TRIM/$defArch/TRIM.sln                                                \\
+ | perl -ne '  "'  "'                                                                                                \\
+   chomp;                                                                                                            \\
+   if (not -e $_){                                                                                                   \\
+      print "\n  ***  $_ NOT FOUND!  *** \n\n"                                                                       \\
+   }                                                                                                                 \\
  '"'"
 
 alias buildsolution '  echo $logSeparator; date;                                                                           \\
