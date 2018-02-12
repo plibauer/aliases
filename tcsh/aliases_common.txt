@@ -1556,9 +1556,6 @@ alias buildsolution '  echo $logSeparator; date;                                
       $line =~ s/\\\s+$//;                                                                                                 \\
       if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {                                                                \\
         $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                       \\
-        if(not -e $td/trim/sln/TRIM/$da/TRIM.sln) {                                                                        \\
-           print "NO TRIM.sln FOUND - do you need to run GenerateSolutions.bat?\n";                                        \\
-        }                                                                                                                  \\
         $line =~ s/.exe(,.+)/.exe/;                                                                                        \\
         $ver=$td; $ver =~ s/^.:.//;                                                                                        \\
         open T,">$bl.cmd_line";                                                                                            \\
