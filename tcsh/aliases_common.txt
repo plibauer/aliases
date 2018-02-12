@@ -1538,6 +1538,14 @@ alias addins   ' perl -e ' "' "'                                                
   }                                                                                                                  \\
  '"'"
 
+alias checkForSolution ' perl -e ' "' "'                                                                             \\
+  if (not -e "$trimdir/trim/sln/TRIM/$defArch/TRIM.sln") {                                                           \\
+    print "\n ***  TRIM.sln NOT FOUND  *** \n\nDo you need to run GenerateSolutions.bat?\n\n";                        \\
+    exit 1;                                                                                                          \\
+  }                                                                                                                  \\
+  exit 0;                                                                                                            \\
+ '"'"
+
 alias buildsolution '  echo $logSeparator; date;                                                                           \\
    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build"                                            \\
  | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
@@ -1548,6 +1556,9 @@ alias buildsolution '  echo $logSeparator; date;                                
       $line =~ s/\\\s+$//;                                                                                                 \\
       if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {                                                                \\
         $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                       \\
+        if(not -e $td/trim/sln/TRIM/$da/TRIM.sln) {                                                                        \\
+           print "NO TRIM.sln FOUND - do you need to run GenerateSolutions.bat?\n";                                        \\
+        }                                                                                                                  \\
         $line =~ s/.exe(,.+)/.exe/;                                                                                        \\
         $ver=$td; $ver =~ s/^.:.//;                                                                                        \\
         open T,">$bl.cmd_line";                                                                                            \\
@@ -1585,7 +1596,7 @@ alias buildsolution '  echo $logSeparator; date;                                
         }                                                                                                                  \\
       }                                                                                                                    \\
  '"'"
-alias bldsln "buildsolution; date"
+alias bldsln "checkForSolution; buildsolution; date"
 alias kbldsln "killboth; bldsln"
 
 alias clnsln '    echo $logSeparator; date;                                                                                \\
