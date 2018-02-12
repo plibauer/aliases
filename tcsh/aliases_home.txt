@@ -31,6 +31,12 @@ alias labsign		"mstsc $RDP_DIR\\labsign.rdp         &"
 alias fileshare		"mstsc $RDP_DIR\\Fileshare.rdp      &"
 
 
+#  Disable HYPER-V (Requires reboot)
+alias disablehyperv	"bcdedit /set hypervisorlaunchtype off"
+alias enablehyperv	"bcdedit /set hypervisorlaunchtype auto"
+alias hypervoff		disablehyperv
+alias hypervon		enablehyperv
+
 set RDWIKI_DIR = "D:/BACKUP-MASTER/RDWIKI-BACKUP/RDWiki"
 alias grepjd          ' ls $RDWIKI_DIR/data/pages/wiki/paul_libauer/journals/*/*                                        \\
 | /bin/perl -e '"'"'                                                                                                    \\
