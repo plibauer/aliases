@@ -277,6 +277,12 @@ alias vj              ' echo -n "\!* $WIKI_DIR" | /bin/perl -ne  '"'"'          
 
 alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
 
+#  Disable HYPER-V (Requires reboot)
+alias disablehyperv     "bcdedit /set hypervisorlaunchtype off"
+alias enablehyperv      "bcdedit /set hypervisorlaunchtype auto"
+alias hypervoff         disablehyperv
+alias hypervon          enablehyperv
+
 
 #################################################################################
 # Following assumes that /c/rakudo/bin is on the path
