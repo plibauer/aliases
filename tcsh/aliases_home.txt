@@ -5,7 +5,6 @@ alias pyconda3 "E:/Miniconda3/python.exe"
 alias conda3  "E:/Miniconda3/Scripts/conda.exe"
 alias activate3 "E:/Miniconda3/Scripts/activate"
 
-
 # Configure the TaskManager .bat files used for syncing SVN depending 
 # on whether we are using VPN or Bitvise
 
@@ -15,7 +14,18 @@ echo "$TORTOISE_SVNSYNC_EXE sync $SVN_STATIC_FILE $SVN_STATIC_URI" > $SVN_STATIC
 alias vlc 	    "/c/Program\ Files/VideoLAN/VLC/vlc.exe"
 alias router		"telnet 10.11.12.1"
 
-set RDP_DIR = "C:\\Users\\plibauer\\Work\\RemoteDesktop"
+set bitviseRdpDir = "C:\\Users\\plibauer\\Dropbox\\Network\\RemoteDesktop\\VPN"
+set pulseRdpDir = "C:\\Users\\plibauer\\Dropbox\\Network\\RemoteDesktop\\Work"
+
+if (! $?vpnConfig) then
+  set RDP_DIR = $bitviseRdpDir
+else
+  if ("$vpnConfig" == "BITVISE") then
+    set RDP_DIR = $bitviseRdpDir
+  else
+    set RDP_DIR = $pulseRdpDir
+  endif
+endif
 
 # Remote Desktop Aliases
 alias rdpwork	 	"mstsc $RDP_DIR\\Libz620.rdp        &"
@@ -29,6 +39,16 @@ alias build93 	        "mstsc $RDP_DIR\\Build93.rdp        &"
 alias labsvn		"mstsc $RDP_DIR\\labsvn.rdp         &"
 alias labsign		"mstsc $RDP_DIR\\labsign.rdp         &"
 alias fileshare		"mstsc $RDP_DIR\\Fileshare.rdp      &"
+
+
+#if ("$vpnConfig" == "BITVISE") then
+#  cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today
+#  cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.bitvise" /c/Windows/System32/drivers/etc
+#else
+#  cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today
+#  cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.pulse" /c/Windows/System32/drivers/etc
+#endif
+
 
 
 set RDWIKI_DIR = "D:/BACKUP-MASTER/RDWIKI-BACKUP/RDWiki"

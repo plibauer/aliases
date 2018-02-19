@@ -21,6 +21,7 @@ set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 set trimdir        = $REPOS_ROOT":/$folder"$defPatch
 set dbDefault      = Test_"$revision"_SqlServer
 set dbDefServer    = $LOCAL_SQLSVR
+set vpnDefault     = BITVISE
 
 if (! $?dbSession) then       
   set dbSession   = $dbDefault
@@ -37,6 +38,15 @@ else
      set dbServer   = $dbDefServer
   endif
 endif
+
+if (! $?vpnConfig) then       
+  set vpnConfig   = $vpnDefault
+else
+  if ("$vpnConfig" == "")  then
+     set vpnConfig   = $vpnDefault
+  endif
+endif
+
 
 #  Need to define this early so we can look up the dataset ID
 alias dbpl        "perl $STATIC_PERL/db/db.pl --server $dbServer --database $dbSession"
@@ -58,7 +68,7 @@ alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
 #alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${defBuild}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
 
-alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}, DBSESSION=${dbSession}, DBSERVER=${dbServer}\007"'
+alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}, DBSESSION=${dbSession}, DBSERVER=${dbServer}, VPN=${vpnConfig}\007"'
 alias settitledir 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}    `/bin/pwd`\007"'
 
 # Allow a different standard path for devenv.exe
@@ -78,6 +88,12 @@ set defArchCSharp = "AnyCPU"
 if ($defCompiler == "VS2008") then
     set defArchCSharp = $defArch
 endif
+
+
+set Today = `date -I`
+alias backupHostFile  "cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today"
+alias cpPulseConfig   'cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.pulse" /c/Windows/System32/drivers/etc/hosts'
+alias cpBitviseConfig 'cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.bitvise" /c/Windows/System32/drivers/etc/hosts'
 
 
 ######################################################################################
@@ -131,6 +147,8 @@ alias src90     "source $alias_dir/../90environment; dbsession Test_90_SqlServer
 alias src91     "source $alias_dir/../91environment; dbsession Test_91_SqlServer; "
 alias src92     "source $alias_dir/../92environment; dbsession Test_92_SqlServer; "
 alias srctrunk  "source $alias_dir/../trunkenvironment; dbsession $dbDefault; "
+alias bitvise	"set vpnConfig = BITVISE; source $alias_file; source $alias_dir/aliases_home.txt; backupHostFile; cpBitviseConfig; settitle"
+alias pulse	"set vpnConfig = PULSE; source $alias_file; source $alias_dir/aliases_home.txt; backupHostFile; cpPulseConfig; settitle"
 alias whichenv  "echo 'TRIMDIR   = $trimdir';             \\
                  echo 'ARCH      = $defArch';             \\
                  echo 'BUILD     = $defBuild';            \\
@@ -142,6 +160,7 @@ alias whichenv  "echo 'TRIMDIR   = $trimdir';             \\
                  echo 'IDOLDB    = $idolDb';              \\
                  echo 'SVNLOGDB  = $SVN_STATIC_DB';       \\
                  echo 'ELASTIC   = $elasticDefault';      \\
+                 echo 'VPN       = $vpnConfig';           \\
 "
 alias showenv  whichenv
 alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
