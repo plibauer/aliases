@@ -1017,6 +1017,10 @@ alias xmlnoc        "perl $PERL_BIN/stripXMLcomments.pl"
 alias xmlformat     $PERL_BIN/xmlformat.pl
 alias xmlf          xmlformat
 
+# JSON pretty print
+alias jsonpretty    "cat | python -m json.tool"  
+alias json	    jsonpretty
+
 alias trimconfig    perl $PERL_BIN/xmlconfig.pl --file $trimcfg
 alias shconf        trimconfig
 alias shconfig      trimconfig
