@@ -927,9 +927,8 @@ alias almschema           alm --schema
 alias cr                  alm --cr
 alias crsum               alm --summary --cr
 alias almupdate           alm_data_convert --http_server $ALM_SYNC_URL --update --verbose
-alias almupdatehome       "almupdate --proxy home"
 alias almsync             almupdate
-alias almsynchome         almupdatehome
+alias almsynchome         "perl $ALM_DB/data_convert.pl --http_server $ALM_SYNC_URL --update --verbose"
 alias almcheckdates	  alm_data_convert --http_server $ALM_SYNC_URL --sanity_check
 alias almfixdefects	  almupdate --use_remote --type defect
 alias almsanitycheckhelp  'echo                                               \\
