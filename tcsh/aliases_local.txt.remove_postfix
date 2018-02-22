@@ -5,7 +5,7 @@
 # 
 #   # Use IP addresses or aliases
 #   set SVN_SERVER = svn://15.146.220.70:1137  or  svn://labsvn:1137
-#   set PROXY_SERVER = web-proxy.au.hpecorp.net:8080
+#   set PROXY_SERVER = web-proxy.ap.softwaregrp.net:8080
 #   set ALM_SYNC_URL = http://10.22.1.10:8080
 # 
 # else
