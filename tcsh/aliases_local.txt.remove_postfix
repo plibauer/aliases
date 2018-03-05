@@ -1,62 +1,59 @@
 #  Put local aliases specific to this machine here
 
-# set USE_CORPORATE = 1
-# if ("$USE_CORPORATE" == "1") then
-# 
-#   # Use IP addresses or aliases
-#   set SVN_SERVER = svn://15.146.220.70:1137  or  svn://labsvn:1137
-#   set PROXY_SERVER = web-proxy.ap.softwaregrp.net:8080
-#   set ALM_SYNC_URL = http://10.22.1.10:8080
-# 
-# else
-# 
-#   # When coming via the tunnel session
-#   set SVN_SERVER = svn://localhost:1000
-#   set PROXY_SERVER = 127.0.0.1:8080
-#   set ALM_SYNC_URL = http://127.0.0.1:10221
-# 
-# endif
-
-
-#set REPOS_ROOT       = e
-#set LOCAL_SQLSVR     = LIBXXX
-#set LOCAL_SVN_LAB    = svn://localhost
-#set LOCAL_SVN_STATIC = svn://localhost:5000
-
-#set SVN_LAB_PATH    = E:/svn_lab
-#set SVN_LAB_FILE    = file:///$SVN_LAB_PATH
-#set SVN_LAB_DB      = C:/svnLogDatabase_lab
-#set SVN_LAB_URI     = $SVN_SERVER/TRIM
-
-#set SVN_STATIC_PATH = E:/svn_mirror
-#set SVN_STATIC_FILE = file:///$SVN_STATIC_PATH
-#set SVN_STATIC_DB   = C:/svnLogDatabase
-#set SVN_STATIC_URI  = $SVN_SERVER/Static
+# Put local aliases specific to this machine here
 #
-#  Work and home will probably have different User directories
-#set WIN_HOME        = C:/Users/plibauer
-#set CYG_WIN_HOME    = /c/Users/plibauer
+set USE_CORPORATE = 0
+if ("$USE_CORPORATE" == "1") then
 
-#  Whatever has been configured in .ssh/config pointing to proxy, otherwise use normal entry below 
-#set GIT_HOST        = gitproxy
-#set GIT_URL         = "$GIT_HOST"":"
-#set IDOL_DIR        = "/E/IDOL\ Development\ Deployment"
-#set PERL_BIN        = C:/cygwin/home/plibauer/perl/bin
-#set PYTHON_HOME     = C:/cygwin/home/plibauer/python
-#set DEVENV_ROOT     = "C:/Program Files (x86)"
-#set ALM_DB          = C:/ALMDatabase
-#set ALM_SYNC_URL    = http://10.46.177.35:8080
-#set PROXY           = http://web-proxy.au.hpecorp.net:8080
-#set HTTPS_PROXY     = https://web-proxy.au.hpecorp.net:8080
-#set WIX_DIR         = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
-#set WIKI_DIR        = $WIN_HOME/Dropbox/Work/Wiki/paul_libauer
-#set JOURNAL_DIR     = $WIN_HOME/Dropbox/Personal/journals
+  # When coming via VPN
+  set SVN_SERVER = svn://15.114.89.246:1137
+  set PROXY_SERVER = web-proxy.ap.softwaregrp.net:8080
+  set ALM_SYNC_URL = http://10.22.1.10:8080
 
-#  Home and Laptop Machines need these changes
-#set GIT_HOST        = github.com
-#set GIT_URL         = git://$GIT_HOST/
+else
 
-# Elastic Search Settings
-#set ELASTIC_HOME     = E:/ElasticSearch/5.3.0
-#set KIBANA_HOME      = E:/ElasticSearch/Kibana/5.3.0
-#set DEF_ELASTIC_INDX = reuters
+  # When coming via the tunnel session
+  set SVN_SERVER = svn://localhost:11137
+  set PROXY_SERVER = 127.0.0.1:8080
+  set ALM_SYNC_URL = http://127.0.0.1:10221
+
+endif
+
+set TORTOISE_SVNSYNC_EXE = \"C:/Program\ Files/TortoiseSVN/bin/svnsync.exe\"
+
+
+set REPOS_ROOT       = E
+set LOCAL_SQLSVR     = *********
+set LOCAL_SVN_LAB    = svn://localhost
+set LOCAL_SVN_STATIC = svn://localhost:5000
+#
+set SVN_LAB_PATH     = E:/svn_lab
+set SVN_LAB_FILE     = file:///$SVN_LAB_PATH
+set SVN_LAB_DB       = E:/svnLogDatabase_lab
+set SVN_LAB_URI      = $SVN_SERVER/TRIM
+#
+set SVN_STATIC_PATH  = E:/svn_static
+set SVN_STATIC_FILE  = file:///$SVN_STATIC_PATH
+set SVN_STATIC_DB    = E:/svnLogDatabase
+set SVN_STATIC_URI   = $SVN_SERVER/Static
+#
+set CYG_WIN_HOME     = /c/Users/plibauer
+set WIN_HOME         = C:/Users/plibauer
+
+set GIT_HOST         = github.com
+set GIT_URL          = git://$GIT_HOST/
+set IDOL_DIR         = /c/IDOL
+set PERL_BIN         = C:/cygwin/home/plibauer/perl/bin
+set PYTHON_HOME     = C:/cygwin/home/plibauer/python
+set DEVENV_ROOT      = "C:/Program Files (x86)"
+set ALM_DB           = E:/ALM_Data
+set PROXY            = http://$PROXY_SERVER
+set HTTPS_PROXY      = https://$PROXY_SERVER
+set WIX_DIR          = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
+set WIKI_DIR         = $WIN_HOME/Dropbox/Work/Wiki/paul_libauer
+set JOURNAL_DIR      = $WIN_HOME/Dropbox/Personal/journals
+
+# ElasticSearch
+set ELASTIC_HOME     = E:/ElasticSearch/5.4.1
+set KIBANA_HOME      = E:/ElasticSearch/Kibana/5.3.0
+
