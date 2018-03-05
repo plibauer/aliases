@@ -8,8 +8,7 @@ set autologout
 set alias_file = $alias_dir/aliases_common.txt
 set alias_local = $alias_dir/aliases_local.txt
 
-#set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /c/python27 /c/rakudo/bin /bin /usr/bin /sbin /usr/sbin $path:q )
-set path = ( "/c/program files/TortoiseSVN/bin" /c/Strawberry/perl/bin /bin /usr/bin /sbin /usr/sbin $path:q )
+set path = ( "/c/program files/TortoiseSVN/bin" /c/Python36 /c/Strawberry/perl/bin /bin /usr/bin /sbin /usr/sbin $path:q )
 
 # Always set the drive prefix to just /, not "/cygdrive"
 # This has now been configured in /etc/fstab, so no need to do it here
@@ -22,6 +21,7 @@ set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 set trimdir        = $REPOS_ROOT":/$folder"$defPatch
 set dbDefault      = Test_"$revision"_SqlServer
 set dbDefServer    = $LOCAL_SQLSVR
+set vpnDefault     = BITVISE
 
 if (! $?dbSession) then       
   set dbSession   = $dbDefault
@@ -38,6 +38,15 @@ else
      set dbServer   = $dbDefServer
   endif
 endif
+
+if (! $?vpnConfig) then       
+  set vpnConfig   = $vpnDefault
+else
+  if ("$vpnConfig" == "")  then
+     set vpnConfig   = $vpnDefault
+  endif
+endif
+
 
 #  Need to define this early so we can look up the dataset ID
 alias dbpl        "perl $STATIC_PERL/db/db.pl --server $dbServer --database $dbSession"
@@ -66,7 +75,7 @@ alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
 #alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${defBuild}\t${DBID}" |  perl -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
 
-alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}, DBSESSION=${dbSession}, DBSERVER=${dbServer}\007"'
+alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}, DBSESSION=${dbSession}, DBSERVER=${dbServer}, VPN=${vpnConfig}\007"'
 alias settitledir 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}    `/bin/pwd`\007"'
 
 # Allow a different standard path for devenv.exe
@@ -86,6 +95,12 @@ set defArchCSharp = "AnyCPU"
 if ($defCompiler == "VS2008") then
     set defArchCSharp = $defArch
 endif
+
+
+set Today = `date -I`
+alias backupHostFile  "cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today"
+alias cpPulseConfig   'cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.pulse" /c/Windows/System32/drivers/etc/hosts'
+alias cpBitviseConfig 'cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.bitvise" /c/Windows/System32/drivers/etc/hosts'
 
 
 ######################################################################################
@@ -139,6 +154,8 @@ alias src90     "source $alias_dir/../90environment; dbsession Test_90_SqlServer
 alias src91     "source $alias_dir/../91environment; dbsession Test_91_SqlServer; "
 alias src92     "source $alias_dir/../92environment; dbsession Test_92_SqlServer; "
 alias srctrunk  "source $alias_dir/../trunkenvironment; dbsession $dbDefault; "
+alias bitvise	"set vpnConfig = BITVISE; source $alias_file; source $alias_dir/aliases_home.txt; backupHostFile; cpBitviseConfig; settitle"
+alias pulse	"set vpnConfig = PULSE; source $alias_file; source $alias_dir/aliases_home.txt; backupHostFile; cpPulseConfig; settitle"
 alias whichenv  "echo 'TRIMDIR   = $trimdir';             \\
                  echo 'ARCH      = $defArch';             \\
                  echo 'BUILD     = $defBuild';            \\
@@ -150,10 +167,18 @@ alias whichenv  "echo 'TRIMDIR   = $trimdir';             \\
                  echo 'IDOLDB    = $idolDb';              \\
                  echo 'SVNLOGDB  = $SVN_STATIC_DB';       \\
                  echo 'ELASTIC   = $elasticDefault';      \\
+                 echo 'VPN       = $vpnConfig';           \\
 "
 alias showenv  whichenv
 alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
+alias hosts		"cat C:/Windows/System32/drivers/etc/hosts"
+alias vhosts		"vi C:/Windows/System32/drivers/etc/hosts"
+alias vihosts   	vhosts
+alias lansettings	"rundll32.exe shell32.dll,Control_RunDLL inetcpl.cpl,,4 &"
+alias netbiosname	nbtstat -A \!^
+alias windowsname   	netbiosname
+alias winhost		netbiosname
 
 set autocorrect=1
 set autolist=ambiguous
@@ -277,6 +302,12 @@ alias vj              ' echo -n "\!* $WIKI_DIR" | /bin/perl -ne  '"'"'          
  ' "' "' | /bin/sh | vim -R - '
 
 alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
+
+#  Disable HYPER-V (Requires reboot)
+alias disablehyperv     "bcdedit /set hypervisorlaunchtype off"
+alias enablehyperv      "bcdedit /set hypervisorlaunchtype auto"
+alias hypervoff         disablehyperv
+alias hypervon          enablehyperv
 
 
 #################################################################################
@@ -870,7 +901,6 @@ alias alm                 "perl $ALM_DB/ALMTool.pl --proxy $PROXY"
 alias almmatch            "alm --match \!^ | pgrep summary"
 alias almmatchverbose     alm --match 
 alias almmatchv           almmatchverbose 
-alias alm_data_convert    "perl $ALM_DB/data_convert.pl --proxy $PROXY"
 alias almlibauer          alm --user active_owner:libauer submit cycle reserved team test found target development state:\!\"closed\|duplicate\"
 alias almlibactivex       alm --user active_owner:libauer owner assigned \# severity issue_type investigation applies target submit cycle reserved team test found development state:\!\"closed\|duplicate\" 
 alias almlog		  'almlibactivex -width 500 |       \\
@@ -902,10 +932,22 @@ alias almliball           alm libauer
 alias almschema           alm --schema
 alias cr                  alm --cr
 alias crsum               alm --summary --cr
+
+# For home use, we don't want the proxy if using localhost mappings
+if (! $?USE_CORPORATE) then
+  alias alm_data_convert          "perl $ALM_DB/data_convert.pl --proxy $PROXY"
+else
+  if ("$USE_CORPORATE" == "1") then
+    alias alm_data_convert	  "perl $ALM_DB/data_convert.pl --proxy $PROXY"
+  else
+    alias alm_data_convert          "perl $ALM_DB/data_convert.pl"
+  endif
+endif
+
 alias almupdate           alm_data_convert --http_server $ALM_SYNC_URL --update --verbose
-alias almupdatehome       "almupdate --proxy home"
-alias almsync             almupdate
-alias almsynchome         almupdatehome
+alias almsync    	  almupdate
+alias almsyncfrom    	  almsync --from
+alias almsynchome         "perl $ALM_DB/data_convert.pl --http_server $ALM_SYNC_URL --update --verbose"
 alias almcheckdates	  alm_data_convert --http_server $ALM_SYNC_URL --sanity_check
 alias almfixdefects	  almupdate --use_remote --type defect
 alias almsanitycheckhelp  'echo                                               \\
@@ -993,6 +1035,10 @@ alias xconf         "perl $PERL_BIN/xmlconfig.pl"
 alias xmlnoc        "perl $PERL_BIN/stripXMLcomments.pl"
 alias xmlformat     $PERL_BIN/xmlformat.pl
 alias xmlf          xmlformat
+
+# JSON pretty print
+alias jsonpretty    "cat | python -m json.tool"  
+alias json	    jsonpretty
 
 alias trimconfig    perl $PERL_BIN/xmlconfig.pl --file $trimcfg
 alias shconf        trimconfig
@@ -1340,8 +1386,8 @@ alias goes              "pushd $ELASTIC_HOME"
 alias kibana            "$KIBANA_HOME/bin/kibana.bat &"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "pushd $KIBANA_HOME"
-alias esget		'curl -XGET "http://localhost:9200/\!^"'
-alias esgetpretty	'curl -XGET "http://localhost:9200/\!^?pretty=true"'
+alias esget		'curl -XGET "http://localhost:9200/\!^?pretty=true"'
+alias esgetraw		'curl -XGET "http://localhost:9200/\!^"'
 alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
 alias esgetaliases	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
 alias esgetindexes	python "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
@@ -1359,17 +1405,17 @@ alias contents          'curlcontents \!^ | perl -ne '"'"' \\
   }  '"'"
 
 alias esgetall          esgetindexes
-alias esstats           esgetpretty _stats
-alias getsettings       esgetpretty "\!^/_settings"
-alias getmappings       esgetpretty "\!^/_mappings"
-alias esindexinfo       esgetpretty \!^
-alias indexinfo         esgetpretty \!^
+alias esstats           esget _stats
+alias getsettings       esget "\!^/_settings"
+alias getmappings       esget "\!^/_mappings"
+alias esindexinfo       esget \!^
+alias indexinfo         esget \!^
 alias esput		'curl -XPUT "http://localhost:9200/\!^"'
 alias esdelete   	'curl -XDELETE "http://localhost:9200/\!^"'
-alias essearchall       esgetpretty _search
-alias essearchindex     esget "\!^/_search?pretty=true"
+alias essearchall       esget _search
+alias essearchindex     esget "\!^/_search"
 alias searchindex       essearchindex
-alias esindexinfo       esget "\!^/_settings,_mapping?pretty=true"
+alias esindexinfo       esget "\!^/_settings,_mapping"
 
 
 alias eshelp            'echo                                                           \\
@@ -1539,6 +1585,14 @@ alias addins   ' perl -e ' "' "'                                                
   }                                                                                                                  \\
  '"'"
 
+alias checkForSolution 'echo $trimdir/trim/sln/TRIM/$defArch/TRIM.sln                                                \\
+ | perl -ne '  "'  "'                                                                                                \\
+   chomp;                                                                                                            \\
+   if (not -e $_){                                                                                                   \\
+      print "\n  ***  $_ NOT FOUND!  *** \n\n"                                                                       \\
+   }                                                                                                                 \\
+ '"'"
+
 alias buildsolution '  echo $logSeparator; date;                                                                           \\
    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build"                                            \\
  | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
@@ -1586,7 +1640,7 @@ alias buildsolution '  echo $logSeparator; date;                                
         }                                                                                                                  \\
       }                                                                                                                    \\
  '"'"
-alias bldsln "buildsolution; date"
+alias bldsln "checkForSolution; buildsolution; date"
 alias kbldsln "killboth; bldsln"
 
 alias clnsln '    echo $logSeparator; date;                                                                                \\
@@ -1827,6 +1881,63 @@ alias clnwix 'echo $logSeparator;                                               
       }                                                                                                                    \\
     }                                                                                                                      \\
  '"'"
+
+alias checkFor3rdParty 'echo $trimdir/trim/sln/ThirdPartySource/$defArch/ThirdPartySource.sln \\
+ | perl -ne '  "'  "'                                                                         \\
+   chomp;                                                                                     \\
+   if (not -e $_){                                                                            \\
+      print "\n  ***  $_ NOT FOUND!  *** \n\n"                                                \\
+   }                                                                                          \\
+ '"'"
+
+alias build3rdParty '  echo $logSeparator; date;                                                                                  \\
+   echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.3rdParty"                                                \\
+ | perl -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                                \\
+ | perl -e ' "' "'                                                                                                                \\
+      @l = <>;                                                                                                                    \\
+      $line = shift @l;                                                                                                           \\
+      chomp $line;                                                                                                                \\
+      $line =~ s/\\\s+$//;                                                                                                        \\
+      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {                                                                       \\
+        $td=$1;$da=$2;$db=$3;$bl=$4;                                                                                              \\
+        $line =~ s/.exe(,.+)/.exe/;                                                                                               \\
+        $ver=$td; $ver =~ s/^.:.//;                                                                                               \\
+        open T,">$bl.cmd_line";                                                                                                   \\
+        print T "$line $td/trim/sln/ThirdPartySource/$da/ThirdPartySource.sln /build $db /project ALL_BUILD /out $bl\n";          \\
+        close T;                                                                                                                  \\
+      }                                                                                                                           \\
+      else {                                                                                                                      \\
+        print "echo \"Invalid input : $line?\"";                                                                                  \\
+        exit;                                                                                                                     \\
+      }                                                                                                                           \\
+      print "touch $bl\n$line $td/trim/sln/ThirdPartySource/$da/ThirdPartySource.sln /build $db /project ALL_BUILD /out $bl &\n"  \\
+ ' "' "'                                                                                                                          \\
+ | dos2unix | /bin/sh                                                                                                             \\
+ | perl -le "print q{$buildLog.3rdParty :: $trimdir}"                                                                                \\
+ | perl -e ' "' "'                                                                                                                \\
+      $| = 1;                                                                                                                     \\
+      use File::Tail;                                                                                                             \\
+      @in = <>; $i = shift @in; chomp $i;                                                                                         \\
+      if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                                                \\
+      $ver =~ s/^.:.//;                                                                                                           \\
+      # print the command line to console                                                                                         \\
+      open C, "$b.cmd_line"; @cl = <C>; close C;                                                                                  \\
+      print "COMMAND LINE: @cl";                                                                                                  \\
+      print "LOG FILE    : $b\n";                                                                                                 \\
+      $file = File::Tail->new(name=>$b, interval=>1);                                                                             \\
+      while(defined($log=$file->read)) {                                                                                          \\
+        chomp $log;                                                                                                               \\
+        if($log =~ /^={10}\s+Build:/){                                                                                            \\
+           print "$log\n";                                                                                                        \\
+           exit;                                                                                                                  \\
+        }                                                                                                                         \\
+        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                                                  \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                                                    \\
+          print "$log\n"                                                                                                          \\
+        }                                                                                                                         \\
+      }                                                                                                                           \\
+ '"'"
+
 
 alias bldproject 'echo $logSeparator; date;                                                                                \\
     echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.proj,PROJ=\!:1"                                  \\
