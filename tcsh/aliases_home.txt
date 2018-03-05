@@ -9,8 +9,8 @@ alias activate3 "E:/Miniconda3/Scripts/activate"
 # Configure the TaskManager .bat files used for syncing SVN depending 
 # on whether we are using VPN or Bitvise
 
-echo "$TORTOISE_SVNSYNC_EXE sync $SVN_LAB_FILE $SVN_LAB_URI" > $SVN_LAB_PATH\\Sync.bat
-echo "$TORTOISE_SVNSYNC_EXE sync $SVN_STATIC_FILE $SVN_STATIC_URI" > $SVN_STATIC_PATH\\Sync.bat
+#echo "$TORTOISE_SVNSYNC_EXE sync $SVN_LAB_FILE $SVN_LAB_URI" > $SVN_LAB_PATH\\Sync.bat
+#echo "$TORTOISE_SVNSYNC_EXE sync $SVN_STATIC_FILE $SVN_STATIC_URI" > $SVN_STATIC_PATH\\Sync.bat
 
 alias vlc 	    "/c/Program\ Files/VideoLAN/VLC/vlc.exe"
 alias router		"telnet 10.11.12.1"

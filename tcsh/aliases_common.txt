@@ -44,7 +44,14 @@ alias dbpl        "perl $STATIC_PERL/db/db.pl --server $dbServer --database $dbS
 alias dbid        "dbpl --get_dbid"
 
 if ("$LOCAL_SQLSVR" == "$dbServer") then
-  set DBID = `dbid`
+
+  # Make sure the StaticRepo is available 
+  if (! -d $STATIC_PERL) then
+    echo "WARNING: $STATIC_PERL not found!"
+  else
+    set DBID = `dbid`
+
+  endif
 endif
 
 set cygtrimdir     = "/$REPOS_ROOT/$folder"$defPatch
