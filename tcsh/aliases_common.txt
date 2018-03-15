@@ -1384,7 +1384,7 @@ alias esstop		"$ELASTIC_HOME/bin/elasticsearch-service.bat stop"
 alias esremove	        "$ELASTIC_HOME/bin/elasticsearch-service.bat remove"
 alias esconfig		"cat $ELASTIC_HOME/config/elasticsearch.yml"
 alias goes              "pushd $ELASTIC_HOME"
-alias kibana            "$KIBANA_HOME/bin/kibana.bat &"
+alias kibana            "$KIBANA_HOME/bin/kibana.bat"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "pushd $KIBANA_HOME"
 alias esget		'curl -XGET "http://localhost:9200/\!^?pretty=true"'
