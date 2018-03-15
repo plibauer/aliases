@@ -1347,6 +1347,7 @@ alias pythonmodules 	pip freeze
 alias pymods 		pythonmodules
 alias pyconsole  	jupyter qtconsole
 alias pycon		pyconsole
+alias pycmd		python -c
 
 #-------------------------------------------------------------------
 
