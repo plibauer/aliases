@@ -101,6 +101,8 @@ set Today = `date -I`
 alias backupHostFile  "cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today"
 alias cpPulseConfig   'cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.pulse" /c/Windows/System32/drivers/etc/hosts'
 alias cpBitviseConfig 'cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.bitvise" /c/Windows/System32/drivers/etc/hosts'
+alias pulsehosts	'cat "$WINHOME/Dropbox/Work/Network Configuration/hosts.pulse"'
+alias vpnhosts	        'cat "$WINHOME/Dropbox/Work/Network Configuration/hosts.bitvise"'
 
 
 ######################################################################################
