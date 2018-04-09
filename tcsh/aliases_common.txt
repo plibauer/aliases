@@ -1393,8 +1393,9 @@ alias esget		'curl -XGET "http://localhost:9200/\!^?pretty=true"'
 alias esgetraw		'curl -XGET "http://localhost:9200/\!^"'
 alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
 alias esgetaliases	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
-alias esgetindexes	python "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
+alias esgetindexes	python "$ELASTIC_HOME/../../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
 alias getindexes        esgetindexes
+alias curlindexes	'curl -XGET "http://localhost:9200/_cat/indices" | grep -v "open \."'
 
 alias docid             'curl -XGET "http://localhost:9200/$elasticDefault/_search?q=_id:\!^&pretty=true"'
 alias curlcontents      'curl -s -XPOST "http://localhost:9200/$elasticDefault/_search?q=uri:\!^&pretty=true"' 
