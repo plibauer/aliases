@@ -1020,6 +1020,7 @@ alias popdb 		"popx x"
 alias restorepopdb 	"popx --load"
 alias reloadpopdb 	restorepopdb
 alias popdboracle 	"popx --db oracle64"
+alias popdbhelp		populatedb -h
 
 alias getp    		'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
 alias getpath 		"perl $PERL_BIN/getPath.pl"
