@@ -1522,6 +1522,9 @@ alias shortcutmsi  'echo "Creating shortcut to $defArch MSIs"     && mkshortcut 
 alias makeshortcutscurrent "shortcuttrim;shortcutcs;shortcutwix;shortcutmsi"
 
 alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/bin/dumpbin.exe"
+alias isx64	"dumpbin /headers \!^ | grep -i machine"
+alias isx86	isx64
+alias bintype	isx64
 alias touchcopy  "touch $trimdir/trim/src/CopyFiles/CopyFiles.cpp"
 set buildLog       = "${REPOS_ROOT}:/TEMP/TRIM-$folder$defPatch-$defArch-$defBuild.log"
 set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$folder$defPatch-$defArch-$defBuild.log"
