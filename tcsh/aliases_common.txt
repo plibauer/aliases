@@ -427,6 +427,7 @@ alias refresh "C:/sysinternals/Bginfo.exe"
 
 alias ff            "find . -name "
 alias ifind         'find . -iname \!^\* '
+alias findwild      'find . -iname \*\!^\*'
 alias pfind2k8      "perl $PERL_BIN/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
 alias pfind         "perl $PERL_BIN/find_project_files.vs2010.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
 alias projfind      pfind
