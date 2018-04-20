@@ -1506,6 +1506,7 @@ print "\n";                                                                     
 ######################         BUILD ALIASES          ########################
 
 if ($defCompiler == "VS2017") then
+  set VSVER = 19.0
   set devenvexe = "${DEVENV_ROOT_2017}/Common7/IDE/devenv.exe"
 else
   if ($defCompiler == "VS2015") then
