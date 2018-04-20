@@ -1505,17 +1505,18 @@ print "\n";                                                                     
 ##############################################################################
 ######################         BUILD ALIASES          ########################
 
-if ($defCompiler == "VS2015") then
-  set VSVER = 14.0
-  set msbuildexe = "C:/Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe"
-else if ($defCompiler == "VS2013") then
-  set VSVER = 12.0
-  set msbuildexe = "C:/Program Files (x86)/MSBuild/12.0/Bin/MSBuild.exe"
-else if ($defCompiler == "VS2008") then
-  set VSVER = 9.0
-  set msbuildexe = "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe"
+if ($defCompiler == "VS2017") then
+  set devenvexe = "${DEVENV_ROOT_2017}/Common7/IDE/devenv.exe"
+else
+  if ($defCompiler == "VS2015") then
+    set VSVER = 14.0
+  else if ($defCompiler == "VS2013") then
+    set VSVER = 12.0
+  else if ($defCompiler == "VS2008") then
+    set VSVER = 9.0
+  endif
+  set devenvexe = "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe"
 endif
-set devenvexe = "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe"
 
 alias shortcuttrim 'echo "Creating shortcut to $defArch TRIM.sln" && mkshortcut -n "$folder""_$defArch""_TRIM.sln" "/$REPOS_ROOT/$folder/trim/sln/TRIM/$defArch/TRIM.sln"'
 alias shortcutcs   'echo "Creating shortcut to TRIMCSharp.sln"    && mkshortcut -n "$folder""_TrimCSharp.sln"      "/$REPOS_ROOT/$folder/trim/TrimCSharp.sln"'

@@ -46,6 +46,7 @@ set IDOL_DIR         = /c/IDOL
 set PERL_BIN         = C:/cygwin/home/plibauer/perl/bin
 set PYTHON_HOME     = C:/cygwin/home/plibauer/python
 set DEVENV_ROOT      = "C:/Program Files (x86)"
+set DEVENV_ROOT_2017 = "E:/Visual Studio 2017 Enterprise"
 set ALM_DB           = E:/ALM_Data
 set PROXY            = http://$PROXY_SERVER
 set HTTPS_PROXY      = https://$PROXY_SERVER
