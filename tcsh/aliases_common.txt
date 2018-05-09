@@ -1110,7 +1110,7 @@ alias dbquery        "perl $STATIC_PERL/db/db.pl --server $dbServer"
 # dbpl is defined at the start of the file
 
 alias db          dbpl
-alias dbv         "dbpl --version $revision"
+alias dbv         "dbpl --version $revision --root $folder"
 alias dbs         "dbquery --database tempdb --list"
 alias dbdetails   "dbquery --database tempdb --list --verbose"
 alias dataset	  'dbid | perl -ne  '"'"' print "DBID => $_\n"  '"'"
