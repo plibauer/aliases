@@ -39,6 +39,13 @@ alias build93 	        "mstsc $RDP_DIR\\Build93.rdp        &"
 alias labsvn		"mstsc $RDP_DIR\\labsvn.rdp         &"
 alias labsign		"mstsc $RDP_DIR\\labsign.rdp         &"
 alias fileshare		"mstsc $RDP_DIR\\Fileshare.rdp      &"
+alias dodc1		"mstsc $RDP_DIR\\DodClient01.rdp    &"
+alias dodc2		"mstsc $RDP_DIR\\DodClient02.rdp    &"
+alias dodc3		"mstsc $RDP_DIR\\DodClient03.rdp    &"
+alias dods1		"mstsc $RDP_DIR\\DodServer01.rdp    &"
+alias dods2		"mstsc $RDP_DIR\\DodServer02.rdp    &"
+alias dods3		"mstsc $RDP_DIR\\DodServer03.rdp    &"
+alias dods4		"mstsc $RDP_DIR\\DodServer04.rdp    &"
 
 
 #if ("$vpnConfig" == "BITVISE") then

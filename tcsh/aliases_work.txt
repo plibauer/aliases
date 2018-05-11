@@ -26,7 +26,7 @@ alias tailog          "tail -f /c/tmp/finalbuilder.log"
 alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
 
 
-set RDP_DIR = "$WIN_HOME\\Work\\RemoteDesktop"
+set RDP_DIR = "$WIN_HOME\\Dropbox\\Network\\RemoteDesktop\\Work"
 # Remote Desktop Aliases
 alias termserver "mstsc $RDP_DIR\\TerminalServer.rdp &"
 alias rdphome	 "mstsc $RDP_DIR\\Home.rdp           &"
@@ -42,6 +42,10 @@ alias build91	 rdpbuild91
 alias build92	 rdpbuild92
 alias build93	 rdpbuild93
 alias labsign	 "mstsc $RDP_DIR\\labsign.rdp        &"
+alias dodc1      "mstsc $RDP_DIR\\DodClient01.rdp    &"
+alias dodc2      "mstsc $RDP_DIR\\DodClient02.rdp    &"
+alias dodc3      "mstsc $RDP_DIR\\DodClient03.rdp    &"
+
 
 
 #####################################################################################################################################################################################
