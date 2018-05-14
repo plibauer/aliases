@@ -1281,6 +1281,30 @@ alias remote		rdp
 alias remotedesk	rdp
 alias rdesktop		rdp
 
+alias termserver "mstsc $RDP_DIR\\TerminalServer.rdp &"
+alias rdphome    "mstsc $RDP_DIR\\Home.rdp           &"
+alias rdpbuild83 "mstsc $RDP_DIR\\Build83.rdp        &"
+alias rdpbuild90 "mstsc $RDP_DIR\\Build90.rdp        &"
+alias rdpbuild91 "mstsc $RDP_DIR\\Build91.rdp        &"
+alias build91b   "mstsc $RDP_DIR\\Build91b.rdp       &"
+alias rdpbuild92 "mstsc $RDP_DIR\\Build92.rdp        &"
+alias rdpbuild93 "mstsc $RDP_DIR\\Build93.rdp        &"
+alias build83    rdpbuild83
+alias build90    rdpbuild90
+alias build91    rdpbuild91
+alias build92    rdpbuild92
+alias build93    rdpbuild93
+alias labsign    "mstsc $RDP_DIR\\labsign.rdp        &"
+alias dodc1      "mstsc $RDP_DIR\\DodClient01.rdp    &"
+alias dodc2      "mstsc $RDP_DIR\\DodClient02.rdp    &"
+alias dodc3      "mstsc $RDP_DIR\\DodClient03.rdp    &"
+alias dods1      "mstsc $RDP_DIR\\DodServer01.rdp    &"
+alias dods2      "mstsc $RDP_DIR\\DodServer02.rdp    &"
+alias dods3      "mstsc $RDP_DIR\\DodServer03.rdp    &"
+alias dods4      "mstsc $RDP_DIR\\DodServer04.rdp    &"
+alias doddc      "mstsc $RDP_DIR\\DodDC.rdp    &"
+
+
 ####################################################################
 ### GIT commands
 

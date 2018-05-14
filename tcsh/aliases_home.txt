@@ -27,26 +27,6 @@ else
   endif
 endif
 
-# Remote Desktop Aliases
-alias rdpwork	 	"mstsc $RDP_DIR\\Libz620.rdp        &"
-alias work	 	rdpwork
-alias termserver 	"mstsc $RDP_DIR\\TerminalServer.rdp &"
-alias build83 	 	"mstsc $RDP_DIR\\Build83.rdp        &"
-alias build90  	        "mstsc $RDP_DIR\\Build90.rdp         &"
-alias build91 	 	"mstsc $RDP_DIR\\Build91.rdp        &"
-alias build92 	 	"mstsc $RDP_DIR\\Build92.rdp        &"
-alias build93 	        "mstsc $RDP_DIR\\Build93.rdp        &"
-alias labsvn		"mstsc $RDP_DIR\\labsvn.rdp         &"
-alias labsign		"mstsc $RDP_DIR\\labsign.rdp         &"
-alias fileshare		"mstsc $RDP_DIR\\Fileshare.rdp      &"
-alias dodc1		"mstsc $RDP_DIR\\DodClient01.rdp    &"
-alias dodc2		"mstsc $RDP_DIR\\DodClient02.rdp    &"
-alias dodc3		"mstsc $RDP_DIR\\DodClient03.rdp    &"
-alias dods1		"mstsc $RDP_DIR\\DodServer01.rdp    &"
-alias dods2		"mstsc $RDP_DIR\\DodServer02.rdp    &"
-alias dods3		"mstsc $RDP_DIR\\DodServer03.rdp    &"
-alias dods4		"mstsc $RDP_DIR\\DodServer04.rdp    &"
-
 
 #if ("$vpnConfig" == "BITVISE") then
 #  cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today
