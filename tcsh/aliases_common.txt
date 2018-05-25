@@ -8,7 +8,7 @@ set autologout
 set alias_file = $alias_dir/aliases_common.txt
 set alias_local = $alias_dir/aliases_local.txt
 
-set path = ( "/c/program files/TortoiseSVN/bin" /c/Python36 /c/Strawberry/perl/bin /bin /usr/bin /sbin /usr/sbin $path:q )
+set path = ( "/c/program files/TortoiseSVN/bin" /c/Python36 /c/Strawberry/perl/bin /bin /usr/bin /sbin /usr/sbin /home/plibauer/perl/bin $path:q )
 
 # Always set the drive prefix to just /, not "/cygdrive"
 # This has now been configured in /etc/fstab, so no need to do it here
@@ -1483,10 +1483,11 @@ alias goidolc2          "pushd $IDOL_DIR/TRIM\ Content\ Service\ 2"
 alias idolc2cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
 alias editidolc2cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
 
-alias icurl             'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
-alias idolrecs          'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=999" --noproxy "*" --silent'
+alias idolcurl          'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
+alias idolrecs          'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=" "\!^" --noproxy "*" --silent'
+alias idolrecsall       'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=1000000" --noproxy "*" --silent'
 alias idolrecsdb        'curl "http://localhost:11000/action=query&text=*&databasematch=' "\!^" '&MaxResults=999" --noproxy "*" --silent'
-alias idolstatus        'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent | xmlformat.pl'
+alias idolstatus        'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent' | perl $PERL_BIN/xmlformat.pl
 alias idolquery         'curl "http://localhost:11000/action=query&text=' "\!^" '&databasematch=' "$idolDb" '" --noproxy "*" --silent | xmlformat.pl'
 alias idolq             idolquery 
 alias irecs             "idolrecs | xmlformat.pl"
