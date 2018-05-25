@@ -64,8 +64,8 @@ if ("$LOCAL_SQLSVR" == "$dbServer") then
 endif
 
 set cygtrimdir     = "/$REPOS_ROOT/$folder"$defPatch
-set idolDb         = TRIM_"$DBID"
-set elasticDefault = hpecm_"$DBID" 
+set idolDb         = "$idolDbPrefix$DBID"
+set elasticDefault = "$elasticDbPrefix$DBID" 
 set trimcfgdir     = "$trimdir/trim/SharedTrimServerData/ServerData"
 set currentEnv     = $alias_dir/../"$folder"environment
 

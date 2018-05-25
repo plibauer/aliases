@@ -9,6 +9,8 @@ set defArch       = x64
 set defCompiler   = VS2013
 set defBuild      = Debug
 set defPatch      = ""
+set idolDbPrefix     = HPECM_
+set elasticDbPrefix  = HPECM_
 
 source $alias_dir/aliases
 source $alias_dir/aliases_common.txt
