@@ -1488,7 +1488,8 @@ alias idolrecs          'curl "http://localhost:11000/action=query&text=*&databa
 alias idolrecsall       'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=1000000" --noproxy "*" --silent'
 alias idolrecsdb        'curl "http://localhost:11000/action=query&text=*&databasematch=' "\!^" '&MaxResults=999" --noproxy "*" --silent'
 alias idolstatus        'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent' | perl $PERL_BIN/xmlformat.pl
-alias idolquery         'curl "http://localhost:11000/action=query&text=' "\!^" '&databasematch=' "$idolDb" '" --noproxy "*" --silent | xmlformat.pl'
+alias idolquery         'curl "http://localhost:11000/action=query&text=' "\!^" '&MaxResults=1000&databasematch=' "$idolDb" '" --noproxy "*" --silent | xmlformat.pl'
+alias idolqueryv        'curl "http://localhost:11000/action=query&text=' "\!^" '&MaxResults=1000&XMLMeta=true&databasematch=' "$idolDb" '" --noproxy "*" --silent | xmlformat.pl'
 alias idolq             idolquery 
 alias irecs             "idolrecs | xmlformat.pl"
 alias irecsdb           "idolrecs \!^ | xmlformat.pl"
