@@ -1490,7 +1490,7 @@ alias idolrecsdb        'curl "http://localhost:11000/action=query&text=*&databa
 alias idolstatus        'curl "http://localhost:11000/action=GetStatus" --noproxy "*" --silent' | perl $PERL_BIN/xmlformat.pl
 alias idolquery         'curl "http://localhost:11000/action=query&text=' "\!^" '&MaxResults=1000&databasematch=' "$idolDb" '" --noproxy "*" --silent | xmlformat.pl'
 alias idolqueryv        'curl "http://localhost:11000/action=query&text=' "\!^" '&MaxResults=1000&XMLMeta=true&databasematch=' "$idolDb" '" --noproxy "*" --silent | perl $PERL_BIN/xmlformat.pl'
-alias idolq             idolquery 
+alias idolq             'idolquery \!^ | egrep "<autn:(reference|title|numhits)" | perl -ne  "s/<autn://; s/<\/autn:.+>//; s/>/\t:/; print"'
 alias irecs             "idolrecs | perl $PERL_BIN/xmlformat.pl"
 alias irecsdb           "idolrecs \!^ | perl $PERL_BIN/xmlformat.pl"
 alias removedb          'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
