@@ -1302,8 +1302,9 @@ alias dods1      "mstsc $RDP_DIR\\DodServer01.rdp    &"
 alias dods2      "mstsc $RDP_DIR\\DodServer02.rdp    &"
 alias dods3      "mstsc $RDP_DIR\\DodServer03.rdp    &"
 alias dods4      "mstsc $RDP_DIR\\DodServer04.rdp    &"
-alias doddc      "mstsc $RDP_DIR\\DodDC.rdp    &"
-alias work       "mstsc $RDP_DIR\\Libz620.rdp    &"
+alias doddc      "mstsc $RDP_DIR\\DodDC.rdp          &"
+alias work       "mstsc $RDP_DIR\\Libz620.rdp        &"
+alias fortify    "mstsc $RDP_DIR\\Fortify.rdp        &"
 
 
 ####################################################################
