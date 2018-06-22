@@ -17,6 +17,7 @@ set path = ( "/c/program files/TortoiseSVN/bin" /c/Python36 /c/Strawberry/perl/b
 
 set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
 set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
+set STATIC_PY   = $REPOS_ROOT":/TRIMStaticRepo/libs/Python"
 
 set trimdir        = $REPOS_ROOT":/$folder"$defPatch
 set dbDefault      = Test_"$revision"_SqlServer
@@ -1387,6 +1388,7 @@ alias pymods 		pythonmodules
 alias pyconsole  	jupyter qtconsole
 alias pycon		pyconsole
 alias pycmd		python -c
+alias keyview		python $STATIC_PY/installer/GenerateKeyview.py
 
 #-------------------------------------------------------------------
 
