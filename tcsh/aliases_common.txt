@@ -1305,6 +1305,7 @@ alias dods4      "mstsc $RDP_DIR\\DodServer04.rdp    &"
 alias doddc      "mstsc $RDP_DIR\\DodDC.rdp          &"
 alias work       "mstsc $RDP_DIR\\Libz620.rdp        &"
 alias fortify    "mstsc $RDP_DIR\\Fortify.rdp        &"
+alias almhost	 "mstsc $RDP_DIR\\Almsync.rdp        &"
 
 
 ####################################################################
