@@ -386,6 +386,8 @@ alias gowix              "pushd $trimdir/trim/wix"
 alias gowixbin           "pushd $WIX_DIR/bin"
 alias gopatch            "pushd $trimdir/trim/wix/PatchGenerator"
 alias gowin              "pushd $WIN_HOME"
+alias godesktop		 "pushd $WIN_HOME/Desktop"
+alias desktop		 godesktop
 alias gowork             "pushd $WINHOME/Work"
 alias goworkh            "pushd $WINHOME/Work/HPIT"
 alias goserverdata       "pushd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
