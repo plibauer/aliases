@@ -1048,6 +1048,7 @@ alias jsonpretty    "cat | python -m json.tool"
 alias json	    jsonpretty
 
 alias trimconfig    perl $PERL_BIN/xmlconfig.pl --file $trimcfg
+alias trimcfgxml    "perl $PERL_BIN/xmlformat.pl $trimcfg | python $PYTHON_HOME/sortXml.py"
 alias shconf        trimconfig
 alias shconfig      trimconfig
 alias showconf      trimconfig
@@ -1055,7 +1056,7 @@ alias restoreconfig "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg $trimcfgdir
 alias goconfig      gocfg
 alias xmltrim       "perl xmlformat.pl $trimcfg"
 alias getconfig     "more $trimcfg"
-alias fixtrimconfig "perl xmlformat.pl -i -b .backup $trimcfg"
+alias fixtrimconfig "perl $PERL_BIN/xmlformat.pl -i -b .backup $trimcfg"
 
 alias wixgen        perl $STATIC_PERL/WIX/AutoGenerateWixFromHeat.pl
 alias makewix       perl $STATIC_PERL/WIX/makeWixComponents.pl
