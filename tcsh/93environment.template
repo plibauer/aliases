@@ -1,0 +1,19 @@
+unalias '*'
+set alias_dir     = ~/aliases/tcsh
+
+source $alias_dir/aliases_local.txt
+
+set revision      = 93
+set folder        = trunk
+set defArch       = x64
+set defCompiler   = VS2017
+set defBuild      = Debug
+set defPatch      = ""
+set idolDbPrefix     = CM_
+set elasticDbPrefix  = CM_
+
+
+source $alias_dir/aliases
+source $alias_dir/aliases_common.txt
+
+settitle
