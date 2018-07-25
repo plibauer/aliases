@@ -156,6 +156,7 @@ alias src83     "source $alias_dir/../83environment; dbsession Test_83_SqlServer
 alias src90     "source $alias_dir/../90environment; dbsession Test_90_SqlServer; "
 alias src91     "source $alias_dir/../91environment; dbsession Test_91_SqlServer; "
 alias src92     "source $alias_dir/../92environment; dbsession Test_92_SqlServer; "
+alias src93     "source $alias_dir/../93environment; dbsession Test_93_SqlServer; "
 alias srctrunk  "source $alias_dir/../trunkenvironment; dbsession $dbDefault; "
 alias bitvise	"set vpnConfig = BITVISE; source $alias_file; source $alias_dir/aliases_home.txt; backupHostFile; cpBitviseConfig; settitle"
 alias pulse	"set vpnConfig = PULSE; source $alias_file; source $alias_dir/aliases_home.txt; backupHostFile; cpPulseConfig; settitle"
