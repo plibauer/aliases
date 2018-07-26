@@ -1259,6 +1259,7 @@ alias timeblk  "date; b -o Origin_Test_Bulk_Loader -a run; date"
 alias cleanblk "rm -rf 000000*; rm $DBID.*"
 
 alias psall     'ps -aelW'
+alias psfind	'ps -aelW | grep '
 
 # Query windows services to see what is running or stopped
 alias service_active        "sc query type= service"
@@ -1579,6 +1580,7 @@ alias ramdiskr        ramdiskrelease
 
 alias killtrim		"taskkill /F /IM TRIM.exe"
 alias killwgs 		"taskkill /F /IM TRIMWorkgroup.exe"
+alias killproc		"taskkill /F /IM"
 alias killboth		"killtrim;killwgs"
 alias bldlog     	"tail -f $buildLog.build"
 alias bldlogcs   	"tail -f $buildLogCSharp.build"
