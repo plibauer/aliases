@@ -1383,6 +1383,36 @@ alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\Current
 
 ####################################################################
 ### PYTHON COMMANDS
+
+# VIRTUAL ENVIRONMENT support
+# We will have a predefined directory under ~ for the envs
+
+# Initialise CURRENTVIRTENV to empty string
+set CURRENTVIRTENV=""
+set dollar = \$
+set dblquote = \"
+
+alias wherearewe     "cygpath -m `pwd`"
+alias defaultprompt  'set prompt="%B%n %~>"'
+alias pathvariable   '$path:q'
+alias virtualprompt  'set prompt="\($CURRENTVIRTENV\) %B%n %~>"'
+alias mktcshactivate 'pushd \!^/Scripts; set thispath = `wherearewe` ; echo                             \\
+"                                                                                                       \\
+if (${dollar}?CURRENTVIRTENV) then                                                                      \\
+   echo ${dblquote}A virtual environment is already active => ${dollar}CURRENTVIRTENV ${dblquote}       \\
+   exit                                                                                                 \\
+endif                                                                                                   \\
+set OLDVIRTPATH=(${dollar}path:q)                                                                       \\
+set path = ($thispath/\!^/Scripts ${dollar}path:q)                                                      \\
+set PYTHONHOME=                                                                                         \\
+set CURRENTVIRTENV=\!^                                                                                  \\
+virtualprompt                                                                                           \\
+" > activate.tcsh ; popd' 
+
+alias virtenv	   "virtualenv \!^; mktcshactivate \!^"
+alias activate  		
+
+
 # Run a local http server from the current directory;
 # Python 2.x
 alias httplocal		"pushd ~; python -m SimpleHTTPServer"
