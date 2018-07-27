@@ -710,6 +710,7 @@ alias svnreloclab    labrelocaterepo
 #  MASTER SVN aliases
 
 alias rev	     labrev
+alias revlocal       labproc --use_local --rev
 alias revhead        labrev head
 alias match 	     labmatch
 alias logm           labm
