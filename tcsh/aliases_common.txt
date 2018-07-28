@@ -1381,38 +1381,77 @@ alias wgetallhttp	"wget -r -l 0 -p http://\!^"
 # Show internet settings
 alias internet		'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings"'
 
-
-####################################################################
+##########################################################################################################
 ### PYTHON COMMANDS
 
 # VIRTUAL ENVIRONMENT support
 # We will have a predefined directory under ~ for the envs
 
 # Initialise CURRENTVIRTENV to empty string
-set CURRENTVIRTENV=""
+set CURRENTVIRTENV = "_1_"
+set VIRTUALPATH = ~/.virtualenvs
 set dollar = \$
 set dblquote = \"
 
-alias wherearewe     "cygpath -m `pwd`"
+alias wherearewe     "cygpath -u `pwd`"
 alias defaultprompt  'set prompt="%B%n %~>"'
-alias pathvariable   '$path:q'
 alias virtualprompt  'set prompt="\($CURRENTVIRTENV\) %B%n %~>"'
-alias mktcshactivate 'pushd \!^/Scripts; set thispath = `wherearewe` ; echo                             \\
+alias makedefault    'set LASTVIRTUALENV=\!^'
+alias vremove        'rm -rvI $VIRTUALPATH/\!^'
+
+# --------------------------------------------------------------------------------------------------------
+alias mktcshactivate 'echo                                                                              \\
 "                                                                                                       \\
-if (${dollar}?CURRENTVIRTENV) then                                                                      \\
-   echo ${dblquote}A virtual environment is already active => ${dollar}CURRENTVIRTENV ${dblquote}       \\
-   exit                                                                                                 \\
+if ( ${dollar}?CURRENTVIRTENV ) then                                                                    \\
+   if ( ${dollar}?CURRENTVIRTENV == "_1_" ) then                                                        \\
+     echo ${dblquote}A virtual environment is already active => ${dollar}CURRENTVIRTENV ${dblquote}     \\
+     exit                                                                                               \\
+   endif                                                                                                \\
 endif                                                                                                   \\
+                                                                                                        \\
 set OLDVIRTPATH=(${dollar}path:q)                                                                       \\
-set path = ($thispath/\!^/Scripts ${dollar}path:q)                                                      \\
-set PYTHONHOME=                                                                                         \\
+set path = ($VIRTUALPATH/\!^/Scripts ${dollar}path:q)                                                   \\
+                                                                                                        \\
+if ( ${dollar}?PYTHONHOME ) then                                                                        \\
+   set OLDPYTHONHOME=${dollar}PYTHONHOME                                                                \\
+   set PYTHONHOME=                                                                                      \\
+endif                                                                                                   \\
+                                                                                                        \\
 set CURRENTVIRTENV=\!^                                                                                  \\
 virtualprompt                                                                                           \\
-" > activate.tcsh ; popd' 
+" > \!^/Scripts/activate.tcsh '
+# --------------------------------------------------------------------------------------------------------
 
-alias virtenv	   "virtualenv \!^; mktcshactivate \!^"
-alias activate  		
+# --------------------------------------------------------------------------------------------------------
+alias mktcshdeactivate 'echo                                                                            \\
+"                                                                                                       \\
+if (! ${dollar}?CURRENTVIRTENV) then                                                                    \\
+   echo ${dblquote}Virtual environment variable CURRENTVIRTENV is undefined? ${dblquote}                \\
+   exit                                                                                                 \\
+endif                                                                                                   \\
+                                                                                                        \\
+if (! ${dollar}?OLDVIRTPATH) then                                                                       \\
+   echo ${dblquote}Virtual environment variable OLDVIRTPATH is undefined? ${dblquote}                   \\
+   exit                                                                                                 \\
+endif                                                                                                   \\
+                                                                                                        \\
+set path = (${dollar}OLDVIRTPATH:q)                                                                     \\
+set OLDVIRTPATH=                                                                                        \\
+                                                                                                        \\
+if (${dollar}?OLDPYTHONHOME) then                                                                       \\
+   set PYTHONHOME=${dollar}OLDPYTHONHOME                                                                \\
+   set OLDPYTHONHOME=                                                                                   \\
+endif                                                                                                   \\
+                                                                                                        \\
+set CURRENTVIRTENV=                                                                                     \\
+defaultprompt                                                                                           \\
+" > \!^/Scripts/deactivate.tcsh '
+# --------------------------------------------------------------------------------------------------------
 
+alias venv        "pushd $VIRTUALPATH; virtualenv \!^; mktcshactivate \!^; mktcshdeactivate \!^; set LASTVIRTUALENV=\!^; unset CURRENTVIRTENV; popd"
+alias activate    'source $VIRTUALPATH/$LASTVIRTUALENV/Scripts/activate.tcsh'
+alias workon	  'source $VIRTUALPATH/\!^/Scripts/activate.tcsh'
+alias deactivate  'source $VIRTUALPATH/$CURRENTVIRTENV/Scripts/deactivate.tcsh'
 
 # Run a local http server from the current directory;
 # Python 2.x
@@ -1428,7 +1467,8 @@ alias pycon		pyconsole
 alias pycmd		python -c
 alias keyview		python $STATIC_PY/installer/GenerateKeyview.py
 
-#-------------------------------------------------------------------
+##########################################################################################################
+
 
 # Edit a file with emacs and detach
 alias emacs	"emacs \!^ &"
