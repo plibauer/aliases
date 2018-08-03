@@ -1,0 +1,51 @@
+
+function getpath() { echo $PATH | tr -s ':' '\n' }
+
+
+####################################################################################################
+##   Colour themes for terminator terminal
+
+themePath=~/aliases/zsh/themes.txt
+
+function getthemes() {
+  if [ -f $themePath ] then
+    cat $themePath
+  fi
+}
+
+function newtheme() {
+  if [ -n "$1" ]
+  then
+     # Make sure the theme exists
+     isInFile=`grep -i "$1" $themePath`
+     print "Found the following in themes.txt : $isInFile "
+     
+     if [ -n "$2" ]
+     then
+         base16-builder -s "$1" -t terminator -b "$2" > .config/terminator/config
+     else
+	 base16-builder -s "$1" -t terminator -b dark > .config/terminator/config
+     fi
+  else
+     print "Specify 'theme' as 1st argument and 'dark' or 'light' as 2nd arg ('dark' is default)"
+  fi
+}
+
+
+
+# Nice themes to use
+function theme1() { newtheme Ashes }
+function theme2() { newtheme Chalk }
+function theme3() { newtheme Darktooth }
+function theme4() { newtheme Google }
+function theme5() { newtheme Monokai }
+
+# Darker themes
+function themedark()  { newtheme Default }
+
+function themedark1() { newtheme Brewer }
+function themedark2() { newtheme Bright }
+function themedark3() { newtheme Colors }
+
+######################################################################################################
+

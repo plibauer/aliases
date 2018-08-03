@@ -75,3 +75,5 @@ PS1="\[\e[32m\]\h \[\e[33m\]\w\[\e[0m\]> "
 
 # Allow CNTRL+V pasting
 stty lnext ^q stop undef start undef
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
