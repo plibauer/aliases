@@ -8,7 +8,7 @@ function getpath() { echo $PATH | tr -s ':' '\n' }
 themePath=~/aliases/zsh/themes.txt
 
 function getthemes() {
-  if [ -f $themePath ] then
+  if [ -f $themePath ]; then
     cat $themePath
   fi
 }
