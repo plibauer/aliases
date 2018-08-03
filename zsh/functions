@@ -22,9 +22,9 @@ function newtheme() {
      
      if [ -n "$2" ]
      then
-         base16-builder -s "$1" -t terminator -b "$2" > .config/terminator/config
+         base16-builder -s "$1" -t terminator -b "$2" > ~/.config/terminator/config
      else
-	 base16-builder -s "$1" -t terminator -b dark > .config/terminator/config
+	 base16-builder -s "$1" -t terminator -b dark > ~/.config/terminator/config
      fi
   else
      print "Specify 'theme' as 1st argument and 'dark' or 'light' as 2nd arg ('dark' is default)"
