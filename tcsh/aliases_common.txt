@@ -1028,6 +1028,7 @@ alias popdb 		"popx x"
 alias restorepopdb 	"popx --load"
 alias reloadpopdb 	restorepopdb
 alias popdboracle 	"popx --db oracle64"
+alias popdbidol         populatedb --dci idol
 alias popdbhelp		populatedb -h
 
 alias getp    		'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
@@ -1242,7 +1243,8 @@ alias grepui      'fromunicode \!:2 | pgrep -i \!:1'
 alias testtrim       "$trimdir/$defArch/$defBuild/testTrim.exe"
 alias trimtest       testtrim
 alias testhelp	     testtrim --help
-alias testcases      testtrim --list
+alias testlist       testtrim --list
+alias testcases      testlist
 alias bld            testtrim --test bulkLoader --type all --timeout 6000 --assert
 alias bldapi         testtrim --test bulkLoader --type api --timeout 6000 --assert
 alias bldsth         testtrim --test bulkLoader --type sth --timeout 6000 --assert
