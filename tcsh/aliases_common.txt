@@ -1066,6 +1066,16 @@ alias bkupidolcfg      "cp $trimcfg /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg
 alias bkupelasticcfg   "cp $trimcfg /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.ELASTIC"
 alias idolcfg          "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.IDOL $trimcfg"
 alias elasticcfg       "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.ELASTIC $trimcfg"
+alias whichcfg	       'cat $trimcfg | perl -e ' "'" '  \\
+while (<>) {                                     \\
+  if ($_ =~ /ElasticUrl>(.*)<\/Elastic/) {       \\
+     if ($1 =~ /^http/i) {                       \\
+         print "ELASTIC\n";                      \\
+         exit                                    \\
+     }                                           \\
+  }                                              \\
+}                                                \\
+print "IDOL\n"  ' "'"
 
 alias wixgen        perl $STATIC_PERL/WIX/AutoGenerateWixFromHeat.pl
 alias makewix       perl $STATIC_PERL/WIX/makeWixComponents.pl
