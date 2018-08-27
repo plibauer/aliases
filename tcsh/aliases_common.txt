@@ -1024,11 +1024,11 @@ alias signSDK 		"pushd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$
 # Run populate database
 alias populatedb 	"$trimdir/$defArch/$defBuild/PopulateDatabase.exe"
 alias popx  		"pushd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe \!^; popd"
-alias popdb 		"popx x"
+alias popdb 		"popx x; bkupelasticcfg"
 alias restorepopdb 	"popx --load"
 alias reloadpopdb 	restorepopdb
 alias popdboracle 	"popx --db oracle64"
-alias popdbidol         populatedb --dci idol
+alias popdbidol         "populatedb --dci idol; bkupidolcfg"
 alias popdbhelp		populatedb -h
 
 alias getp    		'echo $PATH | perl -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
@@ -1052,16 +1052,20 @@ alias xmlf          xmlformat
 alias jsonpretty    "cat | python -m json.tool"  
 alias json	    jsonpretty
 
-alias trimconfig    perl $PERL_BIN/xmlconfig.pl --file $trimcfg
-alias trimcfgxml    "perl $PERL_BIN/xmlformat.pl $trimcfg | python $PYTHON_HOME/sortXml.py"
-alias shconf        trimconfig
-alias shconfig      trimconfig
-alias showconf      trimconfig
-alias restoreconfig "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg $trimcfgdir"
-alias goconfig      gocfg
-alias xmltrim       "perl xmlformat.pl $trimcfg"
-alias getconfig     "more $trimcfg"
-alias fixtrimconfig "perl $PERL_BIN/xmlformat.pl -i -b .backup $trimcfg"
+alias trimconfig       perl $PERL_BIN/xmlconfig.pl --file $trimcfg
+alias trimcfgxml       "perl $PERL_BIN/xmlformat.pl $trimcfg | python $PYTHON_HOME/sortXml.py"
+alias shconf           trimconfig
+alias shconfig         trimconfig
+alias showconf         trimconfig
+alias restoreconfig    "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg $trimcfgdir"
+alias goconfig         gocfg
+alias xmltrim          "perl xmlformat.pl $trimcfg"
+alias getconfig        "more $trimcfg"
+alias fixtrimconfig    "perl $PERL_BIN/xmlformat.pl -i -b .backup $trimcfg"
+alias bkupidolcfg      "cp $trimcfg /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.IDOL"
+alias bkupelasticcfg   "cp $trimcfg /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.ELASTIC"
+alias idolcfg          "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.IDOL $trimcfg"
+alias elasticcfg       "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.ELASTIC $trimcfg"
 
 alias wixgen        perl $STATIC_PERL/WIX/AutoGenerateWixFromHeat.pl
 alias makewix       perl $STATIC_PERL/WIX/makeWixComponents.pl
