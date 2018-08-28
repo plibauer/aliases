@@ -937,7 +937,7 @@ for(my $i=0; $i <= $#cr; $i++) {                            \\
 alias almshort            alm owner sub cycle release invest -width 105 --user
 alias almlib		  'almlibauer | perl -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
 alias almlibw             'almlibauer -width 105 | perl -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
-alias almlibwa            'almlibactive  -width 105 | perl -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
+alias almlibwa            'almlibactivex  -width 105 | perl -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
 alias almliball           alm libauer
 alias almschema           alm --schema
 alias cr                  alm --cr
