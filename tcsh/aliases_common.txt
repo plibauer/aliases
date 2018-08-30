@@ -254,6 +254,7 @@ alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
 alias vijournal       "vi $WIKI_DIR/journal.txt; scrub $WIKI_DIR/journal.txt"
 alias vip             "vi $JOURNAL_DIR/DIARY.txt; scrub $JOURNAL_DIR/DIARY.txt"
 alias tasks	      "vi $WIN_HOME/DropBox/Work/TASKS.txt"
+alias haihai	      "vi $JOURNAL_DIR/HaiHaiTransfers.txt"
 
 alias grepjd          ' ls $WIKI_DIR/journals/*/*                                                                       \\
 | /bin/perl -e '"'"'                                                                                                    \\
