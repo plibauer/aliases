@@ -1313,11 +1313,13 @@ alias rdpbuild91 "mstsc $RDP_DIR\\Build91.rdp        &"
 alias build91b   "mstsc $RDP_DIR\\Build91b.rdp       &"
 alias rdpbuild92 "mstsc $RDP_DIR\\Build92.rdp        &"
 alias rdpbuild93 "mstsc $RDP_DIR\\Build93.rdp        &"
+alias rdpbuild94 "mstsc $RDP_DIR\\Build94.rdp        &"
 alias build83    rdpbuild83
 alias build90    rdpbuild90
 alias build91    rdpbuild91
 alias build92    rdpbuild92
 alias build93    rdpbuild93
+alias build94    rdpbuild94
 alias labsign    "mstsc $RDP_DIR\\labsign.rdp        &"
 alias dodc1      "mstsc $RDP_DIR\\DodClient01.rdp    &"
 alias dodc2      "mstsc $RDP_DIR\\DodClient02.rdp    &"
