@@ -55,6 +55,10 @@ set WIKI_DIR         = $WIN_HOME/Dropbox/Work/Wiki/paul_libauer
 set JOURNAL_DIR      = $WIN_HOME/Dropbox/Personal/journals
 
 # ElasticSearch
-set ELASTIC_HOME     = E:/ElasticSearch/6.2.2/elasticsearch
-set KIBANA_HOME      = E:/ElasticSearch/Kibana/6.2.2
+set ELK_VERSION      = 6.4.3
+set ELASTIC_HOME     = E:/ElasticSearch/$ELK_VERSION/elasticsearch
+set KIBANA_HOME      = E:/ElasticSearch/Kibana/$ELK_VERSION
+set LOGSTASH_HOME    = E:/ElasticSearch/Logstash/$ELK_VERSION
+set BEATS_HOME       = E:/ElasticSearch/Beats/$ELK_VERSION
+set DEF_ELASTIC_INDX = reuters
 
