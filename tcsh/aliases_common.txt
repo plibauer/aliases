@@ -1519,6 +1519,8 @@ alias goes              "pushd $ELASTIC_HOME"
 alias kibana            "$KIBANA_HOME/bin/kibana.bat"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "pushd $KIBANA_HOME"
+alias gologstash	"pushd $LOGSTASH_HOME"
+alias gobeats		"pushd $BEATS_HOME"
 alias esget		'curl -XGET "http://localhost:9200/\!^?pretty=true"'
 alias esgetraw		'curl -XGET "http://localhost:9200/\!^"'
 alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
