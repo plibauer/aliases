@@ -400,13 +400,14 @@ alias godrop		 godropbox
 alias godropp            "pushd $WIN_HOME/DropBox/Software/Scripts/Perl"
 alias golocallog	 "pushd $WIN_HOME/AppData/Local/Hewlett-Packard/HP\ TRIM/$DBID/Log"
 
-alias wixcopy  "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
-alias trace    "tracert"
-alias route    "route.exe"
-alias addtrim  "route add 15.0.0.0 MASK 255.0.0.0 \!^ METRIC 26"
-alias netstat  "NETSTAT.EXE"
-alias usingports "netstat -abn"
-alias usingwgs   'netstat -abn | grep -A 1 ":1137"'
+alias wixcopy     "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
+alias trace       "tracert"
+alias route       "route.exe"
+alias addtrim     "route add 15.0.0.0 MASK 255.0.0.0 \!^ METRIC 26"
+alias netstat     "NETSTAT.EXE"
+alias usingports  "netstat -abn"
+alias usingport   'netstat -ano | grep -w \!^ | grep LISTENING | awk '"'"' {print "ps -Wfp "$5}  '"'"'  | sort | uniq | /bin/sh '
+alias usingwgs    usingport 1137 
 
 alias x11  "pushd /c/cygwin/usr/X11R6/bin"
 #alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
@@ -1519,6 +1520,9 @@ alias goes              "pushd $ELASTIC_HOME"
 alias kibana            "$KIBANA_HOME/bin/kibana.bat"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "pushd $KIBANA_HOME"
+alias kibanaup		usingport 5601
+alias elasticup		usingport 9200
+alias elasticstatus     "elasticup; kibanaup"
 alias gologstash	"pushd $LOGSTASH_HOME"
 alias gobeats		"pushd $BEATS_HOME"
 alias esget		'curl -XGET "http://localhost:9200/\!^?pretty=true"'
