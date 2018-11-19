@@ -37,37 +37,46 @@ endif
 #endif
 
 
+set RDWIKI_BAK = "D:/BACKUP-MASTER/RDWIKI-BACKUP/RDWiki/data/pages/wiki"
+set WIKIWEB = "C:/LightTPD/htdocs/dokuwiki/data/pages/wiki"
 
-set RDWIKI_DIR = "D:/BACKUP-MASTER/RDWIKI-BACKUP/RDWiki"
-alias grepjd          ' ls $RDWIKI_DIR/data/pages/wiki/paul_libauer/journals/*/*                                        \\
-| /bin/perl -e '"'"'                                                                                                    \\
-%m = (jan,"01",feb,"02",mar,"03",apr,"04",may,"05",jun,"06",jul,"07",aug,"08",sep,"09","oct",10,nov,11,dec,12);         \\
-my $match=join "|", keys %m;                                                                                            \\
-    while(<>){                                                                                                          \\
-      chomp;                                                                                                            \\
-      if(/($match).*(\d\d\d\d).txt$/){                                                                                  \\
-        $mon=$m{$1};                                                                                                    \\
-        $y=$2;                                                                                                          \\
-        $ordered{"$y$mon"} = $_;                                                                                        \\
-      }                                                                                                                 \\
-    }                                                                                                                   \\
-   for(sort {$b<=>$a} keys %ordered){                                                                                   \\
-     print "$ordered{$_}\n";                                                                                            \\
-   }                                                                                                                    \\
- '"'"
-alias search          "grep -i \!^ `grepjd` | perl -ne 's|^.+/data/pages/wiki/paul_libauer/journals||; print'"
+#
+#  THESE aliases are now in the main aliases file
+#
+#alias grepjd          ' ls $RDWIKI_DIR/data/pages/wiki/paul_libauer/journals/*/*                                        \\
+#| /bin/perl -e '"'"'                                                                                                    \\
+#%m = (jan,"01",feb,"02",mar,"03",apr,"04",may,"05",jun,"06",jul,"07",aug,"08",sep,"09","oct",10,nov,11,dec,12);         \\
+#my $match=join "|", keys %m;                                                                                            \\
+#    while(<>){                                                                                                          \\
+#      chomp;                                                                                                            \\
+#      if(/($match).*(\d\d\d\d).txt$/){                                                                                  \\
+#        $mon=$m{$1};                                                                                                    \\
+#        $y=$2;                                                                                                          \\
+#        $ordered{"$y$mon"} = $_;                                                                                        \\
+#      }                                                                                                                 \\
+#    }                                                                                                                   \\
+#   for(sort {$b<=>$a} keys %ordered){                                                                                   \\
+#     print "$ordered{$_}\n";                                                                                            \\
+#   }                                                                                                                    \\
+# '"'"
+#alias search          "grep -i \!^ `grepjd` | perl -ne 's|^.+/data/pages/wiki/paul_libauer/journals||; print'"
+#
+#alias vj              ' echo -n "<$RDWIKI_DIR> \!*" | /bin/perl -ne  '"'"'                                                    \\
+#     /^<(.+)> ([A-z]+)\s*(\d+)*/ and do { ($path,$m,$y) = ($1,$2,$3) };                                                       \\
+#     foreach("january","february","march","april","may","june","july","august","september","october","november","december"){  \\
+#         if($_ =~ /^$m/i) { $month = $_; last; }                                                                              \\
+#     }                                                                                                                        \\
+#     if($y =~ /^\d{2}$/) { $y = "20".$y };                                                                                    \\
+#     if($y !~ /^\d{4}$/) { print "BAD YEAR: $y\n"; exit }                                                                     \\
+#     $file = "$path/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                             \\
+#     if(not -e $file) { print "File $file doesnt exist?\n"; exit; }                                                           \\
+#     print "cat $path/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                           \\
+# ' "' "' | /bin/sh | vim -R - '
 
-alias vj              ' echo -n "<$RDWIKI_DIR> \!*" | /bin/perl -ne  '"'"'                                                    \\
-     /^<(.+)> ([A-z]+)\s*(\d+)*/ and do { ($path,$m,$y) = ($1,$2,$3) };                                                       \\
-     foreach("january","february","march","april","may","june","july","august","september","october","november","december"){  \\
-         if($_ =~ /^$m/i) { $month = $_; last; }                                                                              \\
-     }                                                                                                                        \\
-     if($y =~ /^\d{2}$/) { $y = "20".$y };                                                                                    \\
-     if($y !~ /^\d{4}$/) { print "BAD YEAR: $y\n"; exit }                                                                     \\
-     $file = "$path/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                             \\
-     if(not -e $file) { print "File $file doesnt exist?\n"; exit; }                                                           \\
-     print "cat $path/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                           \\
- ' "' "' | /bin/sh | vim -R - '
+alias syncjournal "Robocopy.exe $WIKI_DIR/ $WIKIWEB/paul_libauer /MIR /R:0"
+alias backupwiki  "Robocopy.exe $WIKI_DIR/ $RDWIKI_BAK/paul_libauer /MIR /R:0"
+alias startwiki	  "cd C:/LightTPD; ./LightTPD.exe -D -f conf/lighttpd.conf &"
+
 
 
 ####################################################################################
