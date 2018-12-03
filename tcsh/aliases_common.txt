@@ -1612,10 +1612,6 @@ alias goidolc1          "pushd $IDOL_DIR/TRIM\ Content\ Service\ 1"
 alias idolc1cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
 alias editidolc1cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
 
-alias goidolc2          "pushd $IDOL_DIR/TRIM\ Content\ Service\ 2"
-alias idolc2cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
-alias editidolc2cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 2/TRIM\ Content\ Service\ 2.cfg"
-
 alias idolcurl          'curl "http://localhost:11000/\!^" --noproxy "*" --silent'
 alias idolrecs          'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=" "\!^" --noproxy "*" --silent | perl $PERL_BIN/xmlformat.pl'
 alias idolrecsall       'curl "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=1000000" --noproxy "*" --silent | perl $PERL_BIN/xmlformat.pl'
@@ -1628,12 +1624,9 @@ alias irecs             "idolrecs | perl $PERL_BIN/xmlformat.pl"
 alias irecsdb           "idolrecs \!^ | perl $PERL_BIN/xmlformat.pl"
 alias removedb          'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
 alias removedocs        'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
-alias idologa1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
-alias idologa2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/application.log"
-alias idologi1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
-alias idologi2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/index.log"
-alias idologq1          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
-alias idologq2          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 2/logs/query.log"
+alias idologa          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
+alias idologi          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
+alias idologq          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
 
 # Print a mix of 256 ANSI terminal colours
 alias colours ' perl -e ' "' "'                                                                  \\
