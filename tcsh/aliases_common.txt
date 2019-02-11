@@ -274,10 +274,10 @@ alias checkfile fileinfo
 
 # Set the $DATE variable to allow creation of new journal files
 set DATE = `date +%B%Y`
+set CurrentJournal = /c/tmp/journalname.txt
 
 alias gowikij         "pushd $WIKI_DIR"
 alias goproj          "pushd $WIKI_DIR/projects"
-alias grepj           "grep \!^ `cat /c/tmp/journalname.txt`"
 alias vijournal       "vi $WIKI_DIR/journal.txt; scrub $WIKI_DIR/journal.txt"
 alias vip             "vi $JOURNAL_DIR/DIARY.txt; scrub $JOURNAL_DIR/DIARY.txt"
 alias tasks	      "vi $WIN_HOME/DropBox/Work/TASKS.txt"
@@ -312,15 +312,8 @@ alias mkjourn         'echo "$DATE $WIKI_DIR"                                   
   } ' "' "'                                                                       \\
 > /c/tmp/journalname.txt; source ${currentEnv}'
 
-alias rmjourn         "rm /c/tmp/journalname.txt"
-alias newjourn        "rmjourn; mkjourn"
 alias scrub           "perl $PERL_BIN/scrub.pl --file"
-alias tailj           "tail -50 `cat /c/tmp/journalname.txt`"
-alias tjournal        "tail `cat /c/tmp/journalname.txt`"
-alias vij             "vi `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
-alias readj	      "view `cat /c/tmp/journalname.txt`"
 alias viwiki          "vi \!^; scrub  \!^"
-alias mj              "less `cat /c/tmp/journalname.txt`; scrub  `cat /c/tmp/journalname.txt`"
 alias textpad	      "TextPad.exe"
 
 alias vj              ' echo -n "\!* $WIKI_DIR" | /bin/perl -ne  '"'"'                                                        \\
@@ -334,6 +327,22 @@ alias vj              ' echo -n "\!* $WIKI_DIR" | /bin/perl -ne  '"'"'          
      if(not -e $file) { print "File $file doesnt exist?\n"; exit; }                                                           \\
      print "cat $path/journals/$y/$month$y.txt";                                                                              \\
  ' "' "' | /bin/sh | vim -R - '
+
+
+# Make sure the journal file is available before defining aliases that rely upon it
+if (! -f $CurrentJournal ) then
+  echo "WARNING: $CurrentJournal not found!"
+else
+  alias grepj           "grep \!^ `cat $CurrentJournal`"
+  alias rmjourn         "rm $CurrentJournal"
+  alias newjourn        "rmjourn; mkjourn"
+  alias tailj           "tail -50 `cat $CurrentJournal`"
+  alias tjournal        "tail `cat $CurrentJournal`"
+  alias vij             "vi `cat $CurrentJournal `; scrub  `cat $CurrentJournal `"
+  alias readj           "view `cat $CurrentJournal `"
+  alias mj              "less `cat $CurrentJournal `; scrub  `cat  $CurrentJournal`"
+endif
+
 
 alias vibulk          "goproj; vi BulkLoader.txt; scrub BulkLoader.txt"
 
