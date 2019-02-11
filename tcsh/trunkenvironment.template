@@ -4,6 +4,7 @@ set alias_dir     = ~/aliases/tcsh
 source $alias_dir/aliases_local.txt
 
 set revision      = 94
+set default_dbid  = M1
 set folder        = trunk
 set defArch       = x64
 set defCompiler   = VS2017

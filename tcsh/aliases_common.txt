@@ -58,6 +58,7 @@ if ("$LOCAL_SQLSVR" == "$dbServer") then
   # Make sure the StaticRepo is available 
   if (! -d $STATIC_PERL) then
     echo "WARNING: $STATIC_PERL not found!"
+    set DBID = $default_dbid
   else
     set DBID = `dbid`
 
@@ -1555,7 +1556,7 @@ alias esget		'curl -XGET "http://localhost:9200/\!^?pretty=true"'
 alias esgetraw		'curl -XGET "http://localhost:9200/\!^"'
 alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
 alias esgetaliases	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
-alias esgetindexes	python "$ELASTIC_HOME/../../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
+alias esgetindexes	python "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
 alias getindexes        esgetindexes
 alias curlindexes	'curl -XGET "http://localhost:9200/_cat/indices" | grep -v "open \."'
 
