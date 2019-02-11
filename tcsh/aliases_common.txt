@@ -8,7 +8,7 @@ set autologout
 set alias_file = $alias_dir/aliases_common.txt
 set alias_local = $alias_dir/aliases_local.txt
 
-set path = ( "/c/program files/TortoiseSVN/bin" /c/Python36 /c/Strawberry/perl/bin /bin /usr/bin /sbin /usr/sbin /home/plibauer/perl/bin $path:q )
+set path = ( "/c/program files/TortoiseSVN/bin" /bin /usr/bin /sbin /usr/sbin /home/plibauer/perl/bin $path:q )
 
 # Always set the drive prefix to just /, not "/cygdrive"
 # This has now been configured in /etc/fstab, so no need to do it here
