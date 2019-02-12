@@ -8,7 +8,7 @@ set autologout
 set alias_file = $alias_dir/aliases_common.txt
 set alias_local = $alias_dir/aliases_local.txt
 
-set path = ( "/c/program files/TortoiseSVN/bin" /c/strawberry/perl/bin /bin /usr/bin /sbin /usr/sbin /home/plibauer/perl/bin $path:q )
+set path = ( "/c/program files/TortoiseSVN/bin" /bin /usr/bin /sbin /usr/sbin /home/plibauer/perl/bin $path:q )
 
 # Always set the drive prefix to just /, not "/cygdrive"
 # This has now been configured in /etc/fstab, so no need to do it here
@@ -1087,11 +1087,11 @@ alias xmlformat     $PERL_HOME/xmlformat.pl
 alias xmlf          xmlformat
 
 # JSON pretty print
-alias jsonpretty    "cat | $PYTHON/python -m json.tool"  
+alias jsonpretty    "cat | $PYTHON -m json.tool"  
 alias json	    jsonpretty
 
 alias trimconfig       $PERL $PERL_HOME/xmlconfig.pl --file $trimcfg
-alias trimcfgxml       "$PERL $PERL_HOME/xmlformat.pl $trimcfg | $PYTHON/python $PYTHON_HOME/sortXml.py"
+alias trimcfgxml       "$PERL $PERL_HOME/xmlformat.pl $trimcfg | $PYTHON $PYTHON_HOME/sortXml.py"
 alias shconf           trimconfig
 alias shconfig         trimconfig
 alias showconf         trimconfig
@@ -1511,17 +1511,17 @@ alias deactivate  'source $VIRTUALPATH/$CURRENTVIRTENV/Scripts/deactivate.tcsh'
 
 # Run a local http server from the current directory;
 # Python 2.x
-alias httplocal		"pushd ~; $PYTHON/python -m SimpleHTTPServer"
+alias httplocal		"pushd ~; $PYTHON -m SimpleHTTPServer"
 alias http		httplocal
 
 # Python 3.x
-alias http3		"pushd ~; $PYTHON/python -m http.server"
+alias http3		"pushd ~; $PYTHON -m http.server"
 alias pythonmodules 	pip freeze
 alias pymods 		pythonmodules
 alias pyconsole  	jupyter qtconsole
 alias pycon		pyconsole
-alias pycmd		$PYTHON/python -c
-alias keyview		$PYTHON/python $STATIC_PY/installer/GenerateKeyview.py
+alias pycmd		$PYTHON -c
+alias keyview		$PYTHON $STATIC_PY/installer/GenerateKeyview.py
 
 ##########################################################################################################
 
@@ -1565,7 +1565,7 @@ alias esget		'curl -XGET "http://localhost:9200/\!^?pretty=true"'
 alias esgetraw		'curl -XGET "http://localhost:9200/\!^"'
 alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
 alias esgetaliases	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
-alias esgetindexes	$PYTHON/python "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
+alias esgetindexes	$PYTHON "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
 alias getindexes        esgetindexes
 alias curlindexes	'curl -XGET "http://localhost:9200/_cat/indices" | grep -v "open \."'
 
