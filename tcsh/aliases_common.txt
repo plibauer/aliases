@@ -1264,9 +1264,11 @@ alias spellb 'echo "\!^" >> ~/words.txt; wn "\!^" -g -over -grepn -grepv -grepa 
 alias svndiff svn diff -r PREV
 
 #  You need to supply an argument, so just use an empty string, '', to get the aliases to work without an argument
-alias hklm "regtool list \\machine\\\!^"
-alias hkcu "regtool list \\user\\\!^"
-alias hkcr "regtool list \\root\\\!^"
+alias hklm        "regtool list \\machine\\\!^"
+alias hkcu        "regtool list \\user\\\!^"
+alias hkcr        "regtool list \\root\\\!^"
+alias reghklm     "reg query hklm /v \!^ /s"
+alias reghkcu     "reg query hkcu /v \!^ /s"
 
 alias totext      'iconv -f UTF-16 -t UTF-8 '
 alias fromunicode 'iconv -f UTF-16 -t UTF-8 '
