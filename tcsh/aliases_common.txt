@@ -417,7 +417,8 @@ alias gopython           "pushd $PYTHON_HOME"
 alias gopy		 gopython
 alias gop                "pushd $PERL_HOME"
 alias goalm              "pushd $ALM_DB"
-alias gosvn              "pushd $SVN_STATIC_DB"
+alias gosvn              "pushd $SVN_LAB_DB"
+alias gosvnstat          "pushd $SVN_STATIC_DB"
 alias gosetup            "pushd $trimdir/trim/wix/Setup.exe"
 alias gostatic 		 "pushd $STATIC_REPO"
 alias gowix              "pushd $trimdir/trim/wix"
@@ -1233,22 +1234,25 @@ alias mklocdata   "sqlv 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC
 alias mkpersondata "sqlv 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 2,4,24  -un -num | $PERL -ne 'use 5.010; /^\s+(\d+)\s+(.+)/ and do { s/^\s+\d+\s+//; s/\t/;/g; s/\s+;/;/g; chop; chop; say } ' "
 
 # SQLITE
-set SQLITE_DB=$SVN_STATIC_DB/svn.db
-set SQLITE_ALM=$ALM_DB/database/ALM.db
+set SQLITE_DB_STAT = $SVN_STATIC_DB/svn.db
+set SQLITE_DB_LAB  = $SVN_LAB_DB/svn.db
+set SQLITE_ALM     = $ALM_DB/database/ALM.db
 
 alias sqlite            "sqlite3.exe"
-alias sqliteq           "sqlite3.exe $SQLITE_DB"
+alias sqliteq           "sqlite3.exe $SQLITE_DB_LAB"
+alias sqliteqstat       "sqlite3.exe $SQLITE_DB_STAT"
 alias almsqlite         "sqlite3.exe $SQLITE_ALM"
 alias crmatch           almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'0\' ORDER BY CAST\(id AS INTEGER\)\"
 alias crmatchdesc       almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'1\' ORDER BY CAST\(id AS INTEGER\)\"
 alias query		sqliteq
 alias sqlitedbopen      cygstart cmd.exe /c sqlite3.exe
-alias sqlitedb          cygstart cmd.exe /c sqlite3.exe $SQLITE_DB 
+alias sqldblab          cygstart cmd.exe /c sqlite3.exe $SQLITE_DB_LAB
+alias sqldbstat         cygstart cmd.exe /c sqlite3.exe $SQLITE_DB_STAT 
 alias almsqlitedb       cygstart cmd.exe /c sqlite3.exe $SQLITE_ALM 
 alias sqliteanal        "sqlite3_analyzer.exe"
-alias filepath          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
-alias sqlitefp          sqlite3.exe $SQLITE_DB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
-alias sqlitem           sqlite3.exe $SQLITE_DB \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
+alias filepath          sqlite3.exe $SQLITE_DB_LAB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitefp          sqlite3.exe $SQLITE_DB_LAB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitem           sqlite3.exe $SQLITE_DB_LAB \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
 alias sqlmatch         'sqlitem \!^ |   $PERL -ne '"'"'  if(/^(\d+)\|(.+)$/){ print "-------------------------| $1 |--------------------------\n$2\n" }else{print}    '"'"
 
 # Query the SVN sqlite database for the UUID of a given checked out path
