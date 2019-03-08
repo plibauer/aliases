@@ -1615,6 +1615,82 @@ alias eshelp            'echo                                                   
 "                                                                                       \\
 ' 
 
+alias espy		$PYTHON $PYTHON_HOME/elasticClient/elastic.py --config $PYTHON_HOME/elasticClient/elastic.config
+alias espya		espy "\!^/all"
+alias espym		espy "\!^/mapping"
+alias espys		espy "\!^/settings"
+
+alias mapping		"espy $elasticDefault/m"
+alias acmapping		"espy autoclass_$elasticDefault/m"
+alias settings		"espy $elasticDefault/s"
+alias acsettings	"espy autoclass_$elasticDefault/s"
+alias autoclasstypes    "espy search/autoclass_$elasticDefault -s type --compact --size 10000 | grep type | sort | uniq"
+
+
+alias aclabels          'espy search/autoclass_$elasticDefault/q:type:label_counts -e type --compact --size 10000 | $PERL -e '"'"'  \\
+while(<>){                                                         \\
+  chomp;                                                           \\
+  if(/^_id:(lc_(\d+)) = \{\s*$/) { $id = $2; $ID{$id} = $1." "; }  \\
+  elsif(/^\s+"(count|label|name)"/) { $ID{$id} .= $_; }            \\
+  elsif(/^\}/){ $ID{$id} .= "\n"; $id = ""; }                      \\
+  else { print "$_\n"; }                                           \\
+}                                                                  \\
+for(sort {$a<=>$b} keys %ID){ print $ID{$_}; }                     \\
+exit;                                                              \\
+'"'"
+
+
+alias acwordlabels    'espy search/autoclass_$elasticDefault/q:type:word_label_counts -e word_count:type --compact --size 10000 | $PERL -e '"'"'  \\
+while(<>){                                                         \\
+  chomp;                                                           \\
+  if(/^_id:(wlc_(\d+)) = \{\s*$/) { $id = $2; $ID{$id} = $1." "; }  \\
+  elsif(/^\s+"(count|label|name)"/) { $ID{$id} .= $_; }            \\
+  elsif(/^\}/){ $ID{$id} .= "\n"; $id = ""; }                      \\
+  else { print "$_\n"; }                                           \\
+}                                                                  \\
+for(sort {$a<=>$b} keys %ID){ print $ID{$_}; }                     \\
+exit;                                                              \\
+'"'"
+
+alias autoclassinfo  "echo '\nAutoClassification TYPES: \n'; autoclasstypes; echo '\n-------\n' ; aclabels; echo '\n--------\n' ; acwordlabels"
+alias acinfo autoclassinfo
+
+
+# Provide the _id for the "word_label_counts" entry and format the words into columns
+# Takes additional arguments as follows
+#  ARG1  - search string which will be matched against each pair
+#        Eg. "^un" will only match words beginning with 'un'
+#  ARG2  - number of columns (default 10)
+#  ARG3  - size of columns (default 30)
+#
+alias getwords		'setenv AC_SEARCH_STR "\!*" && espy search/autoclass_$elasticDefault/\!:1 --compact -s word_count | $PERL -e '"'"'  \\
+my ($cols, $width) = (10, 30);                                                \\
+@a = split /\s+/, $ENV{AC_SEARCH_STR};                                        \\
+if(scalar(@a) > 1) { $srchStr = $a[1]; print "SEARCH : $srchStr\n"; }         \\
+if(scalar(@a) > 2) { $cols    = $a[2]; print "COLUMNS: $cols\n"; }            \\
+if(scalar(@a) > 3) { $width   = $a[3]; print "WIDTH  : $width\n"; }           \\
+my @tooLong;                                                                  \\
+while(<>) {                                                                   \\
+  chomp;                                                                      \\
+  if(/^\s+"word_count":\s+"(.+)"$/){                                          \\
+     @pairs = split /,/, $1;                                                  \\
+     print "WORD Count = ".scalar(@pairs)."\n";                               \\
+     $i=1;                                                                    \\
+     for(@pairs){                                                             \\
+        if($srchStr) { next unless /$srchStr/; }                              \\
+        if(length($_) >= $width){ push @tooLong, $_; next }                   \\
+        $space = " " x ($width - length($_));                                 \\
+        print $_.$space;                                                      \\
+        ++$i;                                                                 \\
+        if($i % $cols == 0){print "\n"}                                       \\
+     }                                                                        \\
+  }                                                                           \\
+}                                                                             \\
+print "\n\n";                                                                 \\
+for(@tooLong){ print "$_\n" }                                                 \\
+exit;                                                                         \\
+'"'" 
+
 alias esprocesslog	'cat \!^ | $PERL -e '"'"'           \\
                                                            \\
 while(<>) {                                                \\
