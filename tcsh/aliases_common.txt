@@ -249,6 +249,7 @@ alias -- popd
 alias back popd
 alias d dirs
 alias h history
+alias last        'history | tail -50'
 alias j jobs
 
 alias display "setenv DISPLAY :0.0"
@@ -1548,8 +1549,8 @@ alias mountcygwin	"mount -s --change-cygdrive-prefix /"
 # Invoke an admin command prompt
 alias command  cygstart cmd.exe
 
-##############################################################################
-########################   ELASTICSEARCH (elastic)  ##########################
+##################################################################################
+########################   ELASTICSEARCH/elasticsearch  ##########################
 
 alias esinstall         "$ELASTIC_HOME/bin/elasticsearch-service.bat install"
 alias esstart		"$ELASTIC_HOME/bin/elasticsearch-service.bat start"
