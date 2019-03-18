@@ -1657,6 +1657,8 @@ alias autoclassinfo  "echo '\nAutoClassification TYPES: \n'; autoclasstypes; ech
 alias acinfo autoclassinfo
 
 
+alias elastic_add_wlc_prefix 'set wlcIndex=`echo \!^ | sed -r -e "s/^([[:digit:]])/wlc_\1/"`'
+
 # Provide the _id for the "word_label_counts" entry and format the words into columns
 # Takes additional arguments as follows
 #  ARG1  - search string which will be matched against each pair
@@ -1664,12 +1666,19 @@ alias acinfo autoclassinfo
 #  ARG2  - number of columns (default 10)
 #  ARG3  - size of columns (default 30)
 #
-alias getwords		'setenv AC_SEARCH_STR "\!*" && espy search/autoclass_$elasticDefault/\!:1 --compact -s word_count | $PERL -e '"'"'  \\
+#alias getwords		'setenv AC_SEARCH_STR "\!*" &&  espy search/autoclass_$elasticDefault/\!:1 --compact -s word_count | $PERL -e '"'"'  \\
+alias getwords		'setenv AC_SEARCH_STR "\!*" &&  elastic_add_wlc_prefix \!:1 && espy search/autoclass_$elasticDefault/$wlcIndex --compact -s word_count | $PERL -e '"'"'  \\
 my ($cols, $width) = (10, 30);                                                \\
 @a = split /\s+/, $ENV{AC_SEARCH_STR};                                        \\
-if(scalar(@a) > 1) { $srchStr = $a[1]; print "SEARCH : $srchStr\n"; }         \\
-if(scalar(@a) > 2) { $cols    = $a[2]; print "COLUMNS: $cols\n"; }            \\
-if(scalar(@a) > 3) { $width   = $a[3]; print "WIDTH  : $width\n"; }           \\
+#                                                                             \\
+#  We may have added a missing wlc_ prefix using elastic_add_wlc_prefix       \\
+my $ind = $a[0]; $ind =~ s/^(\d)/wlc_$1/;                                     \\
+#                                                                             \\
+print "INDEX: $ind";                                                          \\
+if(scalar(@a) > 1) { $srchStr = $a[1]; print ", SEARCH: \"$srchStr\""; }      \\
+if(scalar(@a) > 2) { $cols    = $a[2]; print ", COLUMNS: $cols"; }            \\
+if(scalar(@a) > 3) { $width   = $a[3]; print ", WIDTH: $width"; }             \\
+print "\n";                                                                   \\
 my @tooLong;                                                                  \\
 while(<>) {                                                                   \\
   chomp;                                                                      \\
