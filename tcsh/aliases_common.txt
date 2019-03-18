@@ -1575,7 +1575,7 @@ alias esgetaliases	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
 alias esgetindexes	$PYTHON "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
 alias getindexes        esgetindexes
 alias curlindexes	'curl -XGET "http://localhost:9200/_cat/indices" | grep -v "open \."'
-alias setelasticservice  set elastic_service_name=`sc query type= service state= all | perl -ne " if (/^SERVICE_NAME: (elasticsearch-service.+)/i){ s/^SERVICE_NAME: //; s/\n//; print; } "`
+alias setelasticservice  set elastic_service_name = `sc query type= service state= all | perl -ne " if (/^SERVICE_NAME: (elasticsearch-service.+)/i){ s/^SERVICE_NAME: //; s/\n//; print; } "`
 alias startelasticsvc  	'setelasticservice  && sc start $elastic_service_name'
 alias stopelasticsvc	'setelasticservice  && sc stop $elastic_service_name'
 
