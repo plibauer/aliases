@@ -1674,18 +1674,18 @@ my ($cols, $width) = (10, 30);                                                \\
 @a = split /\s+/, $ENV{AC_SEARCH_STR};                                        \\
 #                                                                             \\
 #  We may have added a missing wlc_ prefix using elastic_add_wlc_prefix       \\
-my $ind = $a[0]; $ind =~ s/^(\d)/wlc_$1/;                                     \\
+my $ind = shift @a; $ind =~ s/^(\d)/wlc_$1/;                                  \\
 #                                                                             \\
-my (@tooLong, $out, $outf, @newArgs);                                         \\
+my (@tooLong, $out, $outf, @args);                                            \\
 $out = "INDEX: $ind";                                                         \\
-for($i=0; $i < $#a; $i++){                                                    \\
+for($i=0; $i <= $#a; $i++){                                                    \\
    if($a[$i] eq ">") { $outf = $a[$i + 1]; last; }                            \\
-   @newArgs[$i] = $a[$i];                                                     \\
+   @args[$i] = $a[$i];                                                        \\
 }                                                                             \\
                                                                               \\
-if(scalar(@newArgs) > 1) { $srchStr = $newArgs[1]; $out .= ", SEARCH: \"$srchStr\""; } \\
-if(scalar(@newArgs) > 2) { $cols    = $newArgs[2]; $out .= ", COLUMNS: $cols"; }       \\
-if(scalar(@newArgs) > 3) { $width   = $newArgs[3]; $out .= ", WIDTH: $width"; }        \\
+if(scalar(@args) >= 1) { $srchStr = $args[0]; $out .= ", SEARCH: \"$srchStr\""; } \\
+if(scalar(@args) >= 2) { $cols    = $args[1]; $out .= ", COLUMNS: $cols"; }       \\
+if(scalar(@args) >= 3) { $width   = $args[2]; $out .= ", WIDTH: $width"; }        \\
                                                                               \\
 if($outf) { print "OutputFile => $outf\n"; }                                  \\
                                                                               \\
