@@ -1669,7 +1669,6 @@ alias elastic_add_wlc_prefix 'set wlcIndex=`echo \!^ | sed -r -e "s/^([[:digit:]
 #  ARG2  - number of columns (default 10)
 #  ARG3  - size of columns (default 30)
 #
-#alias getwords		'setenv AC_SEARCH_STR "\!*" &&  espy search/autoclass_$elasticDefault/\!:1 --compact -s word_count | $PERL -e '"'"'  \\
 alias getwords		'setenv AC_SEARCH_STR "\!*" &&  elastic_add_wlc_prefix \!:1 && espy search/autoclass_$elasticDefault/$wlcIndex --compact -s word_count | $PERL -e '"'"'  \\
 my ($cols, $width) = (10, 30);                                                \\
 @a = split /\s+/, $ENV{AC_SEARCH_STR};                                        \\
@@ -1677,30 +1676,44 @@ my ($cols, $width) = (10, 30);                                                \\
 #  We may have added a missing wlc_ prefix using elastic_add_wlc_prefix       \\
 my $ind = $a[0]; $ind =~ s/^(\d)/wlc_$1/;                                     \\
 #                                                                             \\
-print "INDEX: $ind";                                                          \\
-if(scalar(@a) > 1) { $srchStr = $a[1]; print ", SEARCH: \"$srchStr\""; }      \\
-if(scalar(@a) > 2) { $cols    = $a[2]; print ", COLUMNS: $cols"; }            \\
-if(scalar(@a) > 3) { $width   = $a[3]; print ", WIDTH: $width"; }             \\
-print "\n";                                                                   \\
-my @tooLong;                                                                  \\
+my (@tooLong, $out, $outf, @newArgs);                                         \\
+$out = "INDEX: $ind";                                                         \\
+for($i=0; $i < $#a; $i++){                                                    \\
+   if($a[$i] eq ">") { $outf = $a[$i + 1]; last; }                            \\
+   @newArgs[$i] = $a[$i];                                                     \\
+}                                                                             \\
+                                                                              \\
+if(scalar(@newArgs) > 1) { $srchStr = $newArgs[1]; $out .= ", SEARCH: \"$srchStr\""; } \\
+if(scalar(@newArgs) > 2) { $cols    = $newArgs[2]; $out .= ", COLUMNS: $cols"; }       \\
+if(scalar(@newArgs) > 3) { $width   = $newArgs[3]; $out .= ", WIDTH: $width"; }        \\
+                                                                              \\
+if($outf) { print "OutputFile => $outf\n"; }                                  \\
+                                                                              \\
+$out .= "\n";                                                                 \\
 while(<>) {                                                                   \\
   chomp;                                                                      \\
   if(/^\s+"word_count":\s+"(.+)"$/){                                          \\
      @pairs = split /,/, $1;                                                  \\
-     print "WORD Count = ".scalar(@pairs)."\n";                               \\
+     $out .= "WORD Count = ".scalar(@pairs)."\n";                             \\
      $i=1;                                                                    \\
      for(@pairs){                                                             \\
         if($srchStr) { next unless /$srchStr/; }                              \\
         if(length($_) >= $width){ push @tooLong, $_; next }                   \\
         $space = " " x ($width - length($_));                                 \\
-        print $_.$space;                                                      \\
+        $out .= "$_.$space";                                                  \\
         ++$i;                                                                 \\
-        if($i % $cols == 0){print "\n"}                                       \\
+        if($i % $cols == 0){ $out .= "\n"; }                                  \\
      }                                                                        \\
   }                                                                           \\
 }                                                                             \\
-print "\n\n";                                                                 \\
-for(@tooLong){ print "$_\n" }                                                 \\
+$out .= "\n\n";                                                               \\
+for(@tooLong){ $out .= "$_\n"; }                                              \\
+if($outf) {                                                                   \\
+  open OUT, ">$outf" or die "Couldnt open $outf\n";                           \\
+  print OUT $out;                                                             \\
+  close OUT;                                                                  \\
+}                                                                             \\
+else { print $out; }                                                          \\
 exit;                                                                         \\
 '"'" 
 
