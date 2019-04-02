@@ -1,25 +1,31 @@
-Checkout a clone of the repository in your home directory using;
+1. Checkout a clone of the repository in your home directory using;
 
       >git clone git@github.com:plibauer/aliases.git
 
-or, for read only checkout (won't be able to push), you can also use;
+  or, for read only checkout (won't be able to push), you can also use;
 
       >get clone http://plibauer@github.com/plibauer/aliases.git
 
-See the Google document "Git repository" for information on how to setup ssh access from anywhere.
+  See the Google Drive document "Git repository" for information on how to setup ssh access from anywhere.
 
-Create a soft link to the home or work file;
+2. Create a soft link to the home or work file;
 
       >ln -s ~/aliases/aliases_{home|work}.txt  ~/aliases/aliases
 
-This will make sure it gets sourced correctly.
+  This will make sure it gets sourced correctly.
 
-Copy the file ../aliases/aliases_local.txt.remove_postfix to aliases_local.txt and set paths to the repository drive and SVN mirror directories and r.
+3. Copy the file ../aliases/aliases_local.txt.remove_postfix to aliases_local.txt
+  Configure all the localised paths to the repository drive and SVN mirror directories etc.
 
-In your ~/.tcshrc file, put in the initial source command for which environment you would like to default to;
+4. Run the python script ~/python/make_env.py --config ~/python/make_env.config  to produce an environment file for 
+  the next step. For the latest branch, the convention is to name it 'trunkenvironment'
+  
+5.In your ~/.tcshrc file, put in the initial source command for which environment you would like to default to.
+  Some examples are shown below;
 
-file: ~/.tcshrc
-===============
 
-  source ~/aliases/80environment
+  	source ~/aliases/90environment
 
+  or,
+  
+  	source ~/aliases/trunkenvironment
