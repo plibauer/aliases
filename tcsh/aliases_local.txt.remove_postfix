@@ -62,9 +62,10 @@ set JOURNAL_DIR      = $WIN_HOME/Dropbox/Personal/journals
 
 # ElasticSearch
 set ELK_VERSION      = 6.4.3
-set ELASTIC_HOME     = E:/ElasticSearch/$ELK_VERSION
-set KIBANA_HOME      = E:/Kibana/$ELK_VERSION
-set LOGSTASH_HOME    = E:/Logstash/$ELK_VERSION
-set BEATS_HOME       = E:/Beats/$ELK_VERSION
+set ELASTIC_DIR	     = E:/Elastic
+set ELASTIC_HOME     = $ELASTIC_DIR/search/$ELK_VERSION
+set KIBANA_HOME      = $ELASTIC_DIR/kibana/$ELK_VERSION
+set LOGSTASH_HOME    = $ELASTIC_DIR/logstash/$ELK_VERSION
+set BEATS_HOME       = $ELASTIC_DIR/beats/$ELK_VERSION
 set DEF_ELASTIC_INDX = reuters
 
