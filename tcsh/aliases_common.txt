@@ -220,6 +220,12 @@ set histdup=erase
 set history=50000
 set histfile=~/.history
 set savehist=( $history merge )
+
+#
+# The following alias should update the .history file after each command
+#
+alias precmd 'history -S; history -M'
+
 unset ignoreeof
 set listjobs=long
 set listmaxrows=23
