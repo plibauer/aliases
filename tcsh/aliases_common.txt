@@ -385,7 +385,7 @@ alias more less -R
 
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
-alias goa		 cd ~/aliases/tcsh
+alias goa		 cd ~/aliases
 alias gocfg              "cd $trimcfgdir"
 alias godoc		 "cd $trimdir/doc/doc/DocPub"
 alias goexe              "cd $trimdir/$defArch/$defBuild"
@@ -1065,14 +1065,15 @@ alias sn "$svexe"
 alias signSDK 		"cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
 
 # Run populate database
-alias populatedb 	"$trimdir/$defArch/$defBuild/PopulateDatabase.exe"
-alias popx  		"cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe \!^; popd"
-alias popdb 		"popx x; bkupelasticcfg"
-alias restorepopdb 	"popx --load"
+alias populatedb 	"cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
+alias popdb 		"populatedb"
+alias restorepopdb 	"popdb --load"
 alias reloadpopdb 	restorepopdb
-alias popdboracle 	"popx --db oracle64"
+alias popdboracle 	"popdb --db oracle64"
 alias popdbidol         "populatedb --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"; bkupidolcfg"
-alias popdbhelp		populatedb -h
+alias popdbhelp		"populatedb -h"
+alias restoreelastic  	restorepopdb
+alias restoreidol	"populdatedb --load --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"" 
 
 alias getp    		'echo $PATH | $PERL -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
 alias getpath 		"$PERL $PERL_HOME/getPath.pl"
