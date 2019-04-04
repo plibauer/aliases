@@ -1074,10 +1074,10 @@ alias popdbhelp		populatedb -h
 alias restoreelastic  	restorepopdb
 alias popdbidol         "populatedb --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"; bkupidolcfg"
 alias restoreidol	"populdatedb --load --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"" 
-alias elk_train         testtrim --test elastic_auto --load train --inplace
-alias elk_test          testtrim --test elastic_auto --load test --inplace
-alias idol_train	"testtrim --test elastic_auto --load train --inplace --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
-alias idol_test  	"testtrim --test elastic_auto --load test --inplace --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
+alias elk_train         testtrim --test autoclassification --load train --inplace
+alias elk_test          testtrim --test autoclassification --load test --inplace
+alias idol_train	"testtrim --test autoclassification --load train --inplace --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
+alias idol_test  	"testtrim --test autoclassification --load test --inplace --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
 
 alias getp    		'echo $PATH | $PERL -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
 alias getpath 		"$PERL $PERL_HOME/getPath.pl"
