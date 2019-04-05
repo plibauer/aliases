@@ -253,6 +253,8 @@ alias back popd
 alias d dirs
 alias h history
 alias last        'history | tail -50'
+alias historygrep 'history | grep -i'
+alias hgrep historygrep
 alias j jobs
 
 alias display "setenv DISPLAY :0.0"
