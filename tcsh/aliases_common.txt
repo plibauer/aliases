@@ -53,15 +53,18 @@ endif
 alias dbpl        "$PERL $STATIC_PERL/db/db.pl --server $dbServer --database $dbSession"
 alias dbid        "dbpl --get_dbid"
 
-if ("$LOCAL_SQLSVR" == "$dbServer") then
+# If DBID already set, don't change it
+if (! $?DBID) then
+  if ("$LOCAL_SQLSVR" == "$dbServer") then
 
-  # Make sure the StaticRepo is available 
-  if (! -d $STATIC_PERL) then
-    echo "WARNING: $STATIC_PERL not found!"
-    set DBID = $default_dbid
-  else
-    set DBID = `dbid`
+    # Make sure the StaticRepo is available 
+    if (! -d $STATIC_PERL) then
+      echo "WARNING: $STATIC_PERL not found!"
+      set DBID = $default_dbid
+    else
+      set DBID = `dbid`
 
+    endif
   endif
 endif
 
@@ -174,6 +177,7 @@ alias dbdefault "set dbSession = $dbDefault; set dbServer = $dbDefServer; source
 alias dbcurrent echo $dbSession
 alias dbsession "set dbSession = \!^; source $alias_file; settitle"
 alias dbserver  "set dbServer = \!^; source $alias_file; settitle"
+alias setdbid	"set DBID = \!^; source $alias_file; settitle"  
 alias src       "source $alias_file"
 alias src83     "source $alias_dir/../83environment; dbsession Test_83_SqlServer; "
 alias src90     "source $alias_dir/../90environment; dbsession Test_90_SqlServer; "
@@ -255,6 +259,7 @@ alias h history
 alias last        'history | tail -50'
 alias historygrep 'history | grep -i'
 alias hgrep historygrep
+alias greph hgrep
 alias j jobs
 
 alias display "setenv DISPLAY :0.0"
@@ -1075,6 +1080,7 @@ alias popdboracle 	popdb --db oracle64
 alias popdbhelp		populatedb -h
 alias restoreelastic  	restorepopdb
 alias popdbidol         "populatedb --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"; bkupidolcfg"
+alias idolconfig	"setdbid $default_dbid_pref"5"; dbsession $dbDefault"_idol""
 alias restoreidol	"populdatedb --load --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"" 
 alias elk_train         testtrim --test autoclassification --load train 
 alias elk_test          testtrim --test autoclassification --load test --inplace
@@ -1803,11 +1809,26 @@ alias idolqueryv        'curl "http://localhost:11000/action=query&text=' "\!^" 
 alias idolq             'idolquery \!^ | egrep "<autn:(reference|title|numhits)" | $PERL -ne  "s/<autn://; s/<\/autn:.+>//; s/>/\t:/; print"'
 alias irecs             "idolrecs | $PERL $PERL_HOME/xmlformat.pl"
 alias irecsdb           "idolrecs \!^ | $PERL $PERL_HOME/xmlformat.pl"
+alias idolreference	'curl "http://localhost:11000/action=query&text=*&MatchReference=trim:$DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolreferencev	'curl "http://localhost:11000/action=query&Print=All&text=*&MatchReference=trim:$DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolref           idolreference 
+alias idolrefv          idolreferencev 
+
+
 alias removedb          'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
 alias removedocs        'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
+alias dresync		'curl "http://localhost:11001/DRESYNC"'
+alias idolsync 		dresync
+
 alias idologa          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
 alias idologi          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
 alias idologq          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
+
+# IDOL Categories and Auto-Classification
+alias getcategory	'curl "http://localhost:11000/action=categorySuggestfromDocument&DocRef=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolcat 		getcategory
+
+
 
 # Print a mix of 256 ANSI terminal colours
 alias colours ' $PERL -e ' "' "'                                                                  \\
