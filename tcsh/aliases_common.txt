@@ -1825,13 +1825,112 @@ alias idologi          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.l
 alias idologq          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
 
 # IDOL Categories and Auto-Classification
-alias getcategory	'curl "http://localhost:11000/action=categorySuggestfromDocument&DocRef=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias idolcat 		getcategory
+alias idolcat		'curl "http://localhost:11000/action=CategoryGetDetails&Category=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolcaturi	'curl "http://localhost:11000/action=CategoryFindByFields&Fields=ts_urn&Values=trim:$DBID/pln/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias suggestcategory	'curl "http://localhost:11000/action=categorySuggestfromDocument&DocRef=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolsuggest 	suggestcategory
 
+alias getidolclassifications 'curl "http://localhost:11000/action=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent \\
+| $PERL $PERL_HOME/xmlformat.pl                                                                \\
+| $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"             \\
+| $PERL -ne  ' "' "' chomp; print `curl "http://localhost:11000/action=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'" 
+alias idolclassifications  'setenv IDOL_CLS_PARAMS "\!*" && getidolclassifications              \\
+| $PERL $PERL_HOME/xmlformat.pl                                                                 \\
+| $PERL -e ' "' "'                                                                              \\
+                                                                                                \\
+sub printTerms($$){                                                                             \\
+  ($terms,$max) = @_;                                                                           \\
+  $i=1;                                                                                         \\
+  for(@$terms){                                                                                 \\
+    if($i % 5 == 0){ print "\n"; }                                                              \\
+    my $t = $_->{word}.":".$_->{weight};                                                        \\
+    my $sp = " " x ($max - length($t) + 1);                                                     \\
+    print $t.$sp;                                                                               \\
+    $i++;                                                                                       \\
+  }                                                                                             \\
+  print "\n";                                                                                   \\
+}                                                                                               \\
+                                                                                                \\
+my %CLASSES;                                                                                    \\
+my $opts = $ENV{'IDOL_CLS_PARAMS'};                                                             \\
+@input = <STDIN>;                                                                               \\
+for($i = 0; $i<$#input; $i++){                                                                  \\
+  $l = $input[$i]; chomp $l;                                                                    \\
+  if($l =~ /<response>SUCCESS<\/response>/){                                                    \\
+    my $name = $input[$i + 3];                                                                  \\
+    my $db = $input[$i + 5];                                                                    \\
+    my $terms = $input[$i + 6];                                                                 \\
+    my $urn = $input[$i + 9];                                                                   \\
+    $name   =~ s/^.*autn:name.(.+).\/autn:name..*$/$1/; chomp $name;                            \\
+    $db     =~ s/^.*autn:databases.(.+).\/autn:databases..*$/$1/; chomp $db;                    \\
+    $terms  =~ s/^.*autn:queryagenttnw.(.+).\/autn:queryagenttnw..*$/$1/; chomp $terms;         \\
+    $urn    =~ s/^.*autn:ts_urn.(.+).\/autn:ts_urn..*$/$1/; chomp $urn;                         \\
+    my $longest = 10;                                                                           \\
+    @terms = split(/\]\s+/, $terms);                                                            \\
+    my @new;                                                                                    \\
+    for(@terms){                                                                                \\
+      if(/^(.+)~\[(\d+)$/){                                                                     \\
+        ($word,$val) = ($1,$2);                                                                 \\
+        my $tmp = "$word:$val";                                                                 \\
+        $longest = length($tmp) > $longest ? length($tmp) : $longest;                           \\
+        push @new, { word => $word, weight => $val };                                           \\
+      }                                                                                         \\
+      elsif(/^(.+)~\[(\d+)\]$/){   # Last term in list                                          \\
+        ($word,$val) = ($1,$2);                                                                 \\
+        my $tmp = "$word:$val";                                                                 \\
+        $longest = length($tmp) > $longest ? length($tmp) : $longest;                           \\
+        push @new, { word => $word, weight => $val };                                           \\
+      }                                                                                         \\
+      else { print "BAD SPLIT : $_\n"; }                                                        \\
+    }                                                                                           \\
+                                                                                                \\
+    if($urn =~ /trim:(..)\/pln\/(\d+)/){                                                        \\
+      $CLASSES{$2} = { uri => $2, name => $name, db => $db, terms => \@new, urn => $urn, max => $longest };\\
+    }                                                                                           \\
+    else{                                                                                       \\
+      print "BAD URN VALUE: $urn\n";                                                            \\
+    }                                                                                           \\
+    $i = $i + 12; # Move to next entry                                                          \\
+  }                                                                                             \\
+}                                                                                               \\
+                                                                                                \\
+# Deal with options                                                                             \\
+if($opts =~ /^all$/i){                                                                          \\
+  for(sort keys %CLASSES){                                                                      \\
+    print $_ . " => ". $CLASSES{$_}{name}."\n";                                                 \\
+  }                                                                                             \\
+}                                                                                               \\
+elsif($opts =~ /^\d+$/){                                                                        \\
+  if(exists $CLASSES{$opts}){                                                                   \\
+    $cls = $CLASSES{$opts};                                                                     \\
+    print "=================================================== \n";                             \\
+    print "NAME      : ".$cls->{name}."\n";                                                     \\
+    print "URN (DB)  : ".$cls->{urn}." (".$cls->{db}.")\n";                                     \\
+    print "TERMS     :\n";                                                                      \\
+    printTerms($cls->{terms},$cls->{max});                                                      \\
+  }                                                                                             \\
+}                                                                                               \\
+elsif($opts =~ /^[\w-\.]+$/){                                                                   \\
+  for(keys %CLASSES){                                                                           \\
+    $cls = $CLASSES{$_};                                                                        \\
+    if($cls->{name} =~ /$opts/i){                                                               \\
+      print "=================================================== \n";                           \\
+      print "URI       : ".$cls->{uri}."\n";                                                    \\
+      print "NAME      : ".$cls->{name}."\n";                                                   \\
+      print "URN (DB)  : ".$cls->{urn}." (".$cls->{db}.")\n";                                   \\
+      print "TERMS     :\n";                                                                    \\
+      printTerms($cls->{terms},$cls->{max});                                                    \\
+    }                                                                                           \\
+  }                                                                                             \\
+}                                                                                               \\
+                                                                                                \\
+'"'"
+alias idolclass  idolclassifications
+ 
 
 
 # Print a mix of 256 ANSI terminal colours
-alias colours ' $PERL -e ' "' "'                                                                  \\
+alias colours ' $PERL -e ' "' "'                                                                      \\
 $|=1;                                                                                                 \\
 use Term::ANSIColor qw(:constants256 :constants);                                                     \\
 use integer;                                                                                          \\
