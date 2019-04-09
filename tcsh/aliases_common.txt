@@ -1081,7 +1081,8 @@ alias popdbhelp		populatedb -h
 alias restoreelastic  	restorepopdb
 alias popdbidol         "populatedb --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"; bkupidolcfg"
 alias idolconfig	"setdbid $default_dbid_pref"5"; dbsession $dbDefault"_idol""
-alias restoreidol	"populdatedb --load --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"" 
+alias restoreidol	"populatedb --load --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"" 
+alias reloadidol	restoreidol
 alias elk_train         testtrim --test autoclassification --load train 
 alias elk_test          testtrim --test autoclassification --load test --inplace
 alias elk_both          testtrim --test autoclassification --load both 
@@ -1830,10 +1831,23 @@ alias idolcaturi	'curl "http://localhost:11000/action=CategoryFindByFields&Field
 alias suggestcategory	'curl "http://localhost:11000/action=categorySuggestfromDocument&DocRef=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
 alias idolsuggest 	suggestcategory
 
-alias getidolclassifications 'curl "http://localhost:11000/action=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent \\
-| $PERL $PERL_HOME/xmlformat.pl                                                                \\
-| $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"             \\
-| $PERL -ne  ' "' "' chomp; print `curl "http://localhost:11000/action=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'" 
+alias getidolcategoryids 'curl "http://localhost:11000/action=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl '
+
+alias getidolclassifications 'getidolcategoryids | $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"        \\
+| $PERL -ne  ' "' "' chomp; print `curl "http://localhost:11000/action=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'"
+
+alias categoryids	'getidolcategoryids | $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"             \\
+| $PERL -ne  ' "' "'                                                                                                                       \\
+chomp;                                                                                                                                     \\
+$ID =  $_;                                                                                                                                 \\
+$input = `curl "http://localhost:11000/action=CategoryGetDetails&Category=$_" --noproxy "*" --silent`;                                     \\
+if($input =~ /<autn:name>(.+)<\/autn:name>/) { print "CATEGORY => $1\n"; }                                                                 \\
+if($input =~ /<autn:ts_urn>trim:..\/pln\/(\d+)<\/autn:ts_urn>/) { print "\tURI : $1\n"; }                                                  \\
+print "\tID  : $ID\n\n";                                                                                                                   \\
+'"'"
+alias catids		categoryids        
+alias idolterms         'curl "http://localhost:11000/action=CategoryGetTNW&Category=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+
 alias idolclassifications  'setenv IDOL_CLS_PARAMS "\!*" && getidolclassifications              \\
 | $PERL $PERL_HOME/xmlformat.pl                                                                 \\
 | $PERL -e ' "' "'                                                                              \\
