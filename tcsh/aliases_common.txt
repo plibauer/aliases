@@ -1087,6 +1087,10 @@ alias elk_train         testtrim --test autoclassification --load train
 alias elk_test          testtrim --test autoclassification --load test --inplace
 alias elk_both          testtrim --test autoclassification --load both 
 alias elk_classify      testtrim --test autoclassification --inplace --classify 
+alias elastic_train	elk_train
+alias elastic_test	elk_test
+alias elastic_both	elk_both
+alias elastic_classify	elk_classify
 alias idol_train	"testtrim --test autoclassification --load train --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
 alias idol_test  	"testtrim --test autoclassification --load test --inplace --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
 alias idol_both         "testtrim --test autoclassification --load both --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
@@ -1834,7 +1838,7 @@ alias idolsuggest 	suggestcategory
 alias getidolcategoryids 'curl "http://localhost:11000/action=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl '
 
 alias getidolclassifications 'getidolcategoryids | $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"        \\
-| $PERL -ne  ' "' "' chomp; print `curl "http://localhost:11000/action=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'"
+| $PERL -ne  ' "' "' chomp;print "ID = $_\n"; print `curl "http://localhost:11000/action=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'"
 
 alias categoryids	'getidolcategoryids | $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"             \\
 | $PERL -ne  ' "' "'                                                                                                                       \\
@@ -1865,11 +1869,12 @@ sub printTerms($$){                                                             
   print "\n";                                                                                   \\
 }                                                                                               \\
                                                                                                 \\
-my %CLASSES;                                                                                    \\
+my ($currentID,%CLASSES);                                                                       \\
 my $opts = $ENV{'IDOL_CLS_PARAMS'};                                                             \\
 @input = <STDIN>;                                                                               \\
 for($i = 0; $i<$#input; $i++){                                                                  \\
   $l = $input[$i]; chomp $l;                                                                    \\
+  if($l =~ /^ID = (\d+)$/){ $currentID = $1; next; }                                            \\
   if($l =~ /<response>SUCCESS<\/response>/){                                                    \\
     my $name = $input[$i + 3];                                                                  \\
     my $db = $input[$i + 5];                                                                    \\
@@ -1899,7 +1904,10 @@ for($i = 0; $i<$#input; $i++){                                                  
     }                                                                                           \\
                                                                                                 \\
     if($urn =~ /trim:(..)\/pln\/(\d+)/){                                                        \\
-      $CLASSES{$2} = { uri => $2, name => $name, db => $db, terms => \@new, urn => $urn, max => $longest };\\
+      $CLASSES{$2} = {                                                                          \\
+         id    => $currentID, uri => $2,   name => $name,  db => $db,                           \\
+         terms => \@new,      urn => $urn, max => $longest                                      \\
+      };                                                                                        \\
     }                                                                                           \\
     else{                                                                                       \\
       print "BAD URN VALUE: $urn\n";                                                            \\
@@ -1911,7 +1919,8 @@ for($i = 0; $i<$#input; $i++){                                                  
 # Deal with options                                                                             \\
 if($opts =~ /^all$/i){                                                                          \\
   for(sort keys %CLASSES){                                                                      \\
-    print $_ . " => ". $CLASSES{$_}{name}."\n";                                                 \\
+    $i = $CLASSES{$_};                                                                          \\
+    print "ID:".$i->{id}.", URI:".$_ ." => ".$i->{name}."\n";                                   \\
   }                                                                                             \\
 }                                                                                               \\
 elsif($opts =~ /^\d+$/){                                                                        \\
@@ -1920,6 +1929,7 @@ elsif($opts =~ /^\d+$/){                                                        
     print "=================================================== \n";                             \\
     print "NAME      : ".$cls->{name}."\n";                                                     \\
     print "URN (DB)  : ".$cls->{urn}." (".$cls->{db}.")\n";                                     \\
+    print "CAT ID    : ".$cls->{id}."\n";                                                       \\
     print "TERMS     :\n";                                                                      \\
     printTerms($cls->{terms},$cls->{max});                                                      \\
   }                                                                                             \\
@@ -1932,6 +1942,7 @@ elsif($opts =~ /^[\w-\.]+$/){                                                   
       print "URI       : ".$cls->{uri}."\n";                                                    \\
       print "NAME      : ".$cls->{name}."\n";                                                   \\
       print "URN (DB)  : ".$cls->{urn}." (".$cls->{db}.")\n";                                   \\
+      print "CAT ID    : ".$cls->{id}."\n";                                                     \\
       print "TERMS     :\n";                                                                    \\
       printTerms($cls->{terms},$cls->{max});                                                    \\
     }                                                                                           \\
@@ -1941,7 +1952,30 @@ elsif($opts =~ /^[\w-\.]+$/){                                                   
 '"'"
 alias idolclass  idolclassifications
  
+alias idolhelp      'echo                                                                 \\
+"\n                                                                                       \\
+idolconfig    	: Sets up DBID with suffix 5 and dataset name with suffix '_idol'         \\
+popdbidol       : Runs popdb for above settings                                           \\
+restoreidol     : Restores above database                                                 \\
+                                                                                          \\
+TestTrim Autoclassification                                                               \\
+idol_train      : loads training records for above dataset                                \\
+idol_test       : loads test records data for above dataset                               \\
+idol_both       : loads both above sets                                                   \\
+idol_classify   : Runs classify on records in Holding Bay                                 \\
+                                                                                          \\
+Category commands                                                                         \\
+categoryids 	: Print all category names, URIs and IDs (also 'catids')                  \\
+idolcat <id>    : Get the category with 'id'                                              \\
+idolterms <id>  : Get extended term information with 'id'                                 \\
+idolclass <opt> : Search for categories and print uri, name, urn, database, id and terms  \\
+ 'all'    - show all categories (not all fields)                                          \\
+ 'uri'    - show category matching the 'uri' value                                        \\
+ 'string' - show all categories with names matching the 'string'                          \\
+\n\n"                                                                                     \\
+'
 
+# ------------------------------------------------------------------------------------------------------
 
 # Print a mix of 256 ANSI terminal colours
 alias colours ' $PERL -e ' "' "'                                                                      \\
