@@ -1883,25 +1883,34 @@ for($i = 0; $i<$#input; $i++){                                                  
     $name   =~ s/^.*autn:name.(.+).\/autn:name..*$/$1/; chomp $name;                            \\
     $db     =~ s/^.*autn:databases.(.+).\/autn:databases..*$/$1/; chomp $db;                    \\
     $terms  =~ s/^.*autn:queryagenttnw.(.+).\/autn:queryagenttnw..*$/$1/; chomp $terms;         \\
+    if($terms =~ /autn:categoryparameters/) { # There are no terms                              \\
+      $terms = 0;                                                                               \\
+      $urn = $input[$i + 8];                                                                    \\
+    }                                                                                           \\
+                                                                                                \\
     $urn    =~ s/^.*autn:ts_urn.(.+).\/autn:ts_urn..*$/$1/; chomp $urn;                         \\
     my $longest = 10;                                                                           \\
     @terms = split(/\]\s+/, $terms);                                                            \\
     my @new;                                                                                    \\
-    for(@terms){                                                                                \\
-      if(/^(.+)~\[(\d+)$/){                                                                     \\
-        ($word,$val) = ($1,$2);                                                                 \\
-        my $tmp = "$word:$val";                                                                 \\
-        $longest = length($tmp) > $longest ? length($tmp) : $longest;                           \\
-        push @new, { word => $word, weight => $val };                                           \\
+                                                                                                \\
+    if($terms){                                                                                 \\
+      for(@terms){                                                                              \\
+        if(/^(.+)~\[(\d+)$/){                                                                   \\
+          ($word,$val) = ($1,$2);                                                               \\
+          my $tmp = "$word:$val";                                                               \\
+          $longest = length($tmp) > $longest ? length($tmp) : $longest;                         \\
+          push @new, { word => $word, weight => $val };                                         \\
+        }                                                                                       \\
+        elsif(/^(.+)~\[(\d+)\]$/){   # Last term in list                                        \\
+          ($word,$val) = ($1,$2);                                                               \\
+          my $tmp = "$word:$val";                                                               \\
+          $longest = length($tmp) > $longest ? length($tmp) : $longest;                         \\
+          push @new, { word => $word, weight => $val };                                         \\
+        }                                                                                       \\
+        else { print "BAD SPLIT : $_\n"; }                                                      \\
       }                                                                                         \\
-      elsif(/^(.+)~\[(\d+)\]$/){   # Last term in list                                          \\
-        ($word,$val) = ($1,$2);                                                                 \\
-        my $tmp = "$word:$val";                                                                 \\
-        $longest = length($tmp) > $longest ? length($tmp) : $longest;                           \\
-        push @new, { word => $word, weight => $val };                                           \\
-      }                                                                                         \\
-      else { print "BAD SPLIT : $_\n"; }                                                        \\
     }                                                                                           \\
+    else { @new = (); }                                                                         \\
                                                                                                 \\
     if($urn =~ /trim:(..)\/pln\/(\d+)/){                                                        \\
       $CLASSES{$2} = {                                                                          \\
