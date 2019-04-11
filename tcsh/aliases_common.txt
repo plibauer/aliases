@@ -82,6 +82,7 @@ alias xterm_title   'echo -n "\033]0;\!^\007" '
 
 alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}, DBSESSION=${dbSession}, DBSERVER=${dbServer}, VPN=${vpnConfig}\007"'
 alias settitledir 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}    `/bin/pwd`\007"'
+alias settitle2str 'echo -ne "\033]0; \!^ \007"'
 
 # Allow a different standard path for devenv.exe
 if ("$DEVENV_ROOT" == "") then
@@ -1585,7 +1586,7 @@ alias esremove	        "$ELASTIC_HOME/bin/elasticsearch-service.bat remove"
 alias esmanage		"$ELASTIC_HOME/bin/elasticsearch-service.bat manager"
 alias esconfig		"cat $ELASTIC_HOME/config/elasticsearch.yml"
 alias goes              "cd $ELASTIC_HOME"
-alias kibana            "$KIBANA_HOME/bin/kibana.bat"
+alias kibana            "$KIBANA_HOME/bin/kibana.bat && settitle2str KIBANA"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "cd $KIBANA_HOME"
 alias kibanaup		usingport 5601
