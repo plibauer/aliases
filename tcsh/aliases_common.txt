@@ -174,7 +174,8 @@ alias hf1       "set defPatch = _HF1; set defBuild = Release; source $alias_file
 alias hf2       "set defPatch = _HF2; set defBuild = Release; source $alias_file; settitle"
 alias p1        "set defPatch = _P1; set defBuild = Release; source $alias_file; settitle"
 alias p2        "set defPatch = _P2; set defBuild = Release; source $alias_file; settitle"
-alias dbdefault "set dbSession = $dbDefault; set dbServer = $dbDefServer; source $alias_file; settitle"
+alias dbdefault "unset dbSession; unset dbServer; unset DBID; source $alias_file; settitle"
+alias defaultconfig dbdefault 
 alias dbcurrent echo $dbSession
 alias dbsession "set dbSession = \!^; source $alias_file; settitle"
 alias dbserver  "set dbServer = \!^; source $alias_file; settitle"
@@ -1082,6 +1083,7 @@ alias popdbhelp		populatedb -h
 alias restoreelastic  	restorepopdb
 alias popdbidol         "populatedb --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"; bkupidolcfg"
 alias idolconfig	"setdbid $default_dbid_pref"5"; dbsession $dbDefault"_idol""
+alias elasticconfig	"setdbid $DBID; dbsession $dbDefault"
 alias restoreidol	"populatedb --load --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"" 
 alias reloadidol	restoreidol
 alias elk_train         testtrim --test autoclassification --load train 
@@ -1630,7 +1632,7 @@ alias searchindex       essearchindex
 alias esindexinfo       esget "\!^/_settings,_mapping"
 
 
-alias eshelp            'echo                                                           \\
+alias escurlhelp            'echo                                                       \\
 "\n                                                                                     \\
 1. Show all index aliases [esgetaliases]                                                \\
      >curl -XGET http://localhost:9200/_aliases\?pretty=true                       \n   \\
@@ -1655,7 +1657,7 @@ alias acmapping		"espy autoclass_$elasticDefault/m"
 alias settings		"espy $elasticDefault/s"
 alias acsettings	"espy autoclass_$elasticDefault/s"
 alias autoclasstypes    "espy search/autoclass_$elasticDefault -s type --compact --size 10000 | grep type | sort | uniq"
-
+alias estype		"espy search/autoclass_$elasticDefault/q:type:\!^"
 
 alias aclabels          'espy search/autoclass_$elasticDefault/q:type:label_counts -e type --compact --size 10000 | $PERL -e '"'"'  \\
 while(<>){                                                         \\
@@ -1673,7 +1675,7 @@ exit;                                                              \\
 alias acwordlabels    'espy search/autoclass_$elasticDefault/q:type:word_label_counts -e word_count:type --compact --size 10000 | $PERL -e '"'"'  \\
 while(<>){                                                         \\
   chomp;                                                           \\
-  if(/^_id:(wlc_(\d+)) = \{\s*$/) { $id = $2; $ID{$id} = $1." "; }  \\
+  if(/^_id:(wlc_(\d+)) = \{\s*$/) { $id = $2; $ID{$id} = $1." "; } \\
   elsif(/^\s+"(count|label|name)"/) { $ID{$id} .= $_; }            \\
   elsif(/^\}/){ $ID{$id} .= "\n"; $id = ""; }                      \\
   else { print "$_\n"; }                                           \\
@@ -1704,7 +1706,7 @@ my $ind = shift @a; $ind =~ s/^(\d)/wlc_$1/;                                  \\
 #                                                                             \\
 my (@tooLong, $out, $outf, @args);                                            \\
 $out = "INDEX: $ind";                                                         \\
-for($i=0; $i <= $#a; $i++){                                                    \\
+for($i=0; $i <= $#a; $i++){                                                   \\
    if($a[$i] eq ">") { $outf = $a[$i + 1]; last; }                            \\
    @args[$i] = $a[$i];                                                        \\
 }                                                                             \\
@@ -1743,7 +1745,7 @@ else { print $out; }                                                          \\
 exit;                                                                         \\
 '"'" 
 
-alias esprocesslog	'cat \!^ | $PERL -e '"'"'           \\
+alias esprocesslog	'cat \!^ | $PERL -e '"'"'          \\
                                                            \\
 while(<>) {                                                \\
   chomp $_;                                                \\
@@ -1772,7 +1774,7 @@ for(my $i=1; $i <= $#log; $i++ ){                          \\
                                                            \\
 '"'"
 
-alias esgetfiles 'cat \!^ | $PERL -e '"'"'                  \\
+alias esgetfiles 'cat \!^ | $PERL -e '"'"'                 \\
                                                            \\
 while(<>) {                                                \\
   chomp $_;                                                \\
@@ -1790,6 +1792,32 @@ for(sort keys %bytime){                                    \\
                                                            \\
 '"'"
 
+alias elastichelp      'echo                                                       	\\
+"\n                                                                                	\\
+mapping        : Show mapping for the default elastic index                        	\\
+acmapping      : Show mapping for the autoclassification index                     	\\
+settings       : Show settings for default index                                   	\\
+acsettings     : Show settings for autoclassification index                        	\\
+											\\
+Autoclassification index                                                           	\\
+autoclasstypes : Show the different table <types>                                  	\\
+estype <type>  : Query one of the types from the previous command                  	\\
+aclabels       : Print _id, document count, uri and name for all categories/labels 	\\
+acwordlabels   : Print the _id of the word-label-count indexes + label and name    	\\
+											\\
+Get word statistics                                                                	\\
+getwords   <arg1> <arg2> <arg3>                                                         \\
+           Print tabulated words using _id from acwordlabels 	                        \\
+											\\
+    ARG1  - search string which will be matched against each pair                 	\\
+            Eg. \042^un\042 will only match words beginning with \047un\047             \\
+    ARG2  - number of columns (default 10)                                        	\\
+    ARG3  - size of columns (default 30)                                          	\\
+											\\
+    If all words should be printed, but you want to change arg2 or arg3, then;    	\\
+    getwords \042^.+\042 8 25   (all words with 8 columns and col width 25)             \\
+\n\n"                                                                              	\\
+'
 
 
 ##############################################################################
