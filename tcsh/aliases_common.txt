@@ -53,15 +53,18 @@ endif
 alias dbpl        "$PERL $STATIC_PERL/db/db.pl --server $dbServer --database $dbSession"
 alias dbid        "dbpl --get_dbid"
 
-if ("$LOCAL_SQLSVR" == "$dbServer") then
+# If DBID already set, don't change it
+if (! $?DBID) then
+  if ("$LOCAL_SQLSVR" == "$dbServer") then
 
-  # Make sure the StaticRepo is available 
-  if (! -d $STATIC_PERL) then
-    echo "WARNING: $STATIC_PERL not found!"
-    set DBID = $default_dbid
-  else
-    set DBID = `dbid`
+    # Make sure the StaticRepo is available 
+    if (! -d $STATIC_PERL) then
+      echo "WARNING: $STATIC_PERL not found!"
+      set DBID = $default_dbid
+    else
+      set DBID = `dbid`
 
+    endif
   endif
 endif
 
@@ -79,6 +82,7 @@ alias xterm_title   'echo -n "\033]0;\!^\007" '
 
 alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}, DBSESSION=${dbSession}, DBSERVER=${dbServer}, VPN=${vpnConfig}\007"'
 alias settitledir 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}    `/bin/pwd`\007"'
+alias settitle2str 'echo -ne "\033]0; \!^ \007"'
 
 # Allow a different standard path for devenv.exe
 if ("$DEVENV_ROOT" == "") then
@@ -170,10 +174,12 @@ alias hf1       "set defPatch = _HF1; set defBuild = Release; source $alias_file
 alias hf2       "set defPatch = _HF2; set defBuild = Release; source $alias_file; settitle"
 alias p1        "set defPatch = _P1; set defBuild = Release; source $alias_file; settitle"
 alias p2        "set defPatch = _P2; set defBuild = Release; source $alias_file; settitle"
-alias dbdefault "set dbSession = $dbDefault; set dbServer = $dbDefServer; source $alias_file; settitle"
+alias dbdefault "unset dbSession; unset dbServer; unset DBID; source $alias_file; settitle"
+alias defaultconfig dbdefault 
 alias dbcurrent echo $dbSession
 alias dbsession "set dbSession = \!^; source $alias_file; settitle"
 alias dbserver  "set dbServer = \!^; source $alias_file; settitle"
+alias setdbid	"set DBID = \!^; source $alias_file; settitle"  
 alias src       "source $alias_file"
 alias src83     "source $alias_dir/../83environment; dbsession Test_83_SqlServer; "
 alias src90     "source $alias_dir/../90environment; dbsession Test_90_SqlServer; "
@@ -253,6 +259,9 @@ alias back popd
 alias d dirs
 alias h history
 alias last        'history | tail -50'
+alias historygrep 'history | grep -i'
+alias hgrep historygrep
+alias greph hgrep
 alias j jobs
 
 alias display "setenv DISPLAY :0.0"
@@ -387,7 +396,7 @@ alias more less -R
 
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
-alias goa		 cd ~/aliases/tcsh
+alias goa		 cd ~/aliases
 alias gocfg              "cd $trimcfgdir"
 alias godoc		 "cd $trimdir/doc/doc/DocPub"
 alias goexe              "cd $trimdir/$defArch/$defBuild"
@@ -1067,14 +1076,30 @@ alias sn "$svexe"
 alias signSDK 		"cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
 
 # Run populate database
-alias populatedb 	"$trimdir/$defArch/$defBuild/PopulateDatabase.exe"
-alias popx  		"cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe \!^; popd"
-alias popdb 		"popx x; bkupelasticcfg"
-alias restorepopdb 	"popx --load"
+alias populatedb 	"cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
+alias popdb 		populatedb
+alias restorepopdb 	popdb --load
 alias reloadpopdb 	restorepopdb
-alias popdboracle 	"popx --db oracle64"
-alias popdbidol         "populatedb --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"; bkupidolcfg"
+alias popdboracle 	popdb --db oracle64
 alias popdbhelp		populatedb -h
+alias restoreelastic  	restorepopdb
+alias popdbidol         "populatedb --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"; bkupidolcfg"
+alias idolconfig	"setdbid $default_dbid_pref"5"; dbsession $dbDefault"_idol""
+alias elasticconfig	"setdbid $DBID; dbsession $dbDefault"
+alias restoreidol	"populatedb --load --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"" 
+alias reloadidol	restoreidol
+alias elk_train         testtrim --test autoclassification --load train 
+alias elk_test          testtrim --test autoclassification --load test --inplace
+alias elk_both          testtrim --test autoclassification --load both 
+alias elk_classify      testtrim --test autoclassification --inplace --classify 
+alias elastic_train	elk_train
+alias elastic_test	elk_test
+alias elastic_both	elk_both
+alias elastic_classify	elk_classify
+alias idol_train	"testtrim --test autoclassification --load train --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
+alias idol_test  	"testtrim --test autoclassification --load test --inplace --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
+alias idol_both         "testtrim --test autoclassification --load both --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
+alias idol_classify     "testtrim --test autoclassification --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol" --inplace --classify"	
 
 alias getp    		'echo $PATH | $PERL -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"
 alias getpath 		"$PERL $PERL_HOME/getPath.pl"
@@ -1565,7 +1590,7 @@ alias esremove	        "$ELASTIC_HOME/bin/elasticsearch-service.bat remove"
 alias esmanage		"$ELASTIC_HOME/bin/elasticsearch-service.bat manager"
 alias esconfig		"cat $ELASTIC_HOME/config/elasticsearch.yml"
 alias goes              "cd $ELASTIC_HOME"
-alias kibana            "$KIBANA_HOME/bin/kibana.bat"
+alias kibana            "$KIBANA_HOME/bin/kibana.bat && settitle2str KIBANA"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "cd $KIBANA_HOME"
 alias kibanaup		usingport 5601
@@ -1609,7 +1634,7 @@ alias searchindex       essearchindex
 alias esindexinfo       esget "\!^/_settings,_mapping"
 
 
-alias eshelp            'echo                                                           \\
+alias escurlhelp            'echo                                                       \\
 "\n                                                                                     \\
 1. Show all index aliases [esgetaliases]                                                \\
      >curl -XGET http://localhost:9200/_aliases\?pretty=true                       \n   \\
@@ -1634,7 +1659,7 @@ alias acmapping		"espy autoclass_$elasticDefault/m"
 alias settings		"espy $elasticDefault/s"
 alias acsettings	"espy autoclass_$elasticDefault/s"
 alias autoclasstypes    "espy search/autoclass_$elasticDefault -s type --compact --size 10000 | grep type | sort | uniq"
-
+alias estype		"espy search/autoclass_$elasticDefault/q:type:\!^"
 
 alias aclabels          'espy search/autoclass_$elasticDefault/q:type:label_counts -e type --compact --size 10000 | $PERL -e '"'"'  \\
 while(<>){                                                         \\
@@ -1652,7 +1677,7 @@ exit;                                                              \\
 alias acwordlabels    'espy search/autoclass_$elasticDefault/q:type:word_label_counts -e word_count:type --compact --size 10000 | $PERL -e '"'"'  \\
 while(<>){                                                         \\
   chomp;                                                           \\
-  if(/^_id:(wlc_(\d+)) = \{\s*$/) { $id = $2; $ID{$id} = $1." "; }  \\
+  if(/^_id:(wlc_(\d+)) = \{\s*$/) { $id = $2; $ID{$id} = $1." "; } \\
   elsif(/^\s+"(count|label|name)"/) { $ID{$id} .= $_; }            \\
   elsif(/^\}/){ $ID{$id} .= "\n"; $id = ""; }                      \\
   else { print "$_\n"; }                                           \\
@@ -1683,7 +1708,7 @@ my $ind = shift @a; $ind =~ s/^(\d)/wlc_$1/;                                  \\
 #                                                                             \\
 my (@tooLong, $out, $outf, @args);                                            \\
 $out = "INDEX: $ind";                                                         \\
-for($i=0; $i <= $#a; $i++){                                                    \\
+for($i=0; $i <= $#a; $i++){                                                   \\
    if($a[$i] eq ">") { $outf = $a[$i + 1]; last; }                            \\
    @args[$i] = $a[$i];                                                        \\
 }                                                                             \\
@@ -1722,7 +1747,7 @@ else { print $out; }                                                          \\
 exit;                                                                         \\
 '"'" 
 
-alias esprocesslog	'cat \!^ | $PERL -e '"'"'           \\
+alias esprocesslog	'cat \!^ | $PERL -e '"'"'          \\
                                                            \\
 while(<>) {                                                \\
   chomp $_;                                                \\
@@ -1751,7 +1776,7 @@ for(my $i=1; $i <= $#log; $i++ ){                          \\
                                                            \\
 '"'"
 
-alias esgetfiles 'cat \!^ | $PERL -e '"'"'                  \\
+alias esgetfiles 'cat \!^ | $PERL -e '"'"'                 \\
                                                            \\
 while(<>) {                                                \\
   chomp $_;                                                \\
@@ -1769,6 +1794,32 @@ for(sort keys %bytime){                                    \\
                                                            \\
 '"'"
 
+alias elastichelp      'echo                                                       	\\
+"\n                                                                                	\\
+mapping        : Show mapping for the default elastic index                        	\\
+acmapping      : Show mapping for the autoclassification index                     	\\
+settings       : Show settings for default index                                   	\\
+acsettings     : Show settings for autoclassification index                        	\\
+											\\
+Autoclassification index                                                           	\\
+autoclasstypes : Show the different table <types>                                  	\\
+estype <type>  : Query one of the types from the previous command                  	\\
+aclabels       : Print _id, document count, uri and name for all categories/labels 	\\
+acwordlabels   : Print the _id of the word-label-count indexes + label and name    	\\
+											\\
+Get word statistics                                                                	\\
+getwords   <arg1> <arg2> <arg3>                                                         \\
+           Print tabulated words using _id from acwordlabels 	                        \\
+											\\
+    ARG1  - search string which will be matched against each pair                 	\\
+            Eg. \042^un\042 will only match words beginning with \047un\047             \\
+    ARG2  - number of columns (default 10)                                        	\\
+    ARG3  - size of columns (default 30)                                          	\\
+											\\
+    If all words should be printed, but you want to change arg2 or arg3, then;    	\\
+    getwords \042^.+\042 8 25   (all words with 8 columns and col width 25)             \\
+\n\n"                                                                              	\\
+'
 
 
 ##############################################################################
@@ -1794,14 +1845,180 @@ alias idolqueryv        'curl "http://localhost:11000/action=query&text=' "\!^" 
 alias idolq             'idolquery \!^ | egrep "<autn:(reference|title|numhits)" | $PERL -ne  "s/<autn://; s/<\/autn:.+>//; s/>/\t:/; print"'
 alias irecs             "idolrecs | $PERL $PERL_HOME/xmlformat.pl"
 alias irecsdb           "idolrecs \!^ | $PERL $PERL_HOME/xmlformat.pl"
+alias idolreference	'curl "http://localhost:11000/action=query&text=*&MatchReference=trim:$DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolreferencev	'curl "http://localhost:11000/action=query&Print=All&text=*&MatchReference=trim:$DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolref           idolreference 
+alias idolrefv          idolreferencev 
+
+
 alias removedb          'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
 alias removedocs        'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
+alias dresync		'curl "http://localhost:11001/DRESYNC"'
+alias idolsync 		dresync
+
 alias idologa          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
 alias idologi          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
 alias idologq          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
 
+# IDOL Categories and Auto-Classification
+alias idolcat		'curl "http://localhost:11000/action=CategoryGetDetails&Category=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolcaturi	'curl "http://localhost:11000/action=CategoryFindByFields&Fields=ts_urn&Values=trim:$DBID/pln/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias suggestcategory	'curl "http://localhost:11000/action=categorySuggestfromDocument&DocRef=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolsuggest 	suggestcategory
+
+alias getidolcategoryids 'curl "http://localhost:11000/action=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl '
+
+alias getidolclassifications 'getidolcategoryids | $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"        \\
+| $PERL -ne  ' "' "' chomp;print "ID = $_\n"; print `curl "http://localhost:11000/action=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'"
+
+alias categoryids	'getidolcategoryids | $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"             \\
+| $PERL -ne  ' "' "'                                                                                                                       \\
+chomp;                                                                                                                                     \\
+$ID =  $_;                                                                                                                                 \\
+$input = `curl "http://localhost:11000/action=CategoryGetDetails&Category=$_" --noproxy "*" --silent`;                                     \\
+if($input =~ /<autn:name>(.+)<\/autn:name>/) { print "CATEGORY => $1\n"; }                                                                 \\
+if($input =~ /<autn:ts_urn>trim:..\/pln\/(\d+)<\/autn:ts_urn>/) { print "\tURI : $1\n"; }                                                  \\
+print "\tID  : $ID\n\n";                                                                                                                   \\
+'"'"
+alias catids		categoryids        
+alias idolterms         'curl "http://localhost:11000/action=CategoryGetTNW&Category=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+
+alias idolclassifications  'setenv IDOL_CLS_PARAMS "\!*" && getidolclassifications              \\
+| $PERL $PERL_HOME/xmlformat.pl                                                                 \\
+| $PERL -e ' "' "'                                                                              \\
+                                                                                                \\
+sub printTerms($$){                                                                             \\
+  ($terms,$max) = @_;                                                                           \\
+  $i=1;                                                                                         \\
+  for(@$terms){                                                                                 \\
+    if($i % 5 == 0){ print "\n"; }                                                              \\
+    my $t = $_->{word}.":".$_->{weight};                                                        \\
+    my $sp = " " x ($max - length($t) + 1);                                                     \\
+    print $t.$sp;                                                                               \\
+    $i++;                                                                                       \\
+  }                                                                                             \\
+  print "\n";                                                                                   \\
+}                                                                                               \\
+                                                                                                \\
+my ($currentID,%CLASSES);                                                                       \\
+my $opts = $ENV{'IDOL_CLS_PARAMS'};                                                             \\
+@input = <STDIN>;                                                                               \\
+for($i = 0; $i<$#input; $i++){                                                                  \\
+  $l = $input[$i]; chomp $l;                                                                    \\
+  if($l =~ /^ID = (\d+)$/){ $currentID = $1; next; }                                            \\
+  if($l =~ /<response>SUCCESS<\/response>/){                                                    \\
+    my $name = $input[$i + 3];                                                                  \\
+    my $db = $input[$i + 5];                                                                    \\
+    my $terms = $input[$i + 6];                                                                 \\
+    my $urn = $input[$i + 9];                                                                   \\
+    $name   =~ s/^.*autn:name.(.+).\/autn:name..*$/$1/; chomp $name;                            \\
+    $db     =~ s/^.*autn:databases.(.+).\/autn:databases..*$/$1/; chomp $db;                    \\
+    $terms  =~ s/^.*autn:queryagenttnw.(.+).\/autn:queryagenttnw..*$/$1/; chomp $terms;         \\
+    if($terms =~ /autn:categoryparameters/) { # There are no terms                              \\
+      $terms = 0;                                                                               \\
+      $urn = $input[$i + 8];                                                                    \\
+    }                                                                                           \\
+                                                                                                \\
+    $urn    =~ s/^.*autn:ts_urn.(.+).\/autn:ts_urn..*$/$1/; chomp $urn;                         \\
+    my $longest = 10;                                                                           \\
+    @terms = split(/\]\s+/, $terms);                                                            \\
+    my @new;                                                                                    \\
+                                                                                                \\
+    if($terms){                                                                                 \\
+      for(@terms){                                                                              \\
+        if(/^(.+)~\[(\d+)$/){                                                                   \\
+          ($word,$val) = ($1,$2);                                                               \\
+          my $tmp = "$word:$val";                                                               \\
+          $longest = length($tmp) > $longest ? length($tmp) : $longest;                         \\
+          push @new, { word => $word, weight => $val };                                         \\
+        }                                                                                       \\
+        elsif(/^(.+)~\[(\d+)\]$/){   # Last term in list                                        \\
+          ($word,$val) = ($1,$2);                                                               \\
+          my $tmp = "$word:$val";                                                               \\
+          $longest = length($tmp) > $longest ? length($tmp) : $longest;                         \\
+          push @new, { word => $word, weight => $val };                                         \\
+        }                                                                                       \\
+        else { print "BAD SPLIT : $_\n"; }                                                      \\
+      }                                                                                         \\
+    }                                                                                           \\
+    else { @new = (); }                                                                         \\
+                                                                                                \\
+    if($urn =~ /trim:(..)\/pln\/(\d+)/){                                                        \\
+      $CLASSES{$2} = {                                                                          \\
+         id    => $currentID, uri => $2,   name => $name,  db => $db,                           \\
+         terms => \@new,      urn => $urn, max => $longest                                      \\
+      };                                                                                        \\
+    }                                                                                           \\
+    else{                                                                                       \\
+      print "BAD URN VALUE: $urn\n";                                                            \\
+    }                                                                                           \\
+    $i = $i + 12; # Move to next entry                                                          \\
+  }                                                                                             \\
+}                                                                                               \\
+                                                                                                \\
+# Deal with options                                                                             \\
+if($opts =~ /^all$/i){                                                                          \\
+  for(sort keys %CLASSES){                                                                      \\
+    $i = $CLASSES{$_};                                                                          \\
+    print "ID:".$i->{id}.", URI:".$_ ." => ".$i->{name}."\n";                                   \\
+  }                                                                                             \\
+}                                                                                               \\
+elsif($opts =~ /^\d+$/){                                                                        \\
+  if(exists $CLASSES{$opts}){                                                                   \\
+    $cls = $CLASSES{$opts};                                                                     \\
+    print "=================================================== \n";                             \\
+    print "NAME      : ".$cls->{name}."\n";                                                     \\
+    print "URN (DB)  : ".$cls->{urn}." (".$cls->{db}.")\n";                                     \\
+    print "CAT ID    : ".$cls->{id}."\n";                                                       \\
+    print "TERMS     :\n";                                                                      \\
+    printTerms($cls->{terms},$cls->{max});                                                      \\
+  }                                                                                             \\
+}                                                                                               \\
+elsif($opts =~ /^[\w-\.]+$/){                                                                   \\
+  for(keys %CLASSES){                                                                           \\
+    $cls = $CLASSES{$_};                                                                        \\
+    if($cls->{name} =~ /$opts/i){                                                               \\
+      print "=================================================== \n";                           \\
+      print "URI       : ".$cls->{uri}."\n";                                                    \\
+      print "NAME      : ".$cls->{name}."\n";                                                   \\
+      print "URN (DB)  : ".$cls->{urn}." (".$cls->{db}.")\n";                                   \\
+      print "CAT ID    : ".$cls->{id}."\n";                                                     \\
+      print "TERMS     :\n";                                                                    \\
+      printTerms($cls->{terms},$cls->{max});                                                    \\
+    }                                                                                           \\
+  }                                                                                             \\
+}                                                                                               \\
+                                                                                                \\
+'"'"
+alias idolclass  idolclassifications
+ 
+alias idolhelp      'echo                                                                 \\
+"\n                                                                                       \\
+idolconfig    	: Sets up DBID with suffix 5 and dataset name with suffix '_idol'         \\
+popdbidol       : Runs popdb for above settings                                           \\
+restoreidol     : Restores above database                                                 \\
+                                                                                          \\
+TestTrim Autoclassification                                                               \\
+idol_train      : loads training records for above dataset                                \\
+idol_test       : loads test records data for above dataset                               \\
+idol_both       : loads both above sets                                                   \\
+idol_classify   : Runs classify on records in Holding Bay                                 \\
+                                                                                          \\
+Category commands                                                                         \\
+categoryids 	: Print all category names, URIs and IDs (also 'catids')                  \\
+idolcat <id>    : Get the category with 'id'                                              \\
+idolterms <id>  : Get extended term information with 'id'                                 \\
+idolclass <opt> : Search for categories and print uri, name, urn, database, id and terms  \\
+ 'all'    - show all categories (not all fields)                                          \\
+ 'uri'    - show category matching the 'uri' value                                        \\
+ 'string' - show all categories with names matching the 'string'                          \\
+\n\n"                                                                                     \\
+'
+
+# ------------------------------------------------------------------------------------------------------
+
 # Print a mix of 256 ANSI terminal colours
-alias colours ' $PERL -e ' "' "'                                                                  \\
+alias colours ' $PERL -e ' "' "'                                                                      \\
 $|=1;                                                                                                 \\
 use Term::ANSIColor qw(:constants256 :constants);                                                     \\
 use integer;                                                                                          \\
