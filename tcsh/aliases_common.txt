@@ -230,7 +230,9 @@ set savehist=( $history merge )
 #
 # The following alias should update the .history file after each command
 #
-alias precmd 'history -S; history -M'
+# alias precmd 'history -S; history -M'
+#
+# DISABLING: This changes the recent history for each console which is not really desireable
 
 unset ignoreeof
 set listjobs=long
