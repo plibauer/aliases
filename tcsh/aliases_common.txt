@@ -1733,7 +1733,7 @@ while(<>) {                                                                   \\
         if($srchStr) { next unless /$srchStr/; }                              \\
         if(length($_) >= $width){ push @tooLong, $_; next }                   \\
         $space = " " x ($width - length($_));                                 \\
-        $out .= "$_.$space";                                                  \\
+        $out .= $_.$space;                                                    \\
         ++$i;                                                                 \\
         if($i % $cols == 0){ $out .= "\n"; }                                  \\
      }                                                                        \\
@@ -1817,7 +1817,7 @@ alias elastichelp      'echo                                                    
 											\\
 -- Word statistics ---                                                               	\\
                                                                                         \\
-  getwords   <arg1> <arg2> <arg3>                                                       \\
+  getwords \042id\042  <arg1> <arg2> <arg3>                                             \\
              Print tabulated words using _id from acwordlabels 	                        \\
 											\\
       ARG1  - search string which will be matched against each pair                 	\\
