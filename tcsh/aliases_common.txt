@@ -1797,31 +1797,92 @@ for(sort keys %bytime){                                    \\
 '"'"
 
 alias elastichelp      'echo                                                       	\\
-"\n                                                                                	\\
-mapping        : Show mapping for the default elastic index                        	\\
-acmapping      : Show mapping for the autoclassification index                     	\\
-settings       : Show settings for default index                                   	\\
-acsettings     : Show settings for autoclassification index                        	\\
+"                                                                                	\\
+--- Elastic Index ---                                                                 	\\
+  mapping        : Show mapping for the default elastic index                        	\\
+  espym 'index'  : Show mapping for 'index'                                      	\\
+  settings       : Show settings for default index                                   	\\
+  espys 'index'  : Show settings for 'index'	                                   	\\
+  espyhelp(espyh): See examples of extended espy commands 				\\
 											\\
-Autoclassification index                                                           	\\
-autoclasstypes : Show the different table <types>                                  	\\
-estype <type>  : Query one of the types from the previous command                  	\\
-aclabels       : Print _id, document count, uri and name for all categories/labels 	\\
-acwordlabels   : Print the _id of the word-label-count indexes + label and name    	\\
+--- Autoclassification --- 							        \\
+  acmapping      : Show mapping for the autoclassification index                     	\\
+  acsettings     : Show settings for autoclassification index                        	\\
+  autoclassinfo  : Show a summary of the autoclassification index                     	\\
+  autoclasstypes : Show the different table <types>                                  	\\
+  estype <type>  : Query one of the types from the previous command                  	\\
+  aclabels       : Print _id, document count, uri and name for all categories/labels 	\\
+  acwordlabels   : Print the _id of the word-label-count indexes + label and name    	\\
 											\\
-Get word statistics                                                                	\\
-getwords   <arg1> <arg2> <arg3>                                                         \\
-           Print tabulated words using _id from acwordlabels 	                        \\
+-- Word statistics ---                                                               	\\
+                                                                                        \\
+  getwords   <arg1> <arg2> <arg3>                                                       \\
+             Print tabulated words using _id from acwordlabels 	                        \\
 											\\
-    ARG1  - search string which will be matched against each pair                 	\\
-            Eg. \042^un\042 will only match words beginning with \047un\047             \\
-    ARG2  - number of columns (default 10)                                        	\\
-    ARG3  - size of columns (default 30)                                          	\\
+      ARG1  - search string which will be matched against each pair                 	\\
+              Eg. \042^un\042 will only match words beginning with \047un\047           \\
+      ARG2  - number of columns (default 10)                                        	\\
+      ARG3  - size of columns (default 30)                                          	\\
 											\\
-    If all words should be printed, but you want to change arg2 or arg3, then;    	\\
-    getwords \042^.+\042 8 25   (all words with 8 columns and col width 25)             \\
+  If all words should be printed, but you want to change arg2 or arg3, then;    	\\
+  getwords \042^.+\042 8 25   (all words with 8 columns and col width 25)               \\
+                                                                                        \\
+Manipulate word counts and test classification process                                  \\
+                                                                                        \\
+  espy --ac_modify 9000000018:zubkoff:1                                                 \\
+             Change the word count for \047zubkoff\047 to a value of 1. Changing        \\
+             a value to 0 will remove the word for the given label.                     \\
+                                                                                        \\
+  testtrim --test elastic_auto --inplace --classify --input "hockey science ..." --debug > output.txt \\
+  espy --ac_analyse output.txt                                                          \\
+             With the WGS running, test text input and see how terms are scored.        \\
+             Feed the output into espy to analyse the results                           \\
 \n\n"                                                                              	\\
 '
+
+alias espyhelp      'echo                                                                  \\
+"                                                                                          \\
+  espy           Show all indexes and assign integer value to each index                   \\
+  espy \047index\047   Show info for specific index (can use an integer for \047index\047) \\
+ \\
+  espy s/5/q:a   (long form: search/5/query:all)                                        \\
+                 Search(s) the 5th index and Query(q) All(a)                            \\
+ \\
+  espy s/5/9000000020  (long form: search/5/9000000020)                                 \\
+                 Show document with _id (uri) 9000000020                                \\
+ \\
+  espy s/5       (long form: search/5)                                                  \\
+                 Show top 10 documents for index 5                                      \\
+ \\
+  espy s/5 -s Number:Title                                                              \\
+                 As above but only show Number and Title fields                         \\
+ \\
+  espy s/5 -s Number:Title --compact                                                    \\
+                 As above but remove _index,_score,_source,_type fields                 \\
+ \\
+  espy s/5 -e Document                                                                  \\
+                 Exclude \047Document\047 from the _source properties                   \\
+ \\
+  espy s/cm_m1 --brief --size 100                                                       \\
+                 Get the first 100 documents with 1 entry per line (_id,_sore,Title)    \\
+ \\
+  espy s/cm_m1/query:Notes:\042patterson\042 -s Notes --compact                         \\
+                 Search all \047Notes\047 fields in cm_m1 for the string \047patterson\047 and  \\
+                 limit the output to only the \047Notes\047 field                       \\
+ \\
+  espy s/cm_m1/q:Document.Content:trim -s Document --compact                            \\
+                 Search in the document content field for all occurrences of \047trim\047 \\
+                 and limit the output to only the \047Document.Content\047 field        \\
+ \\
+  espy s/cm_m1/q:Document.Content:trim --brief                                          \\
+                 As above, but just print the matching URIs                             \\
+\n\n"                                                                                   \\
+'
+
+
+
+alias eshelp elastichelp
+alias helpelastic elastichelp
 
 
 ##############################################################################
