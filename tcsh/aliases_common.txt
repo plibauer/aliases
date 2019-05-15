@@ -460,8 +460,22 @@ alias route       "route.exe"
 alias addtrim     "route add 15.0.0.0 MASK 255.0.0.0 \!^ METRIC 26"
 alias netstat     "NETSTAT.EXE"
 alias usingports  "netstat -abn"
-alias usingport   'netstat -ano | grep -w \!^ | grep LISTENING | awk '"'"' {print "ps -Wfp "$5}  '"'"'  | sort | uniq | /bin/sh '
+alias usingport   'netstat -abn | grep -w "\!^ | grep LISTENING | awk '"'"' {print "ps -Wfp "$5}  '"'"'  | sort | uniq | /bin/sh '
 alias usingwgs    usingport 1137 
+
+
+alias usingport   'setenv USINGPORT "\!*" &&  netstat -abn | \\
+$PERL -e '"'"'                                               \\
+  @a=<>;                                                     \\
+  while(@a){                                                 \\
+    $i=shift @a;                                             \\
+    if($i =~ /127.0.0.1:($ENV{USINGPORT}).+LISTENING/){      \\
+      print $i;                                              \\
+      $i = shift @a;                                         \\
+      print $i                                               \\
+    }                                                        \\
+  }                                                          \\
+' "'"
 
 alias x11  "cd /c/cygwin/usr/X11R6/bin"
 #alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
