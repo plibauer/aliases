@@ -72,8 +72,7 @@ set cygtrimdir     = "/$REPOS_ROOT/$folder"$defPatch
 set idolDb         = "$idolDbPrefix$DBID"
 set elasticDefault = `echo "$elasticDbPrefix$DBID" | tr '[A-Z]' '[a-z]'`
 set trimcfgdir     = "$trimdir/trim/SharedTrimServerData/ServerData"
-set currentEnv     = $alias_dir/../"$folder"environment
-
+set currentEnv     = $alias_dir/../"$revision"environment
 
 alias get_title 'xprop -id ${WINDOWID}  | $PERL -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
 alias clear_title 'echo -n "\033]0;xterm\007" '
