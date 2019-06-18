@@ -1925,9 +1925,10 @@ alias irecs             "idolrecs | $PERL $PERL_HOME/xmlformat.pl"
 alias irecsdb           "idolrecs \!^ | $PERL $PERL_HOME/xmlformat.pl"
 alias idolreference	'curl "http://localhost:11000/action=query&text=*&MatchReference=trim:$DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
 alias idolreferencev	'curl "http://localhost:11000/action=query&Print=All&text=*&MatchReference=trim:$DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias idolref           idolreference 
-alias idolrefv          idolreferencev 
-
+alias idolrec           idolreference 
+alias idolrecv          idolreferencev 
+alias idoluri           idolreference 
+alias idolcontent	'curl "http://localhost:11000/a=getcontent&reference=trim:$DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
 
 alias removedb          'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
 alias removedocs        'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
