@@ -19,10 +19,13 @@ set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
 set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
 set STATIC_PY   = $REPOS_ROOT":/TRIMStaticRepo/libs/Python"
 
-set trimdir        = $REPOS_ROOT":/$folder"$defPatch
 set dbDefault      = Test_"$revision"_SqlServer
 set dbDefServer    = $LOCAL_SQLSVR
 set vpnDefault     = BITVISE
+
+if (! $?trimdir) then
+  set trimdir        = $REPOS_ROOT":/$folder"$defPatch
+endif
 
 if (! $?dbSession) then       
   set dbSession   = $dbDefault
@@ -179,6 +182,7 @@ alias dbcurrent echo $dbSession
 alias dbsession "set dbSession = \!^; source $alias_file; settitle"
 alias dbserver  "set dbServer = \!^; source $alias_file; settitle"
 alias setdbid	"set DBID = \!^; source $alias_file; settitle"  
+alias trimdir   "set trimdir = \!^; source $alias_file; settitle"
 alias src       "source $alias_file"
 alias src83     "source $alias_dir/../83environment; dbsession Test_83_SqlServer; "
 alias src90     "source $alias_dir/../90environment; dbsession Test_90_SqlServer; "
@@ -233,7 +237,10 @@ set savehist=( $history merge )
 #
 # DISABLING: This changes the recent history for each console which is not really desireable
 
-unset ignoreeof
+# The following line means "<CNTRL>+D" exits the shell which breaks the usual definition of ending a pipe or input
+# unset ignoreeof
+set ignoreeof=5
+
 set listjobs=long
 set listmaxrows=23
 #set noglob
@@ -599,7 +606,6 @@ alias admininstallhelp 	'echo "\nFrom a cygwin prompt;\n\n\t> admininstall ABC.m
 # SVN
 alias svn            "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
 
-set trimbuild      = $trimdir/build/build
 set trimdoc        = $trimdir/doc/doc/DocPub
 
 alias svnstat         "svn status . -q"
@@ -1665,7 +1671,7 @@ alias escurlhelp            'echo                                               
 "                                                                                       \\
 ' 
 
-alias espy		$PYTHON $PYTHON_HOME/elasticClient/elastic.py --config $PYTHON_HOME/elasticClient/elastic.config
+alias espy		$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config
 alias espya		espy "\!^/all"
 alias espym		espy "\!^/mapping"
 alias espys		espy "\!^/settings"
