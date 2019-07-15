@@ -1604,29 +1604,31 @@ alias command  cygstart cmd.exe
 ##################################################################################
 ########################   ELASTICSEARCH/elasticsearch  ##########################
 
+alias vielastic			"vi $CLOUD_DIR/Work/Elastic/elastic.txt; scrub $CLOUD_DIR/Work/Elastic/elastic.txt"
+alias vies				vielastic
 alias esinstall         "$ELASTIC_HOME/bin/elasticsearch-service.bat install"
-alias esstart		"$ELASTIC_HOME/bin/elasticsearch-service.bat start"
+alias esstart			"$ELASTIC_HOME/bin/elasticsearch-service.bat start"
 alias esdemo            "$ELASTIC_HOME/bin/elasticsearch.bat"
-alias esstop		"$ELASTIC_HOME/bin/elasticsearch-service.bat stop"
+alias esstop			"$ELASTIC_HOME/bin/elasticsearch-service.bat stop"
 alias esremove	        "$ELASTIC_HOME/bin/elasticsearch-service.bat remove"
-alias esmanage		"$ELASTIC_HOME/bin/elasticsearch-service.bat manager"
-alias esconfig		"cat $ELASTIC_HOME/config/elasticsearch.yml"
+alias esmanage			"$ELASTIC_HOME/bin/elasticsearch-service.bat manager"
+alias esconfig			"cat $ELASTIC_HOME/config/elasticsearch.yml"
 alias goes              "cd $ELASTIC_HOME"
 alias kibana            "$KIBANA_HOME/bin/kibana.bat && settitle2str KIBANA"
 alias kibanaconfig      "cat $KIBANA_HOME/config/kibana.yml"
 alias gokibana          "cd $KIBANA_HOME"
-alias kibanaup		usingport 5601
-alias elasticup		usingport 9200
+alias kibanaup			usingport 5601
+alias elasticup			usingport 9200
 alias elasticstatus     "elasticup; kibanaup"
-alias gologstash	"cd $LOGSTASH_HOME"
-alias gobeats		"cd $BEATS_HOME"
-alias esget		'curl -XGET "http://localhost:9200/\!^?pretty=true"'
-alias esgetraw		'curl -XGET "http://localhost:9200/\!^"'
-alias esgetexplain	'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
-alias esgetaliases	'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
-alias esgetindexes	$PYTHON "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
+alias gologstash		"cd $LOGSTASH_HOME"
+alias gobeats			"cd $BEATS_HOME"
+alias esget				'curl -XGET "http://localhost:9200/\!^?pretty=true"'
+alias esgetraw			'curl -XGET "http://localhost:9200/\!^"'
+alias esgetexplain		'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
+alias esgetaliases		'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
+alias esgetindexes		$PYTHON "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
 alias getindexes        esgetindexes
-alias curlindexes	'curl -XGET "http://localhost:9200/_cat/indices" | grep -v "open \."'
+alias curlindexes		'curl -XGET "http://localhost:9200/_cat/indices" | grep -v "open \."'
 alias setelasticservice  set elastic_service_name = `sc query type= service state= all | perl -ne " if (/^SERVICE_NAME: (elasticsearch-service.+)/i){ s/^SERVICE_NAME: //; s/\n//; print; } "`
 alias startelasticsvc  	'setelasticservice  && sc start $elastic_service_name'
 alias stopelasticsvc	'setelasticservice  && sc stop $elastic_service_name'
