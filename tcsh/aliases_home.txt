@@ -1,21 +1,9 @@
 set path = ( $CYG_WIN_HOME/Work/Perl/bin  $path:q )
 
-# PYTHON
-alias pyconda3 "E:/Miniconda3/python.exe"
-alias conda3  "E:/Miniconda3/Scripts/conda.exe"
-alias activate3 "E:/Miniconda3/Scripts/activate"
-
-# Configure the TaskManager .bat files used for syncing SVN depending 
-# on whether we are using VPN or Bitvise
-
-#echo "$TORTOISE_SVNSYNC_EXE sync $SVN_LAB_FILE $SVN_LAB_URI" > $SVN_LAB_PATH\\Sync.bat
-#echo "$TORTOISE_SVNSYNC_EXE sync $SVN_STATIC_FILE $SVN_STATIC_URI" > $SVN_STATIC_PATH\\Sync.bat
-
-alias vlc 	    "/c/Program\ Files/VideoLAN/VLC/vlc.exe"
 alias router		"telnet 10.11.12.1"
 
-set bitviseRdpDir = "C:\\Users\\plibauer\\Dropbox\\Network\\RemoteDesktop\\VPN"
-set pulseRdpDir = "C:\\Users\\plibauer\\Dropbox\\Network\\RemoteDesktop\\Work"
+set bitviseRdpDir = "$CLOUD_DIR\\Network\\RemoteDesktop\\VPN"
+set pulseRdpDir = "$CLOUD_DIR\\Network\\RemoteDesktop\\Work"
 
 if (! $?vpnConfig) then
   set RDP_DIR = $bitviseRdpDir
@@ -30,53 +18,19 @@ endif
 
 #if ("$vpnConfig" == "BITVISE") then
 #  cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today
-#  cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.bitvise" /c/Windows/System32/drivers/etc
+#  cp "$CLOUD_DIR/Network/vpn/hosts.bitvise" /c/Windows/System32/drivers/etc
 #else
 #  cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today
-#  cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.pulse" /c/Windows/System32/drivers/etc
+#  cp "$CLOUD_DIR/Network/vpn/hosts.pulse" /c/Windows/System32/drivers/etc
 #endif
 
 
 set RDWIKI_BAK = "D:/BACKUP-MASTER/RDWIKI-BACKUP/RDWiki/data/pages/wiki"
 set WIKIWEB = "C:/LightTPD/htdocs/dokuwiki/data/pages/wiki"
 
-#
-#  THESE aliases are now in the main aliases file
-#
-#alias grepjd          ' ls $RDWIKI_DIR/data/pages/wiki/paul_libauer/journals/*/*                                        \\
-#| /bin/perl -e '"'"'                                                                                                    \\
-#%m = (jan,"01",feb,"02",mar,"03",apr,"04",may,"05",jun,"06",jul,"07",aug,"08",sep,"09","oct",10,nov,11,dec,12);         \\
-#my $match=join "|", keys %m;                                                                                            \\
-#    while(<>){                                                                                                          \\
-#      chomp;                                                                                                            \\
-#      if(/($match).*(\d\d\d\d).txt$/){                                                                                  \\
-#        $mon=$m{$1};                                                                                                    \\
-#        $y=$2;                                                                                                          \\
-#        $ordered{"$y$mon"} = $_;                                                                                        \\
-#      }                                                                                                                 \\
-#    }                                                                                                                   \\
-#   for(sort {$b<=>$a} keys %ordered){                                                                                   \\
-#     print "$ordered{$_}\n";                                                                                            \\
-#   }                                                                                                                    \\
-# '"'"
-#alias search          "grep -i \!^ `grepjd` | perl -ne 's|^.+/data/pages/wiki/paul_libauer/journals||; print'"
-#
-#alias vj              ' echo -n "<$RDWIKI_DIR> \!*" | /bin/perl -ne  '"'"'                                                    \\
-#     /^<(.+)> ([A-z]+)\s*(\d+)*/ and do { ($path,$m,$y) = ($1,$2,$3) };                                                       \\
-#     foreach("january","february","march","april","may","june","july","august","september","october","november","december"){  \\
-#         if($_ =~ /^$m/i) { $month = $_; last; }                                                                              \\
-#     }                                                                                                                        \\
-#     if($y =~ /^\d{2}$/) { $y = "20".$y };                                                                                    \\
-#     if($y !~ /^\d{4}$/) { print "BAD YEAR: $y\n"; exit }                                                                     \\
-#     $file = "$path/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                             \\
-#     if(not -e $file) { print "File $file doesnt exist?\n"; exit; }                                                           \\
-#     print "cat $path/data/pages/wiki/paul_libauer/journals/$y/$month$y.txt";                                           \\
-# ' "' "' | /bin/sh | vim -R - '
-
 alias syncjournal "Robocopy.exe $WIKI_DIR/ $WIKIWEB/paul_libauer /MIR /R:0"
 alias backupwiki  "Robocopy.exe $WIKI_DIR/ $RDWIKI_BAK/paul_libauer /MIR /R:0"
 alias startwiki	  "cd C:/LightTPD; ./LightTPD.exe -D -f conf/lighttpd.conf &"
-
 
 
 ####################################################################################

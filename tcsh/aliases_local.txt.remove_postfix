@@ -57,7 +57,8 @@ set ALM_DB           = E:/ALM_Data
 set PROXY            = http://$PROXY_SERVER
 set HTTPS_PROXY      = https://$PROXY_SERVER
 set WIX_DIR          = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
-set WIKI_DIR         = $WIN_HOME/Dropbox/Work/Wiki/paul_libauer
+set CLOUD_DIR		 = $WIN_HOME/CLOUD
+set WIKI_DIR         = $CLOUD/Work/Wiki/paul_libauer
 set JOURNAL_DIR      = $WIN_HOME/Dropbox/Personal/journals
 
 # ElasticSearch

@@ -107,10 +107,10 @@ endif
 
 set Today = `date -I`
 alias backupHostFile  "cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today"
-alias cpPulseConfig   'cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.pulse" /c/Windows/System32/drivers/etc/hosts'
-alias cpBitviseConfig 'cp "$WINHOME/Dropbox/Work/Network Configuration/hosts.bitvise" /c/Windows/System32/drivers/etc/hosts'
-alias pulsehosts	'cat "$WINHOME/Dropbox/Work/Network Configuration/hosts.pulse"'
-alias vpnhosts	        'cat "$WINHOME/Dropbox/Work/Network Configuration/hosts.bitvise"'
+alias cpPulseConfig   'cp "$CLOUD_DIR/Network/vpn/hosts.pulse" /c/Windows/System32/drivers/etc/hosts'
+alias cpBitviseConfig 'cp "$CLOUD_DIR/Network/vpn/hosts.bitvise" /c/Windows/System32/drivers/etc/hosts'
+alias pulsehosts	'cat "$CLOUD_DIR/Network/vpn/hosts.pulse"'
+alias vpnhosts	        'cat "$CLOUD_DIR/Network/vpn/hosts.bitvise"'
 
 
 ######################################################################################
@@ -303,7 +303,7 @@ alias gowikij         "cd $WIKI_DIR"
 alias goproj          "cd $WIKI_DIR/projects"
 alias vijournal       "vi $WIKI_DIR/journal.txt; scrub $WIKI_DIR/journal.txt"
 alias vip             "vi $JOURNAL_DIR/DIARY.txt; scrub $JOURNAL_DIR/DIARY.txt"
-alias tasks	      "vi $WIN_HOME/DropBox/Work/TASKS.txt"
+alias tasks	          "vi $CLOUD_DIR/Work/TASKS.txt"
 alias haihai	      "vi $JOURNAL_DIR/HaiHaiTransfers.txt"
 
 alias grepjd          ' ls $WIKI_DIR/journals/*/*                                                                       \\
@@ -437,28 +437,28 @@ alias godox              "cd $trimdir/xtra/Doxygen/runDoxygen"
 alias gosmoke            "cd $trimdir/Automation/Smoketest"
 alias goperl             "cd $STATIC_PERL"
 alias gopython           "cd $PYTHON_HOME"
-alias gopy		 gopython
+alias gopy		         gopython
 alias gop                "cd $PERL_HOME"
 alias goalm              "cd $ALM_DB"
 alias gosvn              "cd $SVN_LAB_DB"
 alias gosvnstat          "cd $SVN_STATIC_DB"
 alias gosetup            "cd $trimdir/trim/wix/Setup.exe"
-alias gostatic 		 "cd $STATIC_REPO"
+alias gostatic 		     "cd $STATIC_REPO"
 alias gowix              "cd $trimdir/trim/wix"
 alias gowixbin           "cd $WIX_DIR/bin"
 alias gopatch            "cd $trimdir/trim/wix/PatchGenerator"
 alias gowin              "cd $WIN_HOME"
-alias godesktop		 "cd $WIN_HOME/Desktop"
-alias desktop		 godesktop
+alias godesktop		     "cd $WIN_HOME/Desktop"
+alias desktop		     godesktop
 alias gowork             "cd $WINHOME/Work"
 alias goworkh            "cd $WINHOME/Work/HPIT"
 alias goserverdata       "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
 alias godownloads        "cd $WIN_HOME/Downloads"
 alias goroam             "cd $WIN_HOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
-alias godropbox		 "cd $WIN_HOME/DropBox"
-alias godrop		 godropbox
+alias godropbox		     "cd $WIN_HOME/DropBox"
+alias godrop		     godropbox
 alias godropp            "cd $WIN_HOME/DropBox/Software/Scripts/Perl"
-alias golocallog	 "cd $WIN_HOME/AppData/Local/Hewlett-Packard/HP\ TRIM/$DBID/Log"
+alias golocallog	     "cd $WIN_HOME/AppData/Local/Hewlett-Packard/HP\ TRIM/$DBID/Log"
 
 alias wixcopy     "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace       "tracert"
