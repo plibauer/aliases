@@ -69,6 +69,11 @@ if (! $?DBID) then
 
     endif
   endif
+
+  # If DBID still not set, make it something
+  if (! $?DBID) then
+    set DBID = $default_dbid
+  endif
 endif
 
 set cygtrimdir     = "/$REPOS_ROOT/$folder"$defPatch
