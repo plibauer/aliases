@@ -1622,8 +1622,8 @@ alias elasticup			usingport 9200
 alias elasticstatus     "elasticup; kibanaup"
 alias gologstash		"cd $LOGSTASH_HOME"
 alias gobeats			"cd $BEATS_HOME"
-alias esget				'curl -XGET "http://localhost:9200/\!^?pretty=true"'
-alias esgetraw			'curl -XGET "http://localhost:9200/\!^"'
+alias esget				'curl -XGET "http://localhost:9200/\!^"'
+alias esgetp			'curl -XGET "http://localhost:9200/\!^?pretty=true"'
 alias esgetexplain		'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
 alias esgetaliases		'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
 alias esgetindexes		$PYTHON "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"
