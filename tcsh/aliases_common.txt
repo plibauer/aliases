@@ -1972,7 +1972,9 @@ alias idolterms                'curl "$DEVURL=CategoryGetTNW&Category=\!^" --nop
 alias idolcatdelete			   'curl "$DEVURL=CategoryDelete&Category=\!^" --noproxy "*" --silent | \\
                                $PERL $PERL_HOME/xmlformat.pl'
 alias idolcatdel			   idolcatdelete
-
+alias idolcathierarchy		   'curl "$DEVURL=CategoryGetHierDetails&Category=\!^" --noproxy "*" --silent | \\
+                               $PERL $PERL_HOME/xmlformat.pl'
+alias idolcathier			   idolcathierarchy
 alias idolclassifications      'setenv IDOL_DEV_URL $DEVURL && idolcategoryids |                                        \\
                                 $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"  |     \\
                                 $PERL -ne  ' "' "' chomp;print "ID = $_\n";                                             \\
@@ -2110,12 +2112,13 @@ idol_both       : loads both above sets                                         
 idol_classify   : Runs classify on records in Holding Bay                                      \\
                                                                                                \\
 Category commands                                                                              \\
-idolcatids  	     : Print all category IDs                                                  \\
-idolcaturis  	     : Print all category names, URIs and IDs                                  \\
-idolcat <id>         : Get the category with 'id'                                              \\
-idolterms <id>       : Get extended term information with 'id'                                 \\
-idolcatdel(ete) <id> : Delete the category with 'id'                                           \\
-idolclass <opt>      : Search for categories and print uri, name, urn, database, id and terms  \\
+idolcatids  	        : Print all category IDs                                                  \\
+idolcaturis  	        : Print all category names, URIs and IDs                                  \\
+idolcat <id>            : Get the category with 'id'                                              \\
+idolterms <id>          : Get extended term information with 'id'                                 \\
+idolcatdel(ete) <id>    : Delete the category with 'id'                                           \\
+idolcathier(archy) <id> : Get the hierarchy details for 'id'                                      \\
+idolclass <opt>         : Search for categories and print uri, name, urn, database, id and terms  \\
  'all'    - show all categories (not all fields)                                               \\
  'uri'    - show category matching the 'uri' value                                             \\
  'string' - show all categories with names matching the 'string'                               \\
