@@ -1952,30 +1952,44 @@ alias idologa          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/applica
 alias idologi          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
 alias idologq          "tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
 
+############################################
 # IDOL Categories and Auto-Classification
-alias idolcat		'curl "http://localhost:11000/action=CategoryGetDetails&Category=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias idolcaturi	'curl "http://localhost:11000/action=CategoryFindByFields&Fields=ts_urn&Values=trim:$DBID/pln/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias suggestcategory	'curl "http://localhost:11000/action=categorySuggestfromDocument&DocRef=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias idolsuggest 	suggestcategory
+############################################
 
-alias getidolcategoryids 'curl "http://localhost:11000/action=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl '
+set DEVURL = http://localhost:11000/action
 
-alias getidolclassifications 'getidolcategoryids | $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"        \\
-| $PERL -ne  ' "' "' chomp;print "ID = $_\n"; print `curl "http://localhost:11000/action=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'"
+alias idolcat		           'curl "$DEVURL=CategoryGetDetails&Category=\!^" --noproxy "*" --silent | \\
+                               $PERL $PERL_HOME/xmlformat.pl'
+alias idolcaturi	           'curl "$DEVURL=CategoryFindByFields&Fields=ts_urn&Values=trim:$DBID/pln/\!^" --noproxy "*" --silent | \\
+                               $PERL $PERL_HOME/xmlformat.pl'
+alias idolsuggest	           'curl "$DEVURL=categorySuggestfromDocument&DocRef=\!^" --noproxy "*" --silent | \\
+                               $PERL $PERL_HOME/xmlformat.pl'
+alias idolcategoryids          'curl "$DEVURL=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent | \\
+                               $PERL $PERL_HOME/xmlformat.pl '
+alias idolcatids	           idolcategoryids        
+alias idolterms                'curl "$DEVURL=CategoryGetTNW&Category=\!^" --noproxy "*" --silent | \\
+                               $PERL $PERL_HOME/xmlformat.pl'
+alias idolcatdelete			   'curl "$DEVURL=CategoryDelete&Category=\!^" --noproxy "*" --silent | \\
+                               $PERL $PERL_HOME/xmlformat.pl'
+alias idolcatdel			   idolcatdelete
 
-alias categoryids	'getidolcategoryids | $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"             \\
-| $PERL -ne  ' "' "'                                                                                                                       \\
-chomp;                                                                                                                                     \\
-$ID =  $_;                                                                                                                                 \\
-$input = `curl "http://localhost:11000/action=CategoryGetDetails&Category=$_" --noproxy "*" --silent`;                                     \\
-if($input =~ /<autn:name>(.+)<\/autn:name>/) { print "CATEGORY => $1\n"; }                                                                 \\
-if($input =~ /<autn:ts_urn>trim:..\/pln\/(\d+)<\/autn:ts_urn>/) { print "\tURI : $1\n"; }                                                  \\
-print "\tID  : $ID\n\n";                                                                                                                   \\
+alias idolclassifications      'setenv IDOL_DEV_URL $DEVURL && idolcategoryids |                                        \\
+                                $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"  |     \\
+                                $PERL -ne  ' "' "' chomp;print "ID = $_\n";                                             \\
+                                print `curl "$ENV{'IDOL_DEV_URL'}=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'"
+
+alias idolcaturis	           'setenv IDOL_DEV_URL $DEVURL && idolcategoryids |                                        \\
+                               $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"         \\
+| $PERL -ne  ' "' "'                                                                                                    \\
+chomp;                                                                                                                  \\
+$ID =  $_;                                                                                                              \\
+$input = `curl "$ENV{'IDOL_DEV_URL'}=CategoryGetDetails&Category=$_" --noproxy "*" --silent`;                           \\
+if($input =~ /<autn:name>(.+)<\/autn:name>/) { print "CATEGORY => $1\n"; }                                              \\
+if($input =~ /<autn:ts_urn>trim:..\/pln\/(\d+)<\/autn:ts_urn>/) { print "\tURI : $1\n"; }                               \\
+print "\tID  : $ID\n\n";                                                                                                \\
 '"'"
-alias catids		categoryids        
-alias idolterms         'curl "http://localhost:11000/action=CategoryGetTNW&Category=\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
 
-alias idolclassifications  'setenv IDOL_CLS_PARAMS "\!*" && getidolclassifications              \\
+alias idolclass               'setenv IDOL_CLS_PARAMS "\!*" && idolclassifications              \\
 | $PERL $PERL_HOME/xmlformat.pl                                                                 \\
 | $PERL -e ' "' "'                                                                              \\
                                                                                                 \\
@@ -2082,29 +2096,30 @@ elsif($opts =~ /^[\w-\.]+$/){                                                   
 }                                                                                               \\
                                                                                                 \\
 '"'"
-alias idolclass  idolclassifications
  
-alias idolhelp      'echo                                                                 \\
-"\n                                                                                       \\
-idolconfig    	: Sets up DBID with suffix 5 and dataset name with suffix '_idol'         \\
-popdbidol       : Runs popdb for above settings                                           \\
-restoreidol     : Restores above database                                                 \\
-                                                                                          \\
-TestTrim Autoclassification                                                               \\
-idol_train      : loads training records for above dataset                                \\
-idol_test       : loads test records data for above dataset                               \\
-idol_both       : loads both above sets                                                   \\
-idol_classify   : Runs classify on records in Holding Bay                                 \\
-                                                                                          \\
-Category commands                                                                         \\
-categoryids 	: Print all category names, URIs and IDs (also 'catids')                  \\
-idolcat <id>    : Get the category with 'id'                                              \\
-idolterms <id>  : Get extended term information with 'id'                                 \\
-idolclass <opt> : Search for categories and print uri, name, urn, database, id and terms  \\
- 'all'    - show all categories (not all fields)                                          \\
- 'uri'    - show category matching the 'uri' value                                        \\
- 'string' - show all categories with names matching the 'string'                          \\
-\n\n"                                                                                     \\
+alias idolhelp      'echo                                                                      \\
+"\n                                                                                            \\
+idolconfig    	: Sets up DBID with suffix 5 and dataset name with suffix '_idol'              \\
+popdbidol       : Runs popdb for above settings                                                \\
+restoreidol     : Restores above database                                                      \\
+                                                                                               \\
+TestTrim Autoclassification                                                                    \\
+idol_train      : loads training records for above dataset                                     \\
+idol_test       : loads test records data for above dataset                                    \\
+idol_both       : loads both above sets                                                        \\
+idol_classify   : Runs classify on records in Holding Bay                                      \\
+                                                                                               \\
+Category commands                                                                              \\
+idolcatids  	     : Print all category IDs                                                  \\
+idolcaturis  	     : Print all category names, URIs and IDs                                  \\
+idolcat <id>         : Get the category with 'id'                                              \\
+idolterms <id>       : Get extended term information with 'id'                                 \\
+idolcatdel(ete) <id> : Delete the category with 'id'                                           \\
+idolclass <opt>      : Search for categories and print uri, name, urn, database, id and terms  \\
+ 'all'    - show all categories (not all fields)                                               \\
+ 'uri'    - show category matching the 'uri' value                                             \\
+ 'string' - show all categories with names matching the 'string'                               \\
+\n\n"                                                                                          \\
 '
 
 # ------------------------------------------------------------------------------------------------------
