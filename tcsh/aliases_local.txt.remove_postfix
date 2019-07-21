@@ -22,7 +22,7 @@ endif
 set TORTOISE_SVNSYNC_EXE = \"C:/Program\ Files/TortoiseSVN/bin/svnsync.exe\"
 
 
-set REPOS_ROOT       = E
+set REPOS_ROOT       = E:
 set LOCAL_SQLSVR     = *********
 set LOCAL_SVN_LAB    = svn://localhost
 set LOCAL_SVN_STATIC = svn://localhost:5000

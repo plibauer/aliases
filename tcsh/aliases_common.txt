@@ -15,16 +15,16 @@ set path = ( "/c/program files/TortoiseSVN/bin" $PERL_PATH $PYTHON_PATH $PYTHON_
 #mount --change-cygdrive-prefix /
 
 
-set STATIC_REPO = $REPOS_ROOT":/TRIMStaticRepo"
-set STATIC_PERL = $REPOS_ROOT":/TRIMStaticRepo/libs/Perl"
-set STATIC_PY   = $REPOS_ROOT":/TRIMStaticRepo/libs/Python"
+set STATIC_REPO = $REPOS_ROOT"/TRIMStaticRepo"
+set STATIC_PERL = $REPOS_ROOT"/TRIMStaticRepo/libs/Perl"
+set STATIC_PY   = $REPOS_ROOT"/TRIMStaticRepo/libs/Python"
 
 set dbDefault      = Test_"$revision"_SqlServer
 set dbDefServer    = $LOCAL_SQLSVR
 set vpnDefault     = BITVISE
 
 if (! $?trimdir) then
-  set trimdir        = $REPOS_ROOT":/$folder"$defPatch
+  set trimdir        = $REPOS_ROOT"/$folder"$defPatch
 endif
 
 if (! $?dbSession) then       
@@ -832,7 +832,7 @@ alias makedocotrunk 'mkdir -p $SVNBASE/doc/doc; cd -p $SVNBASE/doc/doc; svn co $
 #
 # -------------------- PATCHING aliases --------------------------
 #
-set SVNBASE = $REPOS_ROOT':'/$folder
+set SVNBASE = $REPOS_ROOT/$folder
 alias infowc    'svn info "\!^" --show-item wc-root --no-newline'
 alias inforev   'svn info "\!^" --show-item revision --no-newline'
 alias infotrunk	'infowc "$SVNBASE"; echo -n "\t\t => @revision "; inforev "$SVNBASE"'
@@ -2183,9 +2183,9 @@ alias isx64	"dumpbin /headers \!^ | grep -i machine"
 alias isx86	isx64
 alias bintype	isx64
 alias touchcopy  "touch $trimdir/trim/src/CopyFiles/CopyFiles.cpp"
-set buildLog       = "${REPOS_ROOT}:/TEMP/TRIM-$folder$defPatch-$defArch-$defBuild.log"
-set buildLogCSharp = "${REPOS_ROOT}:/TEMP/TRIMCSharp-$folder$defPatch-$defArch-$defBuild.log"
-set buildLogWix    = "${REPOS_ROOT}:/TEMP/WIX-$folder$defPatch-$defArch-$defBuild.log"
+set buildLog       = "${REPOS_ROOT}/TEMP/TRIM-$folder$defPatch-$defArch-$defBuild.log"
+set buildLogCSharp = "${REPOS_ROOT}/TEMP/TRIMCSharp-$folder$defPatch-$defArch-$defBuild.log"
+set buildLogWix    = "${REPOS_ROOT}/TEMP/WIX-$folder$defPatch-$defArch-$defBuild.log"
 set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
 
 alias ramdisk         "$trimdir/trim/scripts/createRamDisk.cmd"
