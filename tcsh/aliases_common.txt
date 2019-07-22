@@ -2105,6 +2105,7 @@ alias idolhelp      'echo                                                       
 idolconfig    	: Sets up DBID with suffix 5 and dataset name with suffix '_idol'              \\
 popdbidol       : Runs popdb for above settings                                                \\
 restoreidol     : Restores above database                                                      \\
+idoluri <uri>   : Print content and fields for record with URI <uri>                           \\
                                                                                                \\
 TestTrim Autoclassification                                                                    \\
 idol_train      : loads training records for above dataset                                     \\
