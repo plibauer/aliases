@@ -1979,6 +1979,7 @@ alias idolterms                'curl "$DEVURL=CategoryGetTNW&Category=\!^" --nop
 alias idolcatdelete			   'curl "$DEVURL=CategoryDelete&Category=\!^" --noproxy "*" --silent | \\
                                $PERL $PERL_HOME/xmlformat.pl'
 alias idolcatdel			   idolcatdelete
+alias idolcatdelete_all		   idolcatdel 0
 alias idolcathierarchy		   'curl "$DEVURL=CategoryGetHierDetails&Category=\!^" --noproxy "*" --silent | \\
                                $PERL $PERL_HOME/xmlformat.pl'
 alias idolcathier			   idolcathierarchy
@@ -2125,6 +2126,7 @@ idolcaturis  	        : Print all category names, URIs and IDs                  
 idolcat <id>            : Get the category with 'id'                                              \\
 idolterms <id>          : Get extended term information with 'id'                                 \\
 idolcatdel(ete) <id>    : Delete the category with 'id'                                           \\
+idolcatdelete_all       : Delete all categories                                                   \\
 idolcathier(archy) <id> : Get the hierarchy details for 'id'                                      \\
 idolclass <opt>         : Search for categories and print uri, name, urn, database, id and terms  \\
  'all'    - show all categories (not all fields)                                               \\
