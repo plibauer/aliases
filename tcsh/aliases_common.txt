@@ -1102,18 +1102,24 @@ alias sn "$svexe"
 alias signSDK 		"cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
 
 # Run populate database
-alias populatedb 	"cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
-alias popdb 		populatedb
-alias restorepopdb 	popdb --load
-alias reloadpopdb 	restorepopdb
-alias popdboracle 	popdb --db oracle64
-alias popdbhelp		populatedb -h
+alias populatedb 		"cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
+alias popdb 			populatedb
+alias popdbhelp			populatedb -h
+alias restorepopdb 		popdb --load
+alias reloadpopdb 		restorepopdb
+alias elasticconfig		"setdbid $DBID; dbsession $dbDefault"
 alias restoreelastic  	restorepopdb
+
+alias popdboracle 		popdb --db oracle64
+
 alias popdbidol         "populatedb --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"; bkupidolcfg"
-alias idolconfig	"setdbid $default_dbid_pref"5"; dbsession $dbDefault"_idol""
-alias elasticconfig	"setdbid $DBID; dbsession $dbDefault"
-alias restoreidol	"populatedb --load --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"" 
-alias reloadidol	restoreidol
+alias idolconfig		"setdbid $default_dbid_pref"5"; dbsession $dbDefault"_idol""
+alias restoreidol		"populatedb --load --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"" 
+alias reloadidol		restoreidol
+
+alias popdbbig			popdb --big
+alias restorebig		"popdb --load --dbid 41 --dbname Test_Big_"$revision"_SqlServer"
+
 alias testac            "testtrim --test autoclassification"
 alias elk_train         testac --load train 
 alias elk_test          testac --load test --inplace
@@ -1123,6 +1129,7 @@ alias elastic_train	elk_train
 alias elastic_test	elk_test
 alias elastic_both	elk_both
 alias elastic_classify	elk_classify
+
 alias idol_train	"testac --load train --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
 alias idol_test  	"testac --load test --inplace --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
 alias idol_both         "testac --load both --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol""
@@ -1132,7 +1139,6 @@ alias getp    		'echo $PATH | $PERL -ne '"'"'  for( split /:/ ){ print "$_\n" } 
 alias getpath 		"$PERL $PERL_HOME/getPath.pl"
 alias sysinfo 		"systeminfo | $PERL -ne  'print unless /^\s+\[\d+\]/'"
 alias uptime  		"systeminfo | pgrep -i 'boot time'"
-
 
 # Compile a script to an executable using Strawberry Perl's version of pp
 alias perlcompile   "pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o "
