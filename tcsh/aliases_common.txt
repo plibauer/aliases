@@ -308,7 +308,7 @@ alias gowikij         "cd $WIKI_DIR"
 alias goproj          "cd $WIKI_DIR/projects"
 alias vijournal       "vi $WIKI_DIR/journal.txt; scrub $WIKI_DIR/journal.txt"
 alias vip             "vi $JOURNAL_DIR/DIARY.txt; scrub $JOURNAL_DIR/DIARY.txt"
-alias tasks	          "vi $CLOUD_DIR/Work/TASKS.txt"
+alias todo	          "vi $CLOUD_DIR/Work/TODO.txt; scrub $CLOUD_DIR/Work/TODO.txt"
 alias haihai	      "vi $JOURNAL_DIR/HaiHaiTransfers.txt"
 
 alias grepjd          ' ls $WIKI_DIR/journals/*/*                                                                       \\
