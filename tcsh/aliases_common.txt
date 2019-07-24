@@ -1655,6 +1655,7 @@ alias contents          'curlcontents \!^ | $PERL -ne '"'"' \\
     }                                                      \\
   }  '"'"
 
+alias escontentsrch		'curl -XGET "http://localhost:9200/$elasticDefault/_search?q=(Document.Content:\!^)&pretty=true"'
 alias esgetall          esgetindexes
 alias esstats           esget _stats
 alias getsettings       esget "\!^/_settings"
@@ -1829,16 +1830,17 @@ for(sort keys %bytime){                                    \\
                                                            \\
 '"'"
 
-alias elastichelp      'echo                                                       	\\
-"                                                                                	\\
+alias elastichelp      'echo                                                       	    \\
+"                                                                                	    \\
 --- Elastic Index ---                                                                 	\\
   mapping        : Show mapping for the default elastic index                        	\\
-  espym 'index'  : Show mapping for 'index'                                      	\\
+  espym 'index'  : Show mapping for 'index'                                      	    \\
   settings       : Show settings for default index                                   	\\
-  espys 'index'  : Show settings for 'index'	                                   	\\
-  espyhelp(espyh): See examples of extended espy commands 				\\
-											\\
---- Autoclassification --- 							        \\
+  espys 'index'  : Show settings for 'index'	                                   	    \\
+  espyhelp(espyh): See examples of extended espy commands 				                \\
+  escontentsrch  : Search using curl for a specific term in Document.Content            \\
+											                                            \\
+--- Autoclassification --- 							                                    \\
   acmapping      : Show mapping for the autoclassification index                     	\\
   acsettings     : Show settings for autoclassification index                        	\\
   autoclassinfo  : Show a summary of the autoclassification index                     	\\
@@ -1846,18 +1848,18 @@ alias elastichelp      'echo                                                    
   estype <type>  : Query one of the types from the previous command                  	\\
   aclabels       : Print _id, document count, uri and name for all categories/labels 	\\
   acwordlabels   : Print the _id of the word-label-count indexes + label and name    	\\
-											\\
+											                                            \\
 -- Word statistics ---                                                               	\\
                                                                                         \\
   getwords \042id\042  <arg1> <arg2> <arg3>                                             \\
              Print tabulated words using _id from acwordlabels 	                        \\
-											\\
+											                                            \\
       ARG1  - search string which will be matched against each pair                 	\\
               Eg. \042^un\042 will only match words beginning with \047un\047           \\
       ARG2  - number of columns (default 10)                                        	\\
       ARG3  - size of columns (default 30)                                          	\\
-											\\
-  If all words should be printed, but you want to change arg2 or arg3, then;    	\\
+											                                            \\
+  If all words should be printed, but you want to change arg2 or arg3, then;    	    \\
   getwords \042^.+\042 8 25   (all words with 8 columns and col width 25)               \\
                                                                                         \\
 Manipulate word counts and test classification process                                  \\
@@ -1870,8 +1872,8 @@ Manipulate word counts and test classification process                          
   espy --ac_modify 9000000018:zubkoff:1                                                 \\
              Change the word count for \047zubkoff\047 to a value of 1. Changing        \\
              a value to 0 will remove the word for the given label.                     \\
-                                                                                 	\\
-"                                                                                	\\
+                                                                                 	    \\
+"                                                                                    	\\
 '
 
 alias espyhelp      'echo                                                                  \\
