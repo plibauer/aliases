@@ -1933,7 +1933,7 @@ alias idolc1cfg         "more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\
 alias editidolc1cfg     "vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
 
 alias idolcurl          'curl -XGET "http://localhost:11000/\!^" --noproxy "*" --silent'
-alias idolrecs          'curl -XGET "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=" "\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolrecs          'curl -XGET "http://localhost:11000/action=query&text=*&databasematch='$idolDb'&MaxResults=""\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
 alias idolrecsall       'curl -XGET "http://localhost:11000/action=query&text=*&databasematch=' "$idolDb" '&MaxResults=1000000" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
 alias idolrecsdb        'curl -XGET "http://localhost:11000/action=query&text=*&databasematch=' "\!^" '&MaxResults=999" --noproxy "*" --silent'
 alias idolstatus        'curl -XGET "http://localhost:11000/action=GetStatus" --noproxy "*" --silent' | $PERL $PERL_HOME/xmlformat.pl
@@ -1969,7 +1969,9 @@ alias idolcat		           'curl "$DEVURL=CategoryGetDetails&Category=\!^" --nopr
                                $PERL $PERL_HOME/xmlformat.pl'
 alias idolcaturi	           'curl "$DEVURL=CategoryFindByFields&Fields=ts_urn&Values=trim:$DBID/pln/\!^" --noproxy "*" --silent | \\
                                $PERL $PERL_HOME/xmlformat.pl'
-alias idolsuggest	           'curl "$DEVURL=categorySuggestfromDocument&DocRef=\!^" --noproxy "*" --silent | \\
+alias idoltraining			   'curl "$DEVURL=CategoryGetTraining&Category=\!^" --noproxy "*" --silent | \\
+							   $PERL $PERL_HOME/xmlformat.pl'
+alias idolsuggesturi	       'curl "$DEVURL=categorySuggestfromDocument&DocRef=trim:$DBID/rec/\!^" --noproxy "*" --silent | \\
                                $PERL $PERL_HOME/xmlformat.pl'
 alias idolcategoryids          'curl "$DEVURL=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent | \\
                                $PERL $PERL_HOME/xmlformat.pl '
@@ -2124,6 +2126,8 @@ Category commands                                                               
 idolcatids  	        : Print all category IDs                                                  \\
 idolcaturis  	        : Print all category names, URIs and IDs                                  \\
 idolcat <id>            : Get the category with 'id'                                              \\
+idolsuggesturi <uri>    : Suggest a category for the document with uri <uri>                      \\
+idoltraining <id>       : Get the data that has been used to train the category                   \\
 idolterms <id>          : Get extended term information with 'id'                                 \\
 idolcatdel(ete) <id>    : Delete the category with 'id'                                           \\
 idolcatdelete_all       : Delete all categories                                                   \\
