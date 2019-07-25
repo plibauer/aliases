@@ -506,7 +506,7 @@ alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent
 "processing  buffered events|\\
 No events waiting at workgroup" '
 
-alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* | head -1 |  $PERL -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
+alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent_$DBID* | head -1 |  $PERL -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
 alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  $PERL -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
 
 alias refresh "C:/sysinternals/Bginfo.exe"
