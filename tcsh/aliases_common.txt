@@ -23,86 +23,78 @@ set dbDefault      = Test_"$revision"_SqlServer
 set dbDefServer    = $LOCAL_SQLSVR
 set vpnDefault     = BITVISE
 
-if (! $?trimdir) then
-  set trimdir        = $REPOS_ROOT"/$folder"$defPatch
+if (! $?var_trimDir) then
+  set var_trimDir        = $REPOS_ROOT"/$folder"$defPatch
 endif
 
-if (! $?dbSession) then       
-  set dbSession   = $dbDefault
+if (! $?var_dbSession) then       
+  set var_dbSession   = $dbDefault
 else
-  if ("$dbSession" == "")  then
-     set dbSession   = $dbDefault
+  if ("$var_dbSession" == "")  then
+     set var_dbSession   = $dbDefault
   endif
 endif
 
-if (! $?dbServer) then       
-  set dbServer   = $dbDefServer
+if (! $?var_dbServer) then       
+  set var_dbServer   = $dbDefServer
 else
-  if ("$dbServer" == "")  then
-     set dbServer   = $dbDefServer
+  if ("$var_dbServer" == "")  then
+     set var_dbServer   = $dbDefServer
   endif
 endif
 
-if (! $?vpnConfig) then       
-  set vpnConfig   = $vpnDefault
+if (! $?var_vpnConfig) then       
+  set var_vpnConfig   = $vpnDefault
 else
-  if ("$vpnConfig" == "")  then
-     set vpnConfig   = $vpnDefault
+  if ("$var_vpnConfig" == "")  then
+     set var_vpnConfig   = $vpnDefault
   endif
 endif
 
 
 #  Need to define this early so we can look up the dataset ID
-alias dbpl        "$PERL $STATIC_PERL/db/db.pl --server $dbServer --database $dbSession"
+alias dbpl        "$PERL $STATIC_PERL/db/db.pl --server $var_dbServer --database $var_dbSession"
 alias dbid        "dbpl --get_dbid"
 
 # If DBID already set, don't change it
-if (! $?DBID) then
-  if ("$LOCAL_SQLSVR" == "$dbServer") then
+if (! $?var_DBID) then
+  if ("$LOCAL_SQLSVR" == "$var_dbServer") then
 
     # Make sure the StaticRepo is available 
     if (! -d $STATIC_PERL) then
       echo "WARNING: $STATIC_PERL not found!"
-      set DBID = $default_dbid
+      set var_DBID = $default_dbid
     else
-      set DBID = `dbid`
+      set var_DBID = `dbid`
 
     endif
   endif
 
   # If DBID still not set, make it something
-  if (! $?DBID) then
-    set DBID = $default_dbid
+  if (! $?var_DBID) then
+    set var_DBID = $default_dbid
   endif
 endif
 
 set cygtrimdir     = "/$REPOS_ROOT/$folder"$defPatch
-set idolDb         = "$idolDbPrefix$DBID"
-set elasticDefault = `echo "$elasticDbPrefix$DBID" | tr '[A-Z]' '[a-z]'`
-set trimcfgdir     = "$trimdir/trim/SharedTrimServerData/ServerData"
+set idolDb         = "$idolDbPrefix$var_DBID"
+set elasticDefault = `echo "$elasticDbPrefix$var_DBID" | tr '[A-Z]' '[a-z]'`
+set trimcfgdir     = "$var_trimDir/trim/SharedTrimServerData/ServerData"
 set currentEnv     = $alias_dir/../"$revision"environment
 
 alias get_title 'xprop -id ${WINDOWID}  | $PERL -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
 alias clear_title 'echo -n "\033]0;xterm\007" '
 alias xterm_title   'echo -n "\033]0;\!^\007" '
-#alias settitle 'echo -n "${WINDOWID}\t${trimdir}\t${defArch}\t${defBuild}\t${DBID}" |  $PERL -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
+#alias settitle 'echo -n "${WINDOWID}\t${var_trimDir}\t${defArch}\t${defBuild}\t${var_DBID}" |  $PERL -ne ' "'" ' chomp; @in = split /\t/; @out = `xprop -id $in[0]`;  for(@out){/^WM_NAME.+=\s+\"(.*)\"$/ and do {$N=$1};} $N=~ s/\s+REL.+ARCH.+BUILD.+DBID.+$//; system("echo","-n","\033]0;$N         REL=$in[1], ARCH=$in[2], BUILD=$in[3], DBID=$in[4]\007");          ' "'"
 
-alias settitle    'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}, DBSESSION=${dbSession}, DBSERVER=${dbServer}, VPN=${vpnConfig}\007"'
-alias settitledir 'echo -ne "\033]0;         REL=${trimdir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${DBID}    `/bin/pwd`\007"'
+alias settitle    'echo -ne "\033]0;         REL=${var_trimDir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${var_DBID}, DBSESSION=${var_dbSession}, DBSERVER=${var_dbServer}, VPN=${var_vpnConfig}\007"'
+alias settitledir 'echo -ne "\033]0;         REL=${var_trimDir} ARCH=${defArch}, BUILD=${defBuild}, DBID=${var_DBID}    `/bin/pwd`\007"'
 alias settitle2str 'echo -ne "\033]0; \!^ \007"'
 
 # Allow a different standard path for devenv.exe
 if ("$DEVENV_ROOT" == "") then
   set DEVENV_ROOT = "C:/Program Files (x86)"
 endif
-
-#if ($defCompiler == "VS2010" && $DBID == "C1") then
-#    if ($defArch == "x86") then
-#        set defArch = "x86_2010"; settitle
-#    else
-#        set defArch = "x64_2010"; settitle
-#    endif
-#endif
 
 set defArchCSharp = "AnyCPU"
 if ($defCompiler == "VS2008") then
@@ -122,14 +114,14 @@ alias vpnhosts	        'cat "$CLOUD_DIR/Network/vpn/hosts.bitvise"'
 #  EXAMPLE ALIASES USING ADVANCED METHODS
 #
 #  1. Reference an environment variable, pass to inline perl script which reads an
-#     argument from the command line ($DBID in this case)
+#     argument from the command line ($var_DBID in this case)
 
 alias example_1 '$PERL -e  ' "'" '                    \\
      $p = "\"".$ENV{LOCALAPPDATA};                   \\
      $p =~ s|\\|/|g;                                 \\
      $p .= "/Hewlett-Packard/HP TRIM/$ARGV[0]/Log\""; \\
      print "$p\n"                                    \\
-'"'  $DBID  " 
+'"'  $var_DBID  " 
 
 
 
@@ -176,43 +168,41 @@ alias x86  	"set defArch = x86; source $alias_file; settitle"
 alias x64  	"set defArch = x64; source $alias_file; settitle"
 alias debug  	"set defBuild = Debug; source $alias_file; settitle"
 alias release  	"set defBuild = Release; source $alias_file; settitle"
-alias rtm       "set defPatch = _RTM; set defBuild = Release; source $alias_file; settitle"
-alias hf1       "set defPatch = _HF1; set defBuild = Release; source $alias_file; settitle"
-alias hf2       "set defPatch = _HF2; set defBuild = Release; source $alias_file; settitle"
-alias p1        "set defPatch = _P1; set defBuild = Release; source $alias_file; settitle"
-alias p2        "set defPatch = _P2; set defBuild = Release; source $alias_file; settitle"
-alias dbdefault "unset dbSession; unset dbServer; unset DBID; source $alias_file; settitle"
+
+alias dbdefault "unset var_dbSession; unset var_dbServer; unset var_DBID; source $alias_file; settitle"
 alias defaultconfig dbdefault 
-alias dbcurrent echo $dbSession
-alias dbsession "set dbSession = \!^; source $alias_file; settitle"
-alias dbserver  "set dbServer = \!^; source $alias_file; settitle"
-alias setdbid	"set DBID = \!^; source $alias_file; settitle"  
-alias trimdir   "set trimdir = \!^; source $alias_file; settitle"
+alias dbcurrent echo $var_dbSession
+alias dbsession "set var_dbSession = \!^; source $alias_file; settitle"
+alias dbserver  "set var_dbServer = \!^; source $alias_file; settitle"
+alias setdbid	"set var_DBID = \!^; source $alias_file; settitle"  
+alias trimdir   "set var_trimDir = \!^; source $alias_file; settitle"
+
 alias src       "source $alias_file"
-alias src83     "source $alias_dir/../83environment; dbsession Test_83_SqlServer; "
-alias src90     "source $alias_dir/../90environment; dbsession Test_90_SqlServer; "
-alias src91     "source $alias_dir/../91environment; dbsession Test_91_SqlServer; "
-alias src92     "source $alias_dir/../92environment; dbsession Test_92_SqlServer; "
-alias src93     "source $alias_dir/../93environment; dbsession Test_93_SqlServer; "
-alias src94     "source $alias_dir/../94environment; dbsession $dbDefault; "
+alias src83     "source $alias_dir/../83environment"
+alias src90     "source $alias_dir/../90environment"
+alias src91     "source $alias_dir/../91environment"
+alias src92     "source $alias_dir/../92environment"
+alias src93     "source $alias_dir/../93environment"
+alias src94     "source $alias_dir/../94environment"
 alias srctrunk  src94
-alias bitvise	"set vpnConfig = BITVISE; source $alias_file; source $alias_dir/aliases_home.txt; backupHostFile; cpBitviseConfig; settitle"
-alias pulse	"set vpnConfig = PULSE; source $alias_file; source $alias_dir/aliases_home.txt; backupHostFile; cpPulseConfig; settitle"
-alias whichenv  "echo 'TRIMDIR   = $trimdir';             \\
+
+alias bitvise	"set var_vpnConfig = BITVISE; source $alias_file; source $alias_dir/aliases_home.txt; backupHostFile; cpBitviseConfig; settitle"
+alias pulse	"set var_vpnConfig = PULSE; source $alias_file; source $alias_dir/aliases_home.txt; backupHostFile; cpPulseConfig; settitle"
+alias whichenv  "echo 'TRIMDIR   = $var_trimDir';             \\
                  echo 'ARCH      = $defArch';             \\
                  echo 'BUILD     = $defBuild';            \\
                  echo 'FOLDER    = $folder';              \\
                  echo 'REVISION  = $revision';            \\
-                 echo 'DBID      = $DBID';                \\
-                 echo 'DBSession = $dbSession';           \\
-                 echo 'DBServer  = $dbServer';            \\
+                 echo 'DBID      = $var_DBID';                \\
+                 echo 'DBSession = $var_dbSession';           \\
+                 echo 'DBServer  = $var_dbServer';            \\
                  echo 'IDOLDB    = $idolDb';              \\
                  echo 'SVNLOGDB  = $SVN_STATIC_DB';       \\
                  echo 'ELASTIC   = $elasticDefault';      \\
-                 echo 'VPN       = $vpnConfig';           \\
+                 echo 'VPN       = $var_vpnConfig';           \\
 "
 alias showenv  whichenv
-alias trimversion "cat $trimdir/trim/wix/version.wxi | grep -i 'version ='"
+alias trimversion "cat $var_trimDir/trim/wix/version.wxi | grep -i 'version ='"
 set trimcfg = "$trimcfgdir/TRIMconfig.tcfg"
 alias hosts		"cat C:/Windows/System32/drivers/etc/hosts"
 alias vhosts		"vi C:/Windows/System32/drivers/etc/hosts"
@@ -409,37 +399,37 @@ alias more less -R
 
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
-alias goa		 cd ~/aliases
+alias goa		 		 cd ~/aliases
 alias gocfg              "cd $trimcfgdir"
-alias godoc		 "cd $trimdir/doc/doc/DocPub"
-alias goexe              "cd $trimdir/$defArch/$defBuild"
+alias godoc		 		 "cd $var_trimDir/doc/doc/DocPub"
+alias goexe              "cd $var_trimDir/$defArch/$defBuild"
 alias gobin              goexe
-alias gocs               "cd $trimdir/$defArchCSharp/$defBuild"
+alias gocs               "cd $var_trimDir/$defArchCSharp/$defBuild"
 alias goany              gocs
 alias goanycpu           gocs
-alias gomsi              "cd $trimdir/msi/$defArch/en-us"
-alias gotest             "cd $trimdir/trim/test"
-alias goauto             "cd $trimdir/Automation"
-alias gosrc              "cd $trimdir/trim/src"
-alias gocsharp           "cd $trimdir/trim/CSharp"
-alias gosln              "cd $trimdir/trim/sln"
-alias gotrim             "cd $trimdir/trim"
-alias gotrimlog          "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
+alias gomsi              "cd $var_trimDir/msi/$defArch/en-us"
+alias gotest             "cd $var_trimDir/trim/test"
+alias goauto             "cd $var_trimDir/Automation"
+alias gosrc              "cd $var_trimDir/trim/src"
+alias gocsharp           "cd $var_trimDir/trim/CSharp"
+alias gosln              "cd $var_trimDir/trim/sln"
+alias gotrim             "cd $var_trimDir/trim"
+alias gotrimlog          "cd $var_trimDir/$defArch/$defBuild/ServerLocalData/Log"
 alias gotrimdslog        "cd $WINHOME/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
-alias gotrimconfig       "cd $trimdir/trim/SharedTrimServerData/ServerData"
-alias gotrimlocalconfig  "cd $WINHOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM/$DBID/Configuration"
-alias golocal		 gotrimlocalconfig
-alias goauto             "cd $trimdir/Automation"
+alias gotrimconfig       "cd $var_trimDir/trim/SharedTrimServerData/ServerData"
+alias gotrimlocalconfig  "cd $WINHOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM/$var_DBID/Configuration"
+alias golocal		     gotrimlocalconfig
+alias goauto             "cd $var_trimDir/Automation"
 alias gobulk             "cd $STATIC_REPO/TestData/BulkLoader/TestCases"
 alias goblk              gobulk
-alias gob                "cd $trimdir/trim/CSharp/TRIMBulkLoader"
-alias golog              "cd $trimdir/$defArch/$defBuild/ServerLocalData/Log"
+alias gob                "cd $var_trimDir/trim/CSharp/TRIMBulkLoader"
+alias golog              "cd $var_trimDir/$defArch/$defBuild/ServerLocalData/Log"
 alias gologs             golog
-alias goaudit            "cd $trimdir/$defArch/$defBuild/ServerData/$DBID/AuditLogs"
+alias goaudit            "cd $var_trimDir/$defArch/$defBuild/ServerData/$var_DBID/AuditLogs"
 alias shlog              showlog
 alias gotmp              "cd /c/tmp"
-alias godox              "cd $trimdir/xtra/Doxygen/runDoxygen"
-alias gosmoke            "cd $trimdir/Automation/Smoketest"
+alias godox              "cd $var_trimDir/xtra/Doxygen/runDoxygen"
+alias gosmoke            "cd $var_trimDir/Automation/Smoketest"
 alias goperl             "cd $STATIC_PERL"
 alias gopython           "cd $PYTHON_HOME"
 alias gopy		         gopython
@@ -447,11 +437,11 @@ alias gop                "cd $PERL_HOME"
 alias goalm              "cd $ALM_DB"
 alias gosvn              "cd $SVN_LAB_DB"
 alias gosvnstat          "cd $SVN_STATIC_DB"
-alias gosetup            "cd $trimdir/trim/wix/Setup.exe"
+alias gosetup            "cd $var_trimDir/trim/wix/Setup.exe"
 alias gostatic 		     "cd $STATIC_REPO"
-alias gowix              "cd $trimdir/trim/wix"
+alias gowix              "cd $var_trimDir/trim/wix"
 alias gowixbin           "cd $WIX_DIR/bin"
-alias gopatch            "cd $trimdir/trim/wix/PatchGenerator"
+alias gopatch            "cd $var_trimDir/trim/wix/PatchGenerator"
 alias gowin              "cd $WIN_HOME"
 alias godesktop		     "cd $WIN_HOME/Desktop"
 alias desktop		     godesktop
@@ -463,9 +453,9 @@ alias goroam             "cd $WIN_HOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
 alias godropbox		     "cd $WIN_HOME/DropBox"
 alias godrop		     godropbox
 alias godropp            "cd $WIN_HOME/DropBox/Software/Scripts/Perl"
-alias golocallog	     "cd $WIN_HOME/AppData/Local/Hewlett-Packard/HP\ TRIM/$DBID/Log"
+alias golocallog	     "cd $WIN_HOME/AppData/Local/Hewlett-Packard/HP\ TRIM/$var_DBID/Log"
 
-alias wixcopy     "$trimdir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
+alias wixcopy     "$var_trimDir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
 alias trace       "tracert"
 alias route       "route.exe"
 alias addtrim     "route add 15.0.0.0 MASK 255.0.0.0 \!^ METRIC 26"
@@ -492,13 +482,13 @@ alias x11  "cd /c/cygwin/usr/X11R6/bin"
 #alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
 alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
 alias logs "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
-alias rmlogs "rm $trimdir/$defArch/$defBuild/ServerLocalData/Log/*.log"
-alias rmlogsboth "rm $trimdir/$defArch/{Debug,Release}/ServerLocalData/Log/*.log"
+alias rmlogs "rm $var_trimDir/$defArch/$defBuild/ServerLocalData/Log/*.log"
+alias rmlogsboth "rm $var_trimDir/$defArch/{Debug,Release}/ServerLocalData/Log/*.log"
 alias rmlogslocal "golocallog; rm -f *.log; back"
  
 alias evlog_clean "cat \!^ | grep -v 'No events waiting at workgroup' | grep -v 'processing  buffered events' > event_log.clean"
 
-alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* \\
+alias evlogfilt 'ls -t $var_trimDir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent* \\
  | head -1                                                                        \\
  | $PERL -ne '"'"' chomp; print "tail -f $_";  ' "' "'                             \\
  | /bin/sh                                                                        \\
@@ -506,16 +496,16 @@ alias evlogfilt 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent
 "processing  buffered events|\\
 No events waiting at workgroup" '
 
-alias evlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent_$DBID* | head -1 |  $PERL -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
-alias idxlog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/IDX_$DBID* | head -1 |  $PERL -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
+alias evlog 'ls -t $var_trimDir/$defArch/$defBuild/ServerLocalData/Log/TRIMEvent_$var_DBID* | head -1 |  $PERL -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh '
+alias idxlog 'ls -t $var_trimDir/$defArch/$defBuild/ServerLocalData/Log/IDX_$var_DBID* | head -1 |  $PERL -ne '"'"' chomp; print "tail -f $_";  ' "' "' | /bin/sh  '
 
 alias refresh "C:/sysinternals/Bginfo.exe"
 
 alias ff            "find . -name "
 alias ifind         'find . -iname \!^\* '
 alias findwild      'find . -iname \*\!^\*'
-alias pfind2k8      "$PERL $PERL_HOME/find_project_files.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
-alias pfind         "$PERL $PERL_HOME/find_project_files.vs2010.pl -s $trimdir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias pfind2k8      "$PERL $PERL_HOME/find_project_files.pl -s $var_trimDir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias pfind         "$PERL $PERL_HOME/find_project_files.vs2010.pl -s $var_trimDir/trim/sln/TRIM/$defArch/TRIM.sln"
 alias projfind      pfind
 alias pf pfind
 alias pgrep          "grep --perl-regexp"
@@ -527,14 +517,14 @@ alias grepunicodei  '$PERL -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", s
 alias grepuni       grepunicodei
 #
 #
-alias messages      'cat $trimdir/trim/TRIMMessages.txt | pgrep -i '
-alias trimmessages  "$trimdir/trim/TRIMMessages.exe"
-alias properties    'cat $trimdir/trim/src/DD/properties.txt | pgrep -i '
-alias viewprop      'view $trimdir/trim/src/DD/properties.txt'
-alias propids       'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | pgrep -i '
-alias propidx       'cat $trimdir/trim/src/Core/PRPpropertyFind.cpp | pgrep -i '
+alias messages      'cat $var_trimDir/trim/TRIMMessages.txt | pgrep -i '
+alias trimmessages  "$var_trimDir/trim/TRIMMessages.exe"
+alias properties    'cat $var_trimDir/trim/src/DD/properties.txt | pgrep -i '
+alias viewprop      'view $var_trimDir/trim/src/DD/properties.txt'
+alias propids       'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | pgrep -i '
+alias propidx       'cat $var_trimDir/trim/src/Core/PRPpropertyFind.cpp | pgrep -i '
 
-alias enums         'cat $trimdir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs  \\
+alias enums         'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs  \\
 | $PERL -e ' "'" '                                                             \\
 while(<>){                                                                    \\
   if(/^\s*(\w+)\s*=\s*(\d+)\s*,/){                                            \\
@@ -556,9 +546,9 @@ for my $i (0 .. $max) {                                                       \\
 }                                                                             \\
 ' "'"
 
-alias database      'cat $trimdir/trim/src/DD/DATABASE.TXT | pgrep -i '
-alias viewdb        'view $trimdir/trim/src/DD/DATABASE.TXT'
-alias trimtables    'cat $trimdir/trim/src/DD/DATABASE.TXT                    \\
+alias database      'cat $var_trimDir/trim/src/DD/DATABASE.TXT | pgrep -i '
+alias viewdb        'view $var_trimDir/trim/src/DD/DATABASE.TXT'
+alias trimtables    'cat $var_trimDir/trim/src/DD/DATABASE.TXT                    \\
 | $PERL -e ' "'" '                                                             \\
 @in = <>;                                                                     \\
 my %tables;                                                                   \\
@@ -611,14 +601,14 @@ alias admininstallhelp 	'echo "\nFrom a cygwin prompt;\n\n\t> admininstall ABC.m
 # SVN
 alias svn            "/c/Program\ Files/TortoiseSVN/bin/svn.exe"
 
-set trimdoc        = $trimdir/doc/doc/DocPub
+set trimdoc        = $var_trimDir/doc/doc/DocPub
 
 alias svnstat         "svn status . -q"
-alias svnstatus       "svn info $trimdir | $PERL -ne 'print if /^Path|^URL:|^\n/;' "
-alias svnstatusfull   "svn info $trimdir | $PERL -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
+alias svnstatus       "svn info $var_trimDir | $PERL -ne 'print if /^Path|^URL:|^\n/;' "
+alias svnstatusfull   "svn info $var_trimDir | $PERL -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
 alias svninfo	      svnstatusfull
 
-alias svnup           "svn update $trimdir; date; svn update $trimdir/doc/doc/DocPub;"
+alias svnup           "svn update $var_trimDir; date; svn update $var_trimDir/doc/doc/DocPub;"
 alias svnupr	      "mainlocal; svnup; localmain"
 alias svnstatic       "svn update $STATIC_REPO"
 alias svnstaticr      "staticlocal; svnstatic; localstatic"
@@ -644,9 +634,9 @@ alias showlatestmore  svnlatestmore
 alias svnlatestx      'svn log -l \!^ -v'
 alias latest          svnlatest
 alias latestx         svnlatestx
-alias trimhead        "svn log $trimdir -r HEAD:1 --limit 1 --verbose"
-alias trimlatest      "svn log $trimdir -r HEAD:1 --limit 10"
-alias trimlatestv     "svn log $trimdir -r HEAD:1 --limit 10 --verbose"
+alias trimhead        "svn log $var_trimDir -r HEAD:1 --limit 1 --verbose"
+alias trimlatest      "svn log $var_trimDir -r HEAD:1 --limit 10"
+alias trimlatestv     "svn log $var_trimDir -r HEAD:1 --limit 10 --verbose"
 
 alias svnrepoinfo     'cat $SVN_LAB_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
 alias svnrepoinfostat 'cat $SVN_STATIC_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
@@ -844,9 +834,9 @@ alias infop2	'infowc "$SVNBASE"_P2; echo -n "\t => @revision "; inforev "$SVNBAS
 alias infoall   "infotrunk; echo; infortm; echo; infohf1; echo; infohf2; echo; infop1; echo; infop2; echo"
 alias allinfo   infoall
 
-alias patchgen   	"$trimdir/$defArchCSharp/$defBuild/PatchGenerator.exe &"
+alias patchgen   	"$var_trimDir/$defArchCSharp/$defBuild/PatchGenerator.exe &"
 alias patch      	patchgen
-alias msipcs		"$trimdir/$defArchCSharp/$defBuild/MsiProperties.exe"
+alias msipcs		"$var_trimDir/$defArchCSharp/$defBuild/MsiProperties.exe"
 alias pcodes    	msipcs
 alias productcodes 	msipcs
 alias findcomp	        "$PERL $STATIC_PERL/WIX/findComponentRefs.pl -d $SVNBASE"
@@ -886,21 +876,21 @@ alias robosyncall "robosync F:/83 E:/83; robosync F:/83_RTM E:/83_RTM; robosync 
 #  Show the current build version for a branch or set
 #  or manipulate the build number
 #
-alias buildver  "$PERL $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $trimdir" 
+alias buildver  "$PERL $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $var_trimDir" 
 alias bver      '$PERL $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $SVNBASE"\!^"' 
 alias bvers     '$PERL $STATIC_PERL/WIX/buildVersion.pl --show --compact --no_repos --root $SVNBASE"\!^"' 
 alias allvers   'bver ""; bver _RTM; bver _HF1; bver _HF2; bver _P1; bver _P2' 
 alias versall   allvers
 
-alias incrbuild "$PERL $STATIC_PERL/WIX/buildVersion.pl $trimdir"
-alias ihotfix   "$PERL $STATIC_PERL/WIX/buildVersion.pl --hotfix $trimdir"
-alias decrbuild "$PERL $STATIC_PERL/WIX/buildVersion.pl --decrement $trimdir"
-alias dhotfix   "$PERL $STATIC_PERL/WIX/buildVersion.pl --hotfix --decrement $trimdir"
-alias setbuild  "$PERL $STATIC_PERL/WIX/buildVersion.pl --build \!^ $trimdir"
-alias showbuild "$PERL $STATIC_PERL/WIX/buildVersion.pl --show $trimdir"
+alias incrbuild "$PERL $STATIC_PERL/WIX/buildVersion.pl $var_trimDir"
+alias ihotfix   "$PERL $STATIC_PERL/WIX/buildVersion.pl --hotfix $var_trimDir"
+alias decrbuild "$PERL $STATIC_PERL/WIX/buildVersion.pl --decrement $var_trimDir"
+alias dhotfix   "$PERL $STATIC_PERL/WIX/buildVersion.pl --hotfix --decrement $var_trimDir"
+alias setbuild  "$PERL $STATIC_PERL/WIX/buildVersion.pl --build \!^ $var_trimDir"
+alias showbuild "$PERL $STATIC_PERL/WIX/buildVersion.pl --show $var_trimDir"
 alias buildversion showbuild
 
-alias revert    "$PERL $STATIC_PERL/WIX/buildVersion.pl --revert $trimdir"
+alias revert    "$PERL $STATIC_PERL/WIX/buildVersion.pl --revert $var_trimDir"
 alias revbld    '$PERL $STATIC_PERL/WIX/buildVersion.pl --revert --root $SVNBASE"\!^"'
 alias revertall 'revbld _RTM; revbld _HF1; revbld _HF2; revbld _P1; revbld _P2'
 #
@@ -955,12 +945,12 @@ alias makeshortcutst scutsallt
 #
 # -----------------------------------------------------------------
 #
-alias mainlocal  ' echo `svn info $trimdir | pgrep "URL: http"` "AA" $LOCAL_SVN_LAB "BB" $trimdir  \\
+alias mainlocal  ' echo `svn info $var_trimDir | pgrep "URL: http"` "AA" $LOCAL_SVN_LAB "BB" $var_trimDir  \\
  | $PERL -ne ' "' "'                                                                    \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");   \\
  '"'"
 
-alias localmain  ' echo `svn info $trimdir | pgrep "URL: svn"` "AA" $SVN_LAB_FILE "BB" $trimdir  \\
+alias localmain  ' echo `svn info $var_trimDir | pgrep "URL: svn"` "AA" $SVN_LAB_FILE "BB" $var_trimDir  \\
  | $PERL -ne ' "' "'                                                                      \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/ and system("svn","relocate","$1","$2","$3");     \\
       exit;                                                                                   \\
@@ -1064,9 +1054,9 @@ if ($revision > 81) then
     set bulkloader = TRIMBulkLoader.exe 
 endif
 
-alias bulk              "$trimdir/$defArchCSharp/$defBuild/$bulkloader"
+alias bulk              "$var_trimDir/$defArchCSharp/$defBuild/$bulkloader"
 alias bulkloader        bulk
-alias b                 bulk -db $DBID
+alias b                 bulk -db $var_DBID
 alias origins           b -get "'*'"
 alias orgget            b -get '\!^'
 alias orgrun            b -run '\!^'
@@ -1077,18 +1067,18 @@ alias formatdat         $PERL $STATIC_PERL/misc/formatBulkLoaderDatFiles.pl --pr
 alias formatblk         formatdat
 alias parsedat          formatdat
 
-alias tes        "$trimdir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
-alias trim       "$trimdir/$defArch/$defBuild/TRIM.exe &"
-alias trimhelp   "hh $trimdir/doc/doc/DocPub/TRIM.chm &"
+alias tes        "$var_trimDir/$defArch/$defBuild/TRIMEnterpriseStudio.exe &"
+alias trim       "$var_trimDir/$defArch/$defBuild/TRIM.exe &"
+alias trimhelp   "hh $var_trimDir/doc/doc/DocPub/TRIM.chm &"
 alias msihelp    "hh $WIX_DIR/doc/msi.chm &"
 alias wixhelp    "hh $WIX_DIR/doc/WiX.chm &"
 alias dtfhelp    "hh $WIX_DIR/doc/DTF.chm &"
 alias dtfapihelp "hh $WIX_DIR/doc/DTFAPI.chm &"
-alias wgs        "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe &"
-alias wgsnoevent "$trimdir/$defArch/$defBuild/TRIMWorkgroup.exe --noEvent &"
-alias trimevent  "$trimdir/$defArch/$defBuild/TRIMEvent --dbid \!^ --wgsId 001 --wgsPort 1137 &"
-alias trimeventlocal  "$trimdir/$defArch/$defBuild/TRIMEvent --dbid $DBID --wgsId 001 --wgsPort 1137 &"
-alias trimds     "$trimdir/$defArchCSharp/$defBuild/TrimDS.exe &"
+alias wgs        "$var_trimDir/$defArch/$defBuild/TRIMWorkgroup.exe &"
+alias wgsnoevent "$var_trimDir/$defArch/$defBuild/TRIMWorkgroup.exe --noEvent &"
+alias trimevent  "$var_trimDir/$defArch/$defBuild/TRIMEvent --dbid \!^ --wgsId 001 --wgsPort 1137 &"
+alias trimeventlocal  "$var_trimDir/$defArch/$defBuild/TRIMEvent --dbid $var_DBID --wgsId 001 --wgsPort 1137 &"
+alias trimds     "$var_trimDir/$defArchCSharp/$defBuild/TrimDS.exe &"
 alias killtrim   "$STATIC_REPO/tools/build/killtrim.exe"
 alias nuke       "gosln;./NukeSolutions.bat"
 alias gensln     "gosln;./GenerateSolutions.bat"
@@ -1099,15 +1089,15 @@ alias nukeandgen "nuke;gensln"
 
 set svexe = "/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
 alias sn "$svexe"
-alias signSDK 		"cd $trimdir/trim/src/SDKNet; $svexe -R $trimdir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
+alias signSDK 		"cd $var_trimDir/trim/src/SDKNet; $svexe -R $var_trimDir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
 
 # Run populate database
-alias populatedb 		"cd $trimdir; $trimdir/$defArch/$defBuild/PopulateDatabase.exe"
+alias populatedb 		"cd $var_trimDir; $var_trimDir/$defArch/$defBuild/PopulateDatabase.exe"
 alias popdb 			populatedb
 alias popdbhelp			populatedb -h
 alias restorepopdb 		popdb --load
 alias reloadpopdb 		restorepopdb
-alias elasticconfig		"setdbid $DBID; dbsession $dbDefault"
+alias elasticconfig		"setdbid $var_DBID; dbsession $dbDefault"
 alias restoreelastic  	restorepopdb
 
 alias popdboracle 		popdb --db oracle64
@@ -1160,15 +1150,15 @@ alias trimcfgxml       "$PERL $PERL_HOME/xmlformat.pl $trimcfg | $PYTHON $PYTHON
 alias shconf           trimconfig
 alias shconfig         trimconfig
 alias showconf         trimconfig
-alias restoreconfig    "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg $trimcfgdir"
+alias restoreconfig    "cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg $trimcfgdir"
 alias goconfig         gocfg
 alias xmltrim          "$PERL xmlformat.pl $trimcfg"
 alias getconfig        "more $trimcfg"
 alias fixtrimconfig    "$PERL $PERL_HOME/xmlformat.pl -i -b .backup $trimcfg"
-alias bkupidolcfg      "cp $trimcfg /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.IDOL"
-alias bkupelasticcfg   "cp $trimcfg /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.ELASTIC"
-alias idolcfg          "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.IDOL $trimcfg"
-alias elasticcfg       "cp /c/TestDatasets/$DBID/backup/TRIMConfig.tcfg.ELASTIC $trimcfg"
+alias bkupidolcfg      "cp $trimcfg /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.IDOL"
+alias bkupelasticcfg   "cp $trimcfg /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC"
+alias idolcfg          "cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.IDOL $trimcfg"
+alias elasticcfg       "cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC $trimcfg"
 alias whichcfg	       'cat $trimcfg | $PERL -e ' "'" '  \\
 while (<>) {                                     \\
   if ($_ =~ /ElasticUrl>(.*)<\/Elastic/) {       \\
@@ -1200,7 +1190,7 @@ alias dbhelp      'echo                                                         
 \t dbsession <value>    : sets the database to run against                         \\
 \t dbserver  <value>    : sets the database instance to use                        \\
 \t db        <options>  : general db operations                                    \\
-\t dbs                  : list available databases for current SERVER ($dbServer)  \\
+\t dbs                  : list available databases for current SERVER ($var_dbServer)  \\
 \t dbdetails            : as above, but with verbose outout                        \\
 \t dbsql     <string>   : run the SQL specified by double quoted <string>          \\
 \t                                                                                 \\
@@ -1230,7 +1220,7 @@ NUMBER OF COLUMNS : 1                                                           
 '                                                                                  \\
 
 # Unadorned perl script to allow connections to other servers
-alias dbquery        "$PERL $STATIC_PERL/db/db.pl --server $dbServer"
+alias dbquery        "$PERL $STATIC_PERL/db/db.pl --server $var_dbServer"
 
 # dbpl is defined at the start of the file
 
@@ -1362,7 +1352,7 @@ while(<>){                                                  \\
 alias grepu       'fromunicode \!:2 | pgrep \!:1'
 alias grepui      'fromunicode \!:2 | pgrep -i \!:1'
 
-alias testtrim       "$trimdir/$defArch/$defBuild/testTrim.exe"
+alias testtrim       "$var_trimDir/$defArch/$defBuild/testTrim.exe"
 alias trimtest       testtrim
 alias testhelp	     testtrim --help
 alias testlist       testtrim --list
@@ -1375,13 +1365,13 @@ alias bldcont        testtrim --test bulkLoader --type container --timeout 6000 
 alias makecontainers testtrim --test bulkLoader --type container --timeout 6000 --assert --inplace --containers \!:1 --perContainer \!:2
 
 # CSharp testing
-alias testcs       "$trimdir/$defArchCSharp/$defBuild/TestTrimCs.exe --test"
+alias testcs       "$var_trimDir/$defArchCSharp/$defBuild/TestTrimCs.exe --test"
 alias testevmon	   testcs EventMonitor --inplace
 	   
 
 alias bulkedocs "date; b -o Origin_Test_Record_ElectronicDocuments -a run; date"
 alias timeblk  "date; b -o Origin_Test_Bulk_Loader -a run; date"
-alias cleanblk "rm -rf 000000*; rm $DBID.*"
+alias cleanblk "rm -rf 000000*; rm $var_DBID.*"
 
 alias psall     'ps -aelW'
 alias psfind	'ps -aelW | grep '
@@ -1944,12 +1934,12 @@ alias idolqueryv        'curl -XGET "http://localhost:11000/action=query&text=' 
 alias idolq             'idolquery \!^ | egrep "<autn:(reference|title|numhits)" | $PERL -ne  "s/<autn://; s/<\/autn:.+>//; s/>/\t:/; print"'
 alias irecs             "idolrecs | $PERL $PERL_HOME/xmlformat.pl"
 alias irecsdb           "idolrecs \!^ | $PERL $PERL_HOME/xmlformat.pl"
-alias idolreference		'curl -XGET "http://localhost:11000/action=query&text=*&MatchReference=trim:$DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias idolreferencev	'curl -XGET "http://localhost:11000/action=query&Print=All&text=*&MatchReference=trim:$DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolreference		'curl -XGET "http://localhost:11000/action=query&text=*&MatchReference=trim:$var_DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolreferencev	'curl -XGET "http://localhost:11000/action=query&Print=All&text=*&MatchReference=trim:$var_DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
 
 alias idolrec           idolreference 
 alias idolrecv          idolreferencev 
-alias idolcontent		'curl -XGET http://localhost:11000/a=getcontent\&reference=trim:$DBID/rec/\!^ --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolcontent		'curl -XGET http://localhost:11000/a=getcontent\&reference=trim:$var_DBID/rec/\!^ --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
 alias idoluri           idolcontent 
 
 alias removedb          'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
@@ -1969,11 +1959,11 @@ set DEVURL = http://localhost:11000/action
 
 alias idolcat		           'curl "$DEVURL=CategoryGetDetails&Category=\!^" --noproxy "*" --silent | \\
                                $PERL $PERL_HOME/xmlformat.pl'
-alias idolcaturi	           'curl "$DEVURL=CategoryFindByFields&Fields=ts_urn&Values=trim:$DBID/pln/\!^" --noproxy "*" --silent | \\
+alias idolcaturi	           'curl "$DEVURL=CategoryFindByFields&Fields=ts_urn&Values=trim:$var_DBID/pln/\!^" --noproxy "*" --silent | \\
                                $PERL $PERL_HOME/xmlformat.pl'
 alias idoltraining			   'curl "$DEVURL=CategoryGetTraining&Category=\!^" --noproxy "*" --silent | \\
 							   $PERL $PERL_HOME/xmlformat.pl'
-alias idolsuggesturi	       'curl "$DEVURL=categorySuggestfromDocument&DocRef=trim:$DBID/rec/\!^" --noproxy "*" --silent | \\
+alias idolsuggesturi	       'curl "$DEVURL=categorySuggestfromDocument&DocRef=trim:$var_DBID/rec/\!^" --noproxy "*" --silent | \\
                                $PERL $PERL_HOME/xmlformat.pl'
 alias idolcategoryids          'curl "$DEVURL=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent | \\
                                $PERL $PERL_HOME/xmlformat.pl '
@@ -2199,14 +2189,14 @@ alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/
 alias isx64	"dumpbin /headers \!^ | grep -i machine"
 alias isx86	isx64
 alias bintype	isx64
-alias touchcopy  "touch $trimdir/trim/src/CopyFiles/CopyFiles.cpp"
+alias touchcopy  "touch $var_trimDir/trim/src/CopyFiles/CopyFiles.cpp"
 set buildLog       = "${REPOS_ROOT}/TEMP/TRIM-$folder$defPatch-$defArch-$defBuild.log"
 set buildLogCSharp = "${REPOS_ROOT}/TEMP/TRIMCSharp-$folder$defPatch-$defArch-$defBuild.log"
 set buildLogWix    = "${REPOS_ROOT}/TEMP/WIX-$folder$defPatch-$defArch-$defBuild.log"
 set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
 
-alias ramdisk         "$trimdir/trim/scripts/createRamDisk.cmd"
-alias ramdiskrelease  "$trimdir/trim/scripts/createRamDisk.release.cmd"
+alias ramdisk         "$var_trimDir/trim/scripts/createRamDisk.cmd"
+alias ramdiskrelease  "$var_trimDir/trim/scripts/createRamDisk.release.cmd"
 alias ramdiskr        ramdiskrelease
 
 alias killtrim		"taskkill /F /IM TRIM.exe"
@@ -2224,7 +2214,7 @@ alias clnallboth	"release; clnall; debug; clnall"
 
 alias buildtest1  '  echo $logSeparator; date;                                                                             \\
    echo "TEST build alias";                                                                                                \\
-   echo "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build"                                               \\
+   echo "$devenvexe,TD=$var_trimDir,DA=$defArch,DB=$defBuild,BL=$buildLog.build"                                               \\
 '
 
 alias buildtest2  'buildtest1 \\
@@ -2268,7 +2258,7 @@ alias addins   ' $PERL -e ' "' "'                                               
   }                                                                                                                  \\
  '"'"
 
-alias checkForSolution 'echo $trimdir/trim/sln/TRIM/$defArch/TRIM.sln                                                \\
+alias checkForSolution 'echo $var_trimDir/trim/sln/TRIM/$defArch/TRIM.sln                                                \\
  | $PERL -ne '  "'  "'                                                                                                \\
    chomp;                                                                                                            \\
    if (not -e $_){                                                                                                   \\
@@ -2277,7 +2267,7 @@ alias checkForSolution 'echo $trimdir/trim/sln/TRIM/$defArch/TRIM.sln           
  '"'"
 
 alias buildsolution '  echo $logSeparator; date;                                                                           \\
-   echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.build"                                            \\
+   echo -n "$devenvexe,TD=$var_trimDir,DA=$defArch,DB=$defBuild,BL=$buildLog.build"                                            \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
  | $PERL -e ' "' "'                                                                                                         \\
       @l = <>;                                                                                                             \\
@@ -2299,7 +2289,7 @@ alias buildsolution '  echo $logSeparator; date;                                
       print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\n"                   \\
  ' "' "'                                                                                                                   \\
  | dos2unix | /bin/sh                                                                                                      \\
- | $PERL -le "print q{$buildLog.build :: $trimdir}"                                                                         \\
+ | $PERL -le "print q{$buildLog.build :: $var_trimDir}"                                                                         \\
  | $PERL -e ' "' "'                                                                                                         \\
       $| = 1;                                                                                                              \\
       use File::Tail;                                                                                                      \\
@@ -2327,7 +2317,7 @@ alias bldsln "checkForSolution; buildsolution; date"
 alias kbldsln "killboth; bldsln"
 
 alias clnsln '    echo $logSeparator; date;                                                                                \\
-    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.clean"                                           \\
+    echo -n "$devenvexe,TD=$var_trimDir,DA=$defArch,DB=$defBuild,BL=$buildLog.clean"                                           \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
  | $PERL -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
@@ -2341,7 +2331,7 @@ alias clnsln '    echo $logSeparator; date;                                     
     print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /clean $db /project ALL_BUILD /out $bl &\n"                     \\
  ' "' "'                                                                                                                   \\
  | dos2unix | /bin/sh                                                                                                      \\
- | $PERL -le "print q{$buildLog.clean :: $trimdir}"                                                                         \\
+ | $PERL -le "print q{$buildLog.clean :: $var_trimDir}"                                                                         \\
  | $PERL -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
@@ -2363,7 +2353,7 @@ alias clnsln '    echo $logSeparator; date;                                     
  '" '"
 
 alias buildcsharp 'echo $logSeparator; date;                                                                                 \\
-    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.build"                                     \\
+    echo -n "$devenvexe,TD=$var_trimDir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.build"                                     \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
  | $PERL -e ' "' "'                                                                                                         \\
      @l = <>;                                                                                                              \\
@@ -2376,7 +2366,7 @@ alias buildcsharp 'echo $logSeparator; date;                                    
     }                                                                                                                      \\
     print "touch $bl\n$line $td/trim/TRIMCSharp.sln /build $db /out $bl &\n" ' "' "'                                       \\
  | dos2unix | /bin/sh                                                                                                      \\
- | $PERL -le "print q{$buildLogCSharp.build :: $trimdir}"                                                                   \\
+ | $PERL -le "print q{$buildLogCSharp.build :: $var_trimDir}"                                                                   \\
  | $PERL -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
@@ -2403,7 +2393,7 @@ alias bldcsharp 'buildcsharp; noaddins'
 alias kbldcsharp "killboth; bldcsharp"
 
 alias clncsharp 'echo $logSeparator;                                                                                       \\
-    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.clean"                                     \\
+    echo -n "$devenvexe,TD=$var_trimDir,DA=$defArch,DB=$defBuild,BL=$buildLogCSharp.clean"                                     \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
  | $PERL -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
@@ -2417,7 +2407,7 @@ alias clncsharp 'echo $logSeparator;                                            
     }                                                                                                                      \\
     print "touch $bl\n$line $td/trim/TRIMCSharp.sln /clean $db /out $bl &\n" ' "' "'                                       \\
  | dos2unix | /bin/sh                                                                                                      \\
- | $PERL -le "print q{$buildLogCSharp.clean :: $trimdir}"                                                                   \\
+ | $PERL -le "print q{$buildLogCSharp.clean :: $var_trimDir}"                                                                   \\
  | $PERL -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
@@ -2439,7 +2429,7 @@ alias clncsharp 'echo $logSeparator;                                            
  '"'"
 
 alias bldwix 'echo $logSeparator; date;                                                                                    \\
-    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix.build"                                        \\
+    echo -n "$devenvexe,TD=$var_trimDir,DA=$defArch,DB=$defBuild,BL=$buildLogWix.build"                                        \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
  | $PERL -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
@@ -2452,7 +2442,7 @@ alias bldwix 'echo $logSeparator; date;                                         
     }                                                                                                                      \\
     print "touch $bl\n$line $td/trim/WIX.sln /build \"$db|$da\" /out $bl &\n" ' "' "'                                      \\
  | dos2unix | /bin/sh                                                                                                      \\
- | $PERL -le "print q{$buildLogWix.build :: $trimdir}"                                                                      \\
+ | $PERL -le "print q{$buildLogWix.build :: $var_trimDir}"                                                                      \\
  | $PERL -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
@@ -2477,7 +2467,7 @@ alias bldwix 'echo $logSeparator; date;                                         
  '"'"
 
 alias bldwixproj 'echo $logSeparator; date;                                                                                \\
-    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix.proj,PROJ=\!:1"                               \\
+    echo -n "$devenvexe,TD=$var_trimDir,DA=$defArch,DB=$defBuild,BL=$buildLogWix.proj,PROJ=\!:1"                               \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
  | $PERL -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
@@ -2498,7 +2488,7 @@ alias bldwixproj 'echo $logSeparator; date;                                     
     }                                                                                                                      \\
     print "touch $bl\n$line $td/trim/WIX.sln /build \"$db|$da\" /project $proj /out $bl &\n" ' "' "'                       \\
  | dos2unix | /bin/sh                                                                                                      \\
- | $PERL -le "print q{$buildLogWix.proj :: $trimdir}"                                                                       \\
+ | $PERL -le "print q{$buildLogWix.proj :: $var_trimDir}"                                                                       \\
  | $PERL -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
@@ -2530,7 +2520,7 @@ alias bldwixproj 'echo $logSeparator; date;                                     
 alias bldsetup "bldwixproj SetupExecutable"
 
 alias clnwix 'echo $logSeparator;                                                                                          \\
-    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLogWix.clean"                                        \\
+    echo -n "$devenvexe,TD=$var_trimDir,DA=$defArch,DB=$defBuild,BL=$buildLogWix.clean"                                        \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
  | $PERL -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
@@ -2544,7 +2534,7 @@ alias clnwix 'echo $logSeparator;                                               
     }                                                                                                                      \\
     print "touch $bl\n$line $td/trim/WIX.sln /clean \"$db|$da\" /out $bl &\n" ' "' "'                                      \\
  | dos2unix | /bin/sh                                                                                                      \\
- | $PERL -le "print q{$buildLogWix.clean :: $trimdir}"                                                                      \\
+ | $PERL -le "print q{$buildLogWix.clean :: $var_trimDir}"                                                                      \\
  | $PERL -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
@@ -2565,7 +2555,7 @@ alias clnwix 'echo $logSeparator;                                               
     }                                                                                                                      \\
  '"'"
 
-alias checkFor3rdParty 'echo $trimdir/trim/sln/ThirdPartySource/$defArch/ThirdPartySource.sln \\
+alias checkFor3rdParty 'echo $var_trimDir/trim/sln/ThirdPartySource/$defArch/ThirdPartySource.sln \\
  | $PERL -ne '  "'  "'                                                                         \\
    chomp;                                                                                     \\
    if (not -e $_){                                                                            \\
@@ -2574,7 +2564,7 @@ alias checkFor3rdParty 'echo $trimdir/trim/sln/ThirdPartySource/$defArch/ThirdPa
  '"'"
 
 alias build3rdParty '  echo $logSeparator; date;                                                                                  \\
-   echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.3rdParty"                                                \\
+   echo -n "$devenvexe,TD=$var_trimDir,DA=$defArch,DB=$defBuild,BL=$buildLog.3rdParty"                                                \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                                \\
  | $PERL -e ' "' "'                                                                                                                \\
       @l = <>;                                                                                                                    \\
@@ -2596,7 +2586,7 @@ alias build3rdParty '  echo $logSeparator; date;                                
       print "touch $bl\n$line $td/trim/sln/ThirdPartySource/$da/ThirdPartySource.sln /build $db /project ALL_BUILD /out $bl &\n"  \\
  ' "' "'                                                                                                                          \\
  | dos2unix | /bin/sh                                                                                                             \\
- | $PERL -le "print q{$buildLog.3rdParty :: $trimdir}"                                                                                \\
+ | $PERL -le "print q{$buildLog.3rdParty :: $var_trimDir}"                                                                                \\
  | $PERL -e ' "' "'                                                                                                                \\
       $| = 1;                                                                                                                     \\
       use File::Tail;                                                                                                             \\
@@ -2623,7 +2613,7 @@ alias build3rdParty '  echo $logSeparator; date;                                
 
 
 alias bldproject 'echo $logSeparator; date;                                                                                \\
-    echo -n "$devenvexe,TD=$trimdir,DA=$defArch,DB=$defBuild,BL=$buildLog.proj,PROJ=\!:1"                                  \\
+    echo -n "$devenvexe,TD=$var_trimDir,DA=$defArch,DB=$defBuild,BL=$buildLog.proj,PROJ=\!:1"                                  \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'                         \\
  | $PERL -e ' "' "'                                                                                                         \\
     @l = <>;                                                                                                               \\
@@ -2644,7 +2634,7 @@ alias bldproject 'echo $logSeparator; date;                                     
     }                                                                                                                      \\
     print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build \"$db|$da\" /project $proj /out $bl &\n" ' "' "'         \\
  | dos2unix | /bin/sh                                                                                                      \\
- | $PERL -le "print q{$buildLog.proj :: $trimdir}"                                                                          \\
+ | $PERL -le "print q{$buildLog.proj :: $var_trimDir}"                                                                          \\
  | $PERL -e ' "' "'                                                                                                         \\
     $| = 1;                                                                                                                \\
     use File::Tail;                                                                                                        \\
@@ -2681,7 +2671,7 @@ alias kbldproj	"killboth; bldproject"
 
 
 
-alias wglogfull 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
+alias wglogfull 'ls -t $var_trimDir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
  | head -1                                                                            \\
  | $PERL -ne '"'"' chomp; print "tail -f $_"; ' "' "'                                  \\
  | /bin/sh '
@@ -2689,7 +2679,7 @@ alias wglogfull 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkg
 set LOGBASIC = "(SELECT\s+TOP\s+\d+.+FROM\s+TSEVENTDAT|"
 set LOGBASIC = $LOGBASIC"SELECT.+FROM\s+TSTWRSYS\s+WITH)"
 
-alias wglogbasic ' ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
+alias wglogbasic ' ls -t $var_trimDir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
  | head -1                                                                              \\
  | $PERL -ne ' "' "' chomp; print "tail -f $_";  ' "' "'                                 \\
  | /bin/sh                                                                              \\
@@ -2709,7 +2699,7 @@ set LOG9  = "|SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDue
 set LOG10 = "|INSERT\s+INTO\s+TSXMLDATA"
 set LOGEND = ")"
 
-alias wglog 'ls -t $trimdir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
+alias wglog 'ls -t $var_trimDir/$defArch/$defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
  | head -1                                                                        \\
  | $PERL -ne ' "' "' chomp; print "tail -f $_";  ' "' "'                           \\
  | /bin/sh                                                                        \\

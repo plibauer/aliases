@@ -1,4 +1,4 @@
-SET pyexe=C:\cygwin\bin\python.exe
+SET pyexe=C:\Python\python.exe
 SET pyscript=C:/cygwin/home/plibauer/python/make_env.py
 SET config=C:/cygwin/home/plibauer/python/make_env.config
 

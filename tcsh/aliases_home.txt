@@ -5,10 +5,10 @@ alias router		"telnet 10.11.12.1"
 set bitviseRdpDir = "$CLOUD_DIR\\Network\\RemoteDesktop\\VPN"
 set pulseRdpDir = "$CLOUD_DIR\\Network\\RemoteDesktop\\Work"
 
-if (! $?vpnConfig) then
+if (! $?var_vpnConfig) then
   set RDP_DIR = $bitviseRdpDir
 else
-  if ("$vpnConfig" == "BITVISE") then
+  if ("$var_vpnConfig" == "BITVISE") then
     set RDP_DIR = $bitviseRdpDir
   else
     set RDP_DIR = $pulseRdpDir
@@ -16,7 +16,7 @@ else
 endif
 
 
-#if ("$vpnConfig" == "BITVISE") then
+#if ("$var_vpnConfig" == "BITVISE") then
 #  cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today
 #  cp "$CLOUD_DIR/Network/vpn/hosts.bitvise" /c/Windows/System32/drivers/etc
 #else
