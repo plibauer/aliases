@@ -1095,20 +1095,18 @@ alias signSDK 		"cd $var_trimDir/trim/src/SDKNet; $svexe -R $var_trimDir\\$defAr
 alias populatedb 		"cd $var_trimDir; $var_trimDir/$defArch/$defBuild/PopulateDatabase.exe"
 alias popdb 			populatedb
 alias popdbhelp			populatedb -h
-alias restorepopdb 		popdb --load
+alias restorepopdb 		popdb --load --dbid $var_DBID --dbname $var_dbSession
 alias reloadpopdb 		restorepopdb
-alias elasticconfig		"setdbid $var_DBID; dbsession $dbDefault"
-alias restoreelastic  	restorepopdb
+alias defaultconfig		"setdbid $default_dbid; dbsession $dbDefault"
+alias elasticconfig		defaultconfig
 
 alias popdboracle 		popdb --db oracle64
 
 alias popdbidol         "populatedb --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"; bkupidolcfg"
 alias idolconfig		"setdbid $default_dbid_pref"5"; dbsession $dbDefault"_idol""
-alias restoreidol		"populatedb --load --dci idol --dbid $default_dbid_pref"5" --dbname $dbDefault"_idol"" 
-alias reloadidol		restoreidol
 
 alias popdbbig			popdb --big
-alias restorebig		"popdb --load --dbid 41 --dbname Test_Big_"$revision"_SqlServer"
+alias bigconfig			"setdbid 41; dbsession Test_Big_"$revision"_SqlServer"
 
 alias testac            "testtrim --test autoclassification"
 alias elk_train         testac --load train 
