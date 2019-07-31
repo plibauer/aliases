@@ -1957,9 +1957,16 @@ alias removedocs        'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"
 alias dresync			'curl "http://localhost:11001/DRESYNC"'
 alias idolsync 			dresync
 
-alias idologa          	"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
-alias idologi          	"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
-alias idologq          	"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
+alias idologca          	"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
+alias idologci          	"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
+alias idologcq          	"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
+
+alias idologsa          	"tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/application.log"
+alias idologsi          	"tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/agentstore_agent_index.log"
+
+set ACT_LOG = ": Request (completed in|from)|: Generated ActionId"
+alias idologsac          	'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/action.log | grep -Eiv "$ACT_LOG"'
+
 
 ############################################
 # IDOL Categories and Auto-Classification
