@@ -1685,32 +1685,20 @@ alias acsettings	"espy autoclass_$elasticDefault/s"
 alias autoclasstypes    "espy search/autoclass_$elasticDefault -s type --compact --size 10000 | grep type | sort | uniq"
 alias estype		"espy search/autoclass_$elasticDefault/q:type:\!^"
 
-alias aclabels          'espy search/autoclass_$elasticDefault/q:type:label_counts -e type --compact --size 10000 | $PERL -e '"'"'  \\
-while(<>){                                                         \\
-  chomp;                                                           \\
-  if(/^_id:(lc_(\d+)) = \{\s*$/) { $id = $2; $ID{$id} = $1." "; }  \\
-  elsif(/^\s+"(count|label|name)"/) { $ID{$id} .= $_; }            \\
-  elsif(/^\}/){ $ID{$id} .= "\n"; $id = ""; }                      \\
-  else { print "$_\n"; }                                           \\
-}                                                                  \\
-for(sort {$a<=>$b} keys %ID){ print $ID{$_}; }                     \\
-exit;                                                              \\
-'"'"
-
-
-alias acwordlabels    'espy search/autoclass_$elasticDefault/q:type:word_label_counts -e word_count:type --compact --size 10000 | $PERL -e '"'"'  \\
+alias aclabels    'espy search/autoclass_$elasticDefault/q:type:word_label_counts -e word_count:type --compact --size 10000 | $PERL -e '"'"'  \\
 while(<>){                                                         \\
   chomp;                                                           \\
   if(/^_id:(wlc_(\d+)) = \{\s*$/) { $id = $2; $ID{$id} = $1." "; } \\
+  elsif(/^\s+"word_count"/) {}                                     \\
   elsif(/^\s+"(count|label|name)"/) { $ID{$id} .= $_; }            \\
   elsif(/^\}/){ $ID{$id} .= "\n"; $id = ""; }                      \\
-  else { print "$_\n"; }                                           \\
+  else { }                                                         \\
 }                                                                  \\
 for(sort {$a<=>$b} keys %ID){ print $ID{$_}; }                     \\
 exit;                                                              \\
 '"'"
 
-alias autoclassinfo  "echo '\nAutoClassification TYPES: \n'; autoclasstypes; echo '\n-------\n' ; aclabels; echo '\n--------\n' ; acwordlabels"
+alias autoclassinfo  "echo '\nAutoClassification TYPES: \n'; autoclasstypes; echo '\n-------\n' ; aclabels; echo '\n--------\n' "
 alias acinfo autoclassinfo
 
 
@@ -1835,7 +1823,6 @@ alias elastichelp      'echo                                                    
   autoclasstypes : Show the different table <types>                                  	\\
   estype <type>  : Query one of the types from the previous command                  	\\
   aclabels       : Print _id, document count, uri and name for all categories/labels 	\\
-  acwordlabels   : Print the _id of the word-label-count indexes + label and name    	\\
 											                                            \\
 -- Word statistics ---                                                               	\\
                                                                                         \\
