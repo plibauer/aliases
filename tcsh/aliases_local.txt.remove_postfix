@@ -19,10 +19,9 @@ else
 
 endif
 
-set TORTOISE_SVNSYNC_EXE = \"C:/Program\ Files/TortoiseSVN/bin/svnsync.exe\"
+SET ROOT             = E
+set REPOS_ROOT       = "$ROOT":
 
-
-set REPOS_ROOT       = E:
 set LOCAL_SQLSVR     = LOCALHOST
 set LOCAL_SVN_LAB    = svn://localhost
 set LOCAL_SVN_STATIC = svn://localhost:5000
@@ -40,26 +39,33 @@ set SVN_STATIC_URI   = $SVN_SERVER/Static
 set CYGUSER	     = plibauer
 set CYG_WIN_HOME     = /c/Users/$CYGUSER
 set WIN_HOME         = C:/Users/$CYGUSER
-
-set GIT_HOST         = github.com
-set GIT_URL          = git://$GIT_HOST/
-set IDOL_DIR         = /c/IDOL
-set PERL_PATH        = /c/strawberry/perl/bin
-set PERL	     = $PERL_PATH/perl.exe
-set PYTHON_PATH      = /c/python/3.7
-set PYTHON_SCRIPTS   = $PYTHON_PATH/Scripts
-set PYTHON           = $PYTHON_PATH/python.exe
-set PERL_HOME        = C:/cygwin/home/$CYGUSER/perl/bin
-set PYTHON_HOME      = C:/cygwin/home/$CYGUSER/python
-set DEVENV_ROOT      = "C:/Program Files (x86)"
-set DEVENV_ROOT_2017 = "E:/Visual Studio 2017 Enterprise"
-set ALM_DB           = E:/ALM_Data
-set PROXY            = http://$PROXY_SERVER
-set HTTPS_PROXY      = https://$PROXY_SERVER
-set WIX_DIR          = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
 set CLOUD_DIR	     = $WIN_HOME/CLOUD
 set WIKI_DIR         = $CLOUD_DIR/Work/Wiki/paul_libauer
 set JOURNAL_DIR      = $WIN_HOME/Dropbox/Personal/journals
+
+set GIT_HOST         = github.com
+set GIT_URL          = git://$GIT_HOST/
+
+set IDOL_DIR         = /c/IDOL
+
+set PERL_PATH        = /c/strawberry/perl/bin
+set PERL	     = $PERL_PATH/perl.exe
+set PERL_HOME        = C:/cygwin/home/$CYGUSER/perl/bin
+
+set PYTHON_PATH      = /c/python/3.7
+set PYTHON_SCRIPTS   = $PYTHON_PATH/Scripts
+set PYTHON           = $PYTHON_PATH/python.exe
+set PYTHON_HOME      = C:/cygwin/home/$CYGUSER/python
+
+set DEVENV_ROOT      = "C:/Program Files (x86)"
+set DEVENV_ROOT_2017 = "E:/Visual Studio 2017 Enterprise"
+
+set ALM_DB           = E:/ALM_Data
+
+set PROXY            = http://$PROXY_SERVER
+set HTTPS_PROXY      = https://$PROXY_SERVER
+
+set WIX_DIR          = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
 
 # ElasticSearch
 set ELK_VERSION      = 6.4.3

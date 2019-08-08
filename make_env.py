@@ -5,6 +5,8 @@ import getopt
 import configparser
 
 ScriptName = None
+ConfigFile = None
+AliasPath  = None
 
 # ------------------------------------------------------------------
 
@@ -16,7 +18,9 @@ def printUsage(script):
         {script}
 
  DESCRIPTION
-        Setup a shell environment for a given release (Eg. 9.2 or 92)
+        Setup a shell environment for a given release (Eg. 9.2 or 92). Without any arguments,
+        the script will look for the file make_env.config in the local directory and 
+        process all the entries it finds.
 
  OPTIONS
 
@@ -74,11 +78,14 @@ def printUsage(script):
 # ------------------------------------------------------------------
 
 
-def template(script, config, home, release, prefix, folder, arch, compiler, build, idol, elastic):
+def template(home, release, prefix, folder, arch, compiler, build, idol, elastic):
+
+    global ScriptName
+    global ConfigFile
 
     template = f'''
-# Generated from script : {script}
-# Configuration file    : {config}
+# Generated from script : {ScriptName}
+# Configuration file    : {ConfigFile}
 
 unalias '*'
 unset var_*
@@ -91,7 +98,6 @@ set folder            = {folder}
 set defArch           = {arch}
 set defCompiler       = {compiler}
 set defBuild          = {build}
-set defPatch          = 
 set idolDbPrefix      = {idol}
 set elasticDbPrefix   = {elastic}
 
@@ -106,10 +112,73 @@ settitle
 
 
 # ------------------------------------------------------------------
+
+def writeFile(config, rev, arch, build, compiler, elastic, folder, idol, prefix):
+
+    alias_dir = config.get('DEFAULT', 'alias_directory')
+
+    if arch is None:
+        if 'architecture' in config[rev]:
+            arch = config.get(rev, 'architecture')
+        else :
+            arch = config.get('DEFAULT', 'architecture')
+
+    if build is None:
+        if 'build' in config[rev]:
+            build = config.get(rev, 'build')
+        else :
+            build = config.get('DEFAULT', 'build')
+
+
+    if compiler is None:
+        compiler = config.get(rev, 'compiler')
+
+    if elastic is None:
+        # Elastic is only valid from 93 onwards
+        if int(rev) > 92:
+            if 'elastic_prefix' in config[rev]:
+                elastic = config.get(rev, 'elastic_prefix')
+            else:
+                elastic = config.get('DEFAULT', 'elastic_prefix')
+        else:
+            elastic = ""
+
+    if folder is None:
+        if 'folder' in config[rev]:
+            folder = config.get(rev, 'folder')
+        else:
+            folder = "$revision"
+
+    if idol is None:
+        if 'idol_prefix' in config[rev]:
+            idol = config.get(rev, 'idol_prefix')
+        else:
+            idol = config.get('DEFAULT', 'idol_prefix')
+
+    if prefix is None:
+        prefix = config.get(rev, 'prefix')
+
+    temp = template(alias_dir, rev, prefix, folder,	arch, compiler,
+                    build, idol, elastic)
+
+
+    f = open(AliasPath + f"/{rev}environment", "w")
+    f.write(temp)
+    f.close()
+
+# ------------------------------------------------------------------
+
 '''  ========================   MAIN  ========================   '''
 
 
 def main(argv):
+
+    global ConfigFile
+    global ScriptName
+    global AliasPath
+
+    scriptPath = os.path.realpath(__file__)
+    AliasPath = os.path.dirname(scriptPath)
 
     numberOfArgs = len(argv)
     Short_Options = 'a:b:c:e:f:hi:p:r:'
@@ -122,7 +191,7 @@ def main(argv):
         print("Use -h(elp) to see further help")
         sys.exit(1)
 
-    alias_dir = arch = build = compiler = configFile = elastic = folder =\
+    alias_dir = arch = build = compiler = elastic = folder =\
         idol = prefix = release = None
 
     for opt, arg in opts:
@@ -169,76 +238,50 @@ def main(argv):
             release = arg
 
     config = configparser.ConfigParser()
-    if configFile is None:
-        configFile = 'make_env.config'
+    if ConfigFile is None:
+        ConfigFile = AliasPath + '\make_env.config'
 
-    if not os.path.isfile(configFile):
+    if not os.path.isfile(ConfigFile):
         print(
-            f"Configuration file {configFile} not found! (are you in the right directory?)")
+            f"Configuration file {ConfigFile} not found! Tried => {AliasPath}")
         sys.exit(1)
 
-    config.read(configFile)
+    config.read(ConfigFile)
 
-    # If no release version specified but there are unprocessed command line options,
-    # assume the first available option is the release version
-    if release is None:
+    configs2process = []
+    # If no arguments were provided, process all entries in the configuration file
+    if (release is None) and (len(args) == 0):
+        for item in config:
+            if item == "DEFAULT" :
+                next
+            if re.search(r'^\d{2,3}$', item):
+                configs2process.append(item)
+
+    else :
+        # If no release version specified but there are unprocessed command line options,
+        # assume the first available option is the release version
         if len(args) > 0:
             release = args[0]
+
         else:
             release = input("Specify the release version \(Eg. 9.2\) : ")
 
-    release = release.replace(".", "")
-    if re.search(r'^\d{2}$', release):
-        if release not in config:
-            print(
-                f"Release {release} not found in configuration file {configFile}")
+        release = release.replace(".", "")
+        if re.search(r'^\d{2,3}$', release):
+            if release not in config:
+                print(
+                    f"Release {release} not found in configuration file {configFile}")
+                sys.exit(1)
+        else:
+            print(f"Invalid release version {release} (expect \d.\d or \d{{2,3}})")
             sys.exit(1)
-    else:
-        print(f"Invalid release version {release} (expect \d.\d or \d{{2}})")
-        sys.exit(1)
 
-    alias_dir = config.get('DEFAULT', 'alias_directory')
+        configs2process.append(release)
 
-    if arch is None:
-        arch = config.get('DEFAULT', 'architecture')
+        
+    for rev in configs2process:
+        writeFile(config, rev, arch, build, compiler, elastic, folder, idol, prefix)
 
-    if build is None:
-        build = config.get('DEFAULT', 'build')
-
-    if compiler is None:
-        if 'compiler' in config[release]:
-            compiler = config.get(release, 'compiler')
-        else:
-            compiler = config.get('DEFAULT', 'compiler')
-
-    if elastic is None:
-        # Elastic is only valid from 93 onwards
-        if int(release) > 92:
-            if 'elastic_prefix' in config[release]:
-                elastic = config.get(release, 'elastic_prefix')
-            else:
-                elastic = config.get('DEFAULT', 'elastic_prefix')
-        else:
-            elastic = ""
-
-    if folder is None:
-        if 'folder' in config[release]:
-            folder = config.get(release, 'folder')
-        else:
-            folder = "$revision"
-
-    if idol is None:
-        if 'idol_prefix' in config[release]:
-            idol = config.get(release, 'idol_prefix')
-        else:
-            idol = config.get('DEFAULT', 'idol_prefix')
-
-    if prefix is None:
-        prefix = config.get(release, 'prefix')
-
-    temp = template(ScriptName, configFile, alias_dir, release, prefix, folder,	arch, compiler,
-                    build, idol, elastic)
-    print(temp)
 
     sys.exit(0)
 

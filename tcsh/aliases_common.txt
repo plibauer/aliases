@@ -8,7 +8,7 @@ set autologout
 set alias_file = $alias_dir/aliases_common.txt
 set alias_local = $alias_dir/aliases_local.txt
 
-set path = ( "/c/program files/TortoiseSVN/bin" $PERL_PATH $PYTHON_PATH $PYTHON_SCRIPTS /bin /usr/bin /sbin /usr/sbin /home/plibauer/perl/bin $path:q )
+set path = ( "/c/program files/TortoiseSVN/bin" $PERL_PATH $PYTHON_PATH $PYTHON_SCRIPTS /bin /usr/bin /sbin /usr/sbin /home/plibauer/perl $path:q )
 
 # Always set the drive prefix to just /, not "/cygdrive"
 # This has now been configured in /etc/fstab, so no need to do it here
@@ -24,7 +24,7 @@ set dbDefServer    = $LOCAL_SQLSVR
 set vpnDefault     = BITVISE
 
 if (! $?var_trimDir) then
-  set var_trimDir        = $REPOS_ROOT"/$folder"$defPatch
+  set var_trimDir        = $REPOS_ROOT"/$folder"
 endif
 
 if (! $?var_dbSession) then       
@@ -76,7 +76,7 @@ if (! $?var_DBID) then
   endif
 endif
 
-set cygtrimdir     = "/$REPOS_ROOT/$folder"$defPatch
+set cygtrimdir     = "/$REPOS_ROOT/$folder"
 set idolDb         = "$idolDbPrefix$var_DBID"
 set elasticDefault = `echo "$elasticDbPrefix$var_DBID" | tr '[A-Z]' '[a-z]'`
 set trimcfgdir     = "$var_trimDir/trim/SharedTrimServerData/ServerData"
@@ -2182,9 +2182,9 @@ alias isx64	"dumpbin /headers \!^ | grep -i machine"
 alias isx86	isx64
 alias bintype	isx64
 alias touchcopy  "touch $var_trimDir/trim/src/CopyFiles/CopyFiles.cpp"
-set buildLog       = "${REPOS_ROOT}/TEMP/TRIM-$folder$defPatch-$defArch-$defBuild.log"
-set buildLogCSharp = "${REPOS_ROOT}/TEMP/TRIMCSharp-$folder$defPatch-$defArch-$defBuild.log"
-set buildLogWix    = "${REPOS_ROOT}/TEMP/WIX-$folder$defPatch-$defArch-$defBuild.log"
+set buildLog       = "${REPOS_ROOT}/TEMP/TRIM-$folder-$defArch-$defBuild.log"
+set buildLogCSharp = "${REPOS_ROOT}/TEMP/TRIMCSharp-$folder-$defArch-$defBuild.log"
+set buildLogWix    = "${REPOS_ROOT}/TEMP/WIX-$folder-$defArch-$defBuild.log"
 set logSeparator   = "\n----------------------------------------------------------------------------------------------------"
 
 alias ramdisk         "$var_trimDir/trim/scripts/createRamDisk.cmd"
