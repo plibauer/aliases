@@ -1,0 +1,201 @@
+##################################################################################
+########################   ELASTICSEARCH/elasticsearch  ##########################
+
+alias vielastic					'vi $CLOUD_DIR/Work/Elastic/elastic.txt; scrub $CLOUD_DIR/Work/Elastic/elastic.txt'
+alias vies						vielastic
+alias esinstall         		'$ELASTIC_HOME/bin/elasticsearch-service.bat install'
+alias esstart					'$ELASTIC_HOME/bin/elasticsearch-service.bat start'
+alias esdemo            		'$ELASTIC_HOME/bin/elasticsearch.bat'
+alias esstop					'$ELASTIC_HOME/bin/elasticsearch-service.bat stop'
+alias esremove	        		'$ELASTIC_HOME/bin/elasticsearch-service.bat remove'
+alias esmanage					'$ELASTIC_HOME/bin/elasticsearch-service.bat manager'
+alias esconfig					'cat $ELASTIC_HOME/config/elasticsearch.yml'
+alias goes              		'cd $ELASTIC_HOME'
+alias kibana            		'$KIBANA_HOME/bin/kibana.bat && settitle2str KIBANA'
+alias kibanaconfig      		'cat $KIBANA_HOME/config/kibana.yml'
+alias gokibana          		'cd $KIBANA_HOME'
+alias kibanaup					'usingport 5601'
+alias elasticup					'usingport 9200'
+alias elasticstatus     		'elasticup; kibanaup'
+alias gologstash				'cd $LOGSTASH_HOME'
+alias gobeats					'cd $BEATS_HOME'
+alias esget						'curl -XGET "http://localhost:9200/\!^"'
+alias esgetp					'curl -XGET "http://localhost:9200/\!^?pretty=true"'
+alias esgetexplain				'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
+alias esgetaliases				'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
+alias curlindexes				'curl -XGET "http://localhost:9200/_cat/indices" | grep -v "open \."'
+alias esgetindexes				'$PYTHON "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"'
+alias getindexes        		esgetindexes
+
+alias setelasticservice 		'set elastic_service_name = \\
+`sc query type= service state= all | 						\\
+$PERL -ne "													\\
+  if (/^SERVICE_NAME: (elasticsearch-service.+)/i){			\\
+    s/^SERVICE_NAME: //;									\\
+    s/\n//;													\\
+    print; 													\\
+  } "`'
+alias startelasticsvc  			'setelasticservice  && sc start $elastic_service_name'
+alias stopelasticsvc			'setelasticservice  && sc stop $elastic_service_name'
+
+alias docid             		'curl -XGET "http://localhost:9200/$elasticDefault/_search?q=_id:\!^&pretty=true"'
+alias curlcontents      		'curl -s -XPOST "http://localhost:9200/$elasticDefault/_search?q=uri:\!^&pretty=true"' 
+alias contents          		'curlcontents \!^ | $PERL -ne '"'"' \\
+  if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){                  \\
+    @l=split /\\n/, $1;                                    \\
+    for(@l){                                               \\
+      s/\\"/"/g;                                           \\
+      print "$_\n";                                        \\
+    }                                                      \\
+  }  '"'"
+
+alias escontentsrch				'curl -XGET "http://localhost:9200/$elasticDefault/_search?q=(Document.Content:\!^)&pretty=true"'
+alias esgetall          		esgetindexes
+alias esstats           		'esget _stats'
+alias getsettings       		'esget "\!^/_settings"'
+alias getmappings       		'esget "\!^/_mappings"'
+alias esindexinfo       		'esget \!^'
+alias indexinfo         		'esget \!^'
+alias esput						'curl -XPUT "http://localhost:9200/\!^"'
+alias esdelete   				'curl -XDELETE "http://localhost:9200/\!^"'
+alias essearchall       		'esget _search'
+alias essearchindex     		'esget "\!^/_search"'
+alias searchindex       		essearchindex
+alias esindexinfo       		'esget "\!^/_settings,_mapping"'
+
+alias espy						'$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config'
+alias espya						'espy "\!^/all"'
+alias espym						'espy "\!^/mapping"'
+alias espys						'espy "\!^/settings"'
+
+alias mapping					'espy $var_elasticDef/m'
+alias acmapping					'espy autoclass_$var_elasticDef/m'
+alias settings					'espy $var_elasticDef/s'
+alias acsettings				'espy autoclass_$var_elasticDef/s'
+alias autoclasstypes    		'espy search/autoclass_$var_elasticDef -s type --compact --size 10000 | grep type | sort | uniq'
+alias estype					'espy search/autoclass_$var_elasticDef/q:type:\!^'
+
+alias aclabels  'espy search/autoclass_$var_elasticDef/q:type:word_label_counts -e word_count:type --compact --size 10000 \\
+| $PERL -e '"'"'                                                   \\
+while(<>){                                                         \\
+  chomp;                                                           \\
+  if(/^_id:(wlc_(\d+)) = \{\s*$/) { $id = $2; $ID{$id} = $1." "; } \\
+  elsif(/^\s+"word_count"/) {}                                     \\
+  elsif(/^\s+"(count|label|name)"/) { $ID{$id} .= $_; }            \\
+  elsif(/^\}/){ $ID{$id} .= "\n"; $id = ""; }                      \\
+  else { }                                                         \\
+}                                                                  \\
+for(sort {$a<=>$b} keys %ID){ print $ID{$_}; }                     \\
+exit;                                                              \\
+'"'"
+
+alias autoclassinfo  "echo '\nAutoClassification TYPES: \n'; autoclasstypes; echo '\n-------\n' ; aclabels; echo '\n--------\n' "
+alias acinfo autoclassinfo
+
+alias elastic_add_wlc_prefix 'set wlcIndex=`echo \!^ | sed -r -e "s/^([[:digit:]])/wlc_\1/"`'
+
+# Provide the _id for the "word_label_counts" entry and format the words into columns
+# Takes additional arguments as follows
+#  ARG1  - search string which will be matched against each pair
+#        Eg. "^un" will only match words beginning with 'un'
+#  ARG2  - number of columns (default 10)
+#  ARG3  - size of columns (default 30)
+#
+alias getwords 'setenv AC_SEARCH_STR "\!*"  										\\
+&& elastic_add_wlc_prefix \!:1 				 										\\
+&& espy search/autoclass_$var_elasticDef/$wlcIndex --compact -s word_count 			\\
+| $PERL -e '"'"'  																	\\
+my ($cols, $width) = (10, 30);                                                		\\
+@a = split /\s+/, $ENV{AC_SEARCH_STR};                                        		\\
+#                                                                             		\\
+#  We may have added a missing wlc_ prefix using elastic_add_wlc_prefix       		\\
+my $ind = shift @a; $ind =~ s/^(\d)/wlc_$1/;                                  		\\
+#                                                                             		\\
+my (@tooLong, $out, $outf, @args);                                            		\\
+$out = "INDEX: $ind";                                                         		\\
+for($i=0; $i <= $#a; $i++){                                                   		\\
+   if($a[$i] eq ">") { $outf = $a[$i + 1]; last; }                            		\\
+   @args[$i] = $a[$i];                                                        		\\
+}                                                                             		\\
+                                                                              		\\
+if(scalar(@args) >= 1) { $srchStr = $args[0]; $out .= ", SEARCH: \"$srchStr\""; } 	\\
+if(scalar(@args) >= 2) { $cols    = $args[1]; $out .= ", COLUMNS: $cols"; }       	\\
+if(scalar(@args) >= 3) { $width   = $args[2]; $out .= ", WIDTH: $width"; }        	\\
+                                                                              		\\
+if($outf) { print "OutputFile => $outf\n"; }                                  		\\
+                                                                              		\\
+$out .= "\n";                                                                 		\\
+while(<>) {                                                                   		\\
+  chomp;                                                                      		\\
+  if(/^\s+"word_count":\s+"(.+)"$/){                                          		\\
+     @pairs = split /,/, $1;                                                  		\\
+     $out .= "WORD Count = ".scalar(@pairs)."\n";                             		\\
+     $i=1;                                                                    		\\
+     for(@pairs){                                                             		\\
+        if($srchStr) { next unless /$srchStr/; }                              		\\
+        if(length($_) >= $width){ push @tooLong, $_; next }                   		\\
+        $space = " " x ($width - length($_));                                 		\\
+        $out .= $_.$space;                                                    		\\
+        ++$i;                                                                 		\\
+        if($i % $cols == 0){ $out .= "\n"; }                                  		\\
+     }                                                                        		\\
+  }                                                                           		\\
+}                                                                             		\\
+$out .= "\n\n";                                                               		\\
+for(@tooLong){ $out .= "$_\n"; }                                              		\\
+if($outf) {                                                                   		\\
+  open OUT, ">$outf" or die "Couldnt open $outf\n";                           		\\
+  print OUT $out;                                                             		\\
+  close OUT;                                                                  		\\
+}                                                                             		\\
+else { print $out; }                                                          		\\
+exit;                                                                         		\\
+'"'" 
+
+alias esprocesslog	'cat \!^ | $PERL -e '"'"'          	   \\
+                                                           \\
+while(<>) {                                                \\
+  chomp $_;                                                \\
+  if (/^[\d:]+\s+[A-z]{2}\s+(\d+)/) {                      \\
+     $thread = $1;                                         \\
+     push @{$log[$thread]}, "$_\n";                        \\
+  }                                                        \\
+  else {                                                   \\
+    print "$_\n";                                          \\
+  }                                                        \\
+}                                                          \\
+for(my $i=1; $i <= $#log; $i++ ){                          \\
+  print "Thread\t$i (".scalar(@{$log[$i]})." entries) \t"; \\
+  open T,">Thread_$i.txt" or die;                          \\
+  for(@{$log[$i]}){                                        \\
+     print T $_;                                           \\
+  }                                                        \\
+  close T;                                                 \\
+  print "=> Thread_$i.txt\n";                              \\
+                                                           \\
+}                                                          \\
+                                                           \\
+ print "\nTo get the list of files for a thread;\n\n\t";   \\
+ print ">esgetfiles 'Thread_1.txt'\n\n";                   \\
+                                                           \\
+                                                           \\
+'"'"
+
+alias esgetfiles 'cat \!^ | $PERL -e '"'"'                 \\
+                                                           \\
+while(<>) {                                                \\
+  chomp $_;                                                \\
+  if (/^([\d:]+)\s+[A-z0-9]{2}\s+(\d+\s+){6}([^\s]+)/) {   \\
+     if(not exists $files{$3}) {                           \\
+       $files{$3} = 1;                                     \\
+       $bytime{$1} = $3                                    \\
+     }                                                     \\
+  }                                                        \\
+}                                                          \\
+for(sort keys %bytime){                                    \\
+  print "$_\t$bytime{$_}\n";                               \\
+}                                                          \\
+                                                           \\
+                                                           \\
+'"'"
+

@@ -3,6 +3,7 @@ import re
 import sys
 import getopt
 import configparser
+import shutil
 
 ScriptName = None
 ConfigFile = None
@@ -82,28 +83,28 @@ def template(home, release, prefix, folder, arch, compiler, build, idol, elastic
 
     global ScriptName
     global ConfigFile
-
+    
     template = f'''
 # Generated from script : {ScriptName}
 # Configuration file    : {ConfigFile}
 
-unalias '*'
 unset var_*
+unset env_*
 
-set alias_dir         = {home}/tcsh
-set revision          = {release}
-set default_dbid_pref = {prefix}
-set default_dbid      = $default_dbid_pref"1"
-set folder            = {folder}
-set defArch           = {arch}
-set defCompiler       = {compiler}
-set defBuild          = {build}
-set idolDbPrefix      = {idol}
-set elasticDbPrefix   = {elastic}
+set env_alias             = {home}
+set env_alias_dir         = $env_alias/tcsh
+set env_revision          = {release}
+set env_default_dbid_pref = {prefix}
+set env_default_dbid      = $env_default_dbid_pref"1"
+set env_folder            = {folder}
+set env_defArch           = {arch}
+set env_defCompiler       = {compiler}
+set env_defBuild          = {build}
+set env_idolDbPrefix      = {idol}
+set env_elasticDbPrefix   = {elastic}
 
-source $alias_dir/aliases_local.txt
-source $alias_dir/aliases
-source $alias_dir/aliases_common.txt
+source $env_alias_dir/LOCAL.txt
+source $env_alias_dir/include.txt
 
 settitle
 
@@ -147,7 +148,7 @@ def writeFile(config, rev, arch, build, compiler, elastic, folder, idol, prefix)
         if 'folder' in config[rev]:
             folder = config.get(rev, 'folder')
         else:
-            folder = "$revision"
+            folder = "$env_revision"
 
     if idol is None:
         if 'idol_prefix' in config[rev]:
@@ -165,10 +166,11 @@ def writeFile(config, rev, arch, build, compiler, elastic, folder, idol, prefix)
     f = open(AliasPath + f"/{rev}environment", "w")
     f.write(temp)
     f.close()
+    print(f"Created environment file : {AliasPath}\{rev}environment")
 
 # ------------------------------------------------------------------
 
-'''  ========================   MAIN  ========================   '''
+###  ========================   MAIN  ========================   ###
 
 
 def main(argv):
@@ -282,6 +284,30 @@ def main(argv):
     for rev in configs2process:
         writeFile(config, rev, arch, build, compiler, elastic, folder, idol, prefix)
 
+    # Copy the DEFAULTS.txt file => LOCAL.txt
+    defFile = "tcsh\DEFAULTS.txt"
+    defPath = f"{AliasPath}\{defFile}"
+    locFile = "tcsh\LOCAL.txt"
+    locPath = f"{AliasPath}\{locFile}"
+    print()
+    if os.path.exists(defPath):
+
+        # Try to preserve the existing LOCAL.txt file and also check for LOCAL.txt.bak
+        if os.path.exists(locPath):
+            if os.path.exists(f"{locPath}.bak"):
+                txt = input(f"The backup file {locPath}.bak exists!\nOVERWRITE? [Y/n] : ")
+                if re.search("^y(es)*$", txt, re.IGNORECASE):
+                    shutil.copy2(locPath, f"{locPath}.bak")
+                    print(f"*** Backed-up existing {locFile} => {locPath}.bak ***")
+            else:
+                shutil.copy2(locPath, f"{locPath}.bak")
+                print(f"Backed-up existing {locFile} => {locPath}.bak ***")
+
+
+        shutil.copy2(defPath, locPath)
+        print(f"Copied {defFile} => {locFile}\n(!!! CHANGE !!! the parameters in {locFile} as required)")
+    else:
+        print(f"The file {defPath} was not found?")
 
     sys.exit(0)
 

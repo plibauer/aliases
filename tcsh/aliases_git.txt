@@ -1,0 +1,55 @@
+####################################################################
+#
+# GIT aliases
+#
+# None of the aliases in here should need to be source again as
+# all the variable references that could change should be deferred
+#
+
+alias gogit           			'cd $env_alias'
+alias gitpush         			'git push origin master'
+
+alias gitcommit      			'git commit -a'
+alias gitdiff        			'git diff | more'
+alias gitdiffbc      			'git difftool'
+alias gitmerge       			'git mergetool'
+alias gitpull        			'git pull'
+alias gitstatus      			'git status'
+alias gitcheckout    			'git clone ${GIT_URL}plibauer/aliases.git'
+alias checkout        			gitcheckout
+alias commit	      			gitcommit
+alias status          			gitstatus
+alias gitsetrepo     			'git remote set-url origin "git@github.com:plibauer/aliases.git"'
+alias gitconfig      			'git config -l'
+alias gitsshtest     			'"ssh -T git@"$GIT_HOST'
+alias gitforceupdate 			'git fetch --all; git reset --hard origin/master'
+alias gitcommitsome  			'git add -i'
+alias gitremove      			'git rm'
+alias gitundo        			'git reset HEAD'
+alias gitrevert      			'git checkout -- \!^'
+alias gitsetproxy    			'setenv HTTP_PROXY $PROXY; setenv HTTPS_PROXY $HTTPS_PROXY'
+alias gitunsetproxy  			'setenv HTTP_PROXY; setenv HTTPS_PROXY'
+alias gitcheckproxy  			'setenv | pgrep PROXY'
+alias gitconfigproxy 			'gogit; git config --global http.proxy $PROXY; git config --global https.proxy $HTTPS_PROXY'
+alias gitconfignoproxy 			'gogit; git config --global --unset http.proxy; git config --global --unset https.proxy'
+#
+alias gitwork	     			'gitconfigproxy; git remote set-url origin gitproxy:plibauer/aliases.git'
+alias githome	     			'gitconfignoproxy; gitsetrepo'
+
+# If a file has been deleted locally, you can restore it 
+# using the following and providing the filename as the argument
+alias gitrestore  	 			'git checkout HEAD \!^'
+
+# Setup BeyondCompare as the diff/merge tool
+set BC4 = 						"C:/Program Files (x86)/Beyond Compare 4/BCompare.exe"
+alias gitconfigdiff  			'git config --global diff.tool bc4; git config --global difftool.bc4.path "$BC4" '
+alias gitconfigmerge 			'git config --global merge.tool bc4; git config --global mergetool.bc4.path "$BC4" '
+
+alias gitnewrepo     			"mkdir \!^;      		\\
+cd \!^;                               					\\
+git init;                             					\\
+touch README;                         					\\
+git add README;                       					\\
+git commit -m 'first commit';         					\\
+git remote add origin git@github.com:plibauer/\!^.git; 	\\
+git push origin master"

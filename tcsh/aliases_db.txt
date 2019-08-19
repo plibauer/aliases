@@ -1,0 +1,127 @@
+################################################
+#
+# 	Database access aliases
+#	This file should only have to be source once
+#
+
+
+#--------------------------------------------
+#PERL DATABASE ACCESS
+
+alias dbpl        			$PERL $STATIC_PERL/db/db.pl --server \$var_dbServer --database \$var_dbSession
+alias dbid        			dbpl --get_dbid
+
+# Unadorned perl script to allow connections to other servers
+alias dbquery     	   		$PERL $STATIC_PERL/db/db.pl --server \$var_dbServer
+alias db          			dbpl
+alias dbv         			dbpl --version \$env_revision --root \$env_folder
+alias dbs         			dbquery --database tempdb --list
+alias dbdetails   			dbquery --database tempdb --list --verbose
+alias dataset	  			'dbid | $PERL -ne  '"'"' print "DBID => $_\n"  '"'"
+
+alias bobids      			dbv --id bob
+alias bobidsr     			dbv --id bob -rev
+alias bobs        			bobids
+alias bobsr       			bobidsr
+alias dbidall     			dbv --id all
+
+alias eventids    			dbv --id event
+alias eventidsr   			dbv --id event -rev
+alias events      			eventids
+alias eventsr     			eventidsr
+
+alias table       			dbv -table
+alias tables      			dbv -get_tables
+alias tableids    			dbv --id table
+alias tableidsr   			dbv --id table -rev
+alias tids        			tableids
+alias tidsr       			tableidsr
+
+alias dbsql       			db -sql
+alias sql         			dbsql
+alias sqlv        			dbv -sql
+alias gtable      			dbv -table
+alias getrec      			dbv -num -row
+alias getrecs     			getrec
+alias dumpdb      			dbv --dump_all
+alias grepdump    			'dbv --dump_all | egrep -i '
+alias constraints 			"dbv -sql 'Select * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY TABLE_NAME'"
+alias tblconstraints 		"dbv -sql 'SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ORDER BY CONSTRAINT_NAME'"
+
+alias locs					db --object_type LOCATION --unadorned
+alias locsv					dbv --object_type LOCATION --unadorned
+alias locuri    			locsv --object_uri 
+alias locname   			locsv --object_name 
+alias loceaddr  			"dbv -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 1,2,24,26,27,28 -num -verbose"
+
+alias locations  			db  -table TSLOCATION -col 1,2
+alias locationsv 			dbv -table TSLOCATION -col 1,2
+
+alias recs					db --object_type RECORD --unadorned --max 60
+alias recsv					dbv --object_type RECORD --unadorned --max 60
+alias records   			recs
+alias recordsv  			recsv
+alias recuri    			recsv --object_uri 
+alias recname   			recsv--object_name 
+
+alias rectypes	  			db --object_type RECTYPE --unadorned
+alias rectypesv	  			dbv --object_type RECTYPE --unadorned
+alias rectypeuri  			rectypesv --object_uri 
+alias rectypename 			rectypesv --object_name 
+
+alias mklocdata            "    \\
+sqlv 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.uri = PER.lpLocUri' \\
+-col 22,23,28,27 -un -num       \\
+| $PERL -ne                  	\\
+'use 5.010;                  	\\
+/^\s+(\d+)\s+(.+)/ and do {  	\\
+  s/^\s+\d+\s+//;            	\\
+  s/\t/;/g;                  	\\
+  s/\s+;/;/g;                	\\
+  chop;                      	\\
+  chop;                      	\\
+  say                        	\\
+} '"
+
+alias mkpersondata 		  "     \\
+sqlv 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' \\
+-col 2,4,24  -un -num           \\
+| $PERL -ne                 	\\
+'use 5.010;                 	\\
+/^\s+(\d+)\s+(.+)/ and do { 	\\
+s/^\s+\d+\s+//;             	\\
+s/\t/;/g;                   	\\
+s/\s+;/;/g;                 	\\
+chop;                       	\\
+chop;                       	\\
+say                         	\\
+} '"
+
+#--------------------------------------------
+# SQLITE
+
+set SQLITE_DB_STAT = $SVN_STATIC_DB/svn.db
+set SQLITE_DB_LAB  = $SVN_LAB_DB/svn.db
+set SQLITE_ALM     = $ALM_DB/database/ALM.db
+
+alias sqlite            	sqlite3.exe
+alias sqliteq           	sqlite3.exe $SQLITE_DB_LAB
+alias sqliteqstat       	sqlite3.exe $SQLITE_DB_STAT
+alias almsqlite         	sqlite3.exe $SQLITE_ALM
+alias crmatch           	almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'0\' ORDER BY CAST\(id AS INTEGER\)\"
+alias crmatchdesc       	almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'1\' ORDER BY CAST\(id AS INTEGER\)\"
+alias query					sqliteq
+alias sqlitedbopen      	cygstart cmd.exe /c sqlite3.exe
+alias sqldblab          	cygstart cmd.exe /c sqlite3.exe $SQLITE_DB_LAB
+alias sqldbstat         	cygstart cmd.exe /c sqlite3.exe $SQLITE_DB_STAT 
+alias almsqlitedb       	cygstart cmd.exe /c sqlite3.exe $SQLITE_ALM 
+alias sqliteanal        	sqlite3_analyzer.exe
+alias filepath          	sqlite3.exe $SQLITE_DB_LAB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitefp          	sqlite3.exe $SQLITE_DB_LAB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitem           	sqlite3.exe $SQLITE_DB_LAB \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
+alias sqlmatch          	'sqlitem \!^ |   $PERL -ne '"'"'  if(/^(\d+)\|(.+)$/){ print "-------------------------| $1 |--------------------------\n$2\n" }else{print}    '"'"
+
+# Query the SVN sqlite database for the UUID of a given checked out path
+alias sqliteuuid        	sqlite .svn/wc.db 'select uuid from REPOSITORY where id=1'
+alias uuidupdate        	sqlite .svn/wc.db 'update REPOSITORY set uuid=\!^ where id=1'
+alias repoinfo          	sqlite .svn/wc.db 'select * from REPOSITORY'

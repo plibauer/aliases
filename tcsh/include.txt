@@ -1,0 +1,78 @@
+#
+#   The dynamic variables file must always be sourced first
+#
+
+source $env_alias_dir/aliases_dynamic.txt
+
+#
+#   The env file has aliases that don't depend on any of the dynamic
+#   variables, so it should be source 2nd
+#
+
+if (! $?include_env) then
+	source $env_alias_dir/aliases_env.txt
+	set include_env = 1
+endif
+
+#
+#   The static file sets up variables for the remaining files, so
+#   it should be source 2nd
+#
+
+if (! $?include_static) then
+	source $env_alias_dir/aliases_static.txt
+	set include_static = 1
+endif
+
+#
+#  The order of the remaining alias files is not important
+#
+
+#
+#  The order of the remaining alias files is not important
+#
+
+if (! $?include_build) then
+	source $env_alias_dir/aliases_build.txt
+	set include_build = 1
+endif
+
+if (! $?include_db) then
+	source $env_alias_dir/aliases_db.txt
+	set include_db = 1
+endif
+
+if (! $?include_elastic) then
+	source $env_alias_dir/aliases_elastic.txt
+	set include_elastic = 1
+endif
+
+if (! $?include_git) then
+	source $env_alias_dir/aliases_git.txt
+	set include_git = 1
+endif
+
+if (! $?include_help) then
+	source $env_alias_dir/aliases_help.txt
+	set include_help = 1
+endif
+
+if (! $?include_idol) then
+	source $env_alias_dir/aliases_idol.txt
+	set include_idol = 1
+endif
+
+if (! $?include_journal) then
+	source $env_alias_dir/aliases_journal.txt
+	set include_journal = 1
+endif
+
+if (! $?include_svn) then
+	source $env_alias_dir/aliases_svn.txt
+	set include_svn = 1
+endif
+
+if (! $?include_trim) then
+	source $env_alias_dir/aliases_trim.txt
+	set include_trim = 1
+endif

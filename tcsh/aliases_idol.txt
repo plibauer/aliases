@@ -1,0 +1,199 @@
+##############################################################################
+#
+#  IDOL ALIASES
+#
+#  None of the aliases in this file should need to be re-source after
+#  initialisation
+#
+
+alias goidol            		"cd $IDOL_DIR"
+alias goidols           		"cd $IDOL_DIR/TRIM\ IDOL\ Service"
+alias idolscfg          		"more $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
+alias editidolscfg      		"vi $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
+alias goidolc1          		"cd $IDOL_DIR/TRIM\ Content\ Service\ 1"
+alias idolc1cfg         		"more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
+alias editidolc1cfg     		"vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
+
+alias idolcurl          		'curl -XGET "http://localhost:11000/\!^" --noproxy "*" --silent'
+alias idolrecs          		'curl -XGET "http://localhost:11000/action=query&text=*&databasematch='$var_idolDb'&MaxResults=""\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolrecsall       		'curl -XGET "http://localhost:11000/action=query&text=*&databasematch=' "$var_idolDb" '&MaxResults=1000000" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolrecsdb        		'curl -XGET "http://localhost:11000/action=query&text=*&databasematch=' "\!^" '&MaxResults=999" --noproxy "*" --silent'
+alias idolstatus        		'curl -XGET "http://localhost:11000/action=GetStatus" --noproxy "*" --silent' | $PERL $PERL_HOME/xmlformat.pl
+alias idolquery         		'curl -XGET "http://localhost:11000/action=query&text=' "\!^" '&MaxResults=1000&databasematch=' "$var_idolDb" '" --noproxy "*" --silent | xmlformat.pl'
+alias idolqueryv        		'curl -XGET "http://localhost:11000/action=query&text=' "\!^" '&MaxResults=1000&XMLMeta=true&databasematch=' "$var_idolDb" '" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolreference				'curl -XGET "http://localhost:11000/action=query&text=*&MatchReference=trim:$var_DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolreferencev			'curl -XGET "http://localhost:11000/action=query&Print=All&text=*&MatchReference=trim:$var_DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias idolcontent				'curl -XGET http://localhost:11000/a=getcontent\&reference=trim:$var_DBID/rec/\!^ --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
+alias removedb          		'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
+alias removedocs        		'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
+alias dresync					'curl "http://localhost:11001/DRESYNC"'
+
+alias idolq             		'idolquery \!^ | egrep "<autn:(reference|title|numhits)" | $PERL -ne  "s/<autn://; s/<\/autn:.+>//; s/>/\t:/; print"'
+alias irecs             		"idolrecs      | $PERL $PERL_HOME/xmlformat.pl"
+alias irecsdb           		"idolrecs \!^  | $PERL $PERL_HOME/xmlformat.pl"
+
+alias idolrec           		idolreference 
+alias idolrecv          		idolreferencev 
+alias idoluri           		idolcontent 
+alias idolsync 					dresync
+alias idologca          		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
+alias idologci          		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
+alias idologcq          		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
+
+alias idologsa          		"tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/application.log"
+alias idologsi          		"tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/agentstore_agent_index.log"
+
+set ACT_LOG = ": Request (completed in|from)|: Generated ActionId"
+alias idologsac          		'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/action.log | grep -Eiv "$ACT_LOG"'
+
+
+############################################
+# IDOL Categories and Auto-Classification
+############################################
+
+set DEVURL = http://localhost:11000/action
+
+alias idolcat		           	'curl "$DEVURL=CategoryGetDetails&Category=\!^" --noproxy "*" --silent | \\
+                               	$PERL $PERL_HOME/xmlformat.pl'
+alias idolcaturi	           	'curl "$DEVURL=CategoryFindByFields&Fields=ts_urn&Values=trim:$var_DBID/pln/\!^" --noproxy "*" --silent | \\
+                               	$PERL $PERL_HOME/xmlformat.pl'
+alias idoltraining			   	'curl "$DEVURL=CategoryGetTraining&Category=\!^" --noproxy "*" --silent | \\
+							   	$PERL $PERL_HOME/xmlformat.pl'
+alias idolsuggesturi	       	'curl "$DEVURL=categorySuggestfromDocument&DocRef=trim:$var_DBID/rec/\!^" --noproxy "*" --silent | \\
+                               	$PERL $PERL_HOME/xmlformat.pl'
+alias idolcategoryids          	'curl "$DEVURL=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent | \\
+                               	$PERL $PERL_HOME/xmlformat.pl '
+alias idolcatids	           	idolcategoryids        
+alias idolterms                	'curl "$DEVURL=CategoryGetTNW&Category=\!^" --noproxy "*" --silent | \\
+                               	$PERL $PERL_HOME/xmlformat.pl'
+alias idolcatdelete			   	'curl "$DEVURL=CategoryDelete&Category=\!^" --noproxy "*" --silent | \\
+                               	$PERL $PERL_HOME/xmlformat.pl'
+alias idolcatdel			   	idolcatdelete
+alias idolcatdelete_all		   	idolcatdel 0
+alias idolcathierarchy		   	'curl "$DEVURL=CategoryGetHierDetails&Category=\!^" --noproxy "*" --silent | \\
+                               	$PERL $PERL_HOME/xmlformat.pl'
+alias idolcathier			   	idolcathierarchy
+alias idolclassifications      	'setenv IDOL_DEV_URL $DEVURL && idolcategoryids |                                        \\
+                                $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"  |     \\
+                                $PERL -ne  ' "' "' chomp;print "ID = $_\n";                                             \\
+                                print `curl "$ENV{'IDOL_DEV_URL'}=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'"
+
+alias idolcaturis	           'setenv IDOL_DEV_URL $DEVURL && idolcategoryids |                                        \\
+                               $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"         \\
+| $PERL -ne  ' "' "'                                                                                                    \\
+chomp;                                                                                                                  \\
+$ID =  $_;                                                                                                              \\
+$input = `curl "$ENV{'IDOL_DEV_URL'}=CategoryGetDetails&Category=$_" --noproxy "*" --silent`;                           \\
+if($input =~ /<autn:name>(.+)<\/autn:name>/) { print "CATEGORY => $1\n"; }                                              \\
+if($input =~ /<autn:ts_urn>trim:..\/pln\/(\d+)<\/autn:ts_urn>/) { print "\tURI : $1\n"; }                               \\
+print "\tID  : $ID\n\n";                                                                                                \\
+'"'"
+
+alias idolclass               'setenv IDOL_CLS_PARAMS "\!*" && idolclassifications              \\
+| $PERL $PERL_HOME/xmlformat.pl                                                                 \\
+| $PERL -e ' "' "'                                                                              \\
+                                                                                                \\
+sub printTerms($$){                                                                             \\
+  ($terms,$max) = @_;                                                                           \\
+  $i=1;                                                                                         \\
+  for(@$terms){                                                                                 \\
+    if($i % 5 == 0){ print "\n"; }                                                              \\
+    my $t = $_->{word}.":".$_->{weight};                                                        \\
+    my $sp = " " x ($max - length($t) + 1);                                                     \\
+    print $t.$sp;                                                                               \\
+    $i++;                                                                                       \\
+  }                                                                                             \\
+  print "\n";                                                                                   \\
+}                                                                                               \\
+                                                                                                \\
+my ($currentID,%CLASSES);                                                                       \\
+my $opts = $ENV{'IDOL_CLS_PARAMS'};                                                             \\
+@input = <STDIN>;                                                                               \\
+for($i = 0; $i<$#input; $i++){                                                                  \\
+  $l = $input[$i]; chomp $l;                                                                    \\
+  if($l =~ /^ID = (\d+)$/){ $currentID = $1; next; }                                            \\
+  if($l =~ /<response>SUCCESS<\/response>/){                                                    \\
+    my $name = $input[$i + 3];                                                                  \\
+    my $db = $input[$i + 5];                                                                    \\
+    my $terms = $input[$i + 6];                                                                 \\
+    my $urn = $input[$i + 9];                                                                   \\
+    $name   =~ s/^.*autn:name.(.+).\/autn:name..*$/$1/; chomp $name;                            \\
+    $db     =~ s/^.*autn:databases.(.+).\/autn:databases..*$/$1/; chomp $db;                    \\
+    $terms  =~ s/^.*autn:queryagenttnw.(.+).\/autn:queryagenttnw..*$/$1/; chomp $terms;         \\
+    if($terms =~ /autn:categoryparameters/) { # There are no terms                              \\
+      $terms = 0;                                                                               \\
+      $urn = $input[$i + 8];                                                                    \\
+    }                                                                                           \\
+                                                                                                \\
+    $urn    =~ s/^.*autn:ts_urn.(.+).\/autn:ts_urn..*$/$1/; chomp $urn;                         \\
+    my $longest = 10;                                                                           \\
+    @terms = split(/\]\s+/, $terms);                                                            \\
+    my @new;                                                                                    \\
+                                                                                                \\
+    if($terms){                                                                                 \\
+      for(@terms){                                                                              \\
+        if(/^(.+)~\[(\d+)$/){                                                                   \\
+          ($word,$val) = ($1,$2);                                                               \\
+          my $tmp = "$word:$val";                                                               \\
+          $longest = length($tmp) > $longest ? length($tmp) : $longest;                         \\
+          push @new, { word => $word, weight => $val };                                         \\
+        }                                                                                       \\
+        elsif(/^(.+)~\[(\d+)\]$/){   # Last term in list                                        \\
+          ($word,$val) = ($1,$2);                                                               \\
+          my $tmp = "$word:$val";                                                               \\
+          $longest = length($tmp) > $longest ? length($tmp) : $longest;                         \\
+          push @new, { word => $word, weight => $val };                                         \\
+        }                                                                                       \\
+        else { print "BAD SPLIT : $_\n"; }                                                      \\
+      }                                                                                         \\
+    }                                                                                           \\
+    else { @new = (); }                                                                         \\
+                                                                                                \\
+    if($urn =~ /trim:(..)\/pln\/(\d+)/){                                                        \\
+      $CLASSES{$2} = {                                                                          \\
+         id    => $currentID, uri => $2,   name => $name,  db => $db,                           \\
+         terms => \@new,      urn => $urn, max => $longest                                      \\
+      };                                                                                        \\
+    }                                                                                           \\
+    else{                                                                                       \\
+      print "BAD URN VALUE: $urn\n";                                                            \\
+    }                                                                                           \\
+    $i = $i + 12; # Move to next entry                                                          \\
+  }                                                                                             \\
+}                                                                                               \\
+                                                                                                \\
+# Deal with options                                                                             \\
+if($opts =~ /^all$/i){                                                                          \\
+  for(sort keys %CLASSES){                                                                      \\
+    $i = $CLASSES{$_};                                                                          \\
+    print "ID:".$i->{id}.", URI:".$_ ." => ".$i->{name}."\n";                                   \\
+  }                                                                                             \\
+}                                                                                               \\
+elsif($opts =~ /^\d+$/){                                                                        \\
+  if(exists $CLASSES{$opts}){                                                                   \\
+    $cls = $CLASSES{$opts};                                                                     \\
+    print "=================================================== \n";                             \\
+    print "NAME      : ".$cls->{name}."\n";                                                     \\
+    print "URN (DB)  : ".$cls->{urn}." (".$cls->{db}.")\n";                                     \\
+    print "CAT ID    : ".$cls->{id}."\n";                                                       \\
+    print "TERMS     :\n";                                                                      \\
+    printTerms($cls->{terms},$cls->{max});                                                      \\
+  }                                                                                             \\
+}                                                                                               \\
+elsif($opts =~ /^[\w-\.]+$/){                                                                   \\
+  for(keys %CLASSES){                                                                           \\
+    $cls = $CLASSES{$_};                                                                        \\
+    if($cls->{name} =~ /$opts/i){                                                               \\
+      print "=================================================== \n";                           \\
+      print "URI       : ".$cls->{uri}."\n";                                                    \\
+      print "NAME      : ".$cls->{name}."\n";                                                   \\
+      print "URN (DB)  : ".$cls->{urn}." (".$cls->{db}.")\n";                                   \\
+      print "CAT ID    : ".$cls->{id}."\n";                                                     \\
+      print "TERMS     :\n";                                                                    \\
+      printTerms($cls->{terms},$cls->{max});                                                    \\
+    }                                                                                           \\
+  }                                                                                             \\
+}                                                                                               \\
+                                                                                                \\
+'"'"
+ 

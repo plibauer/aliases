@@ -8,19 +8,11 @@
 
   See the Google Drive document "Git repository" for information on how to setup ssh access from anywhere.
 
-2. Create a soft link to the home or work file;
-
-      >ln -s ~/aliases/aliases_{home|work}.txt  ~/aliases/aliases
-
-  This will make sure it gets sourced correctly.
-
-3. Copy the file ../aliases/aliases_local.txt.remove_postfix to aliases_local.txt
-  Configure all the localised paths to the repository drive and SVN mirror directories etc.
-
-4. Run the python script ~/python/make_env.py --config ~/python/make_env.config  to produce an environment file for 
-  the next step. For the latest branch, the convention is to name it 'trunkenvironment'
+2. Run the python script make_env.py to produce an environment file for the next step.
+   If the config file is different to the default of make_env.config, specify it using the 
+   --config option.
   
-5.In your ~/.tcshrc file, put in the initial source command for which environment you would like to default to.
+3.In your ~/.tcshrc file, put in the initial source command for which environment you would like to default to.
   Some examples are shown below;
 
 

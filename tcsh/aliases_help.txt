@@ -1,0 +1,284 @@
+######################################################################################
+#  EXAMPLE ALIASES USING ADVANCED METHODS
+#
+#  1. Reference an environment variable, pass to inline perl script which reads an
+#     argument from the command line ($var_DBID in this case)
+
+alias example_1 '$PERL -e  ' "'" '                    	\\
+     $p = "\"".$ENV{LOCALAPPDATA};                   	\\
+     $p =~ s|\\|/|g;                                 	\\
+     $p .= "/Hewlett-Packard/HP TRIM/$ARGV[0]/Log\""; 	\\
+     print "$p\n"                                    	\\
+'"'  $var_DBID  " 
+
+
+
+alias perlshellhelp      'echo                                                                               \\
+"\n                                                                                                          \\
+  1. In order to match single quotes in a pattern, or print, use the escape                                  \\
+     sequence \\047 instead of a literal \047 . For example to match the following string:                   \\
+                                                                                                             \\
+         \047Hello World!\047                                                                                \\
+                                                                                                             \\
+     The perl command line would be;                                                                         \\
+                                                                                                             \\
+         > cat file.txt | perl -ne \047 if (/(\\047Hello World!\\047)/) { print \042\044\061\\n\042 } \047   \\
+                                                                                                             \\
+     The equavalent for a double quote \042 is \\042 and for \044 is \\044                                   \\
+                                                                                                             \\
+  2.                                                                                                         \\
+                                                                                                             \\
+  3.                                                                                                         \\
+                                                                                                             \\
+  4.                                                                                                         \\
+\n\n"                                                                                                        \\
+'
+
+#
+#  \t   > cat file.txt | perl -ne \047 if(\$_ =~ /(\\047Hello World!\\047)/{ print \042\$1\042; } \047    \\
+#
+#
+#      alias x  ' echo "some stuff here" | perl -ne ' "'" ' /(stuff)/ and do { print "$1\n" }  ' "'"
+#      perl -ne ' "'" '   ...   ' "'"
+#
+######################################################################################
+
+
+alias admininstallhelp 	'echo                                          \\
+"\n                                                                    \\
+From a cygwin prompt;                                                  \\
+\n\n                                                                   \\
+\t> admininstall ABC.msi <targetpath>                                  \\
+\n\n                                                                   \\
+<targetpath> must be a windows path, Eg. E:\\tmp\\extract              \\
+\n                                                                     \\
+So, to extract the MSI Setup.msi to C:/temp/mydir;                     \\
+\n\n                                                                   \\
+\t> admininstall Setup.msi C:\\\\temp\\\\mydir                         \\
+\n"'
+
+##########################
+
+alias findcomphelp      'echo                                               \\
+"\n                                                                         \\
+\t1. >findcomponents -d E:/91 tsj                                           \\
+\t2. findcomp is equivalent to;                                             \\
+\t       >findcomponents -d <Repo path>                                     \\
+\t   for the  current environment                                           \\
+\t3. Multiple components to search;                                         \\
+\t       >findcomp CSH.htm sdk.dll                                          \\
+\t4. Specify components to search on from a file;                           \\
+\t       >findcomp -input components.txt                                    \\
+\t4. For more detailed help, >findcomp -help                                \\
+\n\n"                                                                       \\
+'                                                                           \\
+
+##########################
+
+alias sloghelp		'echo                										 					\\
+"\n                                      									     					\\
+Use slog and slogr if you are in the directory you wish to view the svn log of;  					\\
+\n\n                                                                             					\\
+\tslog 85123         - Will print all log entries from HEAD -> revision 85123    					\\
+\n                                                                               					\\
+\tslogr 85123 84444  - Will print the log entries starting at 85123  -> 84444	 					\\
+\n\n																			 					\\
+Use slogurl and slogurlr when you have the repository URL and are not in a checked-out directory; 	\\
+\n\n																			 				  	\\
+\tslogurl svn://localhost/REPOS/trunk 84357\n\tslogurlr svn://localhost/REPOS/trunk 84405 84357     \\
+\n\n" '
+
+##########################
+
+alias almsanitycheckhelp  'echo                                               		\\
+"\n                                                                         		\\
+\t1. Run almcheckdates                                                             	\\
+\t2. Copy sanityCheckOutput.txt to : ~/Dropbox/Work                           		\\
+\t3. Wait a couple of minutes for it to be processed                           		\\
+\t4. Run almfixdefects to download defectResults.txt and update local files    		\\
+\n\n"                                                                         		\\
+'                                                                            	 	\\
+alias sanityhelp	  almsanitycheckhelp
+
+##########################
+
+alias dbhelp      'echo                                                            						\\
+"\n                                                                                						\\
+\t whichenv             : displays current settings                                						\\
+\t dbsession <value>    : sets the database to run against                         						\\
+\t dbserver  <value>    : sets the database instance to use                        						\\
+\t db        <options>  : general db operations                                    						\\
+\t dbs                  : list available databases for current SERVER ($var_dbServer)  					\\
+\t dbdetails            : as above, but with verbose outout                        						\\
+\t dbsql     <string>   : run the SQL specified by double quoted <string>          						\\
+\t                                                                                 						\\
+\t add -verbose to any command to see what is actually being run                   						\\
+\t                                                                                 						\\
+\t EXAMPLE                                                                         						\\
+\t   Set the server to SQL2016  :  >dbserver SQL2016                               						\\
+\t   Set the database to TEST91 :  >dbsession TEST91                               						\\
+\t                                                                                 						\\
+\t   Query the number of rows in the TSRECORD table;                               						\\
+\t   (The ^ is a double quote)                                                     						\\
+\t                                                                                 						\\
+\t   >dbsql ^SELECT COUNT(*) FROM TSRECORD^ --verbose  --unadorned                 						\\
+                                                                                   						\\
+SERVER            : SQL2016                                                        						\\
+DATABASE          : TEST91                                                         						\\
+CONNECTION STRING : dbi:ODBC:driver={SQL Server};Server=SQL2016;Database=TEST91;Trusted_Connection=Yes 	\\
+SQL QUERY         : SELECT COUNT(*) FROM TSRECORD                                  						\\
+MAX COLUMN WIDTH  : UNDEFINED                                                      						\\
+NUMBER OF ROWS    : 1                                                              						\\
+NUMBER OF COLUMNS : 1                                                              						\\
+                                                                                   						\\
+ 306                                                                               						\\
+                                                                                   						\\
+\tFor more detailed help, db -help                                                 						\\
+\n\n"                                                                              						\\
+'                                                                                  						\\
+
+##########################
+
+
+alias escurlhelp            'echo                                                       \\
+"\n                                                                                     \\
+1. Show all index aliases [esgetaliases]                                                \\
+     >curl -XGET http://localhost:9200/_aliases\?pretty=true                       \n   \\
+2. Show all entries for an index called <news> [essearchindex news]                     \\
+     >curl -XGET http://localhost:9200/news/_search\?pretty=true                   \n   \\
+3. Add detailed explanation to queries (add double quotes around uri)  [esgetexplain]   \\
+    >curl -XGET http://localhost:9200/news/_search?explain=true\&pretty=true       \n   \\
+4. Delete an index called <news> [esdelete news]                                        \\
+    >curl -XDELETE http://localhost:9200/news                                      \n   \\
+5. Show the settings for a given index <news> [esindxsettings news]                     \\
+    >curl -XGET http://localhost:9200/news/_settings                               \n   \\
+"                                                                                       \\
+' 
+
+##########################
+
+alias elastichelp      'echo                                                       	    \\
+"                                                                                	    \\
+--- Elastic Index ---                                                                 	\\
+  mapping        : Show mapping for the default elastic index                        	\\
+  espym 'index'  : Show mapping for 'index'                                      	    \\
+  settings       : Show settings for default index                                   	\\
+  espys 'index'  : Show settings for 'index'	                                   	    \\
+  espyhelp(espyh): See examples of extended espy commands 				                \\
+  escontentsrch  : Search using curl for a specific term in Document.Content            \\
+											                                            \\
+--- Autoclassification --- 							                                    \\
+  acmapping      : Show mapping for the autoclassification index                     	\\
+  acsettings     : Show settings for autoclassification index                        	\\
+  autoclassinfo  : Show a summary of the autoclassification index                     	\\
+  autoclasstypes : Show the different table <types>                                  	\\
+  estype <type>  : Query one of the types from the previous command                  	\\
+  aclabels       : Print _id, document count, uri and name for all categories/labels 	\\
+											                                            \\
+-- Word statistics ---                                                               	\\
+                                                                                        \\
+  getwords \042id\042  <arg1> <arg2> <arg3>                                             \\
+             Print tabulated words using _id from acwordlabels 	                        \\
+											                                            \\
+      ARG1  - search string which will be matched against each pair                 	\\
+              Eg. \042^un\042 will only match words beginning with \047un\047           \\
+      ARG2  - number of columns (default 10)                                        	\\
+      ARG3  - size of columns (default 30)                                          	\\
+											                                            \\
+  If all words should be printed, but you want to change arg2 or arg3, then;    	    \\
+  getwords \042^.+\042 8 25   (all words with 8 columns and col width 25)               \\
+                                                                                        \\
+Manipulate word counts and test classification process                                  \\
+                                                                                        \\
+  testac --inplace --classify --input \042hockey science ...\042 --debug > output.txt   \\
+  espy --ac_analyse output.txt                                                          \\
+             With the WGS running, run testtrim with the text input and see how         \\
+             terms are scored.  Feed the output into espy to analyse the results        \\
+                                                                                        \\
+  espy --ac_modify 9000000018:zubkoff:1                                                 \\
+             Change the word count for \047zubkoff\047 to a value of 1. Changing        \\
+             a value to 0 will remove the word for the given label.                     \\
+                                                                                 	    \\
+"                                                                                    	\\
+'
+
+alias eshelp elastichelp
+alias helpelastic elastichelp
+
+alias espyhelp      'echo                                                                  		\\
+"                                                                                         		\\
+  espy           Show all indexes and assign integer value to each index                   		\\
+  espy \047index\047   Show info for specific index (can use an integer for \047index\047) 		\\
+ 																								\\
+  espy s/5/q:a   (long form: search/5/query:all)                                        		\\
+                 Search(s) the 5th index and Query(q) All(a)                            		\\
+ 																								\\
+  espy s/5/9000000020  (long form: search/5/9000000020)                                 		\\
+                 Show document with _id (uri) 9000000020                                		\\
+ 																								\\
+  espy s/5       (long form: search/5)                                                  		\\
+                 Show top 10 documents for index 5                                      		\\
+ 																								\\
+  espy s/5 -s Number:Title                                                              		\\
+                 As above but only show Number and Title fields                         		\\
+ 																								\\
+  espy s/5 -s Number:Title --compact                                                    		\\
+                 As above but remove _index,_score,_source,_type fields                 		\\
+ 																								\\
+  espy s/5 -e Document                                                                  		\\
+                 Exclude \047Document\047 from the _source properties                   		\\
+ 																								\\
+  espy s/cm_m1 --brief --size 100                                                       		\\
+                 Get the first 100 documents with 1 entry per line (_id,_sore,Title)    		\\
+ 																								\\
+  espy s/cm_m1/query:Notes:\042patterson\042 -s Notes --compact                         		\\
+                 Search all \047Notes\047 fields in cm_m1 for the string \047patterson\047 and  \\
+                 limit the output to only the \047Notes\047 field                       		\\
+ 																								\\
+  espy s/cm_m1/q:Document.Content:trim -s Document --compact                            		\\
+                 Search in the document content field for all occurrences of \047trim\047 		\\
+                 and limit the output to only the \047Document.Content\047 field        		\\
+ 																								\\
+  espy s/cm_m1/q:Document.Content:trim --brief                                          		\\
+                 As above, but just print the matching URIs                             		\\
+\n\n"                                                                                   		\\
+'
+
+
+##########################
+
+alias idolhelp      'echo                                                                      		\\
+"\n                                                                                            		\\
+idolconfig    	: Sets up DBID with suffix 5 and dataset name with suffix '_idol'              		\\
+popdbidol       : Runs popdb for above settings                                                		\\
+restoreidol     : Restores above database                                                      		\\
+idoluri <uri>   : Print content and fields for record with URI <uri>                           		\\
+idolsync        : Send a DRESYNC to the index to make sure all records are available           		\\
+                                                                                               		\\
+TestTrim Autoclassification                                                                    		\\
+idol_train      : loads training records for above dataset                                     		\\
+idol_test       : loads test records data for above dataset                                    		\\
+idol_both       : loads both above sets                                                        		\\
+idol_classify   : Runs classify on records in Holding Bay                                      		\\
+                                                                                               		\\
+Category commands                                                                              		\\
+idolcatids  	        : Print all category IDs                                                  	\\
+idolcaturis  	        : Print all category names, URIs and IDs                                  	\\
+idolcat <id>            : Get the category with 'id'                                              	\\
+idolsuggesturi <uri>    : Suggest a category for the document with uri <uri>                      	\\
+idoltraining <id>       : Get the data that has been used to train the category                   	\\
+idolterms <id>          : Get extended term information with 'id'                                 	\\
+idolcatdel(ete) <id>    : Delete the category with 'id'                                           	\\
+idolcatdelete_all       : Delete all categories                                                   	\\
+idolcathier(archy) <id> : Get the hierarchy details for 'id'                                      	\\
+idolclass <opt>         : Search for categories and print uri, name, urn, database, id and terms  	\\
+ 'all'    - show all categories (not all fields)                                               		\\
+ 'uri'    - show category matching the 'uri' value                                             		\\
+ 'string' - show all categories with names matching the 'string'                               		\\
+\n\n"                                                                                          		\\
+'
+
+
+##########################
+
+##########################

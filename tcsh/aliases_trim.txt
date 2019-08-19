@@ -1,0 +1,157 @@
+##################################################################################################################
+#                                                                                                                #
+#     TRIM Specific aliases                                                                                      #
+#     This file should only be read once.                                                                        #
+#                                                                                                                #
+##################################################################################################################
+
+#
+#
+alias tes        						'$var_trimDir/$var_defArch/$var_defBuild/TRIMEnterpriseStudio.exe &'
+alias trim       						'$var_trimDir/$var_defArch/$var_defBuild/TRIM.exe &'
+alias trimhelp   						'hh $var_trimDir/doc/doc/DocPub/TRIM.chm &'
+alias wgs        						'$var_trimDir/$var_defArch/$var_defBuild/TRIMWorkgroup.exe &'
+alias messages      					'cat $var_trimDir/trim/TRIMMessages.txt | pgrep -i '
+alias trimmessages  					'$var_trimDir/trim/TRIMMessages.exe'
+alias properties    					'cat $var_trimDir/trim/src/DD/properties.txt | pgrep -i '
+alias viewprop      					'view $var_trimDir/trim/src/DD/properties.txt'
+alias propids       					'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | pgrep -i '
+alias propidx       					'cat $var_trimDir/trim/src/Core/PRPpropertyFind.cpp | pgrep -i '
+
+alias database      					'cat $var_trimDir/trim/src/DD/DATABASE.TXT | pgrep -i '
+alias viewdb        					'view $var_trimDir/trim/src/DD/DATABASE.TXT'
+
+
+alias killtrim							'taskkill /F /IM TRIM.exe'
+alias killwgs 							'taskkill /F /IM TRIMWorkgroup.exe'
+alias killproc							'taskkill /F /IM'
+alias killboth							'killtrim;killwgs'
+
+# Run populate database
+alias populatedb 						'cd $var_trimDir; $var_trimDir/$var_defArch/$var_defBuild/PopulateDatabase.exe'
+alias popdb 							populatedb
+alias popdbhelp							'populatedb -h'
+alias restorepopdb 						'popdb --load --dbid $var_DBID --dbname $var_dbSession'
+alias reloadpopdb 						restorepopdb
+alias defaultconfig						'setdbid $env_default_dbid; dbsession $dbDefault'
+alias elasticconfig						defaultconfig
+alias popdboracle 						'popdb --db oracle64'
+alias popdbidol         				'populatedb --dci idol --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol"; bkupidolcfg'
+alias idolconfig						'setdbid $env_default_dbid_pref"5"; dbsession $var_dbSession"_idol"'
+alias popdbbig							'popdb --big'
+alias bigconfig							'setdbid 41; dbsession Test_Big_"$env_revision"_SqlServer'
+
+alias testac            				'testtrim --test autoclassification'
+alias elk_train         				'testac --load train '
+alias elk_test          				'testac --load test --inplace'
+alias elk_both          				'testac --load both '
+alias elk_classify      				'testac --inplace --classify '
+alias elastic_train						elk_train
+alias elastic_test						elk_test
+alias elastic_both						elk_both
+alias elastic_classify					elk_classify
+
+alias idol_train						'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --load train'
+alias idol_test  						'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --load test --inplace'
+alias idol_both         				'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --load both'
+alias idol_classify     				'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --classify --inplace'
+																											     
+
+alias trimconfig       					'xmlconf $var_trimcfg'
+alias trimcfgsorted   					'xmlformat $var_trimcfg | $PYTHON $PYTHON_HOME/sortXml.py'
+alias restoreconfig    					'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg $var_trimcfgdir'
+alias xmltrim          					'xmlformat $var_trimcfg'
+alias getconfig        					'more $var_trimcfg'
+alias fixtrimconfig    					'xmlformat -i -b .backup $var_trimcfg'
+alias bkupidolcfg      					'cp $var_trimcfg /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.IDOL'
+alias bkupelasticcfg   					'cp $var_trimcfg /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC'
+alias idolcfg          					'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.IDOL $var_trimcfg'
+alias elasticcfg       					'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC $var_trimcfg'
+
+
+
+alias testtrim       					'$var_trimDir/$var_defArch/$var_defBuild/testTrim.exe'
+alias trimtest       					testtrim
+alias testhelp	     					'testtrim --help'
+alias testlist       					'testtrim --list'
+alias testcases      					testlist
+alias bld            					'testtrim --test bulkLoader --type all --timeout 6000 --assert'
+alias bldapi         					'testtrim --test bulkLoader --type api --timeout 6000 --assert'
+alias bldsth         					'testtrim --test bulkLoader --type sth --timeout 6000 --assert'
+alias bldrecs        					'testtrim --test bulkLoader --type apirec --timeout 6000 --assert'
+alias bldcont        					'testtrim --test bulkLoader --type container --timeout 6000 --assert'
+alias makecontainers 					'testtrim --test bulkLoader --type container --timeout 6000 --assert --inplace --containers \!:1 --perContainer \!:2'
+
+# CSharp testing
+alias testcs       						'$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe --test'
+alias testevmon	   						'testcs EventMonitor --inplace'
+	   
+
+
+alias enums  'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs     \\
+| $PERL -e ' "'" '                                                            \\
+while(<>){                                                                    \\
+  if(/^\s*(\w+)\s*=\s*(\d+)\s*,/){                                            \\
+    if($ids{$2}){                                                             \\
+       print "DUPLICATE? => $2\n";                                            \\
+       next;                                                                  \\
+    }                                                                         \\
+    $ids{$2}=$1;                                                              \\
+  }                                                                           \\
+}                                                                             \\
+my $max = (reverse sort {$a<=>$b} keys %ids)[0];                              \\
+for my $i (0 .. $max) {                                                       \\
+  if($ids{$i}){                                                               \\
+    print "$i\t".$ids{$i}."\n";                                               \\
+  }                                                                           \\
+  else {                                                                      \\
+    print "$i\n";                                                             \\
+  }                                                                           \\
+}                                                                             \\
+' "'"
+
+alias trimtables 'cat $var_trimDir/trim/src/DD/DATABASE.TXT                   \\
+| $PERL -e ' "'" '                                                            \\
+@in = <>;                                                                     \\
+my %tables;                                                                   \\
+my $max = 10;                                                                 \\
+for(@in) {                                                                    \\
+  chomp;                                                                      \\
+  s/nouri//gi;                                                                \\
+  s/basic(plusloc)*\s+\[/[/gi;                                                \\
+  s/sharedbobtype\(\w+\)//i;                                                  \\
+  s/sharedtableid\(\w+\)//i;                                                  \\
+  s/shared\([\w,\s]+\)//i;                                                    \\
+  s/obsoleteafter\(\d+\)//i;                                                  \\
+  s/^(table\s+[\d,\s]+)iot /$1/i;                                             \\
+  /^table\s+[\d,\s]+(\w+)[\s\d\%]+\[(.+)\]/ and do {                          \\
+     $tables{uc $1} = $2;                                                     \\
+     $l = length $1;                                                          \\
+     $max = ($l > $max) ? $l : $max;                                          \\
+  }                                                                           \\
+}                                                                             \\
+for(sort keys %tables) {                                                      \\
+   $sp = $max - length($_);                                                   \\
+   print $_.(" " x $sp).": ".$tables{$_}."\n";                                \\
+}                                                                             \\
+' "'" 
+alias tableinfo trimtables
+
+alias shorttables 'trimtables |                  \\
+$PERL -ne  '"'"'                                 \\
+/^(\w{1,8})\w*\s*:(.+)$/ and do {                \\
+  $sp = 8 - length($1);                          \\
+  print  "TS$1".(" " x $sp)." :$2\n"             \\
+} '"'" 
+
+alias whichcfg 'cat $var_trimcfg |               \\
+$PERL -e ' "'" '                                 \\
+while (<>) {                                     \\
+  if ($_ =~ /ElasticUrl>(.*)<\/Elastic/) {       \\
+     if ($1 =~ /^http/i) {                       \\
+         print "ELASTIC\n";                      \\
+         exit                                    \\
+     }                                           \\
+  }                                              \\
+}                                                \\
+print "IDOL\n"  ' "'"

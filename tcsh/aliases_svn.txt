@@ -1,0 +1,181 @@
+#######################################################################################################################
+# 
+#  SVN ALIASES
+#
+#  None of the aliases should need to be re-sourced after the file is read the first time
+#  Any variables that might change due to the environment should have deferred substitution
+#
+
+alias svnstat         'svn status . -q'
+alias svnstatic       "svn update $STATIC_REPO"
+alias svnrevcurrent   'svn log -v -r "\!^":"\!^"'
+alias svnhead         'svn log -l 1 -v'
+alias svnlatest       'svn log -l 5 -v'
+alias showlatest      svnlatest
+alias latest          svnlatest
+alias svndiff 		  svn diff -r PREV
+
+alias writeSvnBranch 'svnstatus | $PERL -ne '"'"' /^URL:\s+(.+)\/(REPOS\/.+)/ and do { print "$1/$2\n" }' "' "' > C:/temp/svn_branch_x.txt'
+alias showrevs       'writeSvnBranch && echo -n "\!*"      | processSvnLog'
+alias processSvnLog  '$PERL -e  '"'"'                     \\
+  $| = 1;                                                \\
+  chomp($currdir = `pwd`);                               \\
+  $currdir =~ s|^/./[^/]+/||;                            \\
+  $in=<>;                                                \\
+                                                         \\
+  if($in =~ /^(.+)\s+(\d+)\s+(list)$/i){                 \\
+     ($a,$b,$c) = ($1,$2,$3);                            \\
+  }                                                      \\
+  elsif($in =~ /^(.+)\s+(\d+)$/i){                       \\
+     ($a,$b,$c) = ($1,$2,"");                            \\
+  }                                                      \\
+  else {                                                 \\
+     ($a,$b,$c) = ($in, 10, "");                         \\
+  }                                                      \\
+                                                         \\
+  if($currdir ne ""){                                    \\
+    if($a !~ m|^$currdir/|) {                            \\
+        $a = $currdir."/$a";                             \\
+    }                                                    \\
+  }                                                      \\
+  $a =~ s|[/\\]$||;                                      \\
+                                                         \\
+  open TMP,"C:/temp/svn_branch_x.txt";                   \\
+  @u = <TMP>;                                            \\
+  close TMP;                                             \\
+  close TMP;                                             \\
+  $ans = shift @u;                                       \\
+  chomp $ans;                                            \\
+  print "TARGET => $ans/$a\n\n";                         \\
+  $cmd = "svn log \"$ans/$a\" -r HEAD:1 --limit $b";     \\
+  @out = `$cmd`;                                         \\
+                                                         \\
+  if($c eq "list"){                                      \\
+    for(@out){                                           \\
+      if(/^r(\d+)/){ push @list, $1; next }              \\
+    }                                                    \\
+    print join ",", @list;                               \\
+    print "\n";                                          \\
+    exit;                                                \\
+  }                                                      \\
+                                                         \\
+  for(@out){                                             \\
+    if(/^r(\d+)/){                                       \\
+       s/^r(\d+)/$1/;                                    \\
+       print;                                            \\
+       next;                                             \\
+    }	                                                 \\
+    next if /^(\s*|-+)$/;                                \\
+    print "\t$_";                                        \\
+  }                                                      \\
+'"'"
+alias showchanges     showrevs
+
+alias svnstatus       svn info \$var_trimDir" | $PERL -ne 'print if /^Path|^URL:|^\n/;' "
+alias svnstatusfull   svn info \$var_trimDir" | $PERL -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
+alias svninfo	      svnstatusfull
+
+alias svnup           'svn update $var_trimDir; date; svn update $var_trimDir/doc/doc/DocPub;'
+alias svnupall        'date; svnup; svnstatic; date;'
+alias svnlogrev       'svn log $SVN_LAB_URI/REPOS/trunk -v -r "\!^":"\!^"'
+
+alias trimhead        'svn log $var_trimDir -r HEAD:1 --limit 1 --verbose'
+alias trimlatest      'svn log $var_trimDir -r HEAD:1 --limit 10 --verbose'
+
+alias svnrepoinfo     'cat $SVN_LAB_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
+alias svnrepoinfostat 'cat $SVN_STATIC_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
+alias repoinfo        svnrepoinfo
+alias repoinfostat    svnrepoinfostat
+
+alias svnservers      'echo "\n                          \\
+LOCAL SERVERS:                                           \\
+\tLAB URL    : $SVN_LOCAL_LAB                            \\
+\tSTATIC URL : $SVN_LOCAL_STATIC                         \\
+\n                                                       \\
+REMOTE SERVERS:                                          \\
+\tLAB URL    : $SVN_LAB_URI                              \\
+\tSTATIC URL : $SVN_STATIC_URI                           \\
+"'
+
+alias statproc        "$PERL $SVN_STATIC_DB/svn_log_processor.pl"
+alias statrev         'statproc --rev'
+alias statrevhead     statrev head
+alias statupdate      statproc --update
+alias statlook	      svnlook pg --revprop -r0 $SVN_STATIC_PATH svn:sync-from-url
+
+alias statrelocaterepo 'echo                                 			\\
+"\n                                                          			\\
+>svnlook pg --revprop -r0 $SVN_STATIC_PATH svn:sync-from-url 			\\
+> url.txt\n                                                  			\\
+<... edit url.txt ...>\n                                     			\\
+(*DONT* add a newline to the end - use textpad, or vi -b ...)\n 		\\
+>svnadmin setrevprop $SVN_STATIC_PATH -r0 svn:sync-from-url url.txt\n   \\
+" '
+
+#
+#  LAB Aliases
+#
+
+alias labproc        "$PERL $SVN_LAB_DB/svn_log_processor.pl"
+alias rev		     labproc --rev
+alias revhead        labrev head
+alias revlocal       labproc --use_local --rev
+alias match   	  	 labproc --no_case --limit 30 --match
+alias labupdate      labproc --update --repo \$SVN_LAB_URI/REPOS
+alias labhelp        labproc --help
+alias lablook	     svnlook pg --revprop -r0 \$SVN_LAB_PATH svn:sync-from-url
+
+alias labrelocaterepo 'echo                                 			\\
+"\n                                                          			\\
+>svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url 		   	    \\
+> url.txt\n                                                  			\\
+<... edit url.txt ...>\n                                     			\\
+(*DONT* add a newline to the end - use textpad, or vi -b ...)\n 		\\
+>svnadmin setrevprop $SVN_LAB_PATH -r0 svn:sync-from-url url.txt\n      \\
+" '
+
+#
+# If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
+# alias syncsvn	   "svnsync sync svn://localhost/"
+#
+alias syncsvn	    svnsync sync $SVN_LAB_FILE
+alias synclab       svnsync sync $SVN_LAB_FILE \$SVN_LAB_URI
+alias synclabwork   svnsync sync $SVN_LAB_FILE svn://labsvn:1137/TRIM
+alias syncstatic   	svnsync sync $SVN_STATIC_FILE \$SVN_STATIC_URI
+alias remlock	    svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB_FILE
+alias remlockstat   svn propdel svn:sync-lock --revprop -r 0 $SVN_STATIC_FILE
+
+# Setup the documentation directory
+alias makedoco 		'mkdir -p $var_trimDir/doc/doc; cd -p $var_trimDir/doc/doc; svn co $SVN_LAB_URI/REPOS/doc/trunk/DocPub' 
+
+alias relocate   ' echo `svn info \!:1  |                \\
+pgrep "URL: (svn|http)"` "AA" \!:2 "BB" \!:1             \\
+ | $PERL -ne ' "' "'                                     \\
+      /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/             \\
+  and system("svn","relocate","$1","$2","$3");           \\
+ '"'"
+
+alias lab2local   	relocate \$var_trimDir $SVN_LOCAL_LAB
+alias lab2remote  	relocate \$var_trimDir \$SVN_LAB_URI
+alias static2local 	relocate $STATIC_REPO  $SVN_LOCAL_STATIC
+alias static2remote relocate $STATIC_REPO  \$SVN_STATIC_URI
+
+alias svn_parse_log '$PERL -e ' "'" '     	\\
+@in = <>;                                 	\\
+while($l = shift @in){                    	\\
+  chomp $l; 							  	\\
+  if($l =~ /^r(\d+)\s+\|\s+(.+)\s+\|\s+\d+-\d+-\d+\s+(\d+:\d+:\d+)\s+(\+\d+)\s+\((.+)\)\s+|\s+\d+\s+line/){ \\
+    print "$1\t$2\t$5 $3\t"        			\\
+  }                                			\\
+  elsif($l =~ /^\-\-\-/){          			\\
+    print "\n";                    			\\
+  }                                			\\
+  else {                           			\\
+    $l =~ s/^\s+|\s+$//g;          			\\
+    print " $l";                   			\\
+  }}'  "'"
+  
+alias slog			'svn log -r HEAD:\!^        | svn_parse_log' 
+alias slogr 		'svn log -r \!:1\:\!:2      | svn_parse_log' 
+alias slogurl 		'svn log \!:1 -r HEAD:\!:2  | svn_parse_log' 
+alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | svn_parse_log' 

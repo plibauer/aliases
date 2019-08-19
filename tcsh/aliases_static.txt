@@ -1,0 +1,147 @@
+
+##################################################################################################################
+#                                                                                                                #
+#           This file sets up variables used in other alias files, but the variables                             #
+#           shouldn't change when the session variables change. This file should be read once.                   #
+#                                                                                                                #
+##################################################################################################################
+
+#   Variables inside "" are always substituted
+#   Variables inside '' are not substituted and only expanded when the command runs
+#   If a variable is in neither of the above, its substitution can be delayed by prefixing with '\'
+
+set include_file   = "$env_alias_dir/include.txt"
+
+# Allow a different standard path for devenv.exe
+if ("$DEVENV_ROOT" == "") then
+  set DEVENV_ROOT = "C:/Program Files (x86)"
+endif
+set defproj = ALL_BUILD
+
+alias src       		"source $include_file; settitle"
+alias src83     		"source $env_alias/83environment"
+alias src90     		"source $env_alias/90environment"
+alias src91     		"source $env_alias/91environment"
+alias src92     		"source $env_alias/92environment"
+alias src93     		"source $env_alias/93environment"
+alias src94     		"source $env_alias/94environment"
+alias src100     		"source $env_alias/100environment"
+alias srctrunk  		src100
+
+#
+#  If we modify one of the alias file, make sure we reset the
+#  include variable so that we get the updated copy when we
+#  refresh
+#
+alias vialias           'unset include_"\!^"; vi $env_alias_dir/aliases_"\!^".txt; src'
+alias via  				vialias
+alias vibuild			via build
+alias vidb				via db
+alias vidynamic			via dynamic
+alias vid				vidynamic
+alias vielastic			via elastic
+alias vigit				via git
+alias vihelp			via help
+alias viidol			via idol
+alias vijournal			via journal
+alias vienv				via env
+alias vistatic			via static
+alias visvn				via svn
+alias vitrim			via trim
+
+alias x86  				'set var_defArch = x86; 	 src'
+alias x64  				'set var_defArch = x64; 	 src'
+alias debug  			'set var_defBuild = Debug; 	 src'
+alias release  			'set var_defBuild = Release; src'
+
+alias dbdefault 		'    		\\
+set var_dbSession = $env_dbDefault; \\
+set var_dbServer = $LOCAL_SQLSVR;	\\
+set var_DBID = $env_default_dbid;   \\
+source $include_file; settitle'
+
+alias defaultconfig 	dbdefault 
+alias dbcurrent 		'echo $var_dbSession'
+alias dbsession 		'set var_dbSession  = \!^; 	src'
+alias dbserver  		'set var_dbServer   = \!^; 	src'
+alias setdbid			'set var_DBID       = \!^;	src'
+alias trimdir   		'set var_trimDir    = \!^; 	src'
+alias bitvise			'set var_vpnConfig = BITVISE; src'
+alias pulse				'set var_vpnConfig = PULSE;   src'
+alias novpn				'set var_vpnConfig = LOCAL;   src'
+
+alias whichenv  		'echo "\n    \\
+TRIMDIR   = $var_trimDir             \\
+ARCH      = $var_defArch             \\
+BUILD     = $var_defBuild            \\
+FOLDER    = $env_folder              \\
+REVISION  = $env_revision            \\
+DBID      = $var_DBID                \\
+DBSession = $var_dbSession           \\
+DBServer  = $var_dbServer            \\
+IDOLDB    = $var_idolDb              \\
+SVNLOGDB  = $SVN_STATIC_DB       	 \\
+ELASTIC   = $var_elasticDef      	 \\
+VPN       = $var_vpnConfig           \\
+"'
+alias showenv  			whichenv
+alias trimversion 		'cat $var_trimDir/trim/wix/version.wxi | grep -i "version ="'
+
+alias settitle    		'echo -ne "\033]0;         REL=${var_trimDir} ARCH=${var_defArch}, BUILD=${var_defBuild}, DBID=${var_DBID}, DBSESSION=${var_dbSession}, DBSERVER=${var_dbServer}, VPN=${var_vpnConfig}\007"'
+alias settitledir 		'echo -ne "\033]0;         REL=${var_trimDir} ARCH=${var_defArch}, BUILD=${var_defBuild}, DBID=${var_DBID}    `/bin/pwd`\007"'
+
+alias wixgen        	$PERL $STATIC_PERL/WIX/AutoGenerateWixFromHeat.pl
+alias makewix       	$PERL $STATIC_PERL/WIX/makeWixComponents.pl
+alias wixcomponents 	makewix
+
+#################################################################################
+
+set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
+
+alias goa		 		 'cd $env_alias'
+alias gocfg              'cd $var_trimcfgdir'
+alias godoc		 		 'cd $var_trimDoc'
+alias gocs               'cd $var_trimDir/AnyCPU/$var_defBuild'
+alias goexe              'cd $var_trimDir/$var_defArch/$var_defBuild'
+alias gomsi              'cd $var_trimDir/msi/$var_defArch/en-us'
+alias gotest             'cd $var_trimDir/trim/test'
+alias goauto             'cd $var_trimDir/Automation'
+alias gosrc              'cd $var_trimDir/trim/src'
+alias gocsharp           'cd $var_trimDir/trim/CSharp'
+alias gosln              'cd $var_trimDir/trim/sln'
+alias gotrim             'cd $var_trimDir/trim'
+alias gotrimlog          'cd $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log'
+alias gob                'cd $var_trimDir/trim/CSharp/TRIMBulkLoader'
+alias golog              'cd $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log'
+alias goaudit            'cd $var_trimDir/$var_defArch/$var_defBuild/ServerData/$var_DBID/AuditLogs'
+alias goauto             'cd $var_trimDir/Automation'
+alias gosmoke            'cd $var_trimDir/Automation/Smoketest'
+alias gosetup            'cd $var_trimDir/trim/wix/Setup.exe'
+alias gowix              'cd $var_trimDir/trim/wix'
+alias gobin              goexe
+alias goany              gocs
+alias goconfig         	 gocfg
+alias goanycpu           gocs
+alias golocal		     gotrimlocalconfig
+alias gobulk             cd $STATIC_REPO/TestData/BulkLoader/TestCases
+alias goblk              gobulk
+alias gologs             golog
+alias shlog              showlog
+alias gotmp              cd /c/tmp
+alias goperl             cd $STATIC_PERL
+alias gopython           cd $PYTHON_HOME
+alias gopy		         gopython
+alias gop                cd $PERL_HOME
+alias goalm              cd $ALM_DB
+alias gosvn              cd $SVN_LAB_DB
+alias gosvnstat          cd $SVN_STATIC_DB
+alias gostatic 		     cd $STATIC_REPO
+alias gowixbin           cd $WIX_DIR/bin
+alias gowin              cd $WIN_HOME
+alias godesktop		     cd $WIN_HOME/Desktop
+alias desktop		     godesktop
+alias gowork             cd $WINHOME/Work
+alias godownloads        cd $WIN_HOME/Downloads
+alias godropbox		     cd $WIN_HOME/DropBox
+alias godrop		     godropbox
+alias home 				 cd $WIN_HOME

@@ -1,0 +1,758 @@
+# =======================================================================================
+# aliases_home.txt
+setenv DISPLAY :0.0
+
+
+alias refresh "C:/sysinternals/Bginfo.exe"
+
+set path = ( $CYG_WIN_HOME/Work/Perl/bin  $path:q )
+
+alias router		"telnet 10.11.12.1"
+
+set bitviseRdpDir = "$CLOUD_DIR\\Network\\RemoteDesktop\\VPN"
+set pulseRdpDir = "$CLOUD_DIR\\Network\\RemoteDesktop\\Work"
+
+if (! $?var_vpnConfig) then
+  set RDP_DIR = $bitviseRdpDir
+else
+  if ("$var_vpnConfig" == "BITVISE") then
+    set RDP_DIR = $bitviseRdpDir
+  else
+    set RDP_DIR = $pulseRdpDir
+  endif
+endif
+
+alias usingport   				'netstat -abn | grep -w "\!^ | grep LISTENING | awk '"'"' {print "ps -Wfp "$5}  '"'"'  | sort | uniq | /bin/sh '
+
+
+#if ("$var_vpnConfig" == "BITVISE") then
+#  cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today
+#  cp "$CLOUD_DIR/Network/vpn/hosts.bitvise" /c/Windows/System32/drivers/etc
+#else
+#  cp /c/Windows/System32/drivers/etc/hosts /c/Windows/System32/drivers/etc/hosts.$Today
+#  cp "$CLOUD_DIR/Network/vpn/hosts.pulse" /c/Windows/System32/drivers/etc
+#endif
+
+
+set RDWIKI_BAK = "D:/BACKUP-MASTER/RDWIKI-BACKUP/RDWiki/data/pages/wiki"
+set WIKIWEB = "C:/LightTPD/htdocs/dokuwiki/data/pages/wiki"
+
+alias syncjournal "Robocopy.exe $WIKI_DIR/ $WIKIWEB/paul_libauer /MIR /R:0"
+alias backupwiki  "Robocopy.exe $WIKI_DIR/ $RDWIKI_BAK/paul_libauer /MIR /R:0"
+alias startwiki	  "cd C:/LightTPD; ./LightTPD.exe -D -f conf/lighttpd.conf &"
+
+alias bulkedocs 						"date; b -o Origin_Test_Record_ElectronicDocuments -a run; date"
+alias timeblk  							"date; b -o Origin_Test_Bulk_Loader -a run; date"
+alias cleanblk 							"rm -rf 000000*; rm $var_DBID.*"
+
+
+
+####################################################################################
+#  Coursera - Octave aliases
+
+# Setup a DISPLAY env variable and X environment
+alias xwin   "startxwin &"
+alias octave "octave --force-gui"
+
+
+
+
+#setenv DISPLAY libauer:0.0
+
+set path = ( $CYG_WIN_HOME/perl/bin  $path:q )
+
+alias winemacs    "/c/Program\ Files\ \(x86\)/XEmacs/XEmacs-21.4.21/i586-pc-win32/xemacs.exe"
+
+#########################################################################################
+###  JOURNAL shortcuts
+set WIKIWEB = //dokuwiki/pages
+alias backupwiki      "rsync -avz $WIKIWEB/ /e/BACKUP/Dokuwiki/"
+alias gowiki          "cd $WIKIWEB"
+
+# Backup local folder
+alias syncjournal     "Robocopy.exe $WIKI_DIR/ $WIKIWEB/wiki/paul_libauer /MIR /R:0"
+alias syncjournalrev  "Robocopy.exe $WIKIWEB/wiki/paul_libauer/ $WIKI_DIR /MIR /R:0"
+
+#########################################################################################
+
+alias showrevisions   "cat ~/winhome/Documents/HPRM-release-versions.txt"
+alias showrevs        showrevisions
+
+alias showlog         'cat /c/tmp/finalbuilder.log | fromunicode | perl -ne '"'"'  s/^\s+//;  print "$_"; '"'"' | more '
+alias tailog          "tail -f /c/tmp/finalbuilder.log"
+#alias rundox          "$trimdir/xtra/Doxygen/runDoxygen/bin/Debug/runDoxygen.exe"
+
+alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
+
+
+set RDP_DIR = "$CLOUD_DIR\\Network\\RemoteDesktop\\Work"
+
+
+#####################################################################################################################################################################################
+
+
+
+
+
+
+
+
+##########################################################################################################
+### PYTHON COMMANDS
+
+# VIRTUAL ENVIRONMENT support
+# We will have a predefined directory under ~ for the envs
+
+# Initialise CURRENTVIRTENV to empty string
+set CURRENTVIRTENV = "_1_"
+set VIRTUALPATH = ~/.virtualenvs
+set dollar = \$
+set dblquote = \"
+
+alias wherearewe     "cygpath -u `pwd`"
+alias defaultprompt  'set prompt="%B%n %~>"'
+alias virtualprompt  'set prompt="\($CURRENTVIRTENV\) %B%n %~>"'
+alias makedefault    'set LASTVIRTUALENV=\!^'
+alias vremove        'rm -rvI $VIRTUALPATH/\!^'
+
+# --------------------------------------------------------------------------------------------------------
+alias mktcshactivate 'echo                                                                              \\
+"                                                                                                       \\
+if ( ${dollar}?CURRENTVIRTENV ) then                                                                    \\
+   if ( ${dollar}?CURRENTVIRTENV == "_1_" ) then                                                        \\
+     echo ${dblquote}A virtual environment is already active => ${dollar}CURRENTVIRTENV ${dblquote}     \\
+     exit                                                                                               \\
+   endif                                                                                                \\
+endif                                                                                                   \\
+                                                                                                        \\
+set OLDVIRTPATH=(${dollar}path:q)                                                                       \\
+set path = ($VIRTUALPATH/\!^/Scripts ${dollar}path:q)                                                   \\
+                                                                                                        \\
+if ( ${dollar}?PYTHONHOME ) then                                                                        \\
+   set OLDPYTHONHOME=${dollar}PYTHONHOME                                                                \\
+   set PYTHONHOME=                                                                                      \\
+endif                                                                                                   \\
+                                                                                                        \\
+set CURRENTVIRTENV=\!^                                                                                  \\
+virtualprompt                                                                                           \\
+" > \!^/Scripts/activate.tcsh '
+# --------------------------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------------------------
+alias mktcshdeactivate 'echo                                                                            \\
+"                                                                                                       \\
+if (! ${dollar}?CURRENTVIRTENV) then                                                                    \\
+   echo ${dblquote}Virtual environment variable CURRENTVIRTENV is undefined? ${dblquote}                \\
+   exit                                                                                                 \\
+endif                                                                                                   \\
+                                                                                                        \\
+if (! ${dollar}?OLDVIRTPATH) then                                                                       \\
+   echo ${dblquote}Virtual environment variable OLDVIRTPATH is undefined? ${dblquote}                   \\
+   exit                                                                                                 \\
+endif                                                                                                   \\
+                                                                                                        \\
+set path = (${dollar}OLDVIRTPATH:q)                                                                     \\
+set OLDVIRTPATH=                                                                                        \\
+                                                                                                        \\
+if (${dollar}?OLDPYTHONHOME) then                                                                       \\
+   set PYTHONHOME=${dollar}OLDPYTHONHOME                                                                \\
+   set OLDPYTHONHOME=                                                                                   \\
+endif                                                                                                   \\
+                                                                                                        \\
+set CURRENTVIRTENV=                                                                                     \\
+defaultprompt                                                                                           \\
+" > \!^/Scripts/deactivate.tcsh '
+# --------------------------------------------------------------------------------------------------------
+
+alias venv        "cd $VIRTUALPATH; virtualenv \!^; mktcshactivate \!^; mktcshdeactivate \!^; set LASTVIRTUALENV=\!^; unset CURRENTVIRTENV; popd"
+alias activate    'source $VIRTUALPATH/$LASTVIRTUALENV/Scripts/activate.tcsh'
+alias workon	  'source $VIRTUALPATH/\!^/Scripts/activate.tcsh'
+alias deactivate  'source $VIRTUALPATH/$CURRENTVIRTENV/Scripts/deactivate.tcsh'
+
+# Run a local http server from the current directory;
+# Python 2.x
+alias httplocal		"cd ~; $PYTHON -m SimpleHTTPServer"
+alias http		httplocal
+
+# Python 3.x
+alias http3		"cd ~; $PYTHON -m http.server"
+alias pythonmodules 	pip freeze
+alias pymods 		pythonmodules
+alias pyconsole  	jupyter qtconsole
+alias pycon		pyconsole
+alias pycmd		$PYTHON -c
+alias keyview		$PYTHON $STATIC_PY/installer/GenerateKeyview.py
+
+##########################################################################################################
+
+
+
+
+
+####################################################################################
+#  Coursera - Octave aliases
+
+# Setup a DISPLAY env variable and X environment
+alias xwin   "startxwin &"
+alias octave "octave --force-gui"
+
+
+set TED = /e/TED_Videos
+set TEDAPP = $PERL_BIN/TED/TED_Talks.pl
+
+alias goiview           "cd /f/ABC_Iview;"
+alias iview             "cd /f/ABC_Iview; ./PerlIView.pl"
+alias iviewsh           "cd /f/ABC_Iview; ./PerlIView.pl --show"
+alias iviewr            "cd /f/ABC_Iview; ./PerlIView.pl --refresh"
+
+alias goted             "cd $TED"
+alias ted               "perl $TEDAPP --find \!^"
+alias tedview           "perl $TEDAPP --view "
+alias tedfind           ted
+alias tedlist           "perl $TEDAPP --list"
+alias teddate           tedlist --sort date
+alias tedtalk           tedlist --sort talk
+alias tedtime           tedlist --sort time
+alias tedauthor         tedlist --sort name
+alias tedhelp           "perl $TEDAPP --help"
+alias tedupdate         "perl $TEDAPP --update"
+
+alias httpd             'cd /c/LightTPD; ./LightTPD.exe -f conf/lighttpd.conf'
+alias stophttpd         "taskkill /f /IM lighttpd.exe; taskkill /f /IM php-cgi.exe"
+
+# =======================================================================================
+# aliases_common.txt
+
+# =======================================================================================
+# aliases_work.txt
+
+
+#alias visolr          "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
+#alias vis             "vi //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr.txt"
+#alias emacsolr        "winemacs z:/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt; scrub //twrwebsvr/NewWiki/data/pages/wiki/paul_libauer/projects/solr_server_ubuntu.txt"
+
+#-----------------------------------------------------------
+
+# ssh into FEDORA linux VM
+set FEDORA = 15.146.221.56
+
+alias fedora    "ssh -l paul $FEDORA"
+
+#-----------------------------------------------------------
+
+# ssh into Ubuntu
+#set ubuntu = 15.146.221.194
+
+#alias sshu     "ssh -l plibauer $ubuntu"
+#alias st       "ssh -l plibauer solrtest"
+#alias solr     sshu
+
+#alias solrq            'curl "http://solrtest:8080/solr/select?q=\!^" --noproxy "*" --silent | xmlformat.pl'
+#alias scurl            'curl "http://solrtest:8080/\!^" --noproxy "*" --silent'
+#alias solrdel          'curl "http://solrtest:8080/solr/update?commit=true" -H "Content-Type: text/xml" --data-binary "<delete><query>*:*</query></delete>" --noproxy "*"'
+#alias solrschema       scurl "solr/admin/file/?file=schema.xml"
+#alias solrconfig       scurl "solr/admin/file/?file=solrconfig.xml"
+#alias instcreate        scurl "solr/instance/create?name=\!^"
+#alias instnew           instcreate
+#alias instdelete        scurl "solr/instance/remove?name=\!^"
+#alias instdel           instdelete
+#alias instremove        instdelete
+#alias instrem           instdelete
+#alias instbackup        scurl "solr/instance/backup?name=\!^"
+#alias instrestore       scurl "solr/instance/restore?name=\!^"
+#alias instget          scurl "solr/instance/get"
+#alias instgetname      scurl "solr/instance/get?name=\!^"
+#alias instlog          scurl "solr/instance/log?name=\!^ |  perl $WIN_HOME/perl/bin/formatSolrResponse.pl"
+#alias solrinst         scurl "solr/instance/\!^"
+
+#
+# SHARD INSTANCES
+# REMEMBER to escape '?' in queries  Eg.  shard1 "select\?q=mofo"
+#
+#alias shard1           'curl "http://solrtest:8080/shard1/\!^" --noproxy "*" '
+#alias shard1s          'curl "http://solrtest:8080/shard1/select?q=\!^" --noproxy "*" '
+#alias shard2           'curl "http://solrtest:8080/shard2/\!^" --noproxy "*" '
+#alias shard2s          'curl "http://solrtest:8080/shard2/select?q=\!^" --noproxy "*" '
+#alias shard3           'curl "http://solrtest:8080/shard3/\!^" --noproxy "*" '
+#alias shard3s          'curl "http://solrtest:8080/shard3/select?q=\!^" --noproxy "*" '
+
+# Search across all shards
+#alias shards           'curl "http://solrtest:8080/shard1/select?shards=solrtest:8080/shard1,solrtest:8080/shard2,solrtest:8080/shard3&\!^" --noproxy "*" '
+#alias shardss          'curl "http://solrtest:8080/shard1/select?shards=solrtest:8080/shard1,solrtest:8080/shard2,solrtest:8080/shard3&indent=true&q=\!^" --noproxy "*" '
+
+#alias insthelp          'echo "solr/intance/command, where command is one of;"; echo "\tcreate?name=...  Create a new instance (replace ... with the actual name)"; echo "\tremove?name=...  Remove an instance"; echo "\tbackup?name=...  Backup an instance"; echo "\trestore?name=... Restore an instance"; echo "\tdisable?name=... Disable an instance"; echo "\tenable?name=...  Enable an instance"; echo "\tget[?name=...]   Get all instances, or optionally check one instance if name is provided"; echo "\tlog?name=...     Get the log output for the instance"'
+
+#alias cpsolr    "scp -l plibauer  \!^ "$ubuntu":/home/plibauer"
+#alias getsolr   "scp -l plibauer "$ubuntu":/home/plibauer/Uploads/\!^ ."
+#alias cpst    "scp \!^ plibauer@solrtest:/home/plibauer"
+#alias getst   "scp plibauer@solrtest:/home/plibauer/Uploads/\!^ ."
+
+#alias goapache  "cd /c/Program\ Files\ \(x86\)/Apache\ Software\ Foundation/Apache2.2"
+
+# =======================================================================================
+# =======================================================================================
+
+alias shortcuttrim 'echo "Creating shortcut to $defArch TRIM.sln" && mkshortcut -n "$folder""_$defArch""_TRIM.sln" "/$REPOS_ROOT/$folder/trim/sln/TRIM/$defArch/TRIM.sln"'
+alias shortcutcs   'echo "Creating shortcut to TRIMCSharp.sln"    && mkshortcut -n "$folder""_TrimCSharp.sln"      "/$REPOS_ROOT/$folder/trim/TrimCSharp.sln"'
+alias shortcutwix  'echo "Creating shortcut to WIX.sln"           && mkshortcut -n "$folder""_WIX.sln"             "/$REPOS_ROOT/$folder/trim/WIX.sln"'
+alias shortcutmsi  'echo "Creating shortcut to $defArch MSIs"     && mkshortcut -n "$folder""_$defArch""_MSIs"     "/$REPOS_ROOT/$folder/msi/$defArch/en-us"'
+alias makeshortcutscurrent "shortcuttrim;shortcutcs;shortcutwix;shortcutmsi"
+
+alias dumpbin  "/c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio\ $VSVER/VC/bin/dumpbin.exe"
+alias isx64	"dumpbin /headers \!^ | grep -i machine"
+alias isx86	isx64
+alias bintype	isx64
+
+
+# Edit a file with emacs and detach
+alias emacs	"emacs \!^ &"
+
+####################################################################
+### ATOM COMMANDS 
+alias atomkeys		cat \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt 
+alias viatomkeys   	vi \"$USERPROFILE\"/Dropbox/Computers/Atom/KeyboardBindings.txt
+alias viatom		viatomkeys
+
+
+# Change the mount prefix if required
+alias mountcygwin	"mount -s --change-cygdrive-prefix /"
+
+# Invoke an admin command prompt
+alias command  cygstart cmd.exe
+
+# Run Management Studio
+alias mstudio		"/c/Program\ Files\ \(x86\)/Microsoft\ SQL\ Server/110/Tools/Binn/ManagementStudio/Ssms.exe &"
+alias sqlms		mstudio
+
+# Run Remote Desktop
+alias rdp		"/c/windows/system32/mstsc.exe &"
+alias remote		rdp
+alias remotedesk	rdp
+alias rdesktop		rdp
+
+alias termserver "mstsc $RDP_DIR\\TerminalServer.rdp &"
+alias rdphome    "mstsc $RDP_DIR\\Home.rdp           &"
+alias rdpbuild83 "mstsc $RDP_DIR\\Build83.rdp        &"
+alias rdpbuild90 "mstsc $RDP_DIR\\Build90.rdp        &"
+alias rdpbuild91 "mstsc $RDP_DIR\\Build91.rdp        &"
+alias build91b   "mstsc $RDP_DIR\\Build91b.rdp       &"
+alias rdpbuild92 "mstsc $RDP_DIR\\Build92.rdp        &"
+alias rdpbuild93 "mstsc $RDP_DIR\\Build93.rdp        &"
+alias rdpbuild94 "mstsc $RDP_DIR\\Build94.rdp        &"
+alias build83    rdpbuild83
+alias build90    rdpbuild90
+alias build91    rdpbuild91
+alias build92    rdpbuild92
+alias build93    rdpbuild93
+alias build94    rdpbuild94
+alias labsign    "mstsc $RDP_DIR\\labsign.rdp        &"
+alias dodc1      "mstsc $RDP_DIR\\DodClient01.rdp    &"
+alias dodc2      "mstsc $RDP_DIR\\DodClient02.rdp    &"
+alias dodc3      "mstsc $RDP_DIR\\DodClient03.rdp    &"
+alias dods1      "mstsc $RDP_DIR\\DodServer01.rdp    &"
+alias dods2      "mstsc $RDP_DIR\\DodServer02.rdp    &"
+alias dods3      "mstsc $RDP_DIR\\DodServer03.rdp    &"
+alias dods4      "mstsc $RDP_DIR\\DodServer04.rdp    &"
+alias doddc      "mstsc $RDP_DIR\\DodDC.rdp          &"
+alias work       "mstsc $RDP_DIR\\Libz620.rdp        &"
+alias fortify    "mstsc $RDP_DIR\\Fortify.rdp        &"
+alias almhost	 "mstsc $RDP_DIR\\Almsync.rdp        &"
+alias labsvn	 "mstsc $RDP_DIR\\Labsvn.rdp         &"
+
+
+# ALM 
+alias alm                 "$PERL $ALM_DB/ALMTool.pl --proxy $PROXY"
+alias almmatch            "alm --match \!^ | pgrep summary"
+alias almmatchverbose     alm --match 
+alias almmatchv           almmatchverbose 
+alias almlibauer          alm --user active_owner:libauer submit cycle reserved team test found target development state:\!\"closed\|duplicate\"
+alias almlibactivex       alm --user active_owner:libauer owner assigned \# severity issue_type investigation applies target submit cycle reserved team test found development state:\!\"closed\|duplicate\" 
+alias almlog		  'almlibactivex -width 500 |       \\
+$PERL -e ' "'" '                                             \\
+my @in = <>;                                                \\
+my $minLen = 100;                                           \\
+for(@in){                                                   \\
+   if(/^(\d+)\s+\w+\s+(?:decision)*\s+(.+)/i) {             \\
+      push @cr,$1;                                          \\
+      $t = $2;                                              \\
+      push @sum, $2;                                        \\
+      if($t =~ /(\s{6,})/){                                 \\
+          $l = length $1;                                   \\
+          $minLen =  $l < $minLen ? $l : $minLen;           \\
+      }                                                     \\
+   }                                                        \\
+}                                                           \\
+for(my $i=0; $i <= $#cr; $i++) {                            \\
+  my ($cr,$sum) = ($cr[$i],$sum[$i]);                       \\
+  $sum =~ s/\s{$minLen}//;                                  \\
+  print "CR$cr : $sum\n";                                   \\
+}                                                           \\
+'  "'" 
+alias almshort            alm owner sub cycle release invest -width 105 --user
+alias almlib		  'almlibauer | $PERL -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
+alias almlibw             'almlibauer -width 105 | $PERL -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
+alias almlibwa            'almlibactivex  -width 105 | $PERL -ne ' "'" ' chomp; if(/^(.+\S)\s+(.\[..)$/){ print "$1$2\n" } elsif (/^(.+\S)\s+$/){ print "$1\n" } else { print }  '  "'"
+alias almliball           alm libauer
+alias almschema           alm --schema
+alias cr                  alm --cr
+alias crsum               alm --summary --cr
+
+# For home use, we don't want the proxy if using localhost mappings
+if (! $?USE_CORPORATE) then
+  alias alm_data_convert          "$PERL $ALM_DB/data_convert.pl --proxy $PROXY"
+else
+  if ("$USE_CORPORATE" == "1") then
+    alias alm_data_convert	  "$PERL $ALM_DB/data_convert.pl --proxy $PROXY"
+  else
+    alias alm_data_convert          "$PERL $ALM_DB/data_convert.pl"
+  endif
+endif
+
+alias almupdate           alm_data_convert --http_server $ALM_SYNC_URL --update --verbose
+alias almsync    	  almupdate
+alias almsyncfrom    	  almsync --from
+alias almsynchome         "$PERL $ALM_DB/data_convert.pl --http_server $ALM_SYNC_URL --update --verbose"
+alias almcheckdates	  alm_data_convert --http_server $ALM_SYNC_URL --sanity_check
+alias almfixdefects	  almupdate --use_remote --type defect
+
+
+#
+# -------------------- PATCHING aliases --------------------------
+#
+set SVNBASE = $REPOS_ROOT/$folder
+alias infowc    'svn info "\!^" --show-item wc-root --no-newline'
+alias inforev   'svn info "\!^" --show-item revision --no-newline'
+alias infotrunk	'infowc "$SVNBASE"; echo -n "\t\t => @revision "; inforev "$SVNBASE"'
+alias infortm	'infowc "$SVNBASE"_RTM; echo -n "\t => @revision "; inforev "$SVNBASE"_RTM'
+alias infohf1	'infowc "$SVNBASE"_HF1; echo -n "\t => @revision "; inforev "$SVNBASE"_HF1'
+alias infohf2	'infowc "$SVNBASE"_HF2; echo -n "\t => @revision "; inforev "$SVNBASE"_HF2'
+alias infop1	'infowc "$SVNBASE"_P1; echo -n "\t => @revision "; inforev "$SVNBASE"_P1'
+alias infop2	'infowc "$SVNBASE"_P2; echo -n "\t => @revision "; inforev "$SVNBASE"_P2'
+alias infoall   "infotrunk; echo; infortm; echo; infohf1; echo; infohf2; echo; infop1; echo; infop2; echo"
+alias allinfo   infoall
+
+alias patchgen   	"$var_trimDir/$defArchCSharp/$defBuild/PatchGenerator.exe &"
+alias patch      	patchgen
+alias msipcs		"$var_trimDir/$defArchCSharp/$defBuild/MsiProperties.exe"
+alias pcodes    	msipcs
+alias productcodes 	msipcs
+alias findcomp	        "$PERL $STATIC_PERL/WIX/findComponentRefs.pl -d $SVNBASE"
+alias findcomponents	"$PERL $STATIC_PERL/WIX/findComponentRefs.pl"
+alias wixfindcomp	findcomp
+
+
+# SETUP Documentation directories 
+alias makedocopatch 'mkdir -p "$SVNBASE"_"\!^/doc/doc"; cd "$SVNBASE"_"\!^/doc/doc"; svn co $SVN_LAB_URI/REPOS/doc/trunk/DocPub'
+alias makedocoall "makedocopatch P1; makedocopatch P2; makedocopatch HF1; makedocopatch HF2; makedocopatch RTM;" 
+
+# 
+#  Update a branch to a particular revision
+#
+alias pushrtm   'svn update --revision "\!^" "$SVNBASE"_RTM' 
+alias pushhf1   'svn update --revision "\!^" "$SVNBASE"_HF1' 
+alias pushhf2   'svn update --revision "\!^" "$SVNBASE"_HF2' 
+alias pushp1    'svn update --revision "\!^" "$SVNBASE"_P1' 
+alias pushp2    'svn update --revision "\!^" "$SVNBASE"_P2' 
+alias pushall   "pushrtm \!^; pushhf1 \!^; pushhf2 \!^; pushp1 \!^; pushp2 \!^;"
+
+alias robosync  'robocopy "\!:1" "\!:2" /ZB /MIR /COPYALL'
+alias robosyncall "robosync F:/83 E:/83; robosync F:/83_RTM E:/83_RTM; robosync F:/83_HF1 E:/83_HF1; robosync F:/83_HF2 E:/83_HF2; robosync F:/83_P1 E:/83_P1; robosync F:/83_P2 E:/83_P2;" 
+#
+#  Show the current build version for a branch or set
+#  or manipulate the build number
+#
+alias buildver  "$PERL $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $var_trimDir" 
+alias bver      '$PERL $STATIC_PERL/WIX/buildVersion.pl --show --compact --root $SVNBASE"\!^"' 
+alias bvers     '$PERL $STATIC_PERL/WIX/buildVersion.pl --show --compact --no_repos --root $SVNBASE"\!^"' 
+alias allvers   'bver ""; bver _RTM; bver _HF1; bver _HF2; bver _P1; bver _P2' 
+alias versall   allvers
+
+alias incrbuild "$PERL $STATIC_PERL/WIX/buildVersion.pl $var_trimDir"
+alias ihotfix   "$PERL $STATIC_PERL/WIX/buildVersion.pl --hotfix $var_trimDir"
+alias decrbuild "$PERL $STATIC_PERL/WIX/buildVersion.pl --decrement $var_trimDir"
+alias dhotfix   "$PERL $STATIC_PERL/WIX/buildVersion.pl --hotfix --decrement $var_trimDir"
+alias setbuild  "$PERL $STATIC_PERL/WIX/buildVersion.pl --build \!^ $var_trimDir"
+alias showbuild "$PERL $STATIC_PERL/WIX/buildVersion.pl --show $var_trimDir"
+alias buildversion showbuild
+
+alias revert    "$PERL $STATIC_PERL/WIX/buildVersion.pl --revert $var_trimDir"
+alias revbld    '$PERL $STATIC_PERL/WIX/buildVersion.pl --revert --root $SVNBASE"\!^"'
+alias revertall 'revbld _RTM; revbld _HF1; revbld _HF2; revbld _P1; revbld _P2'
+#
+alias patchinfo ' infotrunk; echo -n ", Build "; bvers "";   \\
+                  infortm;   echo -n ", Build "; bvers _RTM; \\
+                  infohf1;   echo -n ", Build "; bvers _HF1; \\
+                  infohf2;   echo -n ", Build "; bvers _HF2; \\
+                  infop1;    echo -n ", Build "; bvers _P1;  \\
+                  infop2;    echo -n ", Build "; bvers _P2  \\
+' 
+
+#
+# Create Shortcuts to the solution files and Release/MSI directories
+#
+alias mkscutrel 'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/x64/Release";    mkshortcut -n  "\!^ Release"  "/$REPOS_ROOT/$folder"_"\!^/x64/Release"'
+alias mkscutany 'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/AnyCPU/Release"; mkshortcut -n  "\!^ AnyCPU"   "/$REPOS_ROOT/$folder"_"\!^/AnyCPU/Release"'
+alias mkscuten  'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/msi/x64/en-us";  mkshortcut -n  "\!^ en-us"    "/$REPOS_ROOT/$folder"_"\!^/msi/x64/en-us"'
+alias mkscutwix 'mkshortcut -n  "\!^ WIX.sln"        "/$REPOS_ROOT/$folder"_"\!^/trim/WIX.sln"'
+alias mkscutcs  'mkshortcut -n  "\!^ TrimCSharp.sln" "/$REPOS_ROOT/$folder"_"\!^/trim/TrimCSharp.sln"'
+alias mkscutcpp 'mkshortcut -n  "\!^ TRIM.sln"       "/$REPOS_ROOT/$folder"_"\!^/trim/sln/TRIM/x64/TRIM.sln"'
+alias mkscutset 'mkshortcut -n  "\!^ setup.exe"      "/$REPOS_ROOT/$folder"_"\!^/trim/wix/Setup.exe"'
+alias mkscutlbrk 'mkshortcut -n  "\!^ Root_____________________________________" "/$REPOS_ROOT/$folder"_"\!^"'
+
+alias scutsrtm  "mkscutrel RTM; mkscutany RTM; mkscuten RTM; mkscutwix RTM; mkscutcs RTM; mkscutcpp RTM; mkscutset RTM; mkscutlbrk RTM"
+alias scutshf1  "mkscutrel HF1; mkscutany HF1; mkscuten HF1; mkscutwix HF1; mkscutcs HF1; mkscutcpp HF1; mkscutset HF1; mkscutlbrk HF1"
+alias scutshf2  "mkscutrel HF2; mkscutany HF2; mkscuten HF2; mkscutwix HF2; mkscutcs HF2; mkscutcpp HF2; mkscutset HF2; mkscutlbrk HF2"
+alias scutsp1   "mkscutrel P1; mkscutany P1; mkscuten P1; mkscutwix P1; mkscutcs P1; mkscutcpp P1; mkscutset P1; mkscutlbrk P1"
+alias scutsp2   "mkscutrel P2; mkscutany P2; mkscuten P2; mkscutwix P2; mkscutcs P2; mkscutcpp P2; mkscutset P2; mkscutlbrk P2"
+alias scutsall  "scutsrtm; scutshf1; scutshf2; scutsp1; scutsp2"
+alias makeshortcuts scutsall
+
+#
+# Create Shortcuts to the solution files and Release/MSI directories based on TYPE
+#
+alias mkscutrelt 'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/x64/Release";    mkshortcut -n  "Release_\!^"  "/$REPOS_ROOT/$folder"_"\!^/x64/Release"'
+alias mkscutanyt 'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/AnyCPU/Release"; mkshortcut -n  "AnyCPU_\!^"   "/$REPOS_ROOT/$folder"_"\!^/AnyCPU/Release"'
+alias mkscutent  'mkdir -p "/$REPOS_ROOT/$folder"_"\!^/msi/x64/en-us";  mkshortcut -n  "en-us_\!^"    "/$REPOS_ROOT/$folder"_"\!^/msi/x64/en-us"'
+alias mkscutwixt 'mkshortcut -n  "WIX_\!^.sln"        "/$REPOS_ROOT/$folder"_"\!^/trim/WIX.sln"'
+alias mkscutcst  'mkshortcut -n  "TrimCSharp_\!^.sln" "/$REPOS_ROOT/$folder"_"\!^/trim/TrimCSharp.sln"'
+alias mkscutcppt 'mkshortcut -n  "TRIM_\!^.sln"       "/$REPOS_ROOT/$folder"_"\!^/trim/sln/TRIM/x64/TRIM.sln"'
+alias mkscutsett 'mkshortcut -n  "setup.exe_\!^"      "/$REPOS_ROOT/$folder"_"\!^/trim/wix/Setup.exe"'
+alias mkscutlbrkt 'mkshortcut -n  "Root_\!^ _____________________________________" "/$REPOS_ROOT/$folder"_"\!^"'
+
+alias scutsrtmt  "mkscutrelt RTM; mkscutanyt RTM; mkscutent RTM; mkscutwixt RTM; mkscutcst RTM; mkscutcppt RTM; mkscutsett RTM; mkscutlbrkt RTM "
+alias scutshf1t  "mkscutrelt HF1; mkscutanyt HF1; mkscutent HF1; mkscutwixt HF1; mkscutcst HF1; mkscutcppt HF1; mkscutsett HF1; mkscutlbrkt HF1 "
+alias scutshf2t  "mkscutrelt HF2; mkscutanyt HF2; mkscutent HF2; mkscutwixt HF2; mkscutcst HF2; mkscutcppt HF2; mkscutsett HF2; mkscutlbrkt HF2 "
+alias scutsp1t   "mkscutrelt P1; mkscutanyt P1; mkscutent P1; mkscutwixt P1; mkscutcst P1; mkscutcppt P1; mkscutsett P1; mkscutlbrkt P1 "
+alias scutsp2t   "mkscutrelt P2; mkscutanyt P2; mkscutent P2; mkscutwixt P2; mkscutcst P2; mkscutcppt P2; mkscutsett P2; mkscutlbrkt P2 "
+alias scutsallt  "scutsrtmt; scutshf1t; scutshf2t; scutsp1t; scutsp2t "
+alias makeshortcutst scutsallt
+
+alias dce  ContentExtraction
+alias dox  "/c/Program\ Files\ \(x86\)/doxygen/bin/doxygen"
+alias dwiz "/c/Program\ Files/doxygen/bin/doxywizard"
+alias aperl "/c/Perl/bin/perl"
+alias wperl aperl
+alias vmperl "/c/Program\ Files\ \(x86\)/VMware/VMware\ vSphere\ CLI/Perl/bin/perl"
+alias govsphere "cd /c/Program\ Files\ \(x86\)/VMware/VMware\ vSphere\ CLI/Perl/"
+
+alias wixcopy     "$var_trimDir/trim/wix/COPY_LATEST_RELEASE_FILES.cmd"
+alias addtrim     "route add 15.0.0.0 MASK 255.0.0.0 \!^ METRIC 26"
+alias x11  "cd /c/cygwin/usr/X11R6/bin"
+#alias xt  "xterm -sb -sl 10000 -fg white -bg black -T \!^ &"
+alias xt "/c/cygwin/bin/mintty.exe -i /Cygwin-Terminal.ico - &"
+
+# Following assumes that /c/rakudo/bin is on the path
+alias perl6 perl6.bat
+
+#  In order for updatedb to work with the program files directories, create the following links;
+#
+#    /c>ln -s Program\ Files programfiles
+#    /c>ln -s Program\ Files\ \(x86\) programfilesx86
+#
+#  You must also make sure that the cygdrive prefix has been setup correctly in /etc/fstab, namely;
+#
+#    none / cygdrive binary,posix=0,user 0 0
+#
+
+set cygtrimdir     = "/$REPOS_ROOT/$folder"$defPatch
+alias goserverdata       "cd  $cygtrimdir/trim/SharedTrimServerData/ServerData"
+alias update "updatedb --findoptions='-follow' --output='/home/plibauer/locatedb' --localpaths='$cygtrimdir $cygtrimdir/../TRIMStaticRepo /c/strawberry /c/programfiles /c/programfilesx86 /bin /etc /home /lib /usr /var /c/Users /c/Windows '"
+
+alias locate   "locate -d ~/locatedb"
+alias locatei  "locate -i -d ~/locatedb"
+alias loc       locate
+alias loci	locatei
+alias trimfind   "loc \!^ | grep -i $cygtrimdir"
+alias trimfindi  "loci \!^ | grep -i $cygtrimdir"
+
+set svexe = "/c/Program\ Files/Microsoft\ SDKs/Windows/v6.0A/Bin/sn.exe"
+alias sn "$svexe"
+alias signSDK 		"cd $var_trimDir/trim/src/SDKNet; $svexe -R $var_trimDir\\$defArch\\$defBuild\\HP.HPTRIM.SDK.dll sdknet.snk"
+
+
+alias ldapa    "/bin/ldapadd.exe -x -D 'cn=Manager,dc=libauer,dc=com' -W -f \!^"
+
+alias killtrim   "$STATIC_REPO/tools/build/killtrim.exe"
+alias wgsnoevent "$var_trimDir/$defArch/$defBuild/TRIMWorkgroup.exe --noEvent &"
+alias trimevent  "$var_trimDir/$defArch/$defBuild/TRIMEvent --dbid \!^ --wgsId 001 --wgsPort 1137 &"
+alias trimeventlocal  "$var_trimDir/$defArch/$defBuild/TRIMEvent --dbid $var_DBID --wgsId 001 --wgsPort 1137 &"
+alias trimds     "$var_trimDir/$defArchCSharp/$defBuild/TrimDS.exe &"
+
+alias makerecs          "$PERL $PERL_HOME/CreateManyRecords.pl"
+alias makerecsdefault   makerecs --number \!^  --output out.txt
+alias makecontainers    bulk testtrim bulkLoader --type container --timeout 6000 --assert --inplace --containers 1 --perContainer 256
+alias formatdat         $PERL $STATIC_PERL/misc/formatBulkLoaderDatFiles.pl --print  
+alias formatblk         formatdat
+alias parsedat          formatdat
+
+set bulkloader = BulkLoader.exe
+if ($revision > 81) then
+    set bulkloader = TRIMBulkLoader.exe 
+endif
+
+alias bulk              "$var_trimDir/$defArchCSharp/$defBuild/$bulkloader"
+alias bulkloader        bulk
+alias b                 bulk -db $var_DBID
+alias origins           b -get "'*'"
+alias orgget            b -get '\!^'
+alias orgrun            b -run '\!^'
+
+alias msihelp    "hh $WIX_DIR/doc/msi.chm &"
+alias wixhelp    "hh $WIX_DIR/doc/WiX.chm &"
+alias dtfhelp    "hh $WIX_DIR/doc/DTF.chm &"
+alias dtfapihelp "hh $WIX_DIR/doc/DTFAPI.chm &"
+
+# Wix stuff
+#alias candle 	"/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/candle.exe"
+#alias lit 	"/e/Program\ Files/Windows\ Installer\ XML\ v3/bin/lit.exe"
+alias msitrimi     	"msiexec /i HPTRIM.msi /lv\* out.log"
+alias msitrimu     	"msiexec /x HPTRIM.msi /lv\* out.log"
+alias admininstall 	"msiexec /a \!:1 TARGETDIR=\!:2 /qn /l \!:1.log"
+
+alias pfind2k8      "$PERL $PERL_HOME/find_project_files.pl -s $var_trimDir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias pfind         "$PERL $PERL_HOME/find_project_files.vs2010.pl -s $var_trimDir/trim/sln/TRIM/$defArch/TRIM.sln"
+alias projfind      pfind
+alias pf pfind
+
+alias gotrimdslog        "cd $WINHOME/AppData/Local/Hewlett-Packard/HP\ TRIM/Log"
+alias gotrimconfig       "cd $var_trimDir/trim/SharedTrimServerData/ServerData"
+alias gotrimlocalconfig  "cd $WINHOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM/$var_DBID/Configuration"
+alias godox              "cd $var_trimDir/xtra/Doxygen/runDoxygen"
+alias gopatch            "cd $var_trimDir/trim/wix/PatchGenerator"
+alias goroam             "cd $WIN_HOME/AppData/Roaming/Hewlett-Packard/HP\ TRIM"
+alias godropp            "cd $WIN_HOME/DropBox/Software/Scripts/Perl"
+alias golocallog	     "cd $WIN_HOME/AppData/Local/Hewlett-Packard/HP\ TRIM/$var_DBID/Log"
+
+alias vs2012    "set defCompiler = VS2012; source $alias_file"
+alias vs2008    "set defCompiler = VS2008; source $alias_file"
+
+if ($defCompiler == "VS2008") then
+    set defArchCSharp = $defArch
+endif
+
+
+# SVN
+alias svnupr	      "mainlocal; svnup; localmain"
+alias svnstaticr      "staticlocal; svnstatic; localstatic"
+alias svnupstatic     svnstatic
+alias svnupperl       "svn update $STATIC_PERL"
+alias perlup          svnupperl
+alias pyup            "svn update $ELASTIC_HOME/../PythonClient"
+alias updatehere      "svn update"
+alias svnuphere       updatehere
+alias svnupbin	      "svn update $PERL_HOME"
+alias relocperllocal  "svn relocate $SVN_LAB_FILE $LOCAL_SVN_STATIC $PERL_HOME"
+alias relocperlremote "svn relocate $LOCAL_SVN_STATIC $SVN_LAB_FILE $PERL_HOME"
+alias svnupbinr	      "svnrelocperl; svnupbin; svnrelocbackperl"
+alias serviceadd    'echo "\nLOCAL LAB server : $LOCAL_SVN_LAB (set the PORT# below accordingly)"; \\
+$PERL -e ' "'"' print "sc delete svnlab\nsc create svnlab binpath= \"\\\"C:\\Program Files\\TortoiseSVN\\bin\\svnserve.exe\\\" --service -r E:\\svn_lab --listen-port PORT\# --compression 0\" displayname= \"Subversion Server LAB\" depend= Tcpip start= auto\n"  '"'" ' ;                                     \\
+echo "\nLOCAL STATIC server : $LOCAL_SVN_STATIC (set the PORT# below accordingly)";              \\
+$PERL -e ' "'"' print "sc delete svnstatic\nsc create svnstatic binpath= \"\\\"C:\\Program Files\\TortoiseSVN\\bin\\svnserve.exe\\\" --service -r E:\\svn_static --listen-port PORT\# --compression 0\" displayname= \"Subversion Server STATIC\" depend= Tcpip start= auto\n"  '"'" 
+alias svnservices     serviceadd
+
+alias svnlatestmore   'svn log -l 10 -v'
+alias showlatestmore  svnlatestmore
+alias svnlatestx      'svn log -l \!^ -v'
+alias latestx         svnlatestx
+alias trimlatestv     "svn log $var_trimDir -r HEAD:1 --limit 10 --verbose"
+
+
+alias statdiff        statrev \!^ --diff \!:2
+alias statrevchange   statproc --change
+alias statchange      statproc --change
+alias statrevchrange  statproc --change \!:1 --range \!:2
+alias statchanger     statrevchrange
+alias statrevchdiff   statproc --change \!^ --diff 
+alias statrevchdiffr  statproc --change \!:1 --diff --range \!:2
+alias statchangerd    statrevchdiffr
+alias statuser        statproc --get user
+alias statlogm        statproc --match 
+alias statlogmi       statproc --no_case --match 
+alias statlogmv       statproc --verbose --match 
+alias statlogmvi      statproc --no_case --verbose --match 
+alias statmatch       statproc --no_case --limit 30 --match
+alias statbuildlabel  "statmatch 'label.*\!^'"
+alias statloga        "statproc --no_case --author \!:1 --match \!:2" 
+alias statlogar       "statproc --no_case --author \!:1 --match \!:2 --revision \!:3" 
+alias statlogalib     "statproc --no_case --author libauer --match \!:1"
+alias statlogacs      "statproc --author \!:1 --match \!:2"
+alias statlogav       "statproc --verbose --author \!:1 --match \!:2"
+alias statlogavi      "statproc --no_case --verbose --author \!:1 --match \!:2"
+alias matchauth       "statproc --author \!:1 --match \!:2"
+alias matchauthor     "statproc --author \!:1 --match \!:2"
+alias statfindfile    "statproc --find_file"
+alias statschema      statproc --get schema
+alias svnrelocatestat statrelocaterepo
+alias svnrelocstat    statrelocaterepo
+
+alias labm           labproc --match
+alias labmi          labproc --no_case --match
+alias labmv          labproc --verbose --match
+alias labmvi         labproc --no_case --verbose --match
+alias laba           "labproc --no_case --author \!:1 --match \!:2"
+alias labar          "labproc --no_case --author \!:1 --match \!:2 --revision \!:3"
+alias labalib        "labproc --no_case --author libauer --match \!:1"
+alias labacs         "labproc --author \!:1 --match \!:2"
+alias labav          "labproc --verbose --author \!:1 --match \!:2"
+alias labavi         "labproc --no_case --verbose --author \!:1 --match \!:2"
+alias labauthor      "labproc --author \!:1 --match \!:2"
+alias labfindfile    "labproc --find_file"
+alias labauth        labauthor
+alias labschema	     labproc --get schema
+alias svnrelocatelab labrelocaterepo
+alias svnreloclab    labrelocaterepo
+
+alias logm           labm
+alias logmi          labmi
+alias logmv          labmv
+alias logmvi         labmvi
+alias loga           laba
+alias logar          labar
+alias logalib        labalib
+alias logacs         labacs
+alias logav          labav
+alias logavi         labavi
+alias findfile       labfindfile
+alias logf           findfile
+alias logprocuser    labproc --get user
+alias users          logprocuser
+alias schema         labschema
+alias logupdate      labupdate
+alias svnlogh        labproc --help
+alias branches       labproc --get branch
+
+alias syncsvnmaster synclab
+alias syncstat	    syncstatic
+alias syncup        "syncsvn; logupdate"
+
+set path = ( $CYG_WIN_HOME/perl/bin  $path:q )
+
+
+#########################################################################################
+###  JOURNAL shortcuts
+set WIKIWEB = //dokuwiki/pages
+alias backupwiki      "rsync -avz $WIKIWEB/ /e/BACKUP/Dokuwiki/"
+alias gowiki          "cd $WIKIWEB"
+
+# Backup local folder
+alias syncjournal     "Robocopy.exe $WIKI_DIR/ $WIKIWEB/wiki/paul_libauer /MIR /R:0"
+alias syncjournalrev  "Robocopy.exe $WIKIWEB/wiki/paul_libauer/ $WIKI_DIR /MIR /R:0"
+
+#########################################################################################
+
+alias showrevisions   "cat ~/winhome/Documents/HPRM-release-versions.txt"
+alias showrevs        showrevisions
+
+alias showlog         'cat /c/tmp/finalbuilder.log | fromunicode | perl -ne '"'"'  s/^\s+//;  print "$_"; '"'"' | more '
+alias tailog          "tail -f /c/tmp/finalbuilder.log"
+#alias rundox          "$trimdir/xtra/Doxygen/runDoxygen/bin/Debug/runDoxygen.exe"
+
+alias ftplab "echo user=ftpuser; ftp 16.176.25.119"
+
+
+set RDP_DIR = "$CLOUD_DIR\\Network\\RemoteDesktop\\Work"
+
+
+
+
+

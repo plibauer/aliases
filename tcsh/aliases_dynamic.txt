@@ -1,0 +1,105 @@
+##################################################################################################################
+#                                                                                                                #
+#           This file sets up the variables used in other alias files and it must                                #
+#           be source whenever the session settings get changed.                                                 #
+#                                                                                                                #
+##################################################################################################################
+
+
+set env_dbDefault      = Test_"$env_revision"_SqlServer
+
+if (! $?var_trimDir) then
+  set var_trimDir = $REPOS_ROOT"/$env_folder"
+endif
+
+if (! $?var_dbSession) then       
+  set var_dbSession   = $env_dbDefault
+else
+  if ("$var_dbSession" == "")  then
+     set var_dbSession   = $env_dbDefault
+  endif
+endif
+
+if (! $?var_dbServer) then       
+  set var_dbServer   = $LOCAL_SQLSVR
+else
+  if ("$var_dbServer" == "")  then
+     set var_dbServer   = $LOCAL_SQLSVR
+  endif
+endif
+
+if (! $?var_DBID) then
+   set var_DBID = $env_default_dbid
+else
+  if ("$var_DBID" == "")  then
+     set var_DBID   = $env_default_dbid
+  endif
+endif
+
+if (! $?var_defArch) then
+   set var_defArch = $env_defArch
+else
+  if ("$var_defArch" == "")  then
+     set var_defArch   = $env_defArch
+  endif
+endif
+
+if (! $?var_defBuild) then
+   set var_defBuild = $env_defBuild
+else
+  if ("$var_defBuild" == "")  then
+     set var_defBuild   = $env_defBuild
+  endif
+endif
+
+
+if (! $?var_vpnConfig) then       
+  set var_vpnConfig   = $DEFAULT_VPN
+else
+  if ("$var_vpnConfig" == "")  then
+     set var_vpnConfig   = $DEFAULT_VPN
+  endif
+endif
+
+
+set vpn_directory   = $NETWORK_DIR/vpn
+set hosts_directory = $SYSTEMROOT/System32/drivers/etc
+
+if ("$var_vpnConfig" == "BITVISE") then
+	set SVN_LAB_URI    = $SVN_BVISE_LAB
+	set SVN_STATIC_URI = $SVN_BVISE_STATIC
+	set PROXY_SERVER   = $SVN_BVISE_PROXY
+	/bin/cp $vpn_directory/hosts.bitvise $hosts_directory/hosts
+else
+  if ("$var_vpnConfig" == "PULSE") then
+	set SVN_LAB_URI    = $SVN_PULSE_LAB
+	set SVN_STATIC_URI = $SVN_PULSE_STATIC
+	set PROXY_SERVER   = $SVN_PULSE_PROXY
+	/bin/cp $vpn_directory/hosts.pulse $hosts_directory/hosts
+  else
+	set SVN_LAB_URI    = $SVN_LOCAL_LAB
+	set SVN_STATIC_URI = $SVN_LOCAL_STATIC
+	set PROXY_SERVER   = ""
+	/bin/cp $vpn_directory/hosts $hosts_directory/hosts
+  endif
+endif
+
+set PROXY          		= http://$PROXY_SERVER
+set HTTPS_PROXY    		= https://$PROXY_SERVER
+
+set var_idolDb			= "$env_idolDbPrefix$var_DBID"
+set var_elasticDef		= `echo "$env_elasticDbPrefix$var_DBID" | /bin/tr '[A-Z]' '[a-z]'`
+set var_trimcfgdir		= "$var_trimDir/trim/SharedTrimServerData/ServerData"
+set var_trimcfg			= "$var_trimcfgdir/TRIMconfig.tcfg"
+set var_currentEnv		= $env_alias_dir/../"$env_revision"environment
+set var_trimDoc			= $var_trimDir/doc/doc/DocPub
+
+set var_buildLog      	= "${REPOS_ROOT}/TEMP/TRIM-$env_folder-$var_defArch-$var_defBuild.log"
+set var_buildLogCSharp	= "${REPOS_ROOT}/TEMP/TRIMCSharp-$env_folder-$var_defArch-$var_defBuild.log"
+set var_buildLogWix   	= "${REPOS_ROOT}/TEMP/WIX-$env_folder-$var_defArch-$var_defBuild.log"
+
+
+
+
+
+
