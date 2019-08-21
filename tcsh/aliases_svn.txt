@@ -7,13 +7,13 @@
 #
 
 alias svnstat         'svn status . -q'
-alias svnstatic       "svn update $STATIC_REPO"
+alias svnstatic       'svn update $STATIC_REPO'
 alias svnrevcurrent   'svn log -v -r "\!^":"\!^"'
 alias svnhead         'svn log -l 1 -v'
 alias svnlatest       'svn log -l 5 -v'
 alias showlatest      svnlatest
 alias latest          svnlatest
-alias svndiff 		  svn diff -r PREV
+alias svndiff 		  'svn diff -r PREV'
 
 alias writeSvnBranch 'svnstatus | $PERL -ne '"'"' /^URL:\s+(.+)\/(REPOS\/.+)/ and do { print "$1/$2\n" }' "' "' > C:/temp/svn_branch_x.txt'
 alias showrevs       'writeSvnBranch && echo -n "\!*"      | processSvnLog'
@@ -71,8 +71,8 @@ alias processSvnLog  '$PERL -e  '"'"'                     \\
 '"'"
 alias showchanges     showrevs
 
-alias svnstatus       svn info \$var_trimDir" | $PERL -ne 'print if /^Path|^URL:|^\n/;' "
-alias svnstatusfull   svn info \$var_trimDir" | $PERL -ne 'print unless /^(Working Copy|Relative|Node Kind|Schedule)/;' "
+alias svnstatus       'svn info $var_trimDir | $PERL -ne '"'"' print if /^Path|^URL:|^\n/; '"'"
+alias svnstatusfull   'svn info $var_trimDir | $PERL -ne '"'"' print unless /^(Working Copy|Relative|Node Kind|Schedule)/; '"'"
 alias svninfo	      svnstatusfull
 
 alias svnup           'svn update $var_trimDir; date; svn update $var_trimDir/doc/doc/DocPub;'
@@ -97,11 +97,11 @@ REMOTE SERVERS:                                          \\
 \tSTATIC URL : $SVN_STATIC_URI                           \\
 "'
 
-alias statproc        "$PERL $SVN_STATIC_DB/svn_log_processor.pl"
+alias statproc        '$PERL $SVN_STATIC_DB/svn_log_processor.pl'
 alias statrev         'statproc --rev'
-alias statrevhead     statrev head
-alias statupdate      statproc --update
-alias statlook	      svnlook pg --revprop -r0 $SVN_STATIC_PATH svn:sync-from-url
+alias statrevhead     'statrev head'
+alias statupdate      'statproc --update'
+alias statlook	      'svnlook pg --revprop -r0 $SVN_STATIC_PATH svn:sync-from-url'
 
 alias statrelocaterepo 'echo                                 			\\
 "\n                                                          			\\
@@ -116,14 +116,14 @@ alias statrelocaterepo 'echo                                 			\\
 #  LAB Aliases
 #
 
-alias labproc        "$PERL $SVN_LAB_DB/svn_log_processor.pl"
-alias rev		     labproc --rev
-alias revhead        labrev head
-alias revlocal       labproc --use_local --rev
-alias match   	  	 labproc --no_case --limit 30 --match
-alias labupdate      labproc --update --repo \$SVN_LAB_URI/REPOS
-alias labhelp        labproc --help
-alias lablook	     svnlook pg --revprop -r0 \$SVN_LAB_PATH svn:sync-from-url
+alias labproc        '$PERL $SVN_LAB_DB/svn_log_processor.pl'
+alias rev		     'labproc --rev'
+alias revhead        'rev head'
+alias revlocal       'labproc --use_local --rev'
+alias match   	  	 'labproc --no_case --limit 30 --match'
+alias labupdate      'labproc --update --repo $SVN_LAB_URI/REPOS'
+alias labhelp        'labproc --help'
+alias lablook	     'svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url'
 
 alias labrelocaterepo 'echo                                 			\\
 "\n                                                          			\\
@@ -138,27 +138,27 @@ alias labrelocaterepo 'echo                                 			\\
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
 # alias syncsvn	   "svnsync sync svn://localhost/"
 #
-alias syncsvn	    svnsync sync $SVN_LAB_FILE
-alias synclab       svnsync sync $SVN_LAB_FILE \$SVN_LAB_URI
-alias synclabwork   svnsync sync $SVN_LAB_FILE svn://labsvn:1137/TRIM
-alias syncstatic   	svnsync sync $SVN_STATIC_FILE \$SVN_STATIC_URI
-alias remlock	    svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB_FILE
-alias remlockstat   svn propdel svn:sync-lock --revprop -r 0 $SVN_STATIC_FILE
+alias syncsvn	    	'svnsync sync $SVN_LAB_FILE'
+alias synclab       	'svnsync sync $SVN_LAB_FILE $SVN_LAB_URI'
+alias synclabwork   	'svnsync sync $SVN_LAB_FILE svn://labsvn:1137/TRIM'
+alias syncstatic   		'svnsync sync $SVN_STATIC_FILE $SVN_STATIC_URI'
+alias remlock	    	'svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB_FILE'
+alias remlockstat   	'svn propdel svn:sync-lock --revprop -r 0 $SVN_STATIC_FILE'
 
 # Setup the documentation directory
 alias makedoco 		'mkdir -p $var_trimDir/doc/doc; cd -p $var_trimDir/doc/doc; svn co $SVN_LAB_URI/REPOS/doc/trunk/DocPub' 
 
-alias relocate   ' echo `svn info \!:1  |                \\
+alias svnrelocate   ' echo `svn info \!:1  |                \\
 pgrep "URL: (svn|http)"` "AA" \!:2 "BB" \!:1             \\
  | $PERL -ne ' "' "'                                     \\
       /^URL: (.+)\/REPOS.+ AA (.+) BB (.+)$/             \\
   and system("svn","relocate","$1","$2","$3");           \\
  '"'"
 
-alias lab2local   	relocate \$var_trimDir $SVN_LOCAL_LAB
-alias lab2remote  	relocate \$var_trimDir \$SVN_LAB_URI
-alias static2local 	relocate $STATIC_REPO  $SVN_LOCAL_STATIC
-alias static2remote relocate $STATIC_REPO  \$SVN_STATIC_URI
+alias lab2local   		'svnrelocate $var_trimDir $SVN_LOCAL_LAB'
+alias lab2remote  		'svnrelocate $var_trimDir $SVN_LAB_URI'
+alias static2local 		'svnrelocate $STATIC_REPO $SVN_LOCAL_STATIC'
+alias static2remote 	'svnrelocate $STATIC_REPO $SVN_STATIC_URI'
 
 alias svn_parse_log '$PERL -e ' "'" '     	\\
 @in = <>;                                 	\\
@@ -175,7 +175,7 @@ while($l = shift @in){                    	\\
     print " $l";                   			\\
   }}'  "'"
   
-alias slog			'svn log -r HEAD:\!^        | svn_parse_log' 
-alias slogr 		'svn log -r \!:1\:\!:2      | svn_parse_log' 
-alias slogurl 		'svn log \!:1 -r HEAD:\!:2  | svn_parse_log' 
-alias slogurlr 		'svn log \!:1 -r \!:2\:\!:3 | svn_parse_log' 
+alias slog				'svn log -r HEAD:\!^        | svn_parse_log' 
+alias slogr 			'svn log -r \!:1\:\!:2      | svn_parse_log' 
+alias slogurl 			'svn log \!:1 -r HEAD:\!:2  | svn_parse_log' 
+alias slogurlr 			'svn log \!:1 -r \!:2\:\!:3 | svn_parse_log' 

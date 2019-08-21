@@ -19,6 +19,7 @@ endif
 set defproj = ALL_BUILD
 
 alias src       		"source $include_file; settitle"
+alias refresh			"unset include_*; src"
 alias src83     		"source $env_alias/83environment"
 alias src90     		"source $env_alias/90environment"
 alias src91     		"source $env_alias/91environment"
@@ -48,6 +49,7 @@ alias vienv				via env
 alias vistatic			via static
 alias visvn				via svn
 alias vitrim			via trim
+alias whichalias		'grep -is \!^ $env_alias_dir/*'
 
 alias x86  				'set var_defArch = x86; 	 src'
 alias x64  				'set var_defArch = x64; 	 src'
@@ -145,3 +147,6 @@ alias godownloads        cd $WIN_HOME/Downloads
 alias godropbox		     cd $WIN_HOME/DropBox
 alias godrop		     godropbox
 alias home 				 cd $WIN_HOME
+alias gowikij            cd $WIKI_DIR
+alias goproj             cd $WIKI_DIR/projects
+

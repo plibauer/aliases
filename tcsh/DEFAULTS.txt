@@ -2,6 +2,7 @@
 
 set REPOS_ROOT       		= $SET_THIS_VALUE
 set STATIC_REPO				= $REPOS_ROOT/TRIMStaticRepo
+set SVN_BIN					= "/c/Program Files/TortoiseSVN/bin"
 
 #
 # (BITVISE or PULSE or LOCAL)

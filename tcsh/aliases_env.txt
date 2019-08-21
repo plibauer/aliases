@@ -6,7 +6,7 @@
 #                                                                                                                #
 ##################################################################################################################
 
-set path = ( $PERL_PATH $PYTHON_PATH $PYTHON_SCRIPTS /bin /usr/bin /sbin /usr/sbin $path:q )
+set path = ( $PERL_PATH $PYTHON_PATH $PYTHON_SCRIPTS "$SVN_BIN" /bin /usr/bin /sbin /usr/sbin $path:q )
 set prompt="%B%n %~>"
 set autocorrect=1
 set autolist=ambiguous
