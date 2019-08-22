@@ -1,18 +1,18 @@
 #  Put local aliases specific to this machine here
 
 set REPOS_ROOT       		= $SET_THIS_VALUE
-set STATIC_REPO				= $REPOS_ROOT/TRIMStaticRepo
-set SVN_BIN					= "/c/Program Files/TortoiseSVN/bin"
+set STATIC_REPO			= $REPOS_ROOT/TRIMStaticRepo
+set SVN_BIN			= "/c/Program Files/TortoiseSVN/bin"
 
 #
 # (BITVISE or PULSE or LOCAL)
-set DEFAULT_VPN             = BITVISE   
+set DEFAULT_VPN             	= BITVISE   
 #
 set SVN_PULSE_LAB     	 	= svn://15.114.89.246:1137/TRIM
 set SVN_PULSE_STATIC   	 	= svn://15.114.89.246:1137/Static
 set SVN_PULSE_PROXY      	= web-proxy.in.softwaregrp.net:8080
 
-set SVN_BVISE_LAB 		 	= svn://localhost:11137/TRIM
+set SVN_BVISE_LAB 		= svn://localhost:11137/TRIM
 set SVN_BVISE_STATIC  	 	= svn://localhost:11137/Static
 set SVN_BVISE_PROXY    	 	= 127.0.0.1:8080
 
@@ -33,24 +33,24 @@ set WIN_HOME         		= C:/Users/$CYGUSER
 set CLOUD_DIR	     		= $WIN_HOME/CLOUD
 set WIKI_DIR         		= $CLOUD_DIR/Work/Wiki/paul_libauer
 set JOURNAL_DIR      		= $WIN_HOME/Dropbox/Personal/journals
-set	NETWORK_DIR				= $CLOUD_DIR/Network
+set NETWORK_DIR			= $CLOUD_DIR/Network
 
 set GIT_HOST         		= github.com
 set GIT_URL          		= git://$GIT_HOST/
 
 set PERL_PATH        		= /c/strawberry/perl/bin
-set PERL	         		= $PERL_PATH/perl.exe
+set PERL	         	= $PERL_PATH/perl.exe
 set PERL_HOME        		= C:/cygwin/home/$CYGUSER/perl
-set STATIC_PERL				= $STATIC_REPO/libs/Perl
+set STATIC_PERL			= $STATIC_REPO/libs/Perl
 
 set PYTHON_PATH      		= /c/python/3.7
 set PYTHON_SCRIPTS   		= $PYTHON_PATH/Scripts
 set PYTHON           		= $PYTHON_PATH/python.exe
 set PYTHON_HOME      		= C:/cygwin/home/$CYGUSER/python
-set STATIC_PY				= $STATIC_REPO/libs/Python
+set STATIC_PY			= $STATIC_REPO/libs/Python
 
 set DEVENV_ROOT      		= "C:/Program Files (x86)"
-set DEVENV_ROOT_2017 		= "$REPOS_ROOT/Visual Studio 2017 Enterprise"
+set DEVENV_ROOT_2017 		= "$DEVENV_ROOT/Microsoft Visual Studio/2017/Enterprise"
 set WIX_DIR          		= "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
 
 set LOCAL_SQLSVR     		= LOCALHOST
