@@ -1,39 +1,50 @@
 ##################################################################################
 ########################   ELASTICSEARCH/elasticsearch  ##########################
 
-alias vielastic					'vi $CLOUD_DIR/Work/Elastic/elastic.txt; scrub $CLOUD_DIR/Work/Elastic/elastic.txt'
-alias vies						vielastic
+alias elasticblog			'vi $CLOUD_DIR/Work/elastic.txt; scrub $CLOUD_DIR/Work/elastic.txt'	
+alias eblog				elasticblog
 alias esinstall         		'$ELASTIC_HOME/bin/elasticsearch-service.bat install'
-alias esstart					'$ELASTIC_HOME/bin/elasticsearch-service.bat start'
+alias esstart				'$ELASTIC_HOME/bin/elasticsearch-service.bat start'
 alias esdemo            		'$ELASTIC_HOME/bin/elasticsearch.bat'
-alias esstop					'$ELASTIC_HOME/bin/elasticsearch-service.bat stop'
+alias esstop				'$ELASTIC_HOME/bin/elasticsearch-service.bat stop'
 alias esremove	        		'$ELASTIC_HOME/bin/elasticsearch-service.bat remove'
-alias esmanage					'$ELASTIC_HOME/bin/elasticsearch-service.bat manager'
-alias esconfig					'cat $ELASTIC_HOME/config/elasticsearch.yml'
+alias esmanage				'$ELASTIC_HOME/bin/elasticsearch-service.bat manager'
+alias esconfig				'cat $ELASTIC_HOME/config/elasticsearch.yml'
 alias goes              		'cd $ELASTIC_HOME'
+alias elasticup				'usingport 9200'
+alias elasticstatus     		'elasticup; kibanaup'
+
+# Kibana
 alias kibana            		'$KIBANA_HOME/bin/kibana.bat && settitle2str KIBANA'
 alias kibanaconfig      		'cat $KIBANA_HOME/config/kibana.yml'
 alias gokibana          		'cd $KIBANA_HOME'
-alias kibanaup					'usingport 5601'
-alias elasticup					'usingport 9200'
-alias elasticstatus     		'elasticup; kibanaup'
-alias gologstash				'cd $LOGSTASH_HOME'
-alias gobeats					'cd $BEATS_HOME'
-alias esget						'curl -XGET "http://localhost:9200/\!^"'
-alias esgetp					'curl -XGET "http://localhost:9200/\!^?pretty=true"'
-alias esgetexplain				'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
-alias esgetaliases				'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
-alias curlindexes				'curl -XGET "http://localhost:9200/_cat/indices" | grep -v "open \."'
-alias esgetindexes				'$PYTHON "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"'
+alias kibanaup				'usingport 5601'
+
+# Logstash
+alias gologstash			'cd $LOGSTASH_HOME'
+alias logstash				'$LOGSTASH_HOME/bin/logstash.bat'
+
+# Beats
+alias gobeats				'cd $BEATS_HOME'
+alias filebeat				'$BEATS_HOME/filebeat.exe'
+
+
+# Querying Elastic
+alias esget				'curl -XGET "http://localhost:9200/\!^"'
+alias esgetp				'curl -XGET "http://localhost:9200/\!^?pretty=true"'
+alias esgetexplain			'curl -XGET "http://localhost:9200/\!^?explain=true&pretty=true"'
+alias esgetaliases			'curl -XGET "http://localhost:9200/_aliases?pretty=true"'
+alias curlindexes			'curl -XGET "http://localhost:9200/_cat/indices" | grep -v "open \."'
+alias esgetindexes			'$PYTHON "$ELASTIC_HOME/../PythonClient/client.py --config $ELASTIC_HOME/../PythonClient/client.config --info"'
 alias getindexes        		esgetindexes
 
 alias setelasticservice 		'set elastic_service_name = \\
-`sc query type= service state= all | 						\\
-$PERL -ne "													\\
-  if (/^SERVICE_NAME: (elasticsearch-service.+)/i){			\\
-    s/^SERVICE_NAME: //;									\\
-    s/\n//;													\\
-    print; 													\\
+`sc query type= service state= all | 				\\
+$PERL -ne "							\\
+  if (/^SERVICE_NAME: (elasticsearch-service.+)/i){		\\
+    s/^SERVICE_NAME: //;					\\
+    s/\n//;							\\
+    print; 							\\
   } "`'
 alias startelasticsvc  			'setelasticservice  && sc start $elastic_service_name'
 alias stopelasticsvc			'setelasticservice  && sc stop $elastic_service_name'
@@ -49,31 +60,31 @@ alias contents          		'curlcontents \!^ | $PERL -ne '"'"' \\
     }                                                      \\
   }  '"'"
 
-alias escontentsrch				'curl -XGET "http://localhost:9200/$elasticDefault/_search?q=(Document.Content:\!^)&pretty=true"'
+alias escontentsrch			'curl -XGET "http://localhost:9200/$elasticDefault/_search?q=(Document.Content:\!^)&pretty=true"'
 alias esgetall          		esgetindexes
 alias esstats           		'esget _stats'
 alias getsettings       		'esget "\!^/_settings"'
 alias getmappings       		'esget "\!^/_mappings"'
 alias esindexinfo       		'esget \!^'
 alias indexinfo         		'esget \!^'
-alias esput						'curl -XPUT "http://localhost:9200/\!^"'
-alias esdelete   				'curl -XDELETE "http://localhost:9200/\!^"'
+alias esput				'curl -XPUT "http://localhost:9200/\!^"'
+alias esdelete   			'curl -XDELETE "http://localhost:9200/\!^"'
 alias essearchall       		'esget _search'
 alias essearchindex     		'esget "\!^/_search"'
 alias searchindex       		essearchindex
 alias esindexinfo       		'esget "\!^/_settings,_mapping"'
 
-alias espy						'$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config'
-alias espya						'espy "\!^/all"'
-alias espym						'espy "\!^/mapping"'
-alias espys						'espy "\!^/settings"'
+alias espy				'$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config'
+alias espya				'espy "\!^/all"'
+alias espym				'espy "\!^/mapping"'
+alias espys				'espy "\!^/settings"'
 
-alias mapping					'espy $var_elasticDef/m'
-alias acmapping					'espy autoclass_$var_elasticDef/m'
-alias settings					'espy $var_elasticDef/s'
-alias acsettings				'espy autoclass_$var_elasticDef/s'
+alias mapping				'espy $var_elasticDef/m'
+alias acmapping				'espy autoclass_$var_elasticDef/m'
+alias settings				'espy $var_elasticDef/s'
+alias acsettings			'espy autoclass_$var_elasticDef/s'
 alias autoclasstypes    		'espy search/autoclass_$var_elasticDef -s type --compact --size 10000 | grep type | sort | uniq'
-alias estype					'espy search/autoclass_$var_elasticDef/q:type:\!^'
+alias estype				'espy search/autoclass_$var_elasticDef/q:type:\!^'
 
 alias aclabels  'espy search/autoclass_$var_elasticDef/q:type:word_label_counts -e word_count:type --compact --size 10000 \\
 | $PERL -e '"'"'                                                   \\
@@ -101,10 +112,10 @@ alias elastic_add_wlc_prefix 'set wlcIndex=`echo \!^ | sed -r -e "s/^([[:digit:]
 #  ARG2  - number of columns (default 10)
 #  ARG3  - size of columns (default 30)
 #
-alias getwords 'setenv AC_SEARCH_STR "\!*"  										\\
-&& elastic_add_wlc_prefix \!:1 				 										\\
-&& espy search/autoclass_$var_elasticDef/$wlcIndex --compact -s word_count 			\\
-| $PERL -e '"'"'  																	\\
+alias getwords 'setenv AC_SEARCH_STR "\!*"  						\\
+&& elastic_add_wlc_prefix \!:1 				 				\\
+&& espy search/autoclass_$var_elasticDef/$wlcIndex --compact -s word_count 		\\
+| $PERL -e '"'"'  									\\
 my ($cols, $width) = (10, 30);                                                		\\
 @a = split /\s+/, $ENV{AC_SEARCH_STR};                                        		\\
 #                                                                             		\\
@@ -152,7 +163,7 @@ else { print $out; }                                                          		
 exit;                                                                         		\\
 '"'" 
 
-alias esprocesslog	'cat \!^ | $PERL -e '"'"'          	   \\
+alias esprocesslog	'cat \!^ | $PERL -e '"'"'          \\
                                                            \\
 while(<>) {                                                \\
   chomp $_;                                                \\
