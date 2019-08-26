@@ -155,8 +155,8 @@ pgrep "URL: (svn|http)"` "AA" \!:2 "BB" \!:1             \\
   and system("svn","relocate","$1","$2","$3");           \\
  '"'"
 
-alias lab2local   		'svnrelocate $var_trimDir $SVN_LOCAL_LAB'
-alias lab2remote  		'svnrelocate $var_trimDir $SVN_LAB_URI'
+alias trim2local   		'svnrelocate $var_trimDir $SVN_LOCAL_LAB'
+alias trim2remote  		'svnrelocate $var_trimDir $SVN_LAB_URI'
 alias static2local 		'svnrelocate $STATIC_REPO $SVN_LOCAL_STATIC'
 alias static2remote 	'svnrelocate $STATIC_REPO $SVN_STATIC_URI'
 

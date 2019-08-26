@@ -50,6 +50,8 @@ alias vistatic			via static
 alias visvn				via svn
 alias vitrim			via trim
 alias whichalias		'grep -is \!^ $env_alias_dir/*'
+alias vilocal			'vi $env_alias_dir/LOCAL.txt; refresh'
+alias vil				vilocal
 
 alias x86  				'set var_defArch = x86; 	 src'
 alias x64  				'set var_defArch = x64; 	 src'
