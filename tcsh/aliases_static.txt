@@ -52,6 +52,7 @@ alias vitrim			via trim
 alias whichalias		'grep -is \!^ $env_alias_dir/*'
 alias vilocal			'vi $env_alias_dir/LOCAL.txt; refresh'
 alias vil				vilocal
+alias redo				'unset include_"\!^"; src'
 
 alias x86  				'set var_defArch = x86; 	 src'
 alias x64  				'set var_defArch = x64; 	 src'
@@ -66,32 +67,35 @@ source $include_file; settitle'
 
 alias defaultconfig 	dbdefault 
 alias dbcurrent 		'echo $var_dbSession'
-alias dbsession 		'set var_dbSession  = \!^; 	src'
-alias dbserver  		'set var_dbServer   = \!^; 	src'
-alias setdbid			'set var_DBID       = \!^;	src'
-alias trimdir   		'set var_trimDir    = \!^; 	src'
-alias bitvise			'set var_vpnConfig = BITVISE; src'
-alias pulse				'set var_vpnConfig = PULSE;   src'
-alias novpn				'set var_vpnConfig = LOCAL;   src'
+alias dbsession 		'set var_dbSession   = \!^;	src'
+alias dbserver  		'set var_dbServer    = \!^;	src'
+alias setdbid			'set var_DBID        = \!^;	src'
+alias trimdir   		'set var_trimDir     = \!^;	src'
+alias elastichost		'set var_elasticHost = \!^; src'
+alias elasticindex		'set var_elasticDef  = \!^; src'
+alias bitvise			'set var_vpnConfig   = BITVISE; src'
+alias pulse				'set var_vpnConfig   = PULSE;   src'
+alias novpn				'set var_vpnConfig   = LOCAL;   src'
 
-alias whichenv  		'echo "\n    \\
-TRIMDIR   = $var_trimDir             \\
-ARCH      = $var_defArch             \\
-BUILD     = $var_defBuild            \\
-FOLDER    = $env_folder              \\
-REVISION  = $env_revision            \\
-DBID      = $var_DBID                \\
-DBSession = $var_dbSession           \\
-DBServer  = $var_dbServer            \\
-IDOLDB    = $var_idolDb              \\
-SVNLOGDB  = $SVN_STATIC_DB       	 \\
-ELASTIC   = $var_elasticDef      	 \\
-VPN       = $var_vpnConfig           \\
+alias whichenv 	'echo "\n               \\
+TRIMDIR      = $var_trimDir             \\
+ARCH         = $var_defArch             \\
+BUILD        = $var_defBuild            \\
+FOLDER       = $env_folder              \\
+REVISION     = $env_revision            \\
+DBID         = $var_DBID                \\
+DBSession    = $var_dbSession           \\
+DBServer     = $var_dbServer            \\
+IDOLDB       = $var_idolDb              \\
+SVNLOGDB     = $SVN_STATIC_DB       	\\
+ELASTIC      = $var_elasticDef      	\\
+ELASTIC_HOST = $var_elasticHost         \\
+VPN          = $var_vpnConfig           \\
 "'
 alias showenv  			whichenv
 alias trimversion 		'cat $var_trimDir/trim/wix/version.wxi | grep -i "version ="'
 
-alias settitle    		'echo -ne "\033]0;         REL=${var_trimDir} ARCH=${var_defArch}, BUILD=${var_defBuild}, DBID=${var_DBID}, DBSESSION=${var_dbSession}, DBSERVER=${var_dbServer}, VPN=${var_vpnConfig}\007"'
+alias settitle    		'echo -ne "\033]0;         [${var_trimDir}] ${var_defArch}/${var_defBuild} __${var_dbServer}:${var_dbSession}(dbid ${var_DBID})__ ELK=${var_elasticHost} [${var_elasticDef}]__ VPN=${var_vpnConfig}\007"'
 alias settitledir 		'echo -ne "\033]0;         REL=${var_trimDir} ARCH=${var_defArch}, BUILD=${var_defBuild}, DBID=${var_DBID}    `/bin/pwd`\007"'
 
 alias wixgen        	$PERL $STATIC_PERL/WIX/AutoGenerateWixFromHeat.pl

@@ -58,6 +58,7 @@ set ALM_DB           		= $REPOS_ROOT/ALM_Data
 set IDOL_DIR         		= /c/IDOL
 
 # ElasticSearch
+set ELASTIC_HOST			= http://localhost:9200
 set ELK_VERSION      		= $SET_THIS_VALUE
 set ELASTIC_DIR	     		= $REPOS_ROOT/Elastic
 set ELASTIC_HOME     		= $ELASTIC_DIR/search/$ELK_VERSION

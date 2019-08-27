@@ -52,7 +52,6 @@ else
   endif
 endif
 
-
 if (! $?var_vpnConfig) then       
   set var_vpnConfig   = $DEFAULT_VPN
 else
@@ -61,6 +60,13 @@ else
   endif
 endif
 
+if (! $?var_elasticHost) then
+  set var_elasticHost = $ELASTIC_HOST
+else
+  if ("$var_elasticHost" == "")  then
+     set var_elasticHost = $ELASTIC_HOST
+  endif
+endif
 
 set vpn_directory   = $NETWORK_DIR/vpn
 set hosts_directory = $SYSTEMROOT/System32/drivers/etc
@@ -97,9 +103,5 @@ set var_trimDoc			= $var_trimDir/doc/doc/DocPub
 set var_buildLog      	= "${REPOS_ROOT}/TEMP/TRIM-$env_folder-$var_defArch-$var_defBuild.log"
 set var_buildLogCSharp	= "${REPOS_ROOT}/TEMP/TRIMCSharp-$env_folder-$var_defArch-$var_defBuild.log"
 set var_buildLogWix   	= "${REPOS_ROOT}/TEMP/WIX-$env_folder-$var_defArch-$var_defBuild.log"
-
-
-
-
 
 
