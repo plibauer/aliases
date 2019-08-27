@@ -110,7 +110,6 @@ alias sqliteqstat       	sqlite3.exe $SQLITE_DB_STAT
 alias almsqlite         	sqlite3.exe $SQLITE_ALM
 alias crmatch           	almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'0\' ORDER BY CAST\(id AS INTEGER\)\"
 alias crmatchdesc       	almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'1\' ORDER BY CAST\(id AS INTEGER\)\"
-alias query					sqliteq
 alias sqlitedbopen      	cygstart cmd.exe /c sqlite3.exe
 alias sqldblab          	cygstart cmd.exe /c sqlite3.exe $SQLITE_DB_LAB
 alias sqldbstat         	cygstart cmd.exe /c sqlite3.exe $SQLITE_DB_STAT 

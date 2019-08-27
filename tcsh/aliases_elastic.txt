@@ -69,6 +69,8 @@ alias contents          		'docid \!^ \\
       print "$_\n";                        \\
     }                                      \\
   }  '"'"
+alias esquery					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticDef/_search?pretty" \!^' 
+alias esqueryi					'$PYTHON_CYG $PYTHON_HOME/curl.py -i "$var_elasticHost/$var_elasticDef/_search?pretty"' 
 
 alias espy						'$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config'
 alias espya						'espy "\!^/all"'
