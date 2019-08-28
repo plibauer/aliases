@@ -41,9 +41,10 @@ alias gobeats					'cd $BEATS_HOME'
 alias filebeat					'$BEATS_HOME/filebeat.exe'
 
 set CURL = "curl -s"
+set ELASTIC_QUERIES = $env_alias_dir/elastic_queries.txt
 
 # Querying Elastic
-alias esversion					'$CURL $var_elasticHost | grep number | sed -E '"'"' s/number/VERSION/; s/[\",]//g; s/^\s+//;'"'"
+alias esversion					'$CURL $var_elasticHost | grep number | sed -E '"'"' s/number/VERSION/; s/[\",]//g; s/^\s+//; '"'"
 alias esget						'$CURL "$var_elasticHost/\!^"'
 alias esgetp					'esget \!^?pretty=true'
 alias esgetaliases				'esget _aliases?pretty=true'
@@ -73,8 +74,15 @@ alias contents          		'docid \!^ \\
   }  '"'"
 alias esquery					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticIndex/_search?pretty" \!^' 
 alias esqueryi					'$PYTHON_CYG $PYTHON_HOME/curl.py -i "$var_elasticHost/$var_elasticIndex/_search?pretty"' 
+alias escommand					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticIndex/_search?pretty" -c \!^ -f $ELASTIC_QUERIES'
+
+alias hascontent				'escommand has_document_content | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
+alias allids					'escommand match_all | grep _id | sort'
+alias estitles					'escommand titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 
+alias titles					'estitles | sort'
 
 alias elasticinfo				'echo "HOST    : $var_elasticHost"; echo "INDEX   : $var_elasticIndex"; esversion; echo; indexes'  
+alias esinfo					elasticinfo
 
 alias espy						'$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config'
 alias espya						'espy "\!^/all"'
