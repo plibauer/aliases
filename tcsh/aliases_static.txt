@@ -72,7 +72,8 @@ alias dbserver  		'set var_dbServer    = \!^;	src'
 alias setdbid			'set var_DBID        = \!^;	src'
 alias trimdir   		'set var_trimDir     = \!^;	src'
 alias elastichost		'set var_elasticHost = \!^; src'
-alias elasticindex		'set var_elasticDef  = \!^; src'
+alias elasticindex		'set var_elasticIndex  = \!^; src'
+alias elasticdefault    'unset var_elasticIndex; unset var_elasticHost; src'
 alias bitvise			'set var_vpnConfig   = BITVISE; src'
 alias pulse				'set var_vpnConfig   = PULSE;   src'
 alias novpn				'set var_vpnConfig   = LOCAL;   src'
@@ -88,14 +89,14 @@ DBSession    = $var_dbSession           \\
 DBServer     = $var_dbServer            \\
 IDOLDB       = $var_idolDb              \\
 SVNLOGDB     = $SVN_STATIC_DB       	\\
-ELASTIC      = $var_elasticDef      	\\
+ELASTIC      = $var_elasticIndex      	\\
 ELASTIC_HOST = $var_elasticHost         \\
 VPN          = $var_vpnConfig           \\
 "'
 alias showenv  			whichenv
 alias trimversion 		'cat $var_trimDir/trim/wix/version.wxi | grep -i "version ="'
 
-alias settitle    		'echo -ne "\033]0;         [${var_trimDir}] ${var_defArch}/${var_defBuild} __${var_dbServer}:${var_dbSession}(dbid ${var_DBID})__ ELK=${var_elasticHost} [${var_elasticDef}]__ VPN=${var_vpnConfig}\007"'
+alias settitle    		'echo -ne "\033]0;         [${var_trimDir}] ${var_defArch}/${var_defBuild} __${var_dbServer}:${var_dbSession}(dbid ${var_DBID})__ ELK=${var_elasticHost} [${var_elasticIndex}]__ VPN=${var_vpnConfig}\007"'
 alias settitledir 		'echo -ne "\033]0;         REL=${var_trimDir} ARCH=${var_defArch}, BUILD=${var_defBuild}, DBID=${var_DBID}    `/bin/pwd`\007"'
 
 alias wixgen        	$PERL $STATIC_PERL/WIX/AutoGenerateWixFromHeat.pl

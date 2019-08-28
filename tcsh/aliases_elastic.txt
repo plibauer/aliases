@@ -40,26 +40,28 @@ alias logstash					'$LOGSTASH_HOME/bin/logstash.bat'
 alias gobeats					'cd $BEATS_HOME'
 alias filebeat					'$BEATS_HOME/filebeat.exe'
 
+set CURL = "curl -s"
+
 # Querying Elastic
-alias esversion					'curl $var_elasticHost'
-alias esget						'curl "$var_elasticHost/\!^"'
+alias esversion					'$CURL $var_elasticHost | grep number | sed -E '"'"' s/number/VERSION/; s/[\",]//g; s/^\s+//;'"'"
+alias esget						'$CURL "$var_elasticHost/\!^"'
 alias esgetp					'esget \!^?pretty=true'
 alias esgetaliases				'esget _aliases?pretty=true'
-alias esindexes					'curl "$var_elasticHost/_cat/indices?v"'
+alias esindexes					'$CURL "$var_elasticHost/_cat/indices?v"'
 alias getindexes        		esgetindexes
 alias indexes					esindexes
 alias indices					esindexes
 alias esstats           		'esgetp _stats'
 alias esgetsettings       		'esget \!^/_settings?pretty'
-alias essettings				'esgetsettings $var_elasticDef'
+alias essettings				'esgetsettings $var_elasticIndex'
 alias settings					essettings
-alias esmappings 	      		'esget $var_elasticDef/_mappings?pretty'
+alias esmappings 	      		'esget $var_elasticIndex/_mappings?pretty'
 alias mapping					esmappings
 alias essearchall       		'esgetp _search'
 alias essearch		     		'esgetp \!^/_search'
 alias searchindex       		essearch
-alias escontentsrch				'curl "$var_elasticHost/$var_elasticDef/_search?q=(Document.Content:\!^)&pretty=true"'
-alias docid             		'curl "$var_elasticHost/$var_elasticDef/_search?q=_id:\!^&pretty=true"'
+alias escontentsrch				'$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&pretty=true"'
+alias docid             		'$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
 alias contents          		'docid \!^ \\
 | $PERL -ne '"'"' 						   \\
   if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){  \\
@@ -69,20 +71,22 @@ alias contents          		'docid \!^ \\
       print "$_\n";                        \\
     }                                      \\
   }  '"'"
-alias esquery					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticDef/_search?pretty" \!^' 
-alias esqueryi					'$PYTHON_CYG $PYTHON_HOME/curl.py -i "$var_elasticHost/$var_elasticDef/_search?pretty"' 
+alias esquery					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticIndex/_search?pretty" \!^' 
+alias esqueryi					'$PYTHON_CYG $PYTHON_HOME/curl.py -i "$var_elasticHost/$var_elasticIndex/_search?pretty"' 
+
+alias elasticinfo				'echo "HOST    : $var_elasticHost"; echo "INDEX   : $var_elasticIndex"; esversion; echo; indexes'  
 
 alias espy						'$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config'
 alias espya						'espy "\!^/all"'
 alias espym						'espy "\!^/mapping"'
 alias espys						'espy "\!^/settings"'
 
-alias acmapping					'espy autoclass_$var_elasticDef/m'
-alias acsettings				'espy autoclass_$var_elasticDef/s'
-alias autoclasstypes    		'espy search/autoclass_$var_elasticDef -s type --compact --size 10000 | grep type | sort | uniq'
-alias estype					'espy search/autoclass_$var_elasticDef/q:type:\!^'
+alias acmapping					'espy autoclass_$var_elasticIndex/m'
+alias acsettings				'espy autoclass_$var_elasticIndex/s'
+alias autoclasstypes    		'espy search/autoclass_$var_elasticIndex -s type --compact --size 10000 | grep type | sort | uniq'
+alias estype					'espy search/autoclass_$var_elasticIndex/q:type:\!^'
 
-alias aclabels  'espy search/autoclass_$var_elasticDef/q:type:word_label_counts -e word_count:type --compact --size 10000 \\
+alias aclabels  'espy search/autoclass_$var_elasticIndex/q:type:word_label_counts -e word_count:type --compact --size 10000 \\
 | $PERL -e '"'"'                                                   \\
 while(<>){                                                         \\
   chomp;                                                           \\
@@ -110,7 +114,7 @@ alias elastic_add_wlc_prefix 'set wlcIndex=`echo \!^ | sed -r -e "s/^([[:digit:]
 #
 alias getwords 'setenv AC_SEARCH_STR "\!*"  						\\
 && elastic_add_wlc_prefix \!:1 				 				\\
-&& espy search/autoclass_$var_elasticDef/$wlcIndex --compact -s word_count 		\\
+&& espy search/autoclass_$var_elasticIndex/$wlcIndex --compact -s word_count 		\\
 | $PERL -e '"'"'  									\\
 my ($cols, $width) = (10, 30);                                                		\\
 @a = split /\s+/, $ENV{AC_SEARCH_STR};                                        		\\
