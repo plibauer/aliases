@@ -1,0 +1,28 @@
+has_document_content: 
+{ 
+  "_source": false, 
+  "query" : { 
+    "exists" : { "field" : "Document.Content" } 
+  }, 
+  "size" : 10000 
+}
+
+match_all:
+{
+  "_source": false,
+  "query" : {
+    "match_all" : {}
+  },
+  "size" : 10000
+}
+
+titles:
+{
+  "size" : 10000,
+  "_source": "Title",
+  "query" : {
+    "exists" : { 
+      "field" : "Title"
+    }
+  }
+}
