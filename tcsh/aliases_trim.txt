@@ -21,7 +21,6 @@ alias propidx       					'cat $var_trimDir/trim/src/Core/PRPpropertyFind.cpp | p
 alias database      					'cat $var_trimDir/trim/src/DD/DATABASE.TXT | pgrep -i '
 alias viewdb        					'view $var_trimDir/trim/src/DD/DATABASE.TXT'
 
-
 alias killtrim							'taskkill /F /IM TRIM.exe'
 alias killwgs 							'taskkill /F /IM TRIMWorkgroup.exe'
 alias killproc							'taskkill /F /IM'
@@ -57,7 +56,6 @@ alias idol_train						'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbS
 alias idol_test  						'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --load test --inplace'
 alias idol_both         				'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --load both'
 alias idol_classify     				'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --classify --inplace'
-																											     
 
 alias trimconfig       					'xmlconf $var_trimcfg'
 alias trimcfgsorted   					'xmlformat $var_trimcfg | $PYTHON $PYTHON_HOME/sortXml.py'
@@ -69,8 +67,6 @@ alias bkupidolcfg      					'cp $var_trimcfg /c/TestDatasets/$var_DBID/backup/TR
 alias bkupelasticcfg   					'cp $var_trimcfg /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC'
 alias idolcfg          					'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.IDOL $var_trimcfg'
 alias elasticcfg       					'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC $var_trimcfg'
-
-
 
 alias testtrim       					'$var_trimDir/$var_defArch/$var_defBuild/testTrim.exe'
 alias trimtest       					testtrim
@@ -87,8 +83,10 @@ alias makecontainers 					'testtrim --test bulkLoader --type container --timeout
 # CSharp testing
 alias testcs       						'$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe --test'
 alias testevmon	   						'testcs EventMonitor --inplace'
-	   
 
+# OCTANE
+alias defect							'curl -s "$var_elasticHost/octane/_search?pretty&q=\!^"'
+alias cr								defect
 
 alias enums  'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs     \\
 | $PERL -e ' "'" '                                                            \\
