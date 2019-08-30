@@ -40,6 +40,8 @@ alias popdbidol         				'populatedb --dci idol --dbid $env_default_dbid_pref
 alias idolconfig						'setdbid $env_default_dbid_pref"5"; dbsession $var_dbSession"_idol"'
 alias popdbbig							'popdb --big'
 alias bigconfig							'setdbid 41; dbsession Test_Big_"$env_revision"_SqlServer'
+alias popdbelastic						'popdb --dciServer $var_elasticHost --snapshotPath "/usr/share/elasticsearch/data/snapshots"'
+alias popdbes							popdbelastic
 
 alias testac            				'testtrim --test autoclassification'
 alias elk_train         				'testac --load train '

@@ -53,6 +53,7 @@ alias whichalias		'grep -is \!^ $env_alias_dir/*'
 alias vilocal			'vi $env_alias_dir/LOCAL.txt; unset var_*; source $env_alias_dir/LOCAL.txt; refresh'
 alias vil				vilocal
 alias redo				'unset include_"\!^"; src'
+alias reload			redo
 
 alias x86  				'set var_defArch = x86; 	 src'
 alias x64  				'set var_defArch = x64; 	 src'
