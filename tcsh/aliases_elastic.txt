@@ -47,11 +47,13 @@ set CURL = "curl -s"
 set ELASTIC_QUERIES = $env_alias_dir/elastic_queries.txt
 
 # Querying Elastic
-alias esversion					'$CURL $var_elasticHost | grep number | sed -E '"'"' s/number/VERSION/; s/[\",]//g; s/^\s+//; '"'"
+alias elasticversion            '$CURL \!^ | grep number | sed -E '"'"' s/number/VERSION/; s/[\",]//g; s/^\s+//; '"'"
+alias esversion					'elasticversion $var_elasticHost' 
 alias esget						'$CURL "$var_elasticHost/\!^"'
 alias esgetp					'esget \!^?pretty=true'
 alias esgetaliases				'esget _aliases?pretty=true'
-alias esindexes					'$CURL "$var_elasticHost/_cat/indices?v"'
+alias elasticindexes			'$CURL "\!^/_cat/indices?v"'
+alias esindexes					'elasticindexes $var_elasticHost'
 alias getindexes        		esgetindexes
 alias indexes					esindexes
 alias indices					esindexes
@@ -86,6 +88,23 @@ alias titles					'estitles | sort'
 
 alias elasticinfo				'echo "HOST    : $var_elasticHost"; echo "INDEX   : $var_elasticIndex"; esversion; echo; indexes'  
 alias esinfo					elasticinfo
+alias esenv						'echo "HOST    : $var_elasticHost"; echo "INDEX   : $var_elasticIndex"'
+alias curlh						'$CURL "$var_elasticHost/\!^"'
+
+alias curl5						'$CURL "$ELASTIC_HOST5/\!^"'
+alias curldel5					'$CURL -X DELETE "$ELASTIC_HOST5/\!^"'	
+alias eshost5					'elastichost $ELASTIC_HOST5'
+alias esinfo5					'echo "HOST    : $ELASTIC_HOST5"; elasticversion $ELASTIC_HOST5; elasticindexes $ELASTIC_HOST5' 
+
+alias curl6						'$CURL "$ELASTIC_HOST6/\!^"'
+alias curldel6					'$CURL -X DELETE "$ELASTIC_HOST6/\!^"'	
+alias eshost6					'elastichost $ELASTIC_HOST6'
+alias esinfo6					'echo "HOST    : $ELASTIC_HOST6"; elasticversion $ELASTIC_HOST6; elasticindexes $ELASTIC_HOST6' 
+
+alias curl7						'$CURL "$ELASTIC_HOST7/\!^"'
+alias curldel7					'$CURL -X DELETE "$ELASTIC_HOST7/\!^"'	
+alias eshost7					'elastichost $ELASTIC_HOST7'
+alias esinfo7					'echo "HOST    : $ELASTIC_HOST7"; elasticversion $ELASTIC_HOST7; elasticindexes $ELASTIC_HOST7' 
 
 alias espy						'$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config'
 alias espya						'espy "\!^/all"'
