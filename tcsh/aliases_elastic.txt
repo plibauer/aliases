@@ -14,6 +14,9 @@ alias goes              		'cd $ELASTIC_HOME'
 alias elasticup					'usingport 9200'
 alias elasticstatus     		'elasticup; kibanaup'
 alias esstatus					elasticstatus
+alias eshost					'elastichost http://\!^'
+alias esindex					elasticindex
+alias esdefault					elasticdefault
 
 alias setelasticservice 		'set elastic_service_name = \\
 `sc query type= service state= all | 						\\

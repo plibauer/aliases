@@ -50,7 +50,7 @@ alias vistatic			via static
 alias visvn				via svn
 alias vitrim			via trim
 alias whichalias		'grep -is \!^ $env_alias_dir/*'
-alias vilocal			'vi $env_alias_dir/LOCAL.txt; refresh'
+alias vilocal			'vi $env_alias_dir/LOCAL.txt; unset var_*; source $env_alias_dir/LOCAL.txt; refresh'
 alias vil				vilocal
 alias redo				'unset include_"\!^"; src'
 
