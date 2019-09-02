@@ -159,6 +159,8 @@ alias trim2local   		'svnrelocate $var_trimDir $SVN_LOCAL_LAB'
 alias trim2remote  		'svnrelocate $var_trimDir $SVN_LAB_URI'
 alias static2local 		'svnrelocate $STATIC_REPO $SVN_LOCAL_STATIC'
 alias static2remote 	'svnrelocate $STATIC_REPO $SVN_STATIC_URI'
+alias doc2local	        'svnrelocate $var_trimDir/doc/doc/DocPub $SVN_LOCAL_LAB'
+alias doc2remote        'svnrelocate $var_trimDir/doc/doc/DocPub $SVN_LAB_URI'
 
 alias svn_parse_log '$PERL -e ' "'" '     	\\
 @in = <>;                                 	\\
