@@ -85,8 +85,11 @@ alias testcs       						'$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe --tes
 alias testevmon	   						'testcs EventMonitor --inplace'
 
 # OCTANE
-alias defect							'curl -s "$var_elasticHost/octane/_search?pretty&q=\!^"'
+alias curldefect						'curl -s "$var_elasticHost/octane/_search?pretty&q=\!^"'
+alias defect							'$PYTHON $PYTHON_HOME/octane.py'
+alias defectall							'$PYTHON $PYTHON_HOME/octane.py -v'
 alias cr								defect
+alias crall								defectall
 
 alias enums  'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs     \\
 | $PERL -e ' "'" '                                                            \\
