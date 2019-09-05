@@ -5,8 +5,8 @@ set STATIC_REPO				= $REPOS_ROOT/TRIMStaticRepo
 set SVN_BIN					= "/c/Program Files/TortoiseSVN/bin"
 
 #
-# (BITVISE or PULSE or LOCAL)
-set DEFAULT_VPN            	= BITVISE   
+# (BITVISE, PULSE, LOCAL or NONE)
+set DEFAULT_VPN            	= NONE  
 #
 set SVN_PULSE_LAB     	 	= svn://15.114.89.246:1137/TRIM
 set SVN_PULSE_STATIC   	 	= svn://15.114.89.246:1137/Static

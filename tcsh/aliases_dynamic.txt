@@ -92,10 +92,17 @@ else
 	set PROXY_SERVER   = $SVN_PULSE_PROXY
 	/bin/cp $vpn_directory/hosts.pulse $hosts_directory/hosts
   else
+    if ("$var_vpnConfig" == "LOCAL") then
 	set SVN_LAB_URI    = $SVN_LOCAL_LAB
 	set SVN_STATIC_URI = $SVN_LOCAL_STATIC
 	set PROXY_SERVER   = ""
 	/bin/cp $vpn_directory/hosts $hosts_directory/hosts
+    else
+        set SVN_LAB_URI    = $SVN_PULSE_LAB
+        set SVN_STATIC_URI = $SVN_PULSE_STATIC
+        set PROXY_SERVER   = $SVN_PULSE_PROXY
+        /bin/cp $vpn_directory/hosts.work $hosts_directory/hosts
+    endif
   endif
 endif
 
