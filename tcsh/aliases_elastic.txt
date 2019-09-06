@@ -54,7 +54,7 @@ alias esgetp					'esget \!^?pretty=true'
 alias esgetaliases				'esget _aliases?pretty=true'
 alias elasticindexes			'$CURL "\!^/_cat/indices?v"'
 alias esindexes					'elasticindexes $var_elasticHost'
-alias getindexes        		esgetindexes
+alias getindexes        		esindexes
 alias indexes					esindexes
 alias indices					esindexes
 alias esstats           		'esgetp _stats'
@@ -67,6 +67,7 @@ alias essearchall       		'esgetp _search'
 alias essearch		     		'esgetp \!^/_search'
 alias searchindex       		essearch
 alias esdelete                  '$CURL -X DELETE "$ELASTIC_HOST/\!^"'
+alias esrefresh					'$CURL -X POST "$ELASTIC_HOST/_refresh"'
 alias escontentsrch				'$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&pretty=true"'
 alias docid             		'$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
 alias contents          		'docid \!^ \\

@@ -13,7 +13,7 @@ match_all:
   "query" : {
     "match_all" : {}
   },
-  "size" : 100000
+  "size" : 10000
 }
 
 titles:
@@ -25,4 +25,41 @@ titles:
       "field" : "Title"
     }
   }
+}
+
+current_defects:
+{
+  "_source":[
+  	"name",
+  	"closed_on",
+  	"release",
+  	"severity",
+  	"defect_type",
+  	"detected_in_release",
+  	"qa_owner",
+  	"last_modified",
+  	"priority",
+  	"phase"
+  ],
+  "query": {
+    "bool": {
+      "must": {
+        "match": {"owner": "paul.libauer"}
+      }, 
+      "must_not": [
+      { "term": { "phase": "closed" } },
+      { "term": { "phase": "rejected" } },
+      { "term": { "phase": "duplicate" } },
+      { "term": { "phase": "fixed" } }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "release.keyword": {
+        "order": "asc"
+      }
+    }
+  ], 
+  "size": 100
 }
