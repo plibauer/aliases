@@ -44,7 +44,7 @@ current_defects:
   "query": {
     "bool": {
       "must": {
-        "match": {"owner": "paul.libauer"}
+        "match": {"owner": "ARG1"}
       }, 
       "must_not": [
       { "term": { "phase": "closed" } },

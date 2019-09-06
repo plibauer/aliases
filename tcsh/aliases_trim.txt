@@ -91,7 +91,7 @@ alias defectall							'$PYTHON $PYTHON_HOME/octane.py -v'
 alias cr								defect
 alias crall								defectall
 alias crv								defectall
-alias currentdefects					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octane/_search?pretty" -c current_defects -f $ELASTIC_QUERIES'
+alias currentdefects					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octane/_search?pretty" -c current_defects -f $ELASTIC_QUERIES \!^'
 alias defectprocessor                   '$PERL -e ' "'" ' \\
 sub parse {                                                           \\
   my $l = shift;                                                      \\
@@ -149,8 +149,11 @@ for(sort keys %releases) {                                            \\
   }                                                                   \\
 }                                                                     \\
 ' "'"
-alias defects							'currentdefects | egrep "_id|phase|severity|release|name|priority|defect_type" | defectprocessor '
-alias defectsv							'setenv DEFECT_OUTPUT "verbose"; currentdefects | egrep "_id|phase|severity|release|name|priority|defect_type" | defectprocessor ; unsetenv DEFECT_OUTPUT'
+alias defectsuser						'currentdefects \!^ | egrep "_id|phase|severity|release|name|priority|defect_type" | defectprocessor '
+alias defects							'defectsuser paul.libauer'
+alias defectsuserv					    'setenv DEFECT_OUTPUT "verbose"; currentdefects \!^ | egrep "_id|phase|severity|release|name|priority|defect_type" | defectprocessor ; unsetenv DEFECT_OUTPUT'
+
+alias defectsv							'defectsuserv paul.libauer'
 
 alias enums  'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs     \\
 | $PERL -e ' "'" '                                                            \\
