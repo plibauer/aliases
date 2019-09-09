@@ -66,8 +66,8 @@ alias mapping					esmappings
 alias essearchall       		'esgetp _search'
 alias essearch		     		'esgetp \!^/_search'
 alias searchindex       		essearch
-alias esdelete                  '$CURL -X DELETE "$ELASTIC_HOST/\!^"'
-alias esrefresh					'$CURL -X POST "$ELASTIC_HOST/_refresh?pretty=true"'
+alias esdelete                  '$CURL -X DELETE "$var_elasticHost/\!^"'
+alias esrefresh					'$CURL -X POST "$var_elasticHost/_refresh?pretty=true"'
 alias escontentsrch				'$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&pretty=true"'
 alias docid             		'$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
 alias contents          		'docid \!^ \\

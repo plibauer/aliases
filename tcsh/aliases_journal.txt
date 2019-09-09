@@ -6,7 +6,8 @@ set CurrentJournal = /c/tmp/journalname.txt
 alias vip             'vi $JOURNAL_DIR/DIARY.txt; scrub $JOURNAL_DIR/DIARY.txt'
 alias todo	          'vi $CLOUD_DIR/Work/TODO.txt; scrub $CLOUD_DIR/Work/TODO.txt'
 alias haihai	      'vi $JOURNAL_DIR/HaiHaiTransfers.txt'
-alias ubuntu		  'vi $CLOUD_DIR/Work/UBUNTU.txt; scrub $CLOUD_DIR/Work/UBUNTU.txt'
+alias viubuntu		  'vi $CLOUD_DIR/Work/UBUNTU.txt; scrub $CLOUD_DIR/Work/UBUNTU.txt'
+alias ublog			  viubuntu
 
 alias grepjd          ' ls $WIKI_DIR/journals/*/*                                                                       \\
 | $PERL -e '"'"'                                                                                                        \\
