@@ -30,10 +30,6 @@ endif
 #  The order of the remaining alias files is not important
 #
 
-#
-#  The order of the remaining alias files is not important
-#
-
 if (! $?include_build) then
 	echo "including $env_alias_dir/aliases_build.txt"
 	source $env_alias_dir/aliases_build.txt
@@ -86,4 +82,18 @@ if (! $?include_trim) then
 	echo "including $env_alias_dir/aliases_trim.txt"
 	source $env_alias_dir/aliases_trim.txt
 	set include_trim = 1
+endif
+
+# 
+# Anything local to a specific machine should be placed
+# in aliases_local.txt which can be created using
+#
+#    via local
+#
+if (! $?include_local) then
+  if (-e $env_alias_dir/aliases_local.txt) then
+    echo "including LOCAL aliases file $env_alias_dir/aliases_local.txt"
+    source $env_alias_dir/aliases_local.txt
+    set include_local = 1
+  endif
 endif
