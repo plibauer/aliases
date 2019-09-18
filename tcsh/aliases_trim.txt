@@ -36,6 +36,7 @@ alias defaultconfig						'setdbid $env_default_dbid; dbsession $dbDefault'
 alias elasticconfig						defaultconfig
 alias popdboracle 						'popdb --db oracle64'
 alias popdbidol         				'populatedb --dci idol --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol"; bkupidolcfg'
+alias restoreidol						'popdb --load --dci idol --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol"'
 alias idolconfig						'setdbid $env_default_dbid_pref"5"; dbsession $var_dbSession"_idol"'
 alias popdbbig							'popdb --big'
 alias bigconfig							'setdbid 41; dbsession Test_Big_"$env_revision"_SqlServer'
