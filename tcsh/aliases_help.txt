@@ -271,11 +271,12 @@ idolterms <id>          : Get extended term information with 'id'               
 idolcatdel(ete) <id>    : Delete the category with 'id'                                           	\\
 idolcatdelete_all       : Delete all categories                                                   	\\
 idolcathier(archy) <id> : Get the hierarchy details for 'id'                                      	\\
-idolclass <opt>         : Search for categories and print uri, name, urn, database, id and terms  	\\
- 'all'    - show all categories (not all fields)                                               		\\
- 'uri'    - show category matching the 'uri' value                                             		\\
- 'string' - show all categories with names matching the 'string'                               		\\
-\n\n"                                                                                          		\\
+idolclass <opt>         : Search for categories and print uri, name, urn, database, id and terms    \\
+    (a)ll      - show all categories with name, urn, category ID, term count and terms              \\
+    (s)ummary  - Show summarised version of categories (no terms shown)                             \\
+    uri        - show category matching the 'uri' value                                        		\\
+    string     - show all categories with names matching the 'string'                               \\
+\n\n"                                                                                               \\
 '
 
 

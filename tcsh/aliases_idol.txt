@@ -89,6 +89,7 @@ if($input =~ /<autn:ts_urn>trim:..\/pln\/(\d+)<\/autn:ts_urn>/) { print "\tURI :
 print "\tID  : $ID\n\n";                                                                                                \\
 '"'"
 
+alias idolall 				  'idolclass all'
 alias idolclass               'setenv IDOL_CLS_PARAMS "\!*" && idolclassifications              \\
 | $PERL $PERL_HOME/xmlformat.pl                                                                 \\
 | $PERL -e ' "' "'                                                                              \\
@@ -96,13 +97,15 @@ alias idolclass               'setenv IDOL_CLS_PARAMS "\!*" && idolclassificatio
 sub printTerms($$){                                                                             \\
   ($terms,$max) = @_;                                                                           \\
   $i=1;                                                                                         \\
+  $ts = "";                                                                                     \\
   for(@$terms){                                                                                 \\
-    if($i % 5 == 0){ print "\n"; }                                                              \\
+    if($i % 5 == 0){ $ts .= "\n"; }                                                             \\
     my $t = $_->{word}.":".$_->{weight};                                                        \\
     my $sp = " " x ($max - length($t) + 1);                                                     \\
-    print $t.$sp;                                                                               \\
+    $ts .= $t.$sp;                                                                              \\
     $i++;                                                                                       \\
   }                                                                                             \\
+  if(length($ts) > 0) { print "$ts\n"; }                                                        \\
   print "\n";                                                                                   \\
 }                                                                                               \\
                                                                                                 \\
@@ -163,10 +166,21 @@ for($i = 0; $i<$#input; $i++){                                                  
 }                                                                                               \\
                                                                                                 \\
 # Deal with options                                                                             \\
-if($opts =~ /^all$/i){                                                                          \\
+if($opts =~ /^s(ummary)*$/i){                                                                   \\
   for(sort keys %CLASSES){                                                                      \\
     $i = $CLASSES{$_};                                                                          \\
     print "ID:".$i->{id}.", URI:".$_ ." => ".$i->{name}."\n";                                   \\
+  }                                                                                             \\
+}                                                                                               \\
+elsif($opts =~ /^a(ll)*$/i){                                                                    \\
+  for(keys %CLASSES){                                                                           \\
+    $cls = $CLASSES{$_};                                                                        \\
+    print "=================================================== \n";                             \\
+    print "NAME      : ".$cls->{name}."\n";                                                     \\
+    print "URN (DB)  : ".$cls->{urn}." (".$cls->{db}.")\n";                                     \\
+    print "CAT ID    : ".$cls->{id}."\n";                                                       \\
+    print "TERMS     : ".scalar(@{$cls->{terms}})."\n";                                         \\
+    printTerms($cls->{terms},$cls->{max});                                                      \\
   }                                                                                             \\
 }                                                                                               \\
 elsif($opts =~ /^\d+$/){                                                                        \\
