@@ -94,6 +94,7 @@ alias crall								defectall
 alias crv								defectall
 alias currentdefects					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octane/_search?pretty" -c current_defects -f $ELASTIC_QUERIES \!^'
 alias defectprocessor                   '$PERL -e ' "'" ' \\
+use Term::ANSIColor qw(:constants :constants256);                     \\
 sub parse {                                                           \\
   my $l = shift;                                                      \\
   chomp $l;                                                           \\
@@ -105,7 +106,7 @@ sub parse {                                                           \\
 @IN = <>;                                                             \\
 my $VERBOSE = 0;                                                      \\
 if($ENV{DEFECT_OUTPUT} eq "verbose"){ $VERBOSE = 1;}                  \\
-print "RELEASE: ID [phase,severity,priority,defect_type] Summary\n";  \\
+#print "RELEASE: ID [phase,severity,priority,defect_type] Summary\n"; \\
 my (%ids,%releases);                                                  \\
 while(my $l = shift @IN) {                                            \\
   if($l =~ /"_id.+:\s+"(\w+)"/) {                                     \\
@@ -113,7 +114,9 @@ while(my $l = shift @IN) {                                            \\
     my $ph = parse(shift @IN);                                        \\
     my $sev = parse(shift @IN);                                       \\
     my $rel = parse(shift @IN);                                       \\
-    $rel =~ s/^9.50.+$/10.0/;                                         \\
+    $rel =~ s/^9.50.+$/10.00/;                                        \\
+    $rel =~ s/^(\d+)\.(\d)\s/$1.$+0 /;                                \\
+    $rel =~ s/^(\d+)\.(\d)$/$1.$+0/;                                  \\
     my $name = parse(shift @IN);                                      \\
     my $pr = parse(shift @IN);                                        \\
     my $det = parse(shift @IN);                                       \\
@@ -133,7 +136,8 @@ my $SPACE = length("[Awaiting Decision,Critical,Very High,Enhancement]"); \\
 for(sort keys %releases) {                                            \\
   my $rel = $_;                                                       \\
   s/^.+"([\s\w\d\.]+)".*$/$1/;                                        \\
-  print "\nTarget Release:$_\n";                                      \\
+  print BOLD, YELLOW, "\nTarget Release:$_\n", RESET;                 \\
+  my %defects;                                                        \\
   foreach(@{$releases{$rel}}) {                                       \\
     my $id = $_;                                                      \\
     my $lead = "[".$ids{$id}{phase}.                                  \\
@@ -141,12 +145,20 @@ for(sort keys %releases) {                                            \\
                ",".$ids{$id}{priority}.                               \\
                ",".$ids{$id}{type}."] ";                              \\
     my $sp = " "x($SPACE - length($lead));                            \\
+    my $summary = $ids{$id}{name};                                    \\
+    my $shortSum = substr $summary, 0, 80;                            \\
     if($VERBOSE) {                                                    \\
-      print "\t$id: ".$lead.$sp.$ids{$id}{name}."\n";                 \\
+      if(length($summary) > 80) {                                     \\
+        $defects{$id} = $lead.$sp.$shortSum." ...";                   \\
+      }                                                               \\
+      else { $defects{$id} = $lead.$sp.$summary;  }                   \\
     }                                                                 \\
     else {                                                            \\
-      print "\t$id: ".$ids{$id}{name}."\n";                           \\
+      $defects{$id} = $summary;                                       \\
     }                                                                 \\
+  }                                                                   \\
+  foreach(reverse sort keys %defects) {                               \\
+    print BOLD, CYAN, "  $_: ", RESET,$defects{$_}."\n";              \\
   }                                                                   \\
 }                                                                     \\
 ' "'"
