@@ -100,7 +100,7 @@ sub parse {                                                           \\
   chomp $l;                                                           \\
   $l =~ s/^\s+\"\w+\"\s+:\s+//;                                       \\
   $l =~ s/^"//;                                                       \\
-  $l =~ s/"*,*\s*$//;                                                 \\
+  $l =~ s/"?,*\s*$//;                                                 \\
   return $l;                                                          \\
 }                                                                     \\
 @IN = <>;                                                             \\
@@ -117,7 +117,9 @@ while(my $l = shift @IN) {                                            \\
     $rel =~ s/^9.50.+$/10.00/;                                        \\
     $rel =~ s/^(\d+)\.(\d)\s/$1.$+0 /;                                \\
     $rel =~ s/^(\d+)\.(\d)$/$1.$+0/;                                  \\
+    # Remove any escaped double quotes from the title                 \\
     my $name = parse(shift @IN);                                      \\
+    $name =~ s/\\"/"/g;                                               \\
     my $pr = parse(shift @IN);                                        \\
     my $det = parse(shift @IN);                                       \\
     my $typ = parse(shift @IN);                                       \\
