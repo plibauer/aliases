@@ -86,22 +86,23 @@ alias testcs       						'$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe --tes
 alias testevmon	   						'testcs EventMonitor --inplace'
 
 # OCTANE
-alias curldefect						'curl -s "$var_elasticHost/octane/_search?pretty&q=\!^"'
+alias curldefect						'curl -s "$var_elasticHost/octane_new/_search?pretty&q=\!^"'
 alias defect							'$PYTHON $PYTHON_HOME/octane.py'
 alias defectall							'$PYTHON $PYTHON_HOME/octane.py -v'
 alias cr								defect
 alias crall								defectall
 alias crv								defectall
-alias currentdefects					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octane/_search?pretty" -c current_defects -f $ELASTIC_QUERIES \!^'
+alias currentdefects					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octane_new/_search?pretty" -c current_defects -f $ELASTIC_QUERIES \!^'
 alias defectprocessor                   '$PERL -e ' "'" ' \\
 use Term::ANSIColor qw(:constants :constants256);                     \\
 sub parse {                                                           \\
   my $l = shift;                                                      \\
   chomp $l;                                                           \\
-  $l =~ s/^\s+\"\w+\"\s+:\s+//;                                       \\
+  $l =~ s/^\s+\"(\w+)\"\s+:\s+//;                                     \\
+  my $field = $1;                                                     \\
   $l =~ s/^"//;                                                       \\
   $l =~ s/"?,*\s*$//;                                                 \\
-  return $l;                                                          \\
+  return ($field,$l);                                                 \\
 }                                                                     \\
 @IN = <>;                                                             \\
 my $VERBOSE = 0;                                                      \\
@@ -111,26 +112,60 @@ my (%ids,%releases);                                                  \\
 while(my $l = shift @IN) {                                            \\
   if($l =~ /"_id.+:\s+"(\w+)"/) {                                     \\
     my $id = $1;                                                      \\
-    my $ph = parse(shift @IN);                                        \\
-    my $sev = parse(shift @IN);                                       \\
-    my $rel = parse(shift @IN);                                       \\
+    my ($ph,$lm,$sev,$rel,$name,$pr,$det,$typ,$cl,$qa);               \\
+    while ($l = shift @IN) {                                          \\
+      if( $l =~ /^\s+"_id"/ ) {                                       \\
+         unshift @IN, $l;                                             \\
+         last;                                                        \\
+      }                                                               \\
+      my ($f,$val) = parse($l);                                       \\
+      #print "F:$f, VAL:$val\n";                                      \\
+      $f =~ /^(_qa_owner)$/ and do {                                  \\
+         $qa = $val;                                                  \\
+      };                                                              \\
+      $f =~ /^(closed_on)$/ and do {                                  \\
+         $cl = $val;                                                  \\
+      };                                                              \\
+      $f =~ /^(name)$/ and do {                                       \\
+         $name = $val;                                                \\
+      };                                                              \\
+      $f =~ /^(_release)$/ and do {                                   \\
+         $rel = $val;                                                 \\
+      };                                                              \\
+      $f =~ /^(_defect_type)$/ and do {                               \\
+         $typ = $val;                                                 \\
+      };                                                              \\
+      $f =~ /^(_phase)$/ and do {                                     \\
+         $ph = $val;                                                  \\
+      };                                                              \\
+      $f =~ /^(last_modified)$/ and do {                              \\
+         $lm = $val;                                                  \\
+      };                                                              \\
+      $f =~ /^(_detected_in_release)$/ and do {                       \\
+         $det = $val;                                                 \\
+      };                                                              \\
+      $f =~ /^(_severity)$/ and do {                                  \\
+         $sev = $val;                                                 \\
+      };                                                              \\
+      $f =~ /^(_priority)$/ and do {                                  \\
+         $pr = $val;                                                  \\
+      };                                                              \\
+    }                                                                 \\
+                                                                      \\
     $rel =~ s/^9.50.+$/10.00/;                                        \\
     $rel =~ s/^(\d+)\.(\d)\s/$1.$+0 /;                                \\
     $rel =~ s/^(\d+)\.(\d)$/$1.$+0/;                                  \\
     # Remove any escaped double quotes from the title                 \\
-    my $name = parse(shift @IN);                                      \\
     $name =~ s/\\"/"/g;                                               \\
-    my $pr = parse(shift @IN);                                        \\
-    my $det = parse(shift @IN);                                       \\
-    my $typ = parse(shift @IN);                                       \\
-    $ids{$id} = { id => $id,                                          \\
-                  phase => $ph,                                       \\
-                  severity => $sev,                                   \\
-                  release => $rel,                                    \\
-                  name => $name,                                      \\
-                  priority => $pr,                                    \\
+    #print "ID:$id\nPH:$ph\nSEV:$sev\nREL:$rel\nNAM:$name\nPR:$pr\nDET:$det\nTYP:$typ\n\n"; \\
+    $ids{$id} = { id          => $id,                                 \\
+                  phase       => $ph,                                 \\
+                  severity    => $sev,                                \\
+                  release     => $rel,                                \\
+                  name        => $name,                               \\
+                  priority    => $pr,                                 \\
                   detected_in => $det,                                \\
-                  type => $typ };                                     \\
+                  type        => $typ };                              \\
     push @{$releases{$rel}}, $id;                                     \\
   }                                                                   \\
 }                                                                     \\
@@ -164,9 +199,9 @@ for(sort keys %releases) {                                            \\
   }                                                                   \\
 }                                                                     \\
 ' "'"
-alias defectsuser						'currentdefects \!^ | egrep "_id|phase|severity|release|name|priority|defect_type" | defectprocessor '
+alias defectsuser						'currentdefects \!^ | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
 alias defects							'defectsuser paul.libauer'
-alias defectsuserv					    'setenv DEFECT_OUTPUT "verbose"; currentdefects \!^ | egrep "_id|phase|severity|release|name|priority|defect_type" | defectprocessor ; unsetenv DEFECT_OUTPUT'
+alias defectsuserv					    'setenv DEFECT_OUTPUT "verbose"; currentdefects \!^ | egrep "_id|_phase|_severity|_release|_name|_priority|_defect_type" | defectprocessor ; unsetenv DEFECT_OUTPUT'
 
 alias defectsv							'defectsuserv paul.libauer'
 

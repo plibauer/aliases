@@ -157,4 +157,5 @@ alias godrop		     godropbox
 alias home 				 cd $WIN_HOME
 alias gowikij            cd $WIKI_DIR
 alias goproj             cd $WIKI_DIR/projects
+alias gocloud			 cd $CLOUD_DIR
 

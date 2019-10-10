@@ -32,31 +32,31 @@ current_defects:
   "_source":[
   	"name",
   	"closed_on",
-  	"release",
-  	"severity",
-  	"defect_type",
-  	"detected_in_release",
-  	"qa_owner",
+  	"_release",
+  	"_severity",
+  	"_defect_type",
+  	"_detected_in_release",
+  	"_qa_owner",
   	"last_modified",
-  	"priority",
-  	"phase"
+  	"_priority",
+  	"_phase"
   ],
   "query": {
     "bool": {
       "must": {
-        "match": {"owner": "ARG1"}
+        "match": {"_owner": "ARG1"}
       }, 
       "must_not": [
-      { "term": { "phase": "closed" } },
-      { "term": { "phase": "rejected" } },
-      { "term": { "phase": "duplicate" } },
-      { "term": { "phase": "fixed" } }
+      { "term": { "_phase": "closed" } },
+      { "term": { "_phase": "rejected" } },
+      { "term": { "_phase": "duplicate" } },
+      { "term": { "_phase": "fixed" } }
       ]
     }
   },
   "sort": [
     {
-      "release.keyword": {
+      "_release.keyword": {
         "order": "asc"
       }
     }
