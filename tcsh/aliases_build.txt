@@ -3,19 +3,6 @@
 #
 #
 
-if ($env_defCompiler == "VS2017") then
-  set VSVER = 19.0
-  set devenvexe = "${DEVENV_ROOT_2017}/Common7/IDE/devenv.exe"
-else
-  if ($env_defCompiler == "VS2015") then
-    set VSVER = 14.0
-  else if ($env_defCompiler == "VS2013") then
-    set VSVER = 12.0
-  else if ($env_defCompiler == "VS2008") then
-    set VSVER = 9.0
-  endif
-  set devenvexe = "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe"
-endif
 
 set logSeparator   	= "\n----------------------------------------------------------------------------------------------------"
 
@@ -62,7 +49,7 @@ alias idxlog 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/
 
 alias buildtest1  ' echo $logSeparator; date;											\\
    echo "TEST build alias";																\\
-   echo "$devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.build"\\
+   echo "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.build"\\
 '
 
 alias buildtest2  'buildtest1 																	\\
@@ -117,7 +104,7 @@ alias checkForSolution 'echo $var_trimDir/trim/sln/TRIM/$var_defArch/TRIM.sln	\\
  '"'"
 
 alias buildsolution '  echo $logSeparator; date;                                                 	\\
-   echo -n "$devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.build"      	\\
+   echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.build"      	\\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  '"'"'	\\
  | $PERL -e ' "' "'                                                                              	\\
       @l = <>;                                               										\\
@@ -168,7 +155,7 @@ alias bldsln "checkForSolution; buildsolution; date"
 alias kbldsln "killboth; bldsln"
 
 alias clnsln '    echo $logSeparator; date;  														\\
-    echo -n "$devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.clean"		\\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.clean"		\\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
  | $PERL -e ' "' "'                                      											\\
     @l = <>;                                             											\\
@@ -204,7 +191,7 @@ alias clnsln '    echo $logSeparator; date;  														\\
  '" '"
 
 alias buildcsharp 'echo $logSeparator; date;														\\
-    echo -n "$devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogCSharp.build"	\\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogCSharp.build"	\\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
  | $PERL -e ' "' "'																					\\
      @l = <>;                                           											\\
@@ -244,7 +231,7 @@ alias bldcsharp 'buildcsharp; noaddins'
 alias kbldcsharp "killboth; bldcsharp"
 
 alias clncsharp 'echo $logSeparator;                                                               	\\
-    echo -n "$devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogCSharp.clean" 	\\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogCSharp.clean" 	\\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'	\\
  | $PERL -e ' "' "'                                                                  				\\
     @l = <>;                                                                         				\\
@@ -280,7 +267,7 @@ alias clncsharp 'echo $logSeparator;                                            
  '"'"
 
 alias bldwix 'echo $logSeparator; date;																\\
-    echo -n "$devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.build" 	\\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.build" 	\\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
  | $PERL -e ' "' "'                                                                					\\
     @l = <>;                                                                       					\\
@@ -318,7 +305,7 @@ alias bldwix 'echo $logSeparator; date;																\\
  '"'"
 
 alias bldwixproj 'echo $logSeparator; date;															\\
-    echo -n "$devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.proj,PROJ=\!:1" \\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.proj,PROJ=\!:1" \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
  | $PERL -e ' "' "'                                                									\\
     @l = <>;                                                       									\\
@@ -371,7 +358,7 @@ alias bldwixproj 'echo $logSeparator; date;															\\
 alias bldsetup "bldwixproj SetupExecutable"
 
 alias clnwix 'echo $logSeparator;																	\\
-    echo -n "$devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.clean"		\\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.clean"		\\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
  | $PERL -e ' "' "'                                      											\\
     @l = <>;                                             											\\
@@ -415,7 +402,7 @@ alias checkFor3rdParty 'echo $var_trimDir/trim/sln/ThirdPartySource/$var_defArch
  '"'"
 
 alias build3rdParty '  echo $logSeparator; date;													\\
-   echo -n "$devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.3rdParty"		\\
+   echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.3rdParty"		\\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
  | $PERL -e ' "' "'    																				\\
       @l = <>;         																				\\
@@ -464,7 +451,7 @@ alias build3rdParty '  echo $logSeparator; date;													\\
 
 
 alias bldproject 'echo $logSeparator; date;															\\
-    echo -n "$devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.proj,PROJ=\!:1" \\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.proj,PROJ=\!:1" \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
  | $PERL -e ' "' "'  																				\\
     @l = <>;         																				\\

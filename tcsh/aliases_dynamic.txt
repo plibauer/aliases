@@ -52,6 +52,20 @@ else
   endif
 endif
 
+if ($env_defCompiler == "VS2017") then
+  set VSVER = 19.0
+  set var_devenvexe = "${DEVENV_ROOT_2017}/Common7/IDE/devenv.exe"
+else
+  if ($env_defCompiler == "VS2015") then
+    set VSVER = 14.0
+  else if ($env_defCompiler == "VS2013") then
+    set VSVER = 12.0
+  else if ($env_defCompiler == "VS2008") then
+    set VSVER = 9.0
+  endif
+  set var_devenvexe = "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER/Common7/IDE/devenv.exe"
+endif
+
 if (! $?var_vpnConfig) then       
   set var_vpnConfig   = $DEFAULT_VPN
 else
