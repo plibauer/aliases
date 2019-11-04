@@ -53,7 +53,8 @@ alias esget						'$CURL "$var_elasticHost/\!^"'
 alias esgetp					'esget \!^?pretty=true'
 alias esgetaliases				'esget _aliases?pretty=true'
 alias elasticindexes			'$CURL "\!^/_cat/indices?v"'
-alias esindexes					'elasticindexes $var_elasticHost'
+alias esindexesv				'elasticindexes $var_elasticHost'
+alias esindexes					'elasticindexes $var_elasticHost | $PERL -ne '"'"' chomp; if(/^\w+\s+\w+\s+\.\w+/){}else{print "$_\n"} '"'"
 alias getindexes        		esindexes
 alias indexes					esindexes
 alias indices					esindexes
