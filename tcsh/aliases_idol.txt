@@ -86,7 +86,7 @@ if ($arg2 =~ /^(c|p|s)/) {                                       \\
 else {print "INVALID 2nd Argument : $arg2 ('idolget help')\n";}  \\
 '"'"
 
-alias idoldbs					'idolconfig content | $PERL -e  '"'"' \\
+alias idoldbs				'idolget config content | $PERL -e  '"'"' \\
 my %dbs; my @in=<>;                   \\
 while(my $l = shift @in) {            \\
   chomp $l;                           \\

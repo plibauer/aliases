@@ -134,7 +134,6 @@ alias labrelocaterepo 'echo                                 			\\
 >svnadmin setrevprop $SVN_LAB_PATH -r0 svn:sync-from-url url.txt\n      \\
 " '
 
-#
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
 # alias syncsvn	   "svnsync sync svn://localhost/"
 #
