@@ -46,9 +46,6 @@ alias idologsi          		'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/agentstore
 set ACT_LOG = ": Request (completed in|from)|: Generated ActionId"
 alias idologsac          		'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/action.log | grep -Eiv "$ACT_LOG"'
 
-alias xt 'echo \!* | $PERL -e ' "' "' @in = <>; print "GOT: @in\n" '"'"
-
-
 # Get Idol config for proxy, content or service
 alias idolget   				'echo \!* | $PERL -e  ' "' "' \\
                                                                  \\
