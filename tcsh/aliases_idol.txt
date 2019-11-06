@@ -47,21 +47,28 @@ set ACT_LOG = ": Request (completed in|from)|: Generated ActionId"
 alias idologsac          		'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/action.log | grep -Eiv "$ACT_LOG"'
 
 # Get Idol config for proxy, content or service
-alias idolget   				'echo \!* | $PERL -e  ' "' "' \\
+alias idolget   				'echo \!* | $PERL -e  ' "' "'    \\
+                                                                 \\
+my %srvs = ( c => 9102, p => 11002, s => 9002 );                 \\
+my %desc = ( c => "Content Service",                             \\
+             p => "Proxy Service",                               \\
+             s => "IDOL Service" );                              \\
+my %type = ( c => "GetConfig", s => "GetStatusInfo" );           \\
                                                                  \\
 @in = <>;                                                        \\
 @args = split /\s+/, shift @in;                                  \\
 my $arg1 = lc shift @args;                                       \\
 my $arg2 = lc shift @args ;                                      \\
-if ($arg1 =~ /^h(elp)$/ or $arg1 !~ /^(c|s)/) { \\
+if ($arg1 =~ /^h(elp)$/ or $arg1 !~ /^(c|s)/) {                  \\
   print <<END;                                                   \\
                                                                  \\
 USAGE  : idolget (config|status) [opt]                           \\
 OPTIONS:                                                         \\
          h(elp)     : print this usage page                      \\
-         c(onfig)   : print the configuration for 'opt'          \\
-         s(tatus)   : print the status for 'opt'                 \\
+         c(onfig)   : print the configuration for [opt]          \\
+         s(tatus)   : print the status for [opt]                 \\
 [opt]  :                                                         \\
+         a(ll)      : all services                               \\
          c(ontent)  : content service                            \\
          p(roxy)    : proxy service                              \\
          s(ervice)  : IDOL service                               \\
@@ -69,19 +76,31 @@ END\\
 exit;                                                            \\
 };                                                               \\
 my $url = "http://localhost:XXXX/action=YYYY";                   \\
-if ($arg1 =~ /^c/) {                                             \\
-  $url =~ s/YYYY/GetConfig/;                                     \\
-}                                                                \\
-if ($arg1 =~ /^s/) {                                             \\
-  $url =~ s/YYYY/GetStatusInfo/;                                 \\
+my $TYPE = "c";                                                  \\
+if ($arg1 =~ /^(c|s)/) {                                         \\
+  $TYPE = $1;                                                    \\
+  $url =~ s/YYYY/$type{$TYPE}/;                                  \\
 }                                                                \\
 if ($arg2 =~ /^(c|p|s)/) {                                       \\
-  $arg2 =~ /^c/ and do { $url =~ s/XXXX/9102/};                  \\
-  $arg2 =~ /^p/ and do { $url =~ s/XXXX/11002/};                 \\
-  $arg2 =~ /^s/ and do { $url =~ s/XXXX/9002/};                  \\
+  my $s = $srvs{$1};                                             \\
+  $url =~ s/XXXX/$s/;                                            \\
   print "URL : $url\n";                                          \\
   my @results = `curl $url --silent`;                            \\
   print "@results\n";                                            \\
+}                                                                \\
+elsif ($arg2 =~ /^a/) {                                          \\
+  foreach(sort keys %srvs){                                      \\
+     my $nurl = $url; my $key = $_;                              \\
+     my $s = $srvs{$key};                                        \\
+     $nurl =~ s/XXXX/$s/;                                        \\
+     my $s = "=" x 20;                                           \\
+     print "\n$s $desc{$key}  [$nurl] $s\n\n";                   \\
+     my @results = `curl $nurl --silent`;                        \\
+     for(@results) {                                             \\
+        if(/<ACTION>|\[statusinfo\]|<.responsedata>/i){}         \\
+        else { print; }                                          \\
+     }                                                           \\
+  }                                                              \\
 }                                                                \\
 else {print "INVALID 2nd Argument : $arg2 ('idolget help')\n";}  \\
 '"'"
