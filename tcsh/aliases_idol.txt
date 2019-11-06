@@ -6,13 +6,13 @@
 #  initialisation
 #
 
-alias goidol            		"cd $IDOL_DIR"
-alias goidols           		"cd $IDOL_DIR/TRIM\ IDOL\ Service"
-alias idolscfg          		"more $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
-alias editidolscfg      		"vi $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg"
-alias goidolc1          		"cd $IDOL_DIR/TRIM\ Content\ Service\ 1"
-alias idolc1cfg         		"more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
-alias editidolc1cfg     		"vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg"
+alias goidol            		'cd $IDOL_DIR'
+alias goidols           		'cd $IDOL_DIR/TRIM\ IDOL\ Service'
+alias idolscfg          		'more $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg'
+alias editidolscfg      		'vi $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg'
+alias goidolc1          		'cd $IDOL_DIR/TRIM\ Content\ Service\ 1'
+alias idolc1cfg         		'more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg'
+alias editidolc1cfg     		'vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg'
 
 alias idolcurl          		'curl -XGET "http://localhost:11000/\!^" --noproxy "*" --silent'
 alias idolrecs          		'curl -XGET "http://localhost:11000/action=query&text=*&databasematch='$var_idolDb'&MaxResults=""\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
@@ -29,23 +29,85 @@ alias removedocs        		'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!
 alias dresync					'curl "http://localhost:11001/DRESYNC"'
 
 alias idolq             		'idolquery \!^ | egrep "<autn:(reference|title|numhits)" | $PERL -ne  "s/<autn://; s/<\/autn:.+>//; s/>/\t:/; print"'
-alias irecs             		"idolrecs      | $PERL $PERL_HOME/xmlformat.pl"
-alias irecsdb           		"idolrecs \!^  | $PERL $PERL_HOME/xmlformat.pl"
+alias irecs             		'idolrecs      | $PERL $PERL_HOME/xmlformat.pl'
+alias irecsdb           		'idolrecs \!^  | $PERL $PERL_HOME/xmlformat.pl'
 
 alias idolrec           		idolreference 
 alias idolrecv          		idolreferencev 
 alias idoluri           		idolcontent 
 alias idolsync 					dresync
-alias idologca          		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log"
-alias idologci          		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log"
-alias idologcq          		"tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log"
+alias idologca          		'tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log'
+alias idologci          		'tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log'
+alias idologcq          		'tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log'
 
-alias idologsa          		"tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/application.log"
-alias idologsi          		"tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/agentstore_agent_index.log"
+alias idologsa          		'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/application.log'
+alias idologsi          		'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/agentstore_agent_index.log'
 
 set ACT_LOG = ": Request (completed in|from)|: Generated ActionId"
 alias idologsac          		'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/action.log | grep -Eiv "$ACT_LOG"'
 
+alias xt 'echo \!* | $PERL -e ' "' "' @in = <>; print "GOT: @in\n" '"'"
+
+
+# Get Idol config for proxy, content or service
+alias idolget   				'echo \!* | $PERL -e  ' "' "' \\
+                                                                 \\
+@in = <>;                                                        \\
+@args = split /\s+/, shift @in;                                  \\
+my $arg1 = lc shift @args;                                       \\
+my $arg2 = lc shift @args ;                                      \\
+if ($arg1 =~ /^h(elp)$/ or $arg1 !~ /^(c|s)/) { \\
+  print <<END;                                                   \\
+                                                                 \\
+USAGE  : idolget (config|status) [opt]                           \\
+OPTIONS:                                                         \\
+         h(elp)     : print this usage page                      \\
+         c(onfig)   : print the configuration for 'opt'          \\
+         s(tatus)   : print the status for 'opt'                 \\
+[opt]  :                                                         \\
+         c(ontent)  : content service                            \\
+         p(roxy)    : proxy service                              \\
+         s(ervice)  : IDOL service                               \\
+END\\
+exit;                                                            \\
+};                                                               \\
+my $url = "http://localhost:XXXX/action=YYYY";                   \\
+if ($arg1 =~ /^c/) {                                             \\
+  $url =~ s/YYYY/GetConfig/;                                     \\
+}                                                                \\
+if ($arg1 =~ /^s/) {                                             \\
+  $url =~ s/YYYY/GetStatusInfo/;                                 \\
+}                                                                \\
+if ($arg2 =~ /^(c|p|s)/) {                                       \\
+  $arg2 =~ /^c/ and do { $url =~ s/XXXX/9102/};                  \\
+  $arg2 =~ /^p/ and do { $url =~ s/XXXX/11002/};                 \\
+  $arg2 =~ /^s/ and do { $url =~ s/XXXX/9002/};                  \\
+  print "URL : $url\n";                                          \\
+  my @results = `curl $url --silent`;                            \\
+  print "@results\n";                                            \\
+}                                                                \\
+else {print "INVALID 2nd Argument : $arg2 ('idolget help')\n";}  \\
+'"'"
+
+alias idoldbs					'idolconfig content | $PERL -e  '"'"' \\
+my %dbs; my @in=<>;                   \\
+while(my $l = shift @in) {            \\
+  chomp $l;                           \\
+  $l =~ /\[database(\d+)\]/i and do { \\
+    my $i = $1;                       \\
+    my $n = shift @in;                \\
+    if($n =~ /Name=(.+)/i){           \\
+      $dbs{$i} = $1;                  \\
+    }                                 \\
+  };                                  \\
+}                                     \\
+print " --- IDOL Databases ---\n";    \\
+for(sort {$a<=>$b} keys %dbs) {       \\
+  print "\t$_ : $dbs{$_}\n";          \\
+}                                     \\
+ '"'" 
+alias idoldatabases				idoldbs
+	
 
 ############################################
 # IDOL Categories and Auto-Classification
