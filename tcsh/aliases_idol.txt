@@ -10,14 +10,14 @@ set IDOL_PROXY = http://localhost:11000
 set IDOL_PROXY_IDX = http://localhost:11001
 set DEVURL = $IDOL_PROXY/action
 
-alias idolinfo                  'echo \\
-"                                     \\
-IDOL Proxy host : $IDOL_PROXY         \\
-Proxy Index URL : $IDOL_PROXY_IDX     \\
-Database        : $var_idolDb         \\
-                                      \\
-Use idolindex to set the database     \\
-"                                     \\
+alias idolinfo                  'echo                     \\
+"                                                         \\
+IDOL Proxy host : $IDOL_PROXY                             \\
+Proxy Index URL : $IDOL_PROXY_IDX                         \\
+Database        : $var_idolDb (set with idolindex)        \\
+Dataset ID      : $var_DBID (set with setdbid)            \\
+                                                          \\
+"                                                         \\
 '
 
 alias goidol            		'cd $IDOL_DIR'
@@ -93,7 +93,7 @@ for(@hits){                                                             \\
 '"'"
 
 alias idolrecs					'unsetenv BYWEIGHT && idolrecords \!^  | formatidol'
-alias idolrecsall				'unsetenv BYWEIGHT && idolrecordsall   | formatidol'
+alias idolrecsall  				'unsetenv BYWEIGHT && idolrecordsall   | formatidol'
 alias idolq						'setenv BYWEIGHT true && idolquery \!^ | formatidol'
 
 alias idolrec           		idolreference 
