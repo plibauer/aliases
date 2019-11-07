@@ -6,6 +6,20 @@
 #  initialisation
 #
 
+set IDOL_PROXY = http://localhost:11000
+set IDOL_PROXY_IDX = http://localhost:11001
+set DEVURL = $IDOL_PROXY/action
+
+alias idolinfo                  'echo \\
+"                                     \\
+IDOL Proxy host : $IDOL_PROXY         \\
+Proxy Index URL : $IDOL_PROXY_IDX     \\
+Database        : $var_idolDb         \\
+                                      \\
+Use idolindex to set the database     \\
+"                                     \\
+'
+
 alias goidol            		'cd $IDOL_DIR'
 alias goidols           		'cd $IDOL_DIR/TRIM\ IDOL\ Service'
 alias idolscfg          		'more $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg'
@@ -14,23 +28,73 @@ alias goidolc1          		'cd $IDOL_DIR/TRIM\ Content\ Service\ 1'
 alias idolc1cfg         		'more $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg'
 alias editidolc1cfg     		'vi $IDOL_DIR/TRIM\ Content\ Service\ 1/TRIM\ Content\ Service\ 1.cfg'
 
-alias idolcurl          		'curl -XGET "http://localhost:11000/\!^" --noproxy "*" --silent'
-alias idolrecs          		'curl -XGET "http://localhost:11000/action=query&text=*&databasematch='$var_idolDb'&MaxResults=""\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias idolrecsall       		'curl -XGET "http://localhost:11000/action=query&text=*&databasematch=' "$var_idolDb" '&MaxResults=1000000" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias idolrecsdb        		'curl -XGET "http://localhost:11000/action=query&text=*&databasematch=' "\!^" '&MaxResults=999" --noproxy "*" --silent'
-alias idolstatus        		'curl -XGET "http://localhost:11000/action=GetStatus" --noproxy "*" --silent' | $PERL $PERL_HOME/xmlformat.pl
-alias idolquery         		'curl -XGET "http://localhost:11000/action=query&text=' "\!^" '&MaxResults=1000&databasematch=' "$var_idolDb" '" --noproxy "*" --silent | xmlformat.pl'
-alias idolqueryv        		'curl -XGET "http://localhost:11000/action=query&text=' "\!^" '&MaxResults=1000&XMLMeta=true&databasematch=' "$var_idolDb" '" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias idolreference				'curl -XGET "http://localhost:11000/action=query&text=*&MatchReference=trim:$var_DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias idolreferencev			'curl -XGET "http://localhost:11000/action=query&Print=All&text=*&MatchReference=trim:$var_DBID/rec/\!^" --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias idolcontent				'curl -XGET http://localhost:11000/a=getcontent\&reference=trim:$var_DBID/rec/\!^ --noproxy "*" --silent | $PERL $PERL_HOME/xmlformat.pl'
-alias removedb          		'curl "http://localhost:11001/DREREMOVEDBASE?DREdbname=\!^"'
-alias removedocs        		'curl "http://localhost:11001/DREDELDBASE?DREdbname=\!^"'
-alias dresync					'curl "http://localhost:11001/DRESYNC"'
+alias idolcurl          		'curl -XGET "$IDOL_PROXY/\!^"   --noproxy "*" --silent'
+alias idolstatus        		'curl -XGET "$DEVURL=GetStatus" --noproxy "*" --silent' | $PERL $PERL_HOME/xmlformat.pl
 
-alias idolq             		'idolquery \!^ | egrep "<autn:(reference|title|numhits)" | $PERL -ne  "s/<autn://; s/<\/autn:.+>//; s/>/\t:/; print"'
-alias irecs             		'idolrecs      | $PERL $PERL_HOME/xmlformat.pl'
-alias irecsdb           		'idolrecs \!^  | $PERL $PERL_HOME/xmlformat.pl'
+set CURL_OPTS = --silent
+set XMLFORMAT = "$PERL $PERL_HOME/xmlformat.pl"
+set CURLDEV   = "curl -XGET $DEVURL"
+set CURLQUERY = "curl -XGET $DEVURL=query"
+
+alias dresync					'curl "$IDOL_PROXY_IDX/DRESYNC"'
+alias removedocs        		'curl "$IDOL_PROXY_IDX/DREDELDBASE?DREdbname=\!^"'
+alias removedb          		'curl "$IDOL_PROXY_IDX/DREREMOVEDBASE?DREdbname=\!^"'
+
+alias idolcontent				'$CURLDEV=getcontent\&reference=trim:$var_DBID/rec/\!^                 $CURL_OPTS | $XMLFORMAT'
+alias idolrecordsdb        		'$CURLQUERY\&text=\*\&databasematch=\!^\&MaxResults=999                $CURL_OPTS | $XMLFORMAT'
+alias idolrecords          		'$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=\!^        $CURL_OPTS | $XMLFORMAT'
+alias idolrecordsall       		'$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=1000000    $CURL_OPTS | $XMLFORMAT'
+alias idolreference				'$CURLQUERY\&text=\*\&MatchReference=trim:$var_DBID/rec/\!^            $CURL_OPTS | $XMLFORMAT'
+alias idolreferencev			'$CURLQUERY\&text=\*\&Print=All\&MatchReference=trim:$var_DBID/rec/\!^ $CURL_OPTS | $XMLFORMAT'
+alias idolquery         		'$CURLQUERY\&text=\!^\&MaxResults=1000\&databasematch=$var_idolDb      $CURL_OPTS | $XMLFORMAT'
+alias idolqueryv        		'$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&databasematch=$var_idolDb $CURL_OPTS | $XMLFORMAT'
+
+alias formatidol				'$PERL -e  '"'"'                        \\
+my $sortbyweight = $ENV{BYWEIGHT};                                      \\
+my @in = <STDIN>;                                                       \\
+my (%HITS,%BYWEIGHT,$HITCOUNT,$max);                                    \\
+$max = 20;                                                              \\
+while (my $line = shift @in) {                                          \\
+  chomp $line;                                                          \\
+  if($line =~ m|autn:numhits>(\d+)</autn:numhits>|){                    \\
+    $HITCOUNT = $1;                                                     \\
+    next;                                                               \\
+  }                                                                     \\
+  if($line =~ m|autn:reference>(.+)</autn:reference>|){                 \\
+    my $r = $1;                                                         \\
+    $max = $max > length($r) ? $max : length($r);                       \\
+    chomp(my $id = shift @in);                                          \\
+    $id =~ s/^.+id>(\d+)<.+$/$1/;                                       \\
+    my($sec,$wght,$c,$d) = (shift @in, shift @in, shift @in, shift @in);\\
+    my $title = $d;                                                     \\
+    if($c =~ /autn:links/){                                             \\
+       $title = shift @in;                                              \\
+    }                                                                   \\
+    chomp $title; chomp $wght;                                          \\
+    $title =~ s|^.+title>(.+)</autn:title.+$|$1|;                       \\
+    $wght =~ s|^.+weight>(.+)</autn:weight.+$|$1|;                      \\
+    $HITS{$r}= { id => $id, title => $title, weight => $wght };         \\
+    $BYWEIGHT{$wght} = $r;                                              \\
+  }                                                                     \\
+}                                                                       \\
+print "TOTAL HITS: $HITCOUNT\n";                                        \\
+my @hits;                                                               \\
+if ($sortbyweight eq "true") {                                          \\
+  @hits = sort { $HITS{$b}{weight} <=> $HITS{$a}{weight} } keys %HITS;  \\
+}                                                                       \\
+else {                                                                  \\
+  @hits = sort keys %HITS;                                              \\
+}                                                                       \\
+for(@hits){                                                             \\
+  my $i = $HITS{$_};                                                    \\
+  my $s = " " x ($max - length($_));                                    \\
+  print "  ".$i->{weight}."  ".$i->{id}."  $_$s  ".$i->{title}."\n";    \\
+}                                                                       \\
+'"'"
+
+alias idolrecs					'unsetenv BYWEIGHT && idolrecords \!^  | formatidol'
+alias idolrecsall				'unsetenv BYWEIGHT && idolrecordsall   | formatidol'
+alias idolq						'setenv BYWEIGHT true && idolquery \!^ | formatidol'
 
 alias idolrec           		idolreference 
 alias idolrecv          		idolreferencev 
@@ -53,13 +117,15 @@ my %srvs = ( c => 9102, p => 11002, s => 9002 );                 \\
 my %desc = ( c => "Content Service",                             \\
              p => "Proxy Service",                               \\
              s => "IDOL Service" );                              \\
-my %type = ( c => "GetConfig", s => "GetStatusInfo" );           \\
+my %type = ( c => "GetConfig",                                   \\
+             s => "GetStatusInfo",                               \\
+             v => "GetStatistics" );                             \\
                                                                  \\
 @in = <>;                                                        \\
 @args = split /\s+/, shift @in;                                  \\
 my $arg1 = lc shift @args;                                       \\
 my $arg2 = lc shift @args ;                                      \\
-if ($arg1 =~ /^h(elp)$/ or $arg1 !~ /^(c|s)/) {                  \\
+if ($arg1 =~ /^h(elp)$/ or $arg1 !~ /^(c|s|v)/) {                \\
   print <<END;                                                   \\
                                                                  \\
 USAGE  : idolget (config|status) [opt]                           \\
@@ -67,6 +133,7 @@ OPTIONS:                                                         \\
          h(elp)     : print this usage page                      \\
          c(onfig)   : print the configuration for [opt]          \\
          s(tatus)   : print the status for [opt]                 \\
+         v(alues)   : print the statistics for [opt]             \\
 [opt]  :                                                         \\
          a(ll)      : all services                               \\
          c(ontent)  : content service                            \\
@@ -77,7 +144,7 @@ exit;                                                            \\
 };                                                               \\
 my $url = "http://localhost:XXXX/action=YYYY";                   \\
 my $TYPE = "c";                                                  \\
-if ($arg1 =~ /^(c|s)/) {                                         \\
+if ($arg1 =~ /^(c|s|v)/) {                                       \\
   $TYPE = $1;                                                    \\
   $url =~ s/YYYY/$type{$TYPE}/;                                  \\
 }                                                                \\
@@ -105,22 +172,41 @@ elsif ($arg2 =~ /^a/) {                                          \\
 else {print "INVALID 2nd Argument : $arg2 ('idolget help')\n";}  \\
 '"'"
 
-alias idoldbs				'idolget config content | $PERL -e  '"'"' \\
-my %dbs; my @in=<>;                   \\
-while(my $l = shift @in) {            \\
-  chomp $l;                           \\
-  $l =~ /\[database(\d+)\]/i and do { \\
-    my $i = $1;                       \\
-    my $n = shift @in;                \\
-    if($n =~ /Name=(.+)/i){           \\
-      $dbs{$i} = $1;                  \\
-    }                                 \\
-  };                                  \\
-}                                     \\
-print " --- IDOL Databases ---\n";    \\
-for(sort {$a<=>$b} keys %dbs) {       \\
-  print "\t$_ : $dbs{$_}\n";          \\
-}                                     \\
+alias idoldbs				'idolget values content | $PERL -e  '"'"'           \\
+my ($max,$REINDEXED,$TOTAL,$NO_DBS);                                            \\
+my %dbs; $max = 8; my @in=<>;                                                   \\
+while(my $l = shift @in) {                                                      \\
+  chomp $l;                                                                     \\
+  $l =~ /Indexer.+autnid="Documents".+ReplacedReindex.+value="(\d+)"/i and do { \\
+     $REINDEXED = $1; next;                                                     \\
+  };                                                                            \\
+  $l =~ /Service.+autnid="Documents"\s+name="Total".+value="(\d+)"/i and do {   \\
+     $TOTAL = $1; next;                                                         \\
+  };                                                                            \\
+  $l =~ /Service.+autnid="Databases".+Number.+value="(\d+)"/i and do {          \\
+     $NO_DBS = $1; next;                                                        \\
+  };                                                                            \\
+  $l =~ /class="Database"\s+autnid="(.+)".+Documents.+value="(\d+)"/i and do {  \\
+     $dbs{$1} = $2;                                                             \\
+     $max = ($max > length($1) ? $max : length($1));                            \\
+  };                                                                            \\
+}                                                                               \\
+my $header = "   DATABASE"." " x ($max - 7);                                    \\
+$header .= " | Documents";                                                      \\
+my $line = "-" x length($header);                                               \\
+print <<DBS;                                                                    \\
+                                                                                \\
+Total Databases : $NO_DBS                                                       \\
+Total Documents : $TOTAL                                                        \\
+Re-indexed Docs : $REINDEXED                                                    \\
+                                                                                \\
+$header                                                                         \\
+$line                                                                           \\
+DBS\\
+for(sort keys %dbs) {                                                           \\
+  my $s = " " x ($max - length($_));                                            \\
+  print "    $_$s : $dbs{$_}\n";                                                \\
+}                                                                               \\
  '"'" 
 alias idoldatabases				idoldbs
 	
@@ -129,7 +215,6 @@ alias idoldatabases				idoldbs
 # IDOL Categories and Auto-Classification
 ############################################
 
-set DEVURL = http://localhost:11000/action
 
 alias idolcat		           	'curl "$DEVURL=CategoryGetDetails&Category=\!^" --noproxy "*" --silent | \\
                                	$PERL $PERL_HOME/xmlformat.pl'

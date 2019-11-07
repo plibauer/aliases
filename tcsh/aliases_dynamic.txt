@@ -90,6 +90,13 @@ else
   endif
 endif
 
+if (! $?var_idolDb) then
+  set var_idolDb = "$env_idolDbPrefix$var_DBID" 
+else
+  if ("$var_elasticIndex" == "")  then
+     set var_idolDb = "$env_idolDbPrefix$var_DBID"
+  endif
+endif
 
 set vpn_directory   = $NETWORK_DIR/vpn
 set hosts_directory = $SYSTEMROOT/System32/drivers/etc
@@ -123,7 +130,6 @@ endif
 set PROXY          		= http://$PROXY_SERVER
 set HTTPS_PROXY    		= https://$PROXY_SERVER
 
-set var_idolDb			= "$env_idolDbPrefix$var_DBID"
 set var_trimcfgdir		= "$var_trimDir/trim/SharedTrimServerData/ServerData"
 set var_trimcfg			= "$var_trimcfgdir/TRIMconfig.tcfg"
 set var_currentEnv		= $env_alias_dir/../"$env_revision"environment

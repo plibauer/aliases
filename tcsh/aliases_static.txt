@@ -68,16 +68,17 @@ source $include_file; settitle'
 
 alias defaultconfig 	dbdefault 
 alias dbcurrent 		'echo $var_dbSession'
-alias dbsession 		'set var_dbSession   = \!^;	src'
-alias dbserver  		'set var_dbServer    = \!^;	src'
-alias setdbid			'set var_DBID        = \!^;	src'
-alias trimdir   		'set var_trimDir     = \!^;	src'
-alias elastichost		'set var_elasticHost = \!^; src'
+alias dbsession 		'set var_dbSession     = \!^; src'
+alias dbserver  		'set var_dbServer      = \!^; src'
+alias setdbid			'set var_DBID          = \!^; src'
+alias trimdir   		'set var_trimDir       = \!^; src'
+alias elastichost		'set var_elasticHost   = \!^; src'
 alias elasticindex		'set var_elasticIndex  = \!^; src'
 alias elasticdefault    'unset var_elasticIndex; unset var_elasticHost; src'
-alias bitvise			'set var_vpnConfig   = BITVISE; src'
-alias pulse				'set var_vpnConfig   = PULSE;   src'
-alias novpn				'set var_vpnConfig   = LOCAL;   src'
+alias idolindex         'set var_idolDb        = \!^; src'
+alias bitvise			'set var_vpnConfig     = BITVISE; src'
+alias pulse				'set var_vpnConfig     = PULSE; src'
+alias novpn				'set var_vpnConfig     = LOCAL; src'
 
 alias whichenv 	'echo "\n               \\
 TRIMDIR      = $var_trimDir             \\
