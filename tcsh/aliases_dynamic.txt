@@ -36,6 +36,14 @@ else
   endif
 endif
 
+if (! $?var_DBID_idol) then
+   set var_DBID_idol = $env_default_dbid_idol
+else
+  if ("$var_DBID_idol" == "")  then
+     set var_DBID_idol   = $env_default_dbid_idol
+  endif
+endif
+
 if (! $?var_defArch) then
    set var_defArch = $env_defArch
 else
@@ -91,10 +99,10 @@ else
 endif
 
 if (! $?var_idolDb) then
-  set var_idolDb = "$env_idolDbPrefix$var_DBID" 
+  set var_idolDb = "$env_idolDbPrefix$var_DBID_idol" 
 else
-  if ("$var_elasticIndex" == "")  then
-     set var_idolDb = "$env_idolDbPrefix$var_DBID"
+  if ("$var_idolDb" == "")  then
+     set var_idolDb = "$env_idolDbPrefix$var_DBID_idol"
   endif
 endif
 
