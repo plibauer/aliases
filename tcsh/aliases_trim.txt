@@ -32,7 +32,7 @@ alias popdb 							populatedb
 alias popdbhelp							'populatedb -h'
 alias restorepopdb 						'popdb --load --dbid $var_DBID --dbname $var_dbSession'
 alias reloadpopdb 						restorepopdb
-alias defaultconfig						'setdbid $env_default_dbid; dbsession $dbDefault'
+alias defaultconfig						'setdbid $env_default_dbid; dbsession $env_dbDefault'
 alias elasticconfig						defaultconfig
 alias popdboracle 						'popdb --db oracle64'
 alias popdbidol         				'populatedb --dci idol --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol"; bkupidolcfg'
