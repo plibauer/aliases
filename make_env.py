@@ -96,6 +96,7 @@ set env_alias_dir         = $env_alias/tcsh
 set env_revision          = {release}
 set env_default_dbid_pref = {prefix}
 set env_default_dbid      = $env_default_dbid_pref"1"
+set env_default_dbid_idol = $env_default_dbid_pref"5"
 set env_folder            = {folder}
 set env_defArch           = {arch}
 set env_defCompiler       = {compiler}
