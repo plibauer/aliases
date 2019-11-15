@@ -1,81 +1,81 @@
 ##################################################################################
 ########################   ELASTICSEARCH/elasticsearch  ##########################
 
-alias elasticblog				'vi $CLOUD_DIR/Work/elastic.txt; scrub $CLOUD_DIR/Work/elastic.txt'	
-alias eblog						elasticblog
-alias esinstall         		'$ELASTIC_HOME/bin/elasticsearch-service.bat install'
-alias esstart					'$ELASTIC_HOME/bin/elasticsearch-service.bat start'
-alias esdemo            		'$ELASTIC_HOME/bin/elasticsearch.bat'
-alias esstop					'$ELASTIC_HOME/bin/elasticsearch-service.bat stop'
-alias esremove	        		'$ELASTIC_HOME/bin/elasticsearch-service.bat remove'
-alias esmanage					'$ELASTIC_HOME/bin/elasticsearch-service.bat manager'
-alias esconfig					'cat $ELASTIC_HOME/config/elasticsearch.yml'
-alias goes              		'cd $ELASTIC_HOME'
-alias elasticup					'usingport 9200'
-alias elasticstatus     		'elasticup; kibanaup'
-alias esstatus					elasticstatus
-alias eshost					'elastichost http://\!^'
-alias esindex					elasticindex
-alias esdefault					elasticdefault
+alias elasticblog         'vi $CLOUD_DIR/Work/elastic.txt; scrub $CLOUD_DIR/Work/elastic.txt' 
+alias eblog               elasticblog
+alias esinstall           '$ELASTIC_HOME/bin/elasticsearch-service.bat install'
+alias esstart             '$ELASTIC_HOME/bin/elasticsearch-service.bat start'
+alias esdemo              '$ELASTIC_HOME/bin/elasticsearch.bat'
+alias esstop              '$ELASTIC_HOME/bin/elasticsearch-service.bat stop'
+alias esremove            '$ELASTIC_HOME/bin/elasticsearch-service.bat remove'
+alias esmanage            '$ELASTIC_HOME/bin/elasticsearch-service.bat manager'
+alias esconfig            'cat $ELASTIC_HOME/config/elasticsearch.yml'
+alias goes                'cd $ELASTIC_HOME'
+alias elasticup           'usingport 9200'
+alias elasticstatus       'elasticup; kibanaup'
+alias esstatus            elasticstatus
+alias eshost              'elastichost http://\!^'
+alias esindex             elasticindex
+alias esdefault           elasticdefault
 
-alias setelasticservice 		'set elastic_service_name = \\
-`sc query type= service state= all | 						\\
-$PERL -ne "													\\
-  if (/^SERVICE_NAME: (elasticsearch-service.+)/i){			\\
-    s/^SERVICE_NAME: //;									\\
-    s/\n//;													\\
-    print; 													\\
+alias setelasticservice  'set elastic_service_name =        \\
+`sc query type= service state= all |                        \\
+$PERL -ne "                                                 \\
+  if (/^SERVICE_NAME: (elasticsearch-service.+)/i){         \\
+    s/^SERVICE_NAME: //;                                    \\
+    s/\n//;                                                 \\
+    print;                                                  \\
   } "`'
-alias startelasticsvc  			'setelasticservice  && sc start $elastic_service_name'
-alias stopelasticsvc			'setelasticservice  && sc stop $elastic_service_name'
+alias startelasticsvc     'setelasticservice  && sc start $elastic_service_name'
+alias stopelasticsvc      'setelasticservice  && sc stop $elastic_service_name'
 
 # Kibana
-alias kibana            		'$KIBANA_HOME/bin/kibana.bat && settitle2str KIBANA'
-alias kibanaconfig      		'cat $KIBANA_HOME/config/kibana.yml'
-alias gokibana          		'cd $KIBANA_HOME'
-alias kibanaup					'usingport 5601'
+alias kibana              '$KIBANA_HOME/bin/kibana.bat && settitle2str KIBANA'
+alias kibanaconfig        'cat $KIBANA_HOME/config/kibana.yml'
+alias gokibana            'cd $KIBANA_HOME'
+alias kibanaup            'usingport 5601'
 
 # Logstash
-alias gologstash				'cd $LOGSTASH_HOME'
-alias logstash					'$LOGSTASH_HOME/bin/logstash.bat'
+alias gologstash          'cd $LOGSTASH_HOME'
+alias logstash            '$LOGSTASH_HOME/bin/logstash.bat'
 
 # Beats
-alias gobeats					'cd $BEATS_HOME'
-alias filebeat					'$BEATS_HOME/filebeat.exe'
+alias gobeats             'cd $BEATS_HOME'
+alias filebeat            '$BEATS_HOME/filebeat.exe'
 
 # Format JSON document using single quotes for C++ string definitions
-alias jsonsingle				'cat \!^ | $PERL -ne '"'"' s/"/\047/g; print '"'"
+alias jsonsingle          'cat \!^ | $PERL -ne '"'"' s/"/\047/g; print '"'"
 
 set CURL = "curl -s"
 set ELASTIC_QUERIES = $env_alias_dir/elastic_queries.txt
 
 # Querying Elastic
-alias elasticversion            '$CURL \!^ | grep number | sed -E '"'"' s/number/VERSION/; s/[\",]//g; s/^\s+//; '"'"
-alias esversion					'elasticversion $var_elasticHost' 
-alias esget						'$CURL "$var_elasticHost/\!^"'
-alias esgetp					'esget \!^?pretty=true'
-alias esgetaliases				'esget _aliases?pretty=true'
-alias elasticindexes			'$CURL "\!^/_cat/indices?v"'
-alias esindexesv				'elasticindexes $var_elasticHost'
-alias esindexes					'elasticindexes $var_elasticHost | $PERL -ne '"'"' chomp; if(/^\w+\s+\w+\s+\.\w+/){}else{print "$_\n"} '"'"
-alias getindexes        		esindexes
-alias indexes					esindexes
-alias indices					esindexes
-alias esstats           		'esgetp _stats'
-alias esgetsettings       		'esget \!^/_settings?pretty'
-alias essettings				'esgetsettings $var_elasticIndex'
-alias settings					essettings
-alias esmappings 	      		'esget $var_elasticIndex/_mappings?pretty'
-alias mapping					esmappings
-alias essearchall       		'esgetp _search'
-alias essearch		     		'esgetp $var_elasticIndex/_search'
-alias searchindex       		'esgetp \!^/_search'
-alias esdelete                  '$CURL -X DELETE "$var_elasticHost/\!^"'
-alias esrefresh					'$CURL -X POST "$var_elasticHost/_refresh?pretty=true"'
-alias escontentsrch				'$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&pretty=true"'
-alias docid             		'$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
-alias contents          		'docid \!^ \\
-| $PERL -ne '"'"' 						   \\
+alias elasticversion      '$CURL \!^ | grep number | sed -E '"'"' s/number/VERSION/; s/[\",]//g; s/^\s+//; '"'"
+alias esversion           'elasticversion $var_elasticHost' 
+alias esget               '$CURL "$var_elasticHost/\!^"'
+alias esgetp              'esget \!^?pretty=true'
+alias esgetaliases        'esget _aliases?pretty=true'
+alias elasticindexes      '$CURL "\!^/_cat/indices?v"'
+alias esindexesv          'elasticindexes $var_elasticHost'
+alias esindexes           'elasticindexes $var_elasticHost | $PERL -ne '"'"' chomp; if(/^\w+\s+\w+\s+\.\w+/){}else{print "$_\n"} '"'"
+alias getindexes          esindexes
+alias indexes             esindexes
+alias indices             esindexes
+alias esstats             'esgetp _stats'
+alias esgetsettings       'esget \!^/_settings?pretty'
+alias essettings          'esgetsettings $var_elasticIndex'
+alias settings            essettings
+alias esmappings          'esget $var_elasticIndex/_mappings?pretty'
+alias mapping             esmappings
+alias essearchall         'esgetp _search'
+alias essearch            'esgetp $var_elasticIndex/_search'
+alias searchindex         'esgetp \!^/_search'
+alias esdelete            '$CURL -X DELETE "$var_elasticHost/\!^"'
+alias esrefresh           '$CURL -X POST "$var_elasticHost/_refresh?pretty=true"'
+alias escontentsrch       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&pretty=true"'
+alias docid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
+alias contents            'docid \!^ \\
+| $PERL -ne '"'"'                          \\
   if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){  \\
     @l=split /\\n/, $1;                    \\
     for(@l){                               \\
@@ -83,44 +83,44 @@ alias contents          		'docid \!^ \\
       print "$_\n";                        \\
     }                                      \\
   }  '"'"
-alias esquery					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticIndex/_search?pretty" \!^' 
-alias esqueryi					'$PYTHON_CYG $PYTHON_HOME/curl.py -i "$var_elasticHost/$var_elasticIndex/_search?pretty"' 
-alias escommand					'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticIndex/_search?pretty" -c \!^ -f $ELASTIC_QUERIES'
+alias esquery             '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticIndex/_search?pretty" \!^' 
+alias esqueryi            '$PYTHON_CYG $PYTHON_HOME/curl.py -i "$var_elasticHost/$var_elasticIndex/_search?pretty"' 
+alias escommand           '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticIndex/_search?pretty" -c \!^ -f $ELASTIC_QUERIES'
 
-alias hascontent				'escommand has_document_content | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
-alias allids					'escommand match_all | grep _id | sort'
-alias estitles					'escommand titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 
-alias titles					'estitles | sort'
+alias hascontent          'escommand has_document_content | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
+alias allids              'escommand match_all | grep _id | sort'
+alias estitles            'escommand titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 
+alias titles              'estitles | sort'
 
-alias elasticinfo				'echo "HOST    : $var_elasticHost"; echo "INDEX   : $var_elasticIndex"; esversion; echo; indexes'  
-alias esinfo					elasticinfo
-alias esenv						'echo "HOST    : $var_elasticHost"; echo "INDEX   : $var_elasticIndex"'
-alias curlh						'$CURL "$var_elasticHost/\!^"'
+alias elasticinfo         'echo "HOST    : $var_elasticHost"; echo "INDEX   : $var_elasticIndex"; esversion; echo; indexes'  
+alias esinfo              elasticinfo
+alias esenv               'echo "HOST    : $var_elasticHost"; echo "INDEX   : $var_elasticIndex"'
+alias curlh               '$CURL "$var_elasticHost/\!^"'
 
-alias curl5						'$CURL "$ELASTIC_HOST5/\!^"'
-alias curldel5					'$CURL -X DELETE "$ELASTIC_HOST5/\!^"'	
-alias eshost5					'elastichost $ELASTIC_HOST5'
-alias esinfo5					'echo "HOST    : $ELASTIC_HOST5"; elasticversion $ELASTIC_HOST5; elasticindexes $ELASTIC_HOST5' 
+alias curl5               '$CURL "$ELASTIC_HOST5/\!^"'
+alias curldel5            '$CURL -X DELETE "$ELASTIC_HOST5/\!^"'  
+alias eshost5             'elastichost $ELASTIC_HOST5'
+alias esinfo5             'echo "HOST    : $ELASTIC_HOST5"; elasticversion $ELASTIC_HOST5; elasticindexes $ELASTIC_HOST5' 
 
-alias curl6						'$CURL "$ELASTIC_HOST6/\!^"'
-alias curldel6					'$CURL -X DELETE "$ELASTIC_HOST6/\!^"'	
-alias eshost6					'elastichost $ELASTIC_HOST6'
-alias esinfo6					'echo "HOST    : $ELASTIC_HOST6"; elasticversion $ELASTIC_HOST6; elasticindexes $ELASTIC_HOST6' 
+alias curl6               '$CURL "$ELASTIC_HOST6/\!^"'
+alias curldel6            '$CURL -X DELETE "$ELASTIC_HOST6/\!^"'  
+alias eshost6             'elastichost $ELASTIC_HOST6'
+alias esinfo6             'echo "HOST    : $ELASTIC_HOST6"; elasticversion $ELASTIC_HOST6; elasticindexes $ELASTIC_HOST6' 
 
-alias curl7						'$CURL "$ELASTIC_HOST7/\!^"'
-alias curldel7					'$CURL -X DELETE "$ELASTIC_HOST7/\!^"'	
-alias eshost7					'elastichost $ELASTIC_HOST7'
-alias esinfo7					'echo "HOST    : $ELASTIC_HOST7"; elasticversion $ELASTIC_HOST7; elasticindexes $ELASTIC_HOST7' 
+alias curl7               '$CURL "$ELASTIC_HOST7/\!^"'
+alias curldel7            '$CURL -X DELETE "$ELASTIC_HOST7/\!^"'  
+alias eshost7             'elastichost $ELASTIC_HOST7'
+alias esinfo7             'echo "HOST    : $ELASTIC_HOST7"; elasticversion $ELASTIC_HOST7; elasticindexes $ELASTIC_HOST7' 
 
-alias espy						'$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config'
-alias espya						'espy "\!^/all"'
-alias espym						'espy "\!^/mapping"'
-alias espys						'espy "\!^/settings"'
+alias espy                '$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config'
+alias espya               'espy "\!^/all"'
+alias espym               'espy "\!^/mapping"'
+alias espys               'espy "\!^/settings"'
 
-alias acmapping					'espy autoclass_$var_elasticIndex/m'
-alias acsettings				'espy autoclass_$var_elasticIndex/s'
-alias autoclasstypes    		'espy search/autoclass_$var_elasticIndex -s type --compact --size 10000 | grep type | sort | uniq'
-alias estype					'espy search/autoclass_$var_elasticIndex/q:type:\!^'
+alias acmapping           'espy autoclass_$var_elasticIndex/m'
+alias acsettings          'espy autoclass_$var_elasticIndex/s'
+alias autoclasstypes      'espy search/autoclass_$var_elasticIndex -s type --compact --size 10000 | grep type | sort | uniq'
+alias estype              'espy search/autoclass_$var_elasticIndex/q:type:\!^'
 
 alias aclabels  'espy search/autoclass_$var_elasticIndex/q:type:word_label_counts -e word_count:type --compact --size 10000 \\
 | $PERL -e '"'"'                                                   \\
@@ -148,58 +148,58 @@ alias elastic_add_wlc_prefix 'set wlcIndex=`echo \!^ | sed -r -e "s/^([[:digit:]
 #  ARG2  - number of columns (default 10)
 #  ARG3  - size of columns (default 30)
 #
-alias getwords 'setenv AC_SEARCH_STR "\!*"  						\\
-&& elastic_add_wlc_prefix \!:1 				 				\\
-&& espy search/autoclass_$var_elasticIndex/$wlcIndex --compact -s word_count 		\\
-| $PERL -e '"'"'  									\\
-my ($cols, $width) = (10, 30);                                                		\\
-@a = split /\s+/, $ENV{AC_SEARCH_STR};                                        		\\
-#                                                                             		\\
-#  We may have added a missing wlc_ prefix using elastic_add_wlc_prefix       		\\
-my $ind = shift @a; $ind =~ s/^(\d)/wlc_$1/;                                  		\\
-#                                                                             		\\
-my (@tooLong, $out, $outf, @args);                                            		\\
-$out = "INDEX: $ind";                                                         		\\
-for($i=0; $i <= $#a; $i++){                                                   		\\
-   if($a[$i] eq ">") { $outf = $a[$i + 1]; last; }                            		\\
-   @args[$i] = $a[$i];                                                        		\\
-}                                                                             		\\
-                                                                              		\\
-if(scalar(@args) >= 1) { $srchStr = $args[0]; $out .= ", SEARCH: \"$srchStr\""; } 	\\
-if(scalar(@args) >= 2) { $cols    = $args[1]; $out .= ", COLUMNS: $cols"; }       	\\
-if(scalar(@args) >= 3) { $width   = $args[2]; $out .= ", WIDTH: $width"; }        	\\
-                                                                              		\\
-if($outf) { print "OutputFile => $outf\n"; }                                  		\\
-                                                                              		\\
-$out .= "\n";                                                                 		\\
-while(<>) {                                                                   		\\
-  chomp;                                                                      		\\
-  if(/^\s+"word_count":\s+"(.+)"$/){                                          		\\
-     @pairs = split /,/, $1;                                                  		\\
-     $out .= "WORD Count = ".scalar(@pairs)."\n";                             		\\
-     $i=1;                                                                    		\\
-     for(@pairs){                                                             		\\
-        if($srchStr) { next unless /$srchStr/; }                              		\\
-        if(length($_) >= $width){ push @tooLong, $_; next }                   		\\
-        $space = " " x ($width - length($_));                                 		\\
-        $out .= $_.$space;                                                    		\\
-        ++$i;                                                                 		\\
-        if($i % $cols == 0){ $out .= "\n"; }                                  		\\
-     }                                                                        		\\
-  }                                                                           		\\
-}                                                                             		\\
-$out .= "\n\n";                                                               		\\
-for(@tooLong){ $out .= "$_\n"; }                                              		\\
-if($outf) {                                                                   		\\
-  open OUT, ">$outf" or die "Couldnt open $outf\n";                           		\\
-  print OUT $out;                                                             		\\
-  close OUT;                                                                  		\\
-}                                                                             		\\
-else { print $out; }                                                          		\\
-exit;                                                                         		\\
+alias getwords 'setenv AC_SEARCH_STR "\!*"                          \\
+&& elastic_add_wlc_prefix \!:1                              \\
+&& espy search/autoclass_$var_elasticIndex/$wlcIndex --compact -s word_count        \\
+| $PERL -e '"'"'                                    \\
+my ($cols, $width) = (10, 30);                                                      \\
+@a = split /\s+/, $ENV{AC_SEARCH_STR};                                              \\
+#                                                                                   \\
+#  We may have added a missing wlc_ prefix using elastic_add_wlc_prefix             \\
+my $ind = shift @a; $ind =~ s/^(\d)/wlc_$1/;                                        \\
+#                                                                                   \\
+my (@tooLong, $out, $outf, @args);                                                  \\
+$out = "INDEX: $ind";                                                               \\
+for($i=0; $i <= $#a; $i++){                                                         \\
+   if($a[$i] eq ">") { $outf = $a[$i + 1]; last; }                                  \\
+   @args[$i] = $a[$i];                                                              \\
+}                                                                                   \\
+                                                                                    \\
+if(scalar(@args) >= 1) { $srchStr = $args[0]; $out .= ", SEARCH: \"$srchStr\""; }   \\
+if(scalar(@args) >= 2) { $cols    = $args[1]; $out .= ", COLUMNS: $cols"; }         \\
+if(scalar(@args) >= 3) { $width   = $args[2]; $out .= ", WIDTH: $width"; }          \\
+                                                                                    \\
+if($outf) { print "OutputFile => $outf\n"; }                                        \\
+                                                                                    \\
+$out .= "\n";                                                                       \\
+while(<>) {                                                                         \\
+  chomp;                                                                            \\
+  if(/^\s+"word_count":\s+"(.+)"$/){                                                \\
+     @pairs = split /,/, $1;                                                        \\
+     $out .= "WORD Count = ".scalar(@pairs)."\n";                                   \\
+     $i=1;                                                                          \\
+     for(@pairs){                                                                   \\
+        if($srchStr) { next unless /$srchStr/; }                                    \\
+        if(length($_) >= $width){ push @tooLong, $_; next }                         \\
+        $space = " " x ($width - length($_));                                       \\
+        $out .= $_.$space;                                                          \\
+        ++$i;                                                                       \\
+        if($i % $cols == 0){ $out .= "\n"; }                                        \\
+     }                                                                              \\
+  }                                                                                 \\
+}                                                                                   \\
+$out .= "\n\n";                                                                     \\
+for(@tooLong){ $out .= "$_\n"; }                                                    \\
+if($outf) {                                                                         \\
+  open OUT, ">$outf" or die "Couldnt open $outf\n";                                 \\
+  print OUT $out;                                                                   \\
+  close OUT;                                                                        \\
+}                                                                                   \\
+else { print $out; }                                                                \\
+exit;                                                                               \\
 '"'" 
 
-alias esprocesslog	'cat \!^ | $PERL -e '"'"'          \\
+alias esprocesslog  'cat \!^ | $PERL -e '"'"'          \\
                                                            \\
 while(<>) {                                                \\
   chomp $_;                                                \\

@@ -10,16 +10,15 @@ set IDOL_PROXY = http://localhost:11000
 set IDOL_PROXY_IDX = http://localhost:11001
 set DEVURL = $IDOL_PROXY/action
 
-alias idolinfo                  'echo                     \\
+alias idolenv          'echo                              \\
 "                                                         \\
 IDOL Proxy host : $IDOL_PROXY                             \\
 Proxy Index URL : $IDOL_PROXY_IDX                         \\
 Database        : $var_idolDb (set with idolindex)        \\
-Dataset ID      : $var_DBID_idol    (set with setdbid  )  \\
-                                                          \\
+DBID            : $var_idolDBID    (set with setdbid  )   \\
 "                                                         \\
 '
-alias idolenv		idolinfo
+alias idolinfo         'idolenv; idoldbs'
 alias goidol           'cd $IDOL_DIR'
 alias goidols          'cd $IDOL_DIR/TRIM\ IDOL\ Service'
 alias idolscfg         'more $IDOL_DIR/TRIM\ IDOL\ Service/TRIM\ IDOL\ Service.cfg'
@@ -35,19 +34,19 @@ set XMLFORMAT = "$PERL $PERL_HOME/xmlformat.pl"
 set CURLDEV   = "curl -XGET $DEVURL"
 set CURLQUERY = "curl -XGET $DEVURL=query"
 
-alias dresync		'curl "$IDOL_PROXY_IDX/DRESYNC"'
+alias dresync           'curl "$IDOL_PROXY_IDX/DRESYNC"'
 alias removedocs        'curl "$IDOL_PROXY_IDX/DREDELDBASE?DREdbname=\!^"'
 alias removedb          'curl "$IDOL_PROXY_IDX/DREREMOVEDBASE?DREdbname=\!^"'
-alias idolcontent	'$CURLDEV=getcontent\&reference=trim:$var_DBID_idol/rec/\!^                 $CURL_OPTS | $XMLFORMAT'
+alias idolcontent       '$CURLDEV=getcontent\&reference=trim:$var_idolDBID/rec/\!^                 $CURL_OPTS | $XMLFORMAT'
 alias idolrecordsdb     '$CURLQUERY\&text=\*\&databasematch=\!^\&MaxResults=999                     $CURL_OPTS | $XMLFORMAT'
 alias idolrecords       '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=\!^             $CURL_OPTS | $XMLFORMAT'
 alias idolrecordsall    '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=1000000         $CURL_OPTS | $XMLFORMAT'
-alias idolreference	'$CURLQUERY\&text=\*\&MatchReference=trim:$var_DBID_idol/rec/\!^            $CURL_OPTS | $XMLFORMAT'
-alias idolreferencev	'$CURLQUERY\&text=\*\&Print=All\&MatchReference=trim:$var_DBID_idol/rec/\!^ $CURL_OPTS | $XMLFORMAT'
+alias idolreference     '$CURLQUERY\&text=\*\&MatchReference=trim:$var_idolDBID/rec/\!^            $CURL_OPTS | $XMLFORMAT'
+alias idolreferencev    '$CURLQUERY\&text=\*\&Print=All\&MatchReference=trim:$var_idolDBID/rec/\!^ $CURL_OPTS | $XMLFORMAT'
 alias idolquery         '$CURLQUERY\&text=\!^\&MaxResults=1000\&databasematch=$var_idolDb           $CURL_OPTS | $XMLFORMAT'
 alias idolqueryv        '$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&databasematch=$var_idolDb $CURL_OPTS | $XMLFORMAT'
 
-alias formatidol				'$PERL -e  '"'"'        \\
+alias formatidol                '$PERL -e  '"'"'        \\
 my $sortbyweight = $ENV{BYWEIGHT};                                      \\
 my @in = <STDIN>;                                                       \\
 my (%HITS,%BYWEIGHT,$HITCOUNT,$max);                                    \\
@@ -90,26 +89,26 @@ for(@hits){                                                             \\
 }                                                                       \\
 '"'"
 
-alias idolrecs		'unsetenv BYWEIGHT && idolrecords \!^  | formatidol'
-alias idolrecsall  	'unsetenv BYWEIGHT && idolrecordsall   | formatidol'
-alias idolq		'setenv BYWEIGHT true && idolquery \!^ | formatidol'
+alias idolrecs      'unsetenv BYWEIGHT && idolrecords \!^  | formatidol'
+alias idolrecsall   'unsetenv BYWEIGHT && idolrecordsall   | formatidol'
+alias idolq         'setenv BYWEIGHT true && idolquery \!^ | formatidol'
 
-alias idolrec           idolreference 
-alias idolrecv          idolreferencev 
-alias idoluri           idolcontent 
-alias idolsync 		dresync
-alias idologca          'tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log'
-alias idologci          'tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log'
-alias idologcq          'tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log'
+alias idolrec       idolreference 
+alias idolrecv      idolreferencev 
+alias idoluri       idolcontent 
+alias idolsync      dresync
+alias idologca      'tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/application.log'
+alias idologci      'tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/index.log'
+alias idologcq      'tail -f $IDOL_DIR/TRIM\ Content\ Service\ 1/logs/query.log'
 
-alias idologsa          'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/application.log'
-alias idologsi          'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/agentstore_agent_index.log'
+alias idologsa      'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/application.log'
+alias idologsi      'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/agentstore_agent_index.log'
 
 set ACT_LOG = ": Request (completed in|from)|: Generated ActionId"
-alias idologsac        	'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/action.log | grep -Eiv "$ACT_LOG"'
+alias idologsac     'tail -f $IDOL_DIR/TRIM\ IDOL\ Service/logs/action.log | grep -Eiv "$ACT_LOG"'
 
 # Get Idol config for proxy, content or service
-alias idolget   	'echo \!* | $PERL -e  ' "' "'    \\
+alias idolget       'echo \!* | $PERL -e  ' "' "'    \\
                                                                  \\
 my %srvs = ( c => 9102, p => 11002, s => 9002 );                 \\
 my %desc = ( c => "Content Service",                             \\
@@ -170,7 +169,7 @@ elsif ($arg2 =~ /^a/) {                                          \\
 else {print "INVALID 2nd Argument : $arg2 ('idolget help')\n";}  \\
 '"'"
 
-alias idoldbs				'idolget values content | $PERL -e  '"'"'           \\
+alias idoldbs               'idolget values content | $PERL -e  '"'"'           \\
 my ($max,$REINDEXED,$TOTAL,$NO_DBS);                                            \\
 my %dbs; $max = 8; my @in=<>;                                                   \\
 while(my $l = shift @in) {                                                      \\
@@ -206,41 +205,41 @@ for(sort keys %dbs) {                                                           
   print "    $_$s : $dbs{$_}\n";                                                \\
 }                                                                               \\
  '"'" 
-alias idoldatabases				idoldbs
-	
+alias idoldatabases             idoldbs
+    
 
 ############################################
 # IDOL Categories and Auto-Classification
 ############################################
 
 
-alias idolcat	           	'curl "$DEVURL=CategoryGetDetails&Category=\!^" --noproxy "*" --silent | \\
-                               	$PERL $PERL_HOME/xmlformat.pl'
-alias idolcaturi           	'curl "$DEVURL=CategoryFindByFields&Fields=ts_urn&Values=trim:$var_DBID_idol/pln/\!^" --noproxy "*" --silent | \\
-                               	$PERL $PERL_HOME/xmlformat.pl'
-alias idoltraining	   	'curl "$DEVURL=CategoryGetTraining&Category=\!^" --noproxy "*" --silent | \\
-							   	$PERL $PERL_HOME/xmlformat.pl'
-alias idolsuggesturi	       	'curl "$DEVURL=categorySuggestfromDocument&DocRef=trim:$var_DBID_idol/rec/\!^" --noproxy "*" --silent | \\
-                               	$PERL $PERL_HOME/xmlformat.pl'
-alias idolcategoryids          	'curl "$DEVURL=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent | \\
-                               	$PERL $PERL_HOME/xmlformat.pl '
-alias idolcatids           	idolcategoryids        
-alias idolterms                	'curl "$DEVURL=CategoryGetTNW&Category=\!^" --noproxy "*" --silent | \\
-                               	$PERL $PERL_HOME/xmlformat.pl'
-alias idolcatdelete	   	'curl "$DEVURL=CategoryDelete&Category=\!^" --noproxy "*" --silent | \\
-                               	$PERL $PERL_HOME/xmlformat.pl'
-alias idolcatdel	   	idolcatdelete
-alias idolcatdelete_all	   	idolcatdel 0
-alias idolcathierarchy	   	'curl "$DEVURL=CategoryGetHierDetails&Category=\!^" --noproxy "*" --silent | \\
-                               	$PERL $PERL_HOME/xmlformat.pl'
-alias idolcathier	   	idolcathierarchy
-alias idolclassifications      	'setenv IDOL_DEV_URL $DEVURL && idolcategoryids |                                        \\
-                                $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"  |     \\
-                                $PERL -ne  ' "' "' chomp;print "ID = $_\n";                                             \\
-                                print `curl "$ENV{'IDOL_DEV_URL'}=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'"
+alias idolcat               'curl "$DEVURL=CategoryGetDetails&Category=\!^" --noproxy "*" --silent | \\
+                            $PERL $PERL_HOME/xmlformat.pl'
+alias idolcaturi            'curl "$DEVURL=CategoryFindByFields&Fields=ts_urn&Values=trim:$var_idolDBID/pln/\!^" --noproxy "*" --silent | \\
+                            $PERL $PERL_HOME/xmlformat.pl'
+alias idoltraining          'curl "$DEVURL=CategoryGetTraining&Category=\!^" --noproxy "*" --silent | \\
+                            $PERL $PERL_HOME/xmlformat.pl'
+alias idolsuggesturi        'curl "$DEVURL=categorySuggestfromDocument&DocRef=trim:$var_idolDBID/rec/\!^" --noproxy "*" --silent | \\
+                            $PERL $PERL_HOME/xmlformat.pl'
+alias idolcategoryids       'curl "$DEVURL=CategoryFindByFields&Fields=tb_canhaverecs&Values=TRUE" --noproxy "*" --silent | \\
+                            $PERL $PERL_HOME/xmlformat.pl '
+alias idolcatids            idolcategoryids        
+alias idolterms             'curl "$DEVURL=CategoryGetTNW&Category=\!^" --noproxy "*" --silent | \\
+                            $PERL $PERL_HOME/xmlformat.pl'
+alias idolcatdelete         'curl "$DEVURL=CategoryDelete&Category=\!^" --noproxy "*" --silent | \\
+                            $PERL $PERL_HOME/xmlformat.pl'
+alias idolcatdel            idolcatdelete
+alias idolcatdelete_all     idolcatdel 0
+alias idolcathierarchy      'curl "$DEVURL=CategoryGetHierDetails&Category=\!^" --noproxy "*" --silent | \\
+                            $PERL $PERL_HOME/xmlformat.pl'
+alias idolcathier           idolcathierarchy
+alias idolclassifications   'setenv IDOL_DEV_URL $DEVURL && idolcategoryids |                                        \\
+                            $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"  |     \\
+                            $PERL -ne  ' "' "' chomp;print "ID = $_\n";                                             \\
+                            print `curl "$ENV{'IDOL_DEV_URL'}=CategoryGetDetails&Category=$_" --noproxy "*" --silent`  '"'"
 
-alias idolcaturis	       'setenv IDOL_DEV_URL $DEVURL && idolcategoryids |                                        \\
-                               $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"         \\
+alias idolcaturis           'setenv IDOL_DEV_URL $DEVURL && idolcategoryids |                                           \\
+                            $PERL -ne "/id>(\d+)<\/autn/ and do { s/^\s+<autn:id>//; s/<\/autn.+//; print};"            \\
 | $PERL -ne  ' "' "'                                                                                                    \\
 chomp;                                                                                                                  \\
 $ID =  $_;                                                                                                              \\
@@ -250,7 +249,7 @@ if($input =~ /<autn:ts_urn>trim:..\/pln\/(\d+)<\/autn:ts_urn>/) { print "\tURI :
 print "\tID  : $ID\n\n";                                                                                                \\
 '"'"
 
-alias idolall 		      'idolclass all'
+alias idolall             'idolclass all'
 alias idolclass               'setenv IDOL_CLS_PARAMS "\!*" && idolclassifications              \\
 | $PERL $PERL_HOME/xmlformat.pl                                                                 \\
 | $PERL -e ' "' "'                                                                              \\

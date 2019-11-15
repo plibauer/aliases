@@ -37,37 +37,37 @@ setenv LESS "-X"
 # Set directory colours
 setenv LS_COLORS  'no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:'
 
-alias lc  							ls --color
-alias ll  							ls --color -l
-alias lt  							ls --color -lt
-alias la  							ls --color -al
-alias lat 							ls --color -alt
-alias ++ 							pushd
-alias -- 							popd
-alias back 							popd
-alias d 							dirs
-alias h 							history
-alias last        					'history | tail -50'
-alias historygrep 					'history | grep -i'
-alias hgrep 						historygrep
-alias greph 						hgrep
-alias j 							jobs
+alias lc              ls --color
+alias ll              ls --color -l
+alias lt              ls --color -lt
+alias la              ls --color -al
+alias lat             ls --color -alt
+alias ++              pushd
+alias --              popd
+alias back            popd
+alias d               dirs
+alias h               history
+alias last            'history | tail -50'
+alias historygrep     'history | grep -i'
+alias hgrep           historygrep
+alias greph           hgrep
+alias j               jobs
 
-alias display 						setenv DISPLAY :0.0
-alias disp1 						setenv DISPLAY :1.0
-alias d 							"setenv | grep DISPLAY"
-alias newpath  						setenv PATH "\!^:$PATH"
+alias display         setenv DISPLAY :0.0
+alias disp1           setenv DISPLAY :1.0
+alias d               "setenv | grep DISPLAY"
+alias newpath         setenv PATH "\!^:$PATH"
 
-alias lh 							"ll -t \!^ | head "
-alias head10 						"ll -t | head "
-alias head20 						"ll -t | head -20"
-alias head30 						"ll -t | head -30"
-alias headt 						"ll -t | head -\!^"
+alias lh              "ll -t \!^ | head "
+alias head10          "ll -t | head "
+alias head20          "ll -t | head -20"
+alias head30          "ll -t | head -30"
+alias headt           "ll -t | head -\!^"
 
-alias findalias 					"alias | grep -i "
-alias falias 						findalias
-alias grephistory 					"history | grep -i "
-alias gh   							grephistory
+alias findalias       "alias | grep -i "
+alias falias          findalias
+alias grephistory     "history | grep -i "
+alias gh              grephistory
 
 
 alias fileinfo "7z l"
@@ -101,14 +101,14 @@ for $x ( 0 .. 215 ){                                                            
 print "\n";                                                                           \\
 '"'"
 
-alias hklm        				regtool list \\machine\\\!^
-alias hkcu        				regtool list \\user\\\!^
-alias hkcr        				regtool list \\root\\\!^
-alias reghklm     				reg query hklm /v \!^ /s
-alias reghkcu     				reg query hkcu /v \!^ /s
+alias hklm           regtool list \\machine\\\!^
+alias hkcu           regtool list \\user\\\!^
+alias hkcr           regtool list \\root\\\!^
+alias reghklm        reg query hklm /v \!^ /s
+alias reghkcu        reg query hkcu /v \!^ /s
 
-alias totext      				iconv -f UTF-16 -t UTF-8
-alias fromunicode 				iconv -f UTF-16 -t UTF-8
+alias totext         iconv -f UTF-16 -t UTF-8
+alias fromunicode    iconv -f UTF-16 -t UTF-8
 alias convert2text 'file \!^ |  $PERL -ne '"'"'             \\
 $| = 1;                                                     \\
 while(<>){                                                  \\
@@ -128,92 +128,92 @@ while(<>){                                                  \\
 }                                                           \\
 '"'"
 
-alias grepu      			 	'fromunicode \!:2 | pgrep \!:1'
-alias grepui     			 	'fromunicode \!:2 | pgrep -i \!:1'
+alias grepu         'fromunicode \!:2 | pgrep \!:1'
+alias grepui        'fromunicode \!:2 | pgrep -i \!:1'
 
 # RSYNC
 # Sync the files from source to destination
-alias sync    					rsync -avub --size-only --exclude '.svn' --exclude '*~'
-alias syncdry 					rsync -avubn --size-only --exclude '.svn' --exclude '*~'
+alias sync          rsync -avub --size-only --exclude '.svn' --exclude '*~'
+alias syncdry       rsync -avubn --size-only --exclude '.svn' --exclude '*~'
 
 
 # Path conversion using cygpath
-alias towin  					cygpath -t windows "\!^"
-alias tounix 					cygpath -t unix    "\!^"
+alias towin         cygpath -t windows "\!^"
+alias tounix        cygpath -t unix    "\!^"
 
 alias flushdns "ipconfig /flushdns"
 # -R turns off ANSI escape sequence rubbish
 alias more less -R
 
 #  Disable HYPER-V (Requires reboot)
-alias disablehyperv     		bcdedit /set hypervisorlaunchtype off
-alias enablehyperv      		bcdedit /set hypervisorlaunchtype auto
-alias hypervoff         		disablehyperv
-alias hypervon          		enablehyperv
+alias disablehyperv  bcdedit /set hypervisorlaunchtype off
+alias enablehyperv   bcdedit /set hypervisorlaunchtype auto
+alias hypervoff      disablehyperv
+alias hypervon       enablehyperv
 
-alias howtospell 				'echo "\!^" | aspell -a'
-alias spell 					'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
-alias spella 					'echo "\!^" >> ~/words.txt; wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
-alias spellb 					'echo "\!^" >> ~/words.txt; wn "\!^" -g -over -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:"'
+alias howtospell     'echo "\!^" | aspell -a'
+alias spell          'wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
+alias spella         'echo "\!^" >> ~/words.txt; wn "\!^" -g -synsn -synsv -synsa -synsr -antsn -antsv -antsa -antsr -coorn -coorv -derin -deriv -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:" '
+alias spellb         'echo "\!^" >> ~/words.txt; wn "\!^" -g -over -grepn -grepv -grepa -grepr |& grep -v "wn: invalid search option:"'
 
-alias psall     				ps -aelW
-alias psfind					'ps -aelW | grep '
+alias psall          ps -aelW
+alias psfind         'ps -aelW | grep '
 
 # Query windows services to see what is running or stopped
-alias service_active        	sc query type= service
-alias service_inactive      	sc query type= service state= inactive
-alias service_all           	sc query type= service state= all
-alias service_drivers       	sc query type= driver
-alias startsql          		sc start MSSQLSERVER
-alias sqlstart         			startsql
-alias querysql          		sc query MSSQLSERVER
-alias sqlquery          		querysql
-alias services					"service_all | pgrep DISPLAY | sort"
-alias servicesrun				"service_all | pgrep DISPLAY | sort"
-alias svcgrep					"service_all | pgrep DISPLAY | pgrep -i \!^ | sort"
-alias servicefind       		"service_all | pgrep -i -A 5 -B 1 \!^"
-alias findservice       		servicefind 
-alias serviceinfo				sc qc \!^
+alias service_active    sc query type= service
+alias service_inactive  sc query type= service state= inactive
+alias service_all       sc query type= service state= all
+alias service_drivers   sc query type= driver
+alias startsql          sc start MSSQLSERVER
+alias sqlstart          startsql
+alias querysql          sc query MSSQLSERVER
+alias sqlquery          querysql
+alias services          "service_all | pgrep DISPLAY | sort"
+alias servicesrun       "service_all | pgrep DISPLAY | sort"
+alias svcgrep           "service_all | pgrep DISPLAY | pgrep -i \!^ | sort"
+alias servicefind       "service_all | pgrep -i -A 5 -B 1 \!^"
+alias findservice       servicefind 
+alias serviceinfo       sc qc \!^
 
 # WGET an entire HTML site
-alias wgetall					wget -r -l 0 -p
-alias wgetallhttp				wget -r -l 0 -p http://\!^
+alias wgetall           wget -r -l 0 -p
+alias wgetallhttp       wget -r -l 0 -p http://\!^
 
 # Show internet settings
-alias internet					'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings"'
+alias internet         'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings"'
 
 #
 # These aliases will produce a command line that can be used to search unicode and ascii files simultaneously. Useful when searching Visual Studio source
-alias grepunicode   			'$PERL -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", split //,$a1; print "pgrep -as \"$a1\|$b\" \*/\*\n" '"'  \!:1 \!:2  " 
-alias grepunicodei  			'$PERL -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", split //,$a1; print "pgrep -ais \"$a1\|$b\" \*/\*\n" '"'  \!:1 \!:2  " 
-alias grepuni       			grepunicodei
+alias grepunicode      '$PERL -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", split //,$a1; print "pgrep -as \"$a1\|$b\" \*/\*\n" '"'  \!:1 \!:2  " 
+alias grepunicodei     '$PERL -e ' "'" ' $a1=$ARGV[0]; $a2=$ARGV[1]; $b=join ".", split //,$a1; print "pgrep -ais \"$a1\|$b\" \*/\*\n" '"'  \!:1 \!:2  " 
+alias grepuni          grepunicodei
 #
 
-alias ff            			find . -name 
-alias ifind         			find . -iname \!^\* 
-alias findwild      			find . -iname \*\!^\*
-alias pgrep         			grep --perl-regexp
-alias trace       				tracert
-alias route       				route.exe
-alias netstat     				NETSTAT.EXE
-alias usingports  				netstat -abno
-alias usingwgs    				usingport 1137 
+alias ff               find . -name 
+alias ifind            find . -iname \!^\* 
+alias findwild         find . -iname \*\!^\*
+alias pgrep            grep --perl-regexp
+alias trace            tracert
+alias route            route.exe
+alias netstat          NETSTAT.EXE
+alias usingports       netstat -abno
+alias usingwgs         usingport 1137 
 
 
-alias usingport                'setenv XXX_USINGPORT "\!*" &&  usingports \\
- | $PERL -e '"'"'                                               	      \\
-  @a=<>;                                                     		      \\
-  while(@a){                                                 		      \\
-    $i=shift @a;                                             		      \\
-    if($i =~ /^\s*(TCP|UDP)\s+(.+):($ENV{XXX_USINGPORT})\s+([\S]+)\s+LISTENING\s+(\d+)$/){		\\
-      $match = "$2:$3 ($1) PID => $5";                         		      \\
-      $i = shift @a;                                         		      \\
+alias usingport        setenv XXX_USINGPORT "\!*" &&  usingports \\
+ | $PERL -e '"'"'                                                         \\
+  @a=<>;                                                                  \\
+  while(@a){                                                              \\
+    $i=shift @a;                                                          \\
+    if($i =~ /^\s*(TCP|UDP)\s+(.+):($ENV{XXX_USINGPORT})\s+([\S]+)\s+LISTENING\s+(\d+)$/){      \\
+      $match = "$2:$3 ($1) PID => $5";                                    \\
+      $i = shift @a;                                                      \\
       chomp $i;                                                           \\
-      print "$i $match\n"                                      		      \\
-    }                                                        		      \\
-  }                                                          		      \\
+      print "$i $match\n"                                                 \\
+    }                                                                     \\
+  }                                                                       \\
 ' "'"
-alias pidforport                'usingport \!^  \\
+alias pidforport      'usingport \!^            \\
  | $PERL -e '"'"'                               \\
   @a=<>;                                        \\
   my $l = shift @a;                             \\
@@ -223,42 +223,42 @@ alias pidforport                'usingport \!^  \\
   }                                             \\
 ' "'"
 
-alias killport					'taskkill /F /PID `pidforport \!^`' 
+alias killport        'taskkill /F /PID `pidforport \!^`' 
 
-alias hosts						cat C:/Windows/System32/drivers/etc/hosts
-alias vhosts					vi C:/Windows/System32/drivers/etc/hosts
-alias vihosts   				vhosts
-alias lansettings				"rundll32.exe shell32.dll,Control_RunDLL inetcpl.cpl,,4 &"
-alias netbiosname				nbtstat -A \!^
-alias windowsname   			netbiosname
-alias winhost					netbiosname
+alias hosts           cat C:/Windows/System32/drivers/etc/hosts
+alias vhosts          vi C:/Windows/System32/drivers/etc/hosts
+alias vihosts         vhosts
+alias lansettings     "rundll32.exe shell32.dll,Control_RunDLL inetcpl.cpl,,4 &"
+alias netbiosname     nbtstat -A \!^
+alias windowsname     netbiosname
+alias winhost         netbiosname
 
-alias get_title 				'xprop -id ${WINDOWID}  | $PERL -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
-alias clear_title 				'echo -n "\033]0;xterm\007" '
-alias xterm_title   			'echo -n "\033]0;\!^\007" '
-alias settitle2str 				'echo -ne "\033]0; \!^ \007"'
+alias get_title       'xprop -id ${WINDOWID}  | $PERL -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
+alias clear_title     'echo -n "\033]0;xterm\007" '
+alias xterm_title     'echo -n "\033]0;\!^\007" '
+alias settitle2str    'echo -ne "\033]0; \!^ \007"'
 
-alias getp    					'echo $PATH | $PERL -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"					               
-alias getpath 					$PERL $PERL_HOME/getPath.pl															     
-alias sysinfo 					"systeminfo | $PERL -ne  'print unless /^\s+\[\d+\]/'"
-alias uptime  					"systeminfo | pgrep -i 'boot time'"
+alias getp            'echo $PATH | $PERL -ne '"'"'  for( split /:/ ){ print "$_\n" } '"'"                                   
+alias getpath         $PERL $PERL_HOME/getPath.pl                                                              
+alias sysinfo         "systeminfo | $PERL -ne  'print unless /^\s+\[\d+\]/'"
+alias uptime          "systeminfo | pgrep -i 'boot time'"
 
 # Compile a script to an executable using Strawberry Perl's version of pp
-alias perlcompile   			pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o 
-alias sperl         			/c/strawberry/perl/bin/perl
+alias perlcompile     pp --lib=C:/strawberry/perl/vendor/lib  --lib=C:/strawberry/perl/site/lib  --lib=C:/strawberry/perl/lib -o 
+alias sperl           /c/strawberry/perl/bin/perl
 
-alias xmlconf       			$PERL $PERL_HOME/xmlconfig.pl --file
-alias xconf         			$PERL $PERL_HOME/xmlconfig.pl
-alias xmlnoc        			$PERL $PERL_HOME/stripXMLcomments.pl
-alias xmlformat     			$PERL_HOME/xmlformat.pl
-alias xmlf          			xmlformat
+alias xmlconf         $PERL $PERL_HOME/xmlconfig.pl --file
+alias xconf           $PERL $PERL_HOME/xmlconfig.pl
+alias xmlnoc          $PERL $PERL_HOME/stripXMLcomments.pl
+alias xmlformat       $PERL_HOME/xmlformat.pl
+alias xmlf            xmlformat
 
 # Lookup a perl function using perldoc
-alias perldoc   				"$PERL/perldoc.bat \!:1 | more"
-alias perlfunc  				$PERL/perldoc.bat -f
-alias unicode	    			$PERL $STATIC_PERL/misc/unicodeTools.pl
+alias perldoc         "$PERL/perldoc.bat \!:1 | more"
+alias perlfunc        $PERL/perldoc.bat -f
+alias unicode         $PERL $STATIC_PERL/misc/unicodeTools.pl
 
 # JSON pretty print
-alias jsonpretty    			"cat | $PYTHON -m json.tool"  
-alias json	    				jsonpretty
+alias jsonpretty      "cat | $PYTHON -m json.tool"  
+alias json            jsonpretty
 

@@ -11,8 +11,8 @@ source $env_alias_dir/aliases_dynamic.txt
 
 if (! $?include_env) then
     echo "including $env_alias_dir/aliases_env.txt"
-	source $env_alias_dir/aliases_env.txt
-	set include_env = 1
+    source $env_alias_dir/aliases_env.txt
+    set include_env = 1
 endif
 
 #
@@ -21,9 +21,9 @@ endif
 #
 
 if (! $?include_static) then
-	echo "including $env_alias_dir/aliases_static.txt"
-	source $env_alias_dir/aliases_static.txt
-	set include_static = 1
+    echo "including $env_alias_dir/aliases_static.txt"
+    source $env_alias_dir/aliases_static.txt
+    set include_static = 1
 endif
 
 #
@@ -31,57 +31,57 @@ endif
 #
 
 if (! $?include_build) then
-	echo "including $env_alias_dir/aliases_build.txt"
-	source $env_alias_dir/aliases_build.txt
-	set include_build = 1
+    echo "including $env_alias_dir/aliases_build.txt"
+    source $env_alias_dir/aliases_build.txt
+    set include_build = 1
 endif
 
 if (! $?include_db) then
-	echo "including $env_alias_dir/aliases_db.txt"
-	source $env_alias_dir/aliases_db.txt
-	set include_db = 1
+    echo "including $env_alias_dir/aliases_db.txt"
+    source $env_alias_dir/aliases_db.txt
+    set include_db = 1
 endif
 
 if (! $?include_elastic) then
-	echo "including $env_alias_dir/aliases_elastic.txt"
-	source $env_alias_dir/aliases_elastic.txt
-	set include_elastic = 1
+    echo "including $env_alias_dir/aliases_elastic.txt"
+    source $env_alias_dir/aliases_elastic.txt
+    set include_elastic = 1
 endif
 
 if (! $?include_git) then
-	echo "including $env_alias_dir/aliases_git.txt"
-	source $env_alias_dir/aliases_git.txt
-	set include_git = 1
+    echo "including $env_alias_dir/aliases_git.txt"
+    source $env_alias_dir/aliases_git.txt
+    set include_git = 1
 endif
 
 if (! $?include_help) then
-	echo "including $env_alias_dir/aliases_help.txt"
-	source $env_alias_dir/aliases_help.txt
-	set include_help = 1
+    echo "including $env_alias_dir/aliases_help.txt"
+    source $env_alias_dir/aliases_help.txt
+    set include_help = 1
 endif
 
 if (! $?include_idol) then
-	echo "including $env_alias_dir/aliases_idol.txt"
-	source $env_alias_dir/aliases_idol.txt
-	set include_idol = 1
+    echo "including $env_alias_dir/aliases_idol.txt"
+    source $env_alias_dir/aliases_idol.txt
+    set include_idol = 1
 endif
 
 if (! $?include_journal) then
-	echo "including $env_alias_dir/aliases_journal.txt"
-	source $env_alias_dir/aliases_journal.txt
-	set include_journal = 1
+    echo "including $env_alias_dir/aliases_journal.txt"
+    source $env_alias_dir/aliases_journal.txt
+    set include_journal = 1
 endif
 
 if (! $?include_svn) then
-	echo "including $env_alias_dir/aliases_svn.txt"
-	source $env_alias_dir/aliases_svn.txt
-	set include_svn = 1
+    echo "including $env_alias_dir/aliases_svn.txt"
+    source $env_alias_dir/aliases_svn.txt
+    set include_svn = 1
 endif
 
 if (! $?include_trim) then
-	echo "including $env_alias_dir/aliases_trim.txt"
-	source $env_alias_dir/aliases_trim.txt
-	set include_trim = 1
+    echo "including $env_alias_dir/aliases_trim.txt"
+    source $env_alias_dir/aliases_trim.txt
+    set include_trim = 1
 endif
 
 # 

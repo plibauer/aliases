@@ -4,10 +4,10 @@
 set CurrentJournal = /c/tmp/journalname.txt
 
 alias vip             'vi $JOURNAL_DIR/DIARY.txt; scrub $JOURNAL_DIR/DIARY.txt'
-alias todo	          'vi $CLOUD_DIR/Work/TODO.txt; scrub $CLOUD_DIR/Work/TODO.txt'
-alias haihai	      'vi $JOURNAL_DIR/HaiHaiTransfers.txt'
-alias viubuntu		  'vi $CLOUD_DIR/Work/UBUNTU.txt; scrub $CLOUD_DIR/Work/UBUNTU.txt'
-alias ublog			  viubuntu
+alias todo            'vi $CLOUD_DIR/Work/TODO.txt; scrub $CLOUD_DIR/Work/TODO.txt'
+alias haihai          'vi $JOURNAL_DIR/HaiHaiTransfers.txt'
+alias viubuntu        'vi $CLOUD_DIR/Work/UBUNTU.txt; scrub $CLOUD_DIR/Work/UBUNTU.txt'
+alias ublog           viubuntu
 
 alias grepjd          ' ls $WIKI_DIR/journals/*/*                                                                       \\
 | $PERL -e '"'"'                                                                                                        \\
@@ -40,8 +40,8 @@ alias refreshjournal  'echo `date +%B%Y` $WIKI_DIR                              
 
 alias scrub           '$PERL $PERL_HOME/scrub.pl --file'
 alias viwiki          'vi \!^; scrub  \!^'
-alias textpad	      'TextPad.exe &'
-alias tpad   	      textpad
+alias textpad         'TextPad.exe &'
+alias tpad            textpad
 
 alias vj              ' echo -n "\!* $WIKI_DIR" | $PERL -ne  '"'"'                                                        \\
      /^([A-z]+)\s*(\d+) (.+)/ and do { ($m,$y,$path) = ($1,$2,$3) };                                                          \\

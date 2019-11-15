@@ -7,100 +7,100 @@
 
 #
 #
-alias tes        		'$var_trimDir/$var_defArch/$var_defBuild/TRIMEnterpriseStudio.exe &'
-alias trim       		'$var_trimDir/$var_defArch/$var_defBuild/TRIM.exe &'
-alias trimhelp   		'hh $var_trimDir/doc/doc/DocPub/TRIM.chm &'
-alias wgs        		'$var_trimDir/$var_defArch/$var_defBuild/TRIMWorkgroup.exe &'
-alias messages      		'cat $var_trimDir/trim/TRIMMessages.txt | pgrep -i '
-alias trimmessages  		'$var_trimDir/trim/TRIMMessages.exe'
-alias properties    		'cat $var_trimDir/trim/src/DD/properties.txt | pgrep -i '
-alias viewprop      		'view $var_trimDir/trim/src/DD/properties.txt'
-alias propids       		'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | pgrep -i '
-alias propidx       		'cat $var_trimDir/trim/src/Core/PRPpropertyFind.cpp | pgrep -i '
+alias tes               '$var_trimDir/$var_defArch/$var_defBuild/TRIMEnterpriseStudio.exe &'
+alias trim              '$var_trimDir/$var_defArch/$var_defBuild/TRIM.exe &'
+alias trimhelp          'hh $var_trimDir/doc/doc/DocPub/TRIM.chm &'
+alias wgs               '$var_trimDir/$var_defArch/$var_defBuild/TRIMWorkgroup.exe &'
+alias messages          'cat $var_trimDir/trim/TRIMMessages.txt | pgrep -i '
+alias trimmessages      '$var_trimDir/trim/TRIMMessages.exe'
+alias properties        'cat $var_trimDir/trim/src/DD/properties.txt | pgrep -i '
+alias viewprop          'view $var_trimDir/trim/src/DD/properties.txt'
+alias propids           'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | pgrep -i '
+alias propidx           'cat $var_trimDir/trim/src/Core/PRPpropertyFind.cpp | pgrep -i '
 
-alias database      		'cat $var_trimDir/trim/src/DD/DATABASE.TXT | pgrep -i '
-alias viewdb        		'view $var_trimDir/trim/src/DD/DATABASE.TXT'
+alias database          'cat $var_trimDir/trim/src/DD/DATABASE.TXT | pgrep -i '
+alias viewdb            'view $var_trimDir/trim/src/DD/DATABASE.TXT'
 
-alias killtrim			'taskkill /F /IM TRIM.exe'
-alias killwgs 			'taskkill /F /IM TRIMWorkgroup.exe'
-alias killproc			'taskkill /F /IM'
-alias killboth			'killtrim;killwgs'
+alias killtrim          'taskkill /F /IM TRIM.exe'
+alias killwgs           'taskkill /F /IM TRIMWorkgroup.exe'
+alias killproc          'taskkill /F /IM'
+alias killboth          'killtrim;killwgs'
 
 # Run populate database
-alias populatedb 		'cd $var_trimDir; $var_trimDir/$var_defArch/$var_defBuild/PopulateDatabase.exe'
-alias popdb 			populatedb
-alias popdbhelp			'populatedb -h'
-alias restorepopdb 		'popdb --load --dbid $var_DBID --dbname $var_dbSession'
-alias reloadpopdb 		restorepopdb
-alias defaultconfig		'setdbid $env_default_dbid; dbsession $env_dbDefault'
-alias elasticconfig		defaultconfig
-alias popdboracle 		'popdb --db oracle64'
-alias popdbidol         	'populatedb --dci idol --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol"; bkupidolcfg'
-alias restoreidol		'popdb --load --dci idol --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol"'
-alias idolconfig		'setdbid $env_default_dbid_pref"5"; dbsession $var_dbSession"_idol"'
-alias popdbbig			'popdb --big'
-alias bigconfig			'setdbid 41; dbsession Test_Big_"$env_revision"_SqlServer'
-alias popdbelastic		'popdb --dciServer $var_elasticHost --snapshotPath "/usr/share/elasticsearch/data/snapshots"'
-alias popdbes			popdbelastic
+alias populatedb        'cd $var_trimDir; $var_trimDir/$var_defArch/$var_defBuild/PopulateDatabase.exe'
+alias popdb             populatedb
+alias popdbhelp         'populatedb -h'
+alias restorepopdb      'popdb --load --dbid $var_DBID --dbname $var_dbSession'
+alias reloadpopdb       restorepopdb
+alias defaultconfig     'setdbid $env_default_dbid; dbsession $env_dbDefault'
+alias elasticconfig     defaultconfig
+alias popdboracle       'popdb --db oracle64'
+alias popdbidol         'populatedb --dci idol --dbid $var_idolDBID --dbname $var_idolDbSession; bkupidolcfg'
+alias restoreidol       'popdb --load --dci idol --dbid $var_idolDBID --dbname $var_idolDbSession'
+alias idolconfig        'setdbid $env_default_dbid_pref"5"; dbsession $var_idolDbSession'
+alias popdbbig          'popdb --big'
+alias bigconfig         'setdbid 41; dbsession Test_Big_"$env_revision"_SqlServer'
+alias popdbelastic      'popdb --dciServer $var_elasticHost --snapshotPath "/usr/share/elasticsearch/data/snapshots"'
+alias popdbes           popdbelastic
 
-alias testac            	'testtrim --test autoclassification'
-alias elk_train         	'testac --load train '
-alias elk_test          	'testac --load test --inplace'
-alias elk_both          	'testac --load both '
-alias elk_classify      	'testac --inplace --classify '
-alias elastic_train		elk_train
-alias elastic_test		elk_test
-alias elastic_both		elk_both
-alias elastic_classify		elk_classify
+alias testac           'testtrim --test autoclassification'
+alias elk_train        'testac --load train '
+alias elk_test         'testac --load test --inplace'
+alias elk_both         'testac --load both '
+alias elk_classify     'testac --inplace --classify '
+alias elastic_train     elk_train
+alias elastic_test      elk_test
+alias elastic_both      elk_both
+alias elastic_classify  elk_classify
 
-alias idol_train		'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --load train'
-alias idol_test  		'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --load test --inplace'
-alias idol_both         	'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --load both'
-alias idol_classify     	'testac --dbid $env_default_dbid_pref"5" --dbname $var_dbSession"_idol" --classify --inplace'
+alias idol_train        'testac --dbid $var_idolDBID --dbname $var_idolDbSession --load train'
+alias idol_test         'testac --dbid $var_idolDBID --dbname $var_idolDbSession --load test --inplace'
+alias idol_both         'testac --dbid $var_idolDBID --dbname $var_idolDbSession --load both'
+alias idol_classify     'testac --dbid $var_idolDBID --dbname $var_idolDbSession --classify --inplace'
 
-alias trimconfig       		'xmlconf $var_trimcfg'
-alias trimcfgsorted   		'xmlformat $var_trimcfg | $PYTHON $PYTHON_HOME/sortXml.py'
-alias restoreconfig    		'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg $var_trimcfgdir'
-alias xmltrim          		'xmlformat $var_trimcfg'
-alias getconfig        		'more $var_trimcfg'
-alias fixtrimconfig    		'xmlformat -i -b .backup $var_trimcfg'
-alias bkupidolcfg      		'cp $var_trimcfg /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.IDOL'
-alias bkupelasticcfg   		'cp $var_trimcfg /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC'
-alias idolcfg          		'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.IDOL $var_trimcfg'
-alias elasticcfg       		'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC $var_trimcfg'
+alias trimconfig        'xmlconf $var_trimcfg'
+alias trimcfgsorted     'xmlformat $var_trimcfg | $PYTHON $PYTHON_HOME/sortXml.py'
+alias restoreconfig     'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg $var_trimcfgdir'
+alias xmltrim           'xmlformat $var_trimcfg'
+alias getconfig         'more $var_trimcfg'
+alias fixtrimconfig     'xmlformat -i -b .backup $var_trimcfg'
+alias bkupidolcfg       'cp $var_trimcfg /c/TestDatasets/$var_idolDBID/backup/TRIMConfig.tcfg.IDOL'
+alias bkupelasticcfg    'cp $var_trimcfg /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC'
+alias idolcfg           'cp /c/TestDatasets/$var_idolDBID/backup/TRIMConfig.tcfg.IDOL $var_trimcfg'
+alias elasticcfg        'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC $var_trimcfg'
 
-alias testtrim       		'$var_trimDir/$var_defArch/$var_defBuild/testTrim.exe'
-alias trimtest       		testtrim
-alias testhelp	     		'testtrim --help'
-alias testlist       		'testtrim --list'
-alias testcases      		testlist
-alias bld            		'testtrim --test bulkLoader --type all --timeout 6000 --assert'
-alias bldapi         		'testtrim --test bulkLoader --type api --timeout 6000 --assert'
-alias bldsth         		'testtrim --test bulkLoader --type sth --timeout 6000 --assert'
-alias bldrecs        		'testtrim --test bulkLoader --type apirec --timeout 6000 --assert'
-alias bldcont        		'testtrim --test bulkLoader --type container --timeout 6000 --assert'
-alias makecontainers 		'testtrim --test bulkLoader --type container --timeout 6000 --assert --inplace --containers \!:1 --perContainer \!:2'
+alias testtrim          '$var_trimDir/$var_defArch/$var_defBuild/testTrim.exe'
+alias trimtest          testtrim
+alias testhelp          'testtrim --help'
+alias testlist          'testtrim --list'
+alias testcases         testlist
+alias bld               'testtrim --test bulkLoader --type all --timeout 6000 --assert'
+alias bldapi            'testtrim --test bulkLoader --type api --timeout 6000 --assert'
+alias bldsth            'testtrim --test bulkLoader --type sth --timeout 6000 --assert'
+alias bldrecs           'testtrim --test bulkLoader --type apirec --timeout 6000 --assert'
+alias bldcont           'testtrim --test bulkLoader --type container --timeout 6000 --assert'
+alias makecontainers    'testtrim --test bulkLoader --type container --timeout 6000 --assert --inplace --containers \!:1 --perContainer \!:2'
 
 # CSharp testing
-alias testcs       		'$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe --test'
-alias testevmon	   		'testcs EventMonitor --inplace'
+alias testcs            '$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe --test'
+alias testevmon         'testcs EventMonitor --inplace'
 
 # OCTANE and ALM
-alias alm			'$PERL $ALM_DB/ALMTool.pl'
-alias almcr			'alm --cr'
-alias almmatch			'alm --match \!^ | pgrep summary'
-alias almmatchv			'alm --match'
-alias almsummary		'alm --summary --cr'
-alias almschema			'alm --schema'
+alias alm               '$PERL $ALM_DB/ALMTool.pl'
+alias almcr             'alm --cr'
+alias almmatch          'alm --match \!^ | pgrep summary'
+alias almmatchv         'alm --match'
+alias almsummary        'alm --summary --cr'
+alias almschema         'alm --schema'
 
-alias curldefect		'curl -s "$var_elasticHost/octane_new/_search?pretty&q=\!^"'
-alias defect			'$PYTHON $PYTHON_HOME/octane.py'
-alias defectall			'$PYTHON $PYTHON_HOME/octane.py -v'
-alias cr			defect
-alias crall			defectall
-alias crv			defectall
-alias currentdefects		'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octane_new/_search?pretty" -c current_defects -f $ELASTIC_QUERIES \!^'
-alias defectprocessor          '$PERL -e ' "'" ' \\
+alias curldefect        'curl -s "$var_elasticHost/octane_new/_search?pretty&q=\!^"'
+alias defect            '$PYTHON $PYTHON_HOME/octane.py'
+alias defectall         '$PYTHON $PYTHON_HOME/octane.py -v'
+alias cr                defect
+alias crall             defectall
+alias crv               defectall
+alias currentdefects   '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octane_new/_search?pretty" -c current_defects -f $ELASTIC_QUERIES \!^'
+alias defectprocessor  '$PERL -e ' "'" ' \\
 use Term::ANSIColor qw(:constants :constants256);                     \\
 sub parse {                                                           \\
   my $l = shift;                                                      \\
@@ -206,11 +206,11 @@ for(sort keys %releases) {                                            \\
   }                                                                   \\
 }                                                                     \\
 ' "'"
-alias defectsuser	'currentdefects \!^ | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
-alias defects		'defectsuser paul.libauer'
-alias defectsuserv	'setenv DEFECT_OUTPUT "verbose"; currentdefects \!^ | egrep "_id|_phase|_severity|_release|_name|_priority|_defect_type" | defectprocessor ; unsetenv DEFECT_OUTPUT'
+alias defectsuser   'currentdefects \!^ | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
+alias defects       'defectsuser paul.libauer'
+alias defectsuserv  'setenv DEFECT_OUTPUT "verbose"; currentdefects \!^ | egrep "_id|_phase|_severity|_release|_name|_priority|_defect_type" | defectprocessor ; unsetenv DEFECT_OUTPUT'
 
-alias defectsv		'defectsuserv paul.libauer'
+alias defectsv      'defectsuserv paul.libauer'
 
 alias enums  'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs     \\
 | $PERL -e ' "'" '                                                            \\

@@ -25,50 +25,50 @@ def printUsage(script):
 
  OPTIONS
 
-		-a <architecture>
-			Eg. x64 or x86
-		
-		-b <build>
-		    Eg. Debug or Release
-			
-		-c <compiler>
-			Eg. VS2013 or VS2015 or VS2017 etc.
-		
-		--config <config file path>
-			Speficy the path to the configuration file (Default is [PYTHON_HOME]/make_env.config)
-			
-		-e <elastic prefix>
-			Eg. CM_
-			
-		-f <folder path>
-			Eg. 'trunk' when the revision is the latest branch, otherwise
-			aliases will expect that the folder name is the same as the revision
-			number. Also, if a checkout was to C:/9.3 for example, then the 
-			'folder' value should be specified as 9.3 because by default it will
-			expect the checkout folder to be '93'
+                -a <architecture>
+                        Eg. x64 or x86
+                
+                -b <build>
+                    Eg. Debug or Release
+                        
+                -c <compiler>
+                        Eg. VS2013 or VS2015 or VS2017 etc.
+                
+                --config <config file path>
+                        Speficy the path to the configuration file (Default is [PYTHON_HOME]/make_env.config)
+                        
+                -e <elastic prefix>
+                        Eg. CM_
+                        
+                -f <folder path>
+                        Eg. 'trunk' when the revision is the latest branch, otherwise
+                        aliases will expect that the folder name is the same as the revision
+                        number. Also, if a checkout was to C:/9.3 for example, then the 
+                        'folder' value should be specified as 9.3 because by default it will
+                        expect the checkout folder to be '93'
 
-		-h
+                -h
         --help
             Print this help page
-			
-		-i <idol prefix>
-			Eg. HPERM_ or CM_
-			
-		-p <prefix>
-			Eg, K, J, L, M, ....
-			
-		-r <release version>
-			Eg, 83, 8.3, 90, 91 etc.
-			
+                        
+                -i <idol prefix>
+                        Eg. HPERM_ or CM_
+                        
+                -p <prefix>
+                        Eg, K, J, L, M, ....
+                        
+                -r <release version>
+                        Eg, 83, 8.3, 90, 91 etc.
+                        
  EXAMPLES
 
         1. Configure settings for release version 9.2
                 {script} -r 9.2
 
 
-		2. Specify all values on command line
-				{script} -a x64 -b Debug -c VS2017 -e CM_ -f trunk -i CM_ -p M -r 9.4
-				
+                2. Specify all values on command line
+                                {script} -a x64 -b Debug -c VS2017 -e CM_ -f trunk -i CM_ -p M -r 9.4
+                                
 '''
     print(usage.format(script=script))
 
@@ -94,9 +94,9 @@ unset env_*
 set env_alias             = {home}
 set env_alias_dir         = $env_alias/tcsh
 set env_revision          = {release}
-set env_default_dbid_pref = {prefix}
-set env_default_dbid      = $env_default_dbid_pref"1"
-set env_default_dbid_idol = $env_default_dbid_pref"5"
+set env_dbid_pref         = {prefix}
+set env_dbid              = $env_dbid_pref"1"
+set env_idolDbid          = $env_dbid_pref"5"
 set env_folder            = {folder}
 set env_defArch           = {arch}
 set env_defCompiler       = {compiler}
@@ -160,7 +160,7 @@ def writeFile(config, rev, arch, build, compiler, elastic, folder, idol, prefix)
     if prefix is None:
         prefix = config.get(rev, 'prefix')
 
-    temp = template(alias_dir, rev, prefix, folder,	arch, compiler,
+    temp = template(alias_dir, rev, prefix, folder,     arch, compiler,
                     build, idol, elastic)
 
 
@@ -295,14 +295,19 @@ def main(argv):
 
         # Try to preserve the existing LOCAL.txt file and also check for LOCAL.txt.bak
         if os.path.exists(locPath):
-            if os.path.exists(f"{locPath}.bak"):
-                txt = input(f"The backup file {locPath}.bak exists!\nOVERWRITE? [Y/n] : ")
-                if re.search("^y(es)*$", txt, re.IGNORECASE):
-                    shutil.copy2(locPath, f"{locPath}.bak")
-                    print(f"*** Backed-up existing {locFile} => {locPath}.bak ***")
-            else:
-                shutil.copy2(locPath, f"{locPath}.bak")
-                print(f"Backed-up existing {locFile} => {locPath}.bak ***")
+          txt = input(f"{locPath} already exists - do you want to keep the existing file? [Y/n] : ")
+          if re.search("^y(es)*$", txt, re.IGNORECASE):
+            print(f"{locPath} has not been changed")
+            sys.exit(1)
+          
+        if os.path.exists(f"{locPath}.bak"):
+          txt = input(f"The backup file {locPath}.bak exists!\nOVERWRITE? [Y/n] : ")
+          if re.search("^y(es)*$", txt, re.IGNORECASE):
+             shutil.copy2(locPath, f"{locPath}.bak")
+             print(f"*** Backed-up existing {locFile} => {locPath}.bak ***")
+        else:
+           shutil.copy2(locPath, f"{locPath}.bak")
+           print(f"Backed-up existing {locFile} => {locPath}.bak ***")
 
 
         shutil.copy2(defPath, locPath)

@@ -5,19 +5,8 @@
 #                                                                                                                #
 ##################################################################################################################
 
-
-set env_dbDefault      = Test_"$env_revision"_SqlServer
-
 if (! $?var_trimDir) then
   set var_trimDir = $REPOS_ROOT"/$env_folder"
-endif
-
-if (! $?var_dbSession) then       
-  set var_dbSession   = $env_dbDefault
-else
-  if ("$var_dbSession" == "")  then
-     set var_dbSession   = $env_dbDefault
-  endif
 endif
 
 if (! $?var_dbServer) then       
@@ -28,19 +17,35 @@ else
   endif
 endif
 
-if (! $?var_DBID) then
-   set var_DBID = $env_default_dbid
+if (! $?var_dbSession) then       
+  set var_dbSession = Test_"$env_revision"_SqlServer
 else
-  if ("$var_DBID" == "")  then
-     set var_DBID   = $env_default_dbid
+  if ("$var_dbSession" == "")  then
+     set var_dbSession = Test_"$env_revision"_SqlServer
   endif
 endif
 
-if (! $?var_DBID_idol) then
-   set var_DBID_idol = $env_default_dbid_idol
+if (! $?var_idolDbSession) then       
+  set var_idolDbSession = Test_"$env_revision"_SqlServer_idol
 else
-  if ("$var_DBID_idol" == "")  then
-     set var_DBID_idol   = $env_default_dbid_idol
+  if ("$var_idolDbSession" == "")  then
+     set var_idolDbSession = Test_"$env_revision"_SqlServer_idol
+  endif
+endif
+
+if (! $?var_DBID) then
+   set var_DBID = $env_dbid
+else
+  if ("$var_DBID" == "")  then
+     set var_DBID = $env_dbid
+  endif
+endif
+
+if (! $?var_idolDBID) then
+   set var_idolDBID = $env_idolDbid
+else
+  if ("$var_idolDBID" == "")  then
+     set var_idolDBID= $env_idolDbid
   endif
 endif
 
@@ -48,7 +53,7 @@ if (! $?var_defArch) then
    set var_defArch = $env_defArch
 else
   if ("$var_defArch" == "")  then
-     set var_defArch   = $env_defArch
+     set var_defArch = $env_defArch
   endif
 endif
 
@@ -56,7 +61,7 @@ if (! $?var_defBuild) then
    set var_defBuild = $env_defBuild
 else
   if ("$var_defBuild" == "")  then
-     set var_defBuild   = $env_defBuild
+     set var_defBuild = $env_defBuild
   endif
 endif
 
@@ -99,10 +104,10 @@ else
 endif
 
 if (! $?var_idolDb) then
-  set var_idolDb = "$env_idolDbPrefix$var_DBID_idol" 
+  set var_idolDb = "$env_idolDbPrefix$var_idolDBID" 
 else
   if ("$var_idolDb" == "")  then
-     set var_idolDb = "$env_idolDbPrefix$var_DBID_idol"
+     set var_idolDb = "$env_idolDbPrefix$var_idolDBID"
   endif
 endif
 
@@ -110,22 +115,22 @@ set vpn_directory   = $NETWORK_DIR/vpn
 set hosts_directory = $SYSTEMROOT/System32/drivers/etc
 
 if ("$var_vpnConfig" == "BITVISE") then
-	set SVN_LAB_URI    = $SVN_BVISE_LAB
-	set SVN_STATIC_URI = $SVN_BVISE_STATIC
-	set PROXY_SERVER   = $SVN_BVISE_PROXY
-	/bin/cp $vpn_directory/hosts.bitvise $hosts_directory/hosts
+    set SVN_LAB_URI    = $SVN_BVISE_LAB
+    set SVN_STATIC_URI = $SVN_BVISE_STATIC
+    set PROXY_SERVER   = $SVN_BVISE_PROXY
+    /bin/cp $vpn_directory/hosts.bitvise $hosts_directory/hosts
 else
   if ("$var_vpnConfig" == "PULSE") then
-	set SVN_LAB_URI    = $SVN_PULSE_LAB
-	set SVN_STATIC_URI = $SVN_PULSE_STATIC
-	set PROXY_SERVER   = $SVN_PULSE_PROXY
-	/bin/cp $vpn_directory/hosts.pulse $hosts_directory/hosts
+    set SVN_LAB_URI    = $SVN_PULSE_LAB
+    set SVN_STATIC_URI = $SVN_PULSE_STATIC
+    set PROXY_SERVER   = $SVN_PULSE_PROXY
+    /bin/cp $vpn_directory/hosts.pulse $hosts_directory/hosts
   else
     if ("$var_vpnConfig" == "LOCAL") then
-	set SVN_LAB_URI    = $SVN_LOCAL_LAB
-	set SVN_STATIC_URI = $SVN_LOCAL_STATIC
-	set PROXY_SERVER   = ""
-	/bin/cp $vpn_directory/hosts $hosts_directory/hosts
+    set SVN_LAB_URI    = $SVN_LOCAL_LAB
+    set SVN_STATIC_URI = $SVN_LOCAL_STATIC
+    set PROXY_SERVER   = ""
+    /bin/cp $vpn_directory/hosts $hosts_directory/hosts
     else
         set SVN_LAB_URI    = $SVN_PULSE_LAB
         set SVN_STATIC_URI = $SVN_PULSE_STATIC
@@ -135,16 +140,16 @@ else
   endif
 endif
 
-set PROXY          		= http://$PROXY_SERVER
-set HTTPS_PROXY    		= https://$PROXY_SERVER
+set PROXY               = http://$PROXY_SERVER
+set HTTPS_PROXY         = https://$PROXY_SERVER
 
-set var_trimcfgdir		= "$var_trimDir/trim/SharedTrimServerData/ServerData"
-set var_trimcfg			= "$var_trimcfgdir/TRIMconfig.tcfg"
-set var_currentEnv		= $env_alias_dir/../"$env_revision"environment
-set var_trimDoc			= $var_trimDir/doc/doc/DocPub
+set var_trimcfgdir      = "$var_trimDir/trim/SharedTrimServerData/ServerData"
+set var_trimcfg         = "$var_trimcfgdir/TRIMconfig.tcfg"
+set var_currentEnv      = $env_alias_dir/../"$env_revision"environment
+set var_trimDoc         = $var_trimDir/doc/doc/DocPub
 
-set var_buildLog      	= "${REPOS_ROOT}/TEMP/TRIM-$env_folder-$var_defArch-$var_defBuild.log"
-set var_buildLogCSharp	= "${REPOS_ROOT}/TEMP/TRIMCSharp-$env_folder-$var_defArch-$var_defBuild.log"
-set var_buildLogWix   	= "${REPOS_ROOT}/TEMP/WIX-$env_folder-$var_defArch-$var_defBuild.log"
+set var_buildLog        = "${REPOS_ROOT}/TEMP/TRIM-$env_folder-$var_defArch-$var_defBuild.log"
+set var_buildLogCSharp  = "${REPOS_ROOT}/TEMP/TRIMCSharp-$env_folder-$var_defArch-$var_defBuild.log"
+set var_buildLogWix     = "${REPOS_ROOT}/TEMP/WIX-$env_folder-$var_defArch-$var_defBuild.log"
 
 

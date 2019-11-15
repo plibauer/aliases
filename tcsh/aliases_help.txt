@@ -4,11 +4,11 @@
 #  1. Reference an environment variable, pass to inline perl script which reads an
 #     argument from the command line ($var_DBID in this case)
 
-alias example_1 '$PERL -e  ' "'" '                    	\\
-     $p = "\"".$ENV{LOCALAPPDATA};                   	\\
-     $p =~ s|\\|/|g;                                 	\\
-     $p .= "/Hewlett-Packard/HP TRIM/$ARGV[0]/Log\""; 	\\
-     print "$p\n"                                    	\\
+alias example_1 '$PERL -e  ' "'" '                      \\
+     $p = "\"".$ENV{LOCALAPPDATA};                      \\
+     $p =~ s|\\|/|g;                                    \\
+     $p .= "/Hewlett-Packard/HP TRIM/$ARGV[0]/Log\"";   \\
+     print "$p\n"                                       \\
 '"'  $var_DBID  " 
 
 
@@ -44,7 +44,7 @@ alias perlshellhelp      'echo                                                  
 ######################################################################################
 
 
-alias admininstallhelp 	'echo                                          \\
+alias admininstallhelp  'echo                                          \\
 "\n                                                                    \\
 From a cygwin prompt;                                                  \\
 \n\n                                                                   \\
@@ -75,67 +75,67 @@ alias findcomphelp      'echo                                               \\
 
 ##########################
 
-alias sloghelp		'echo                										 					\\
-"\n                                      									     					\\
-Use slog and slogr if you are in the directory you wish to view the svn log of;  					\\
-\n\n                                                                             					\\
-\tslog 85123         - Will print all log entries from HEAD -> revision 85123    					\\
-\n                                                                               					\\
-\tslogr 85123 84444  - Will print the log entries starting at 85123  -> 84444	 					\\
-\n\n																			 					\\
-Use slogurl and slogurlr when you have the repository URL and are not in a checked-out directory; 	\\
-\n\n																			 				  	\\
+alias sloghelp      'echo                                                                           \\
+"\n                                                                                                 \\
+Use slog and slogr if you are in the directory you wish to view the svn log of;                     \\
+\n\n                                                                                                \\
+\tslog 85123         - Will print all log entries from HEAD -> revision 85123                       \\
+\n                                                                                                  \\
+\tslogr 85123 84444  - Will print the log entries starting at 85123  -> 84444                       \\
+\n\n                                                                                                \\
+Use slogurl and slogurlr when you have the repository URL and are not in a checked-out directory;   \\
+\n\n                                                                                                \\
 \tslogurl svn://localhost/REPOS/trunk 84357\n\tslogurlr svn://localhost/REPOS/trunk 84405 84357     \\
 \n\n" '
 
 ##########################
 
-alias almsanitycheckhelp  'echo                                               		\\
-"\n                                                                         		\\
-\t1. Run almcheckdates                                                             	\\
-\t2. Copy sanityCheckOutput.txt to : ~/Dropbox/Work                           		\\
-\t3. Wait a couple of minutes for it to be processed                           		\\
-\t4. Run almfixdefects to download defectResults.txt and update local files    		\\
-\n\n"                                                                         		\\
-'                                                                            	 	\\
-alias sanityhelp	  almsanitycheckhelp
+alias almsanitycheckhelp  'echo                                                     \\
+"\n                                                                                 \\
+\t1. Run almcheckdates                                                              \\
+\t2. Copy sanityCheckOutput.txt to : ~/Dropbox/Work                                 \\
+\t3. Wait a couple of minutes for it to be processed                                \\
+\t4. Run almfixdefects to download defectResults.txt and update local files         \\
+\n\n"                                                                               \\
+'                                                                                   \\
+alias sanityhelp      almsanitycheckhelp
 
 ##########################
 
-alias dbhelp      'echo                                                            						\\
-"\n                                                                                						\\
-\t whichenv             : displays current settings                                						\\
-\t dbsession <value>    : sets the database to run against                         						\\
-\t dbserver  <value>    : sets the database instance to use                        						\\
-\t db        <options>  : general db operations                                    						\\
-\t dbs                  : list available databases for current SERVER ($var_dbServer)  					\\
-\t dbdetails            : as above, but with verbose outout                        						\\
-\t dbsql     <string>   : run the SQL specified by double quoted <string>          						\\
-\t                                                                                 						\\
-\t add -verbose to any command to see what is actually being run                   						\\
-\t                                                                                 						\\
-\t EXAMPLE                                                                         						\\
-\t   Set the server to SQL2016  :  >dbserver SQL2016                               						\\
-\t   Set the database to TEST91 :  >dbsession TEST91                               						\\
-\t                                                                                 						\\
-\t   Query the number of rows in the TSRECORD table;                               						\\
-\t   (The ^ is a double quote)                                                     						\\
-\t                                                                                 						\\
-\t   >dbsql ^SELECT COUNT(*) FROM TSRECORD^ --verbose  --unadorned                 						\\
-                                                                                   						\\
-SERVER            : SQL2016                                                        						\\
-DATABASE          : TEST91                                                         						\\
-CONNECTION STRING : dbi:ODBC:driver={SQL Server};Server=SQL2016;Database=TEST91;Trusted_Connection=Yes 	\\
-SQL QUERY         : SELECT COUNT(*) FROM TSRECORD                                  						\\
-MAX COLUMN WIDTH  : UNDEFINED                                                      						\\
-NUMBER OF ROWS    : 1                                                              						\\
-NUMBER OF COLUMNS : 1                                                              						\\
-                                                                                   						\\
- 306                                                                               						\\
-                                                                                   						\\
-\tFor more detailed help, db -help                                                 						\\
-\n\n"                                                                              						\\
-'                                                                                  						\\
+alias dbhelp      'echo                                                                                 \\
+"\n                                                                                                     \\
+\t whichenv             : displays current settings                                                     \\
+\t dbsession <value>    : sets the database to run against                                              \\
+\t dbserver  <value>    : sets the database instance to use                                             \\
+\t db        <options>  : general db operations                                                         \\
+\t dbs                  : list available databases for current SERVER ($var_dbServer)                   \\
+\t dbdetails            : as above, but with verbose outout                                             \\
+\t dbsql     <string>   : run the SQL specified by double quoted <string>                               \\
+\t                                                                                                      \\
+\t add -verbose to any command to see what is actually being run                                        \\
+\t                                                                                                      \\
+\t EXAMPLE                                                                                              \\
+\t   Set the server to SQL2016  :  >dbserver SQL2016                                                    \\
+\t   Set the database to TEST91 :  >dbsession TEST91                                                    \\
+\t                                                                                                      \\
+\t   Query the number of rows in the TSRECORD table;                                                    \\
+\t   (The ^ is a double quote)                                                                          \\
+\t                                                                                                      \\
+\t   >dbsql ^SELECT COUNT(*) FROM TSRECORD^ --verbose  --unadorned                                      \\
+                                                                                                        \\
+SERVER            : SQL2016                                                                             \\
+DATABASE          : TEST91                                                                              \\
+CONNECTION STRING : dbi:ODBC:driver={SQL Server};Server=SQL2016;Database=TEST91;Trusted_Connection=Yes  \\
+SQL QUERY         : SELECT COUNT(*) FROM TSRECORD                                                       \\
+MAX COLUMN WIDTH  : UNDEFINED                                                                           \\
+NUMBER OF ROWS    : 1                                                                                   \\
+NUMBER OF COLUMNS : 1                                                                                   \\
+                                                                                                        \\
+ 306                                                                                                    \\
+                                                                                                        \\
+\tFor more detailed help, db -help                                                                      \\
+\n\n"                                                                                                   \\
+'                                                                                                       \\
 
 ##########################
 
@@ -157,35 +157,35 @@ alias escurlhelp            'echo                                               
 
 ##########################
 
-alias elastichelp      'echo                                                       	    \\
-"                                                                                	    \\
---- Elastic Index ---                                                                 	\\
-  mapping        : Show mapping for the default elastic index                        	\\
-  espym 'index'  : Show mapping for 'index'                                      	    \\
-  settings       : Show settings for default index                                   	\\
-  espys 'index'  : Show settings for 'index'	                                   	    \\
-  espyhelp(espyh): See examples of extended espy commands 				                \\
+alias elastichelp      'echo                                                            \\
+"                                                                                       \\
+--- Elastic Index ---                                                                   \\
+  mapping        : Show mapping for the default elastic index                           \\
+  espym 'index'  : Show mapping for 'index'                                             \\
+  settings       : Show settings for default index                                      \\
+  espys 'index'  : Show settings for 'index'                                            \\
+  espyhelp(espyh): See examples of extended espy commands                               \\
   escontentsrch  : Search using curl for a specific term in Document.Content            \\
-											                                            \\
---- Autoclassification --- 							                                    \\
-  acmapping      : Show mapping for the autoclassification index                     	\\
-  acsettings     : Show settings for autoclassification index                        	\\
-  autoclassinfo  : Show a summary of the autoclassification index                     	\\
-  autoclasstypes : Show the different table <types>                                  	\\
-  estype <type>  : Query one of the types from the previous command                  	\\
-  aclabels       : Print _id, document count, uri and name for all categories/labels 	\\
-											                                            \\
--- Word statistics ---                                                               	\\
+                                                                                        \\
+--- Autoclassification ---                                                              \\
+  acmapping      : Show mapping for the autoclassification index                        \\
+  acsettings     : Show settings for autoclassification index                           \\
+  autoclassinfo  : Show a summary of the autoclassification index                       \\
+  autoclasstypes : Show the different table <types>                                     \\
+  estype <type>  : Query one of the types from the previous command                     \\
+  aclabels       : Print _id, document count, uri and name for all categories/labels    \\
+                                                                                        \\
+-- Word statistics ---                                                                  \\
                                                                                         \\
   getwords \042id\042  <arg1> <arg2> <arg3>                                             \\
-             Print tabulated words using _id from acwordlabels 	                        \\
-											                                            \\
-      ARG1  - search string which will be matched against each pair                 	\\
+             Print tabulated words using _id from acwordlabels                          \\
+                                                                                        \\
+      ARG1  - search string which will be matched against each pair                     \\
               Eg. \042^un\042 will only match words beginning with \047un\047           \\
-      ARG2  - number of columns (default 10)                                        	\\
-      ARG3  - size of columns (default 30)                                          	\\
-											                                            \\
-  If all words should be printed, but you want to change arg2 or arg3, then;    	    \\
+      ARG2  - number of columns (default 10)                                            \\
+      ARG3  - size of columns (default 30)                                              \\
+                                                                                        \\
+  If all words should be printed, but you want to change arg2 or arg3, then;            \\
   getwords \042^.+\042 8 25   (all words with 8 columns and col width 25)               \\
                                                                                         \\
 Manipulate word counts and test classification process                                  \\
@@ -198,83 +198,83 @@ Manipulate word counts and test classification process                          
   espy --ac_modify 9000000018:zubkoff:1                                                 \\
              Change the word count for \047zubkoff\047 to a value of 1. Changing        \\
              a value to 0 will remove the word for the given label.                     \\
-                                                                                 	    \\
-"                                                                                    	\\
+                                                                                        \\
+"                                                                                       \\
 '
 
 alias eshelp elastichelp
 alias helpelastic elastichelp
 
-alias espyhelp      'echo                                                                  		\\
-"                                                                                         		\\
-  espy           Show all indexes and assign integer value to each index                   		\\
-  espy \047index\047   Show info for specific index (can use an integer for \047index\047) 		\\
- 																								\\
-  espy s/5/q:a   (long form: search/5/query:all)                                        		\\
-                 Search(s) the 5th index and Query(q) All(a)                            		\\
- 																								\\
-  espy s/5/9000000020  (long form: search/5/9000000020)                                 		\\
-                 Show document with _id (uri) 9000000020                                		\\
- 																								\\
-  espy s/5       (long form: search/5)                                                  		\\
-                 Show top 10 documents for index 5                                      		\\
- 																								\\
-  espy s/5 -s Number:Title                                                              		\\
-                 As above but only show Number and Title fields                         		\\
- 																								\\
-  espy s/5 -s Number:Title --compact                                                    		\\
-                 As above but remove _index,_score,_source,_type fields                 		\\
- 																								\\
-  espy s/5 -e Document                                                                  		\\
-                 Exclude \047Document\047 from the _source properties                   		\\
- 																								\\
-  espy s/cm_m1 --brief --size 100                                                       		\\
-                 Get the first 100 documents with 1 entry per line (_id,_sore,Title)    		\\
- 																								\\
-  espy s/cm_m1/query:Notes:\042patterson\042 -s Notes --compact                         		\\
+alias espyhelp      'echo                                                                       \\
+"                                                                                               \\
+  espy           Show all indexes and assign integer value to each index                        \\
+  espy \047index\047   Show info for specific index (can use an integer for \047index\047)      \\
+                                                                                                \\
+  espy s/5/q:a   (long form: search/5/query:all)                                                \\
+                 Search(s) the 5th index and Query(q) All(a)                                    \\
+                                                                                                \\
+  espy s/5/9000000020  (long form: search/5/9000000020)                                         \\
+                 Show document with _id (uri) 9000000020                                        \\
+                                                                                                \\
+  espy s/5       (long form: search/5)                                                          \\
+                 Show top 10 documents for index 5                                              \\
+                                                                                                \\
+  espy s/5 -s Number:Title                                                                      \\
+                 As above but only show Number and Title fields                                 \\
+                                                                                                \\
+  espy s/5 -s Number:Title --compact                                                            \\
+                 As above but remove _index,_score,_source,_type fields                         \\
+                                                                                                \\
+  espy s/5 -e Document                                                                          \\
+                 Exclude \047Document\047 from the _source properties                           \\
+                                                                                                \\
+  espy s/cm_m1 --brief --size 100                                                               \\
+                 Get the first 100 documents with 1 entry per line (_id,_sore,Title)            \\
+                                                                                                \\
+  espy s/cm_m1/query:Notes:\042patterson\042 -s Notes --compact                                 \\
                  Search all \047Notes\047 fields in cm_m1 for the string \047patterson\047 and  \\
-                 limit the output to only the \047Notes\047 field                       		\\
- 																								\\
-  espy s/cm_m1/q:Document.Content:trim -s Document --compact                            		\\
-                 Search in the document content field for all occurrences of \047trim\047 		\\
-                 and limit the output to only the \047Document.Content\047 field        		\\
- 																								\\
-  espy s/cm_m1/q:Document.Content:trim --brief                                          		\\
-                 As above, but just print the matching URIs                             		\\
-\n\n"                                                                                   		\\
+                 limit the output to only the \047Notes\047 field                               \\
+                                                                                                \\
+  espy s/cm_m1/q:Document.Content:trim -s Document --compact                                    \\
+                 Search in the document content field for all occurrences of \047trim\047       \\
+                 and limit the output to only the \047Document.Content\047 field                \\
+                                                                                                \\
+  espy s/cm_m1/q:Document.Content:trim --brief                                                  \\
+                 As above, but just print the matching URIs                                     \\
+\n\n"                                                                                           \\
 '
 
 
 ##########################
 
-alias idolhelp      'echo                                                                      		\\
-"\n                                                                                            		\\
-idolconfig    	: Sets up DBID with suffix 5 and dataset name with suffix '_idol'              		\\
-popdbidol       : Runs popdb for above settings                                                		\\
-restoreidol     : Restores above database                                                      		\\
-idoluri <uri>   : Print content and fields for record with URI <uri>                           		\\
-idolsync        : Send a DRESYNC to the index to make sure all records are available           		\\
-                                                                                               		\\
-TestTrim Autoclassification                                                                    		\\
-idol_train      : loads training records for above dataset                                     		\\
-idol_test       : loads test records data for above dataset                                    		\\
-idol_both       : loads both above sets                                                        		\\
-idol_classify   : Runs classify on records in Holding Bay                                      		\\
-                                                                                               		\\
-Category commands                                                                              		\\
-idolcatids  	        : Print all category IDs                                                  	\\
-idolcaturis  	        : Print all category names, URIs and IDs                                  	\\
-idolcat <id>            : Get the category with 'id'                                              	\\
-idolsuggesturi <uri>    : Suggest a category for the document with uri <uri>                      	\\
-idoltraining <id>       : Get the data that has been used to train the category                   	\\
-idolterms <id>          : Get extended term information with 'id'                                 	\\
-idolcatdel(ete) <id>    : Delete the category with 'id'                                           	\\
-idolcatdelete_all       : Delete all categories                                                   	\\
-idolcathier(archy) <id> : Get the hierarchy details for 'id'                                      	\\
+alias idolhelp      'echo                                                                           \\
+"\n                                                                                                 \\
+idolconfig      : Sets up DBID with suffix 5 and dataset name with suffix '_idol'                   \\
+popdbidol       : Runs popdb for above settings                                                     \\
+restoreidol     : Restores above database                                                           \\
+idoluri <uri>   : Print content and fields for record with URI <uri>                                \\
+idolsync        : Send a DRESYNC to the index to make sure all records are available                \\
+                                                                                                    \\
+TestTrim Autoclassification                                                                         \\
+idol_train      : loads training records for above dataset                                          \\
+idol_test       : loads test records data for above dataset                                         \\
+idol_both       : loads both above sets                                                             \\
+idol_classify   : Runs classify on records in Holding Bay                                           \\
+                                                                                                    \\
+Category commands                                                                                   \\
+idolcatids              : Print all category IDs                                                    \\
+idolcaturis             : Print all category names, URIs and IDs                                    \\
+idolcat <id>            : Get the category with 'id'                                                \\
+idolsuggesturi <uri>    : Suggest a category for the document with uri <uri>                        \\
+idoltraining <id>       : Get the data that has been used to train the category                     \\
+idolterms <id>          : Get extended term information with 'id'                                   \\
+idolcatdel(ete) <id>    : Delete the category with 'id'                                             \\
+idolcatdelete_all       : Delete all categories                                                     \\
+idolcathier(archy) <id> : Get the hierarchy details for 'id'                                        \\
 idolclass <opt>         : Search for categories and print uri, name, urn, database, id and terms    \\
     (a)ll      - show all categories with name, urn, category ID, term count and terms              \\
     (s)ummary  - Show summarised version of categories (no terms shown)                             \\
-    uri        - show category matching the 'uri' value                                        		\\
+    uri        - show category matching the 'uri' value                                             \\
     string     - show all categories with names matching the 'string'                               \\
 \n\n"                                                                                               \\
 '

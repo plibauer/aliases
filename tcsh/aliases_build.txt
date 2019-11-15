@@ -3,522 +3,519 @@
 #
 #
 
+set logSeparator    = "\n----------------------------------------------------------------------------------------------------"
 
-set logSeparator   	= "\n----------------------------------------------------------------------------------------------------"
-
-
-
-alias nuke       				"gosln;./NukeSolutions.bat"
-alias gensln     				"gosln;./GenerateSolutions.bat"
-alias nukeandgen 				"nuke;gensln"
-alias touchcopy  				'touch $var_trimDir/trim/src/CopyFiles/CopyFiles.cpp'
-alias bldlog     				'tail -f $var_buildLog.build'
-alias bldlogcs   				'tail -f $var_buildLogCSharp.build'
-alias bldlogwix  				'tail -f $var_buildLogWix'
-alias bldall 					"date; bldsln; bldcsharp; bldwix; date"
-alias kbldall					"killboth; bldall"
-alias bldboth					"release; bldsln; debug; bldsln"
-alias clnall 					"clnsln; clncsharp; clnwix"
-alias clnallboth				"release; clnall; debug; clnall"
-alias logs 						"golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
-alias rmlogs 					"rm $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/*.log"
-alias rmlogsboth 				"rm $var_trimDir/$var_defArch/{Debug,Release}/ServerLocalData/Log/*.log"
-alias rmlogslocal				"golocallog; rm -f *.log; back" 
+alias nuke             "gosln;./NukeSolutions.bat"
+alias gensln           "gosln;./GenerateSolutions.bat"
+alias nukeandgen       "nuke;gensln"
+alias touchcopy        'touch $var_trimDir/trim/src/CopyFiles/CopyFiles.cpp'
+alias bldlog           'tail -f $var_buildLog.build'
+alias bldlogcs         'tail -f $var_buildLogCSharp.build'
+alias bldlogwix        'tail -f $var_buildLogWix'
+alias bldall           "date; bldsln; bldcsharp; bldwix; date"
+alias kbldall          "killboth; bldall"
+alias bldboth          "release; bldsln; debug; bldsln"
+alias clnall           "clnsln; clncsharp; clnwix"
+alias clnallboth       "release; clnall; debug; clnall"
+alias logs             "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
+alias rmlogs           "rm $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/*.log"
+alias rmlogsboth       "rm $var_trimDir/$var_defArch/{Debug,Release}/ServerLocalData/Log/*.log"
+alias rmlogslocal      "golocallog; rm -f *.log; back" 
 
 
-alias evlog_clean "cat \!^             					|\\
-grep -v 'No events waiting at workgroup'				|\\
+alias evlog_clean "cat \!^                              |\\
+grep -v 'No events waiting at workgroup'                |\\
 grep -v 'processing  buffered events' > event_log.clean"
 
 alias evlogfilt 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMEvent* \\
- | head -1																	\\
- | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'						\\
- | /bin/sh																	\\
+ | head -1                                                                  \\
+ | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                        \\
+ | /bin/sh                                                                  \\
  | egrep -iv "processing  buffered events | No events waiting at workgroup" '
 
 alias evlog 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMEvent_$var_DBID* \\
- | head -1 																	\\
- | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"' 						\\
+ | head -1                                                                  \\
+ | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                        \\
  | /bin/sh '
  
 alias idxlog 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/IDX_$var_DBID* \\
- | head -1 																	\\
- | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"' 						\\
+ | head -1                                                                  \\
+ | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                        \\
  | /bin/sh '
 
 
-alias buildtest1  ' echo $logSeparator; date;											\\
-   echo "TEST build alias";																\\
+alias buildtest1  ' echo $logSeparator; date;                                           \\
+   echo "TEST build alias";                                                             \\
    echo "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.build"\\
 '
 
-alias buildtest2  'buildtest1 																	\\
+alias buildtest2  'buildtest1                                                                   \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'\\
- | $PERL -e ' "' "'                                            									\\
-      @l = <>;                                                 									\\
-      $line = shift @l;                                        									\\
-                                                               									\\
-      chomp $line; $line =~ s/\\\s$//; print "INPUT: $line\n"; 									\\
-                                                               									\\
-      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {    									\\
-        chomp $line;                                           									\\
-        $td=$1;$da=$2;$db=$3;$bl=$4;                           									\\
-        $line =~ s/.exe(,.+)/.exe/;                            									\\
-        $ver=$td; $ver =~ s/^.:.//;                            									\\
-      }																							\\
+ | $PERL -e ' "' "'                                                                             \\
+      @l = <>;                                                                                  \\
+      $line = shift @l;                                                                         \\
+                                                                                                \\
+      chomp $line; $line =~ s/\\\s$//; print "INPUT: $line\n";                                  \\
+                                                                                                \\
+      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {                                     \\
+        chomp $line;                                                                            \\
+        $td=$1;$da=$2;$db=$3;$bl=$4;                                                            \\
+        $line =~ s/.exe(,.+)/.exe/;                                                             \\
+        $ver=$td; $ver =~ s/^.:.//;                                                             \\
+      }                                                                                         \\
       print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\n"  \\
  '"'"
 
 #  TURN OFF OFFICE ADDIN LOADING AFTER A CSHARP BUILD
-alias noaddins ' $PERL -e ' "' "'                                    				\\
-   %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",     				\\
-              "MS Project" => "HP.HPRM.OfficeIntegration.Project",   				\\
-              Outlook      => "HP.HPRM.OfficeIntegration.Outlook",   				\\
-              PowerPoint   => "HP.HPRM.OfficeIntegration.PowerPoint",				\\
-              Word         => "HP.HPRM.OfficeIntegration.Word");     				\\
-  for (sort keys %addins) {                                          				\\
-     my $key = "HKCU\\Software\\Microsoft\\Office\\".$_."\\Addins\\".$addins{$_};	\\
-     print "Updated load behaviour for Addin $_ : ";								\\
-     print `REG ADD "$key" /v LoadBehavior /t REG_DWORD /d 0 /f`;					\\
-  }																					\\
+alias noaddins ' $PERL -e ' "' "'                                                   \\
+   %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",                    \\
+              "MS Project" => "HP.HPRM.OfficeIntegration.Project",                  \\
+              Outlook      => "HP.HPRM.OfficeIntegration.Outlook",                  \\
+              PowerPoint   => "HP.HPRM.OfficeIntegration.PowerPoint",               \\
+              Word         => "HP.HPRM.OfficeIntegration.Word");                    \\
+  for (sort keys %addins) {                                                         \\
+     my $key = "HKCU\\Software\\Microsoft\\Office\\".$_."\\Addins\\".$addins{$_};   \\
+     print "Updated load behaviour for Addin $_ : ";                                \\
+     print `REG ADD "$key" /v LoadBehavior /t REG_DWORD /d 0 /f`;                   \\
+  }                                                                                 \\
  '"'"
  
-alias addins   ' $PERL -e ' "' "'                                     				\\
-   %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",      				\\
-              "MS Project" => "HP.HPRM.OfficeIntegration.Project",    				\\
-              Outlook      => "HP.HPRM.OfficeIntegration.Outlook",    				\\
-              PowerPoint   => "HP.HPRM.OfficeIntegration.PowerPoint", 				\\
-              Word         => "HP.HPRM.OfficeIntegration.Word");      				\\
-  for (sort keys %addins) {                                           				\\
-     my $key = "HKCU\\Software\\Microsoft\\Office\\".$_."\\Addins\\".$addins{$_};	\\
-     print `REG QUERY "$key" /v LoadBehavior`;                                   	\\
-  }                                                                              	\\
+alias addins   ' $PERL -e ' "' "'                                                   \\
+   %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",                    \\
+              "MS Project" => "HP.HPRM.OfficeIntegration.Project",                  \\
+              Outlook      => "HP.HPRM.OfficeIntegration.Outlook",                  \\
+              PowerPoint   => "HP.HPRM.OfficeIntegration.PowerPoint",               \\
+              Word         => "HP.HPRM.OfficeIntegration.Word");                    \\
+  for (sort keys %addins) {                                                         \\
+     my $key = "HKCU\\Software\\Microsoft\\Office\\".$_."\\Addins\\".$addins{$_};   \\
+     print `REG QUERY "$key" /v LoadBehavior`;                                      \\
+  }                                                                                 \\
  '"'"
 
-alias checkForSolution 'echo $var_trimDir/trim/sln/TRIM/$var_defArch/TRIM.sln	\\
- | $PERL -ne '  "'  "'                        									\\
-   chomp;                                     									\\
-   if (not -e $_){                            									\\
-      print "\n  ***  $_ NOT FOUND!  *** \n\n"									\\
-   }                                          									\\
+alias checkForSolution 'echo $var_trimDir/trim/sln/TRIM/$var_defArch/TRIM.sln   \\
+ | $PERL -ne '  "'  "'                                                          \\
+   chomp;                                                                       \\
+   if (not -e $_){                                                              \\
+      print "\n  ***  $_ NOT FOUND!  *** \n\n"                                  \\
+   }                                                                            \\
  '"'"
 
-alias buildsolution '  echo $logSeparator; date;                                                 	\\
-   echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.build"      	\\
- | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  '"'"'	\\
- | $PERL -e ' "' "'                                                                              	\\
-      @l = <>;                                               										\\
-      $line = shift @l;                                      										\\
-      chomp $line;                                           										\\
-      $line =~ s/\\\s+$//;                                   										\\
-      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {  										\\
-        $td=$1;$da=$2;$db=$3;$bl=$4;                         										\\
-        $line =~ s/.exe(,.+)/.exe/;                          										\\
-        $ver=$td; $ver =~ s/^.:.//;                          										\\
-        open T,">$bl.cmd_line";                              										\\
-        print T "$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl\n"; 	\\
-        close T;                                													\\
-      }                                         													\\
-      else {                                    													\\
-        print "echo \"Invalid input : $line?\"";													\\
-        exit;                                   													\\
-      }                                         													\\
+alias buildsolution '  echo $logSeparator; date;                                                    \\
+   echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.build"         \\
+ | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  '"'"'   \\
+ | $PERL -e ' "' "'                                                                                 \\
+      @l = <>;                                                                                      \\
+      $line = shift @l;                                                                             \\
+      chomp $line;                                                                                  \\
+      $line =~ s/\\\s+$//;                                                                          \\
+      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {                                         \\
+        $td=$1;$da=$2;$db=$3;$bl=$4;                                                                \\
+        $line =~ s/.exe(,.+)/.exe/;                                                                 \\
+        $ver=$td; $ver =~ s/^.:.//;                                                                 \\
+        open T,">$bl.cmd_line";                                                                     \\
+        print T "$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl\n";    \\
+        close T;                                                                                    \\
+      }                                                                                             \\
+      else {                                                                                        \\
+        print "echo \"Invalid input : $line?\"";                                                    \\
+        exit;                                                                                       \\
+      }                                                                                             \\
       print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl &\n" \\
- ' "' "'                                                											\\
- | dos2unix | /bin/sh                                   											\\
- | $PERL -le "print q{$var_buildLog.build :: $var_trimDir}" 											\\
- | $PERL -e ' "' "'                                  												\\
-      $| = 1;                                        												\\
-      use File::Tail;                                												\\
-      @in = <>; $i = shift @in; chomp $i;            												\\
-      if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }   												\\
-      $ver =~ s/^.:.//;                              												\\
-      # print the command line to console            												\\
-      open C, "$b.cmd_line"; @cl = <C>; close C;     												\\
-      print "COMMAND LINE: @cl";                     												\\
-      print "LOG FILE    : $b\n";                    												\\
-      $file = File::Tail->new(name=>$b, interval=>1);												\\
-      while(defined($log=$file->read)) {             												\\
-        chomp $log;                                  												\\
-        if($log =~ /^={10}\s+Build:/){               												\\
-           print "$log\n";                           												\\
-           exit;                                     												\\
-        }                                            												\\
-        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {					\\
-          if(length($log) > 200){ $log = substr($log,0,200); }										\\
-          print "$log\n"																			\\
-        }               																			\\
-      }                 																			\\
+ ' "' "'                                                                                            \\
+ | dos2unix | /bin/sh                                                                               \\
+ | $PERL -le "print q{$var_buildLog.build :: $var_trimDir}"                                             \\
+ | $PERL -e ' "' "'                                                                                 \\
+      $| = 1;                                                                                       \\
+      use File::Tail;                                                                               \\
+      @in = <>; $i = shift @in; chomp $i;                                                           \\
+      if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                  \\
+      $ver =~ s/^.:.//;                                                                             \\
+      # print the command line to console                                                           \\
+      open C, "$b.cmd_line"; @cl = <C>; close C;                                                    \\
+      print "COMMAND LINE: @cl";                                                                    \\
+      print "LOG FILE    : $b\n";                                                                   \\
+      $file = File::Tail->new(name=>$b, interval=>1);                                               \\
+      while(defined($log=$file->read)) {                                                            \\
+        chomp $log;                                                                                 \\
+        if($log =~ /^={10}\s+Build:/){                                                              \\
+           print "$log\n";                                                                          \\
+           exit;                                                                                    \\
+        }                                                                                           \\
+        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                    \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                      \\
+          print "$log\n"                                                                            \\
+        }                                                                                           \\
+      }                                                                                             \\
  '"'"
  
 alias bldsln "checkForSolution; buildsolution; date"
 alias kbldsln "killboth; bldsln"
 
-alias clnsln '    echo $logSeparator; date;  														\\
-    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.clean"		\\
- | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
- | $PERL -e ' "' "'                                      											\\
-    @l = <>;                                             											\\
-    $line = shift @l;                                    											\\
-    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ 											\\
-      chomp $line;                                       											\\
-      $td=$1;$da=$2;$db=$3;$bl=$4;                       											\\
-      $line =~ s/.exe(,.+)/.exe/;                        											\\
-      $ver=$td; $ver =~ s/^.:.//;                        											\\
-    }                                                    											\\
+alias clnsln '    echo $logSeparator; date;                                                         \\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.clean"        \\
+ | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'    \\
+ | $PERL -e ' "' "'                                                                                 \\
+    @l = <>;                                                                                        \\
+    $line = shift @l;                                                                               \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                            \\
+      chomp $line;                                                                                  \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                  \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                   \\
+      $ver=$td; $ver =~ s/^.:.//;                                                                   \\
+    }                                                                                               \\
     print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /clean $db /project ALL_BUILD /out $bl &\n"\\
- ' "' "'                                               												\\
- | dos2unix | /bin/sh                                  												\\
- | $PERL -le "print q{$var_buildLog.clean :: $var_trimDir}"												\\
- | $PERL -e ' "' "'                                    												\\
-    $| = 1;                                            												\\
-    use File::Tail;                                    												\\
-    @in = <>;                                          												\\
-    $i = shift @in;                                    												\\
-    chomp $i;                                          												\\
-    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }       												\\
-    $ver =~ s/^.:.//;                                  												\\
-    print "LOG FILE: $b\n";                            												\\
-    $file = File::Tail->new(name=>$b, interval=>1);    												\\
-    while(defined($log=$file->read)) {                 												\\
-      chomp $log;                                      												\\
-      if($log    =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print "$log\n"; exit; }				\\
-      elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) {									\\
-        if(length($log) > 200){ $log = substr($log,0,200); }       									\\
-        print "$log\n"                                             									\\
-      }                                                            									\\
-    }                                                              									\\
+ ' "' "'                                                                                            \\
+ | dos2unix | /bin/sh                                                                               \\
+ | $PERL -le "print q{$var_buildLog.clean :: $var_trimDir}"                                             \\
+ | $PERL -e ' "' "'                                                                                 \\
+    $| = 1;                                                                                         \\
+    use File::Tail;                                                                                 \\
+    @in = <>;                                                                                       \\
+    $i = shift @in;                                                                                 \\
+    chomp $i;                                                                                       \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                    \\
+    $ver =~ s/^.:.//;                                                                               \\
+    print "LOG FILE: $b\n";                                                                         \\
+    $file = File::Tail->new(name=>$b, interval=>1);                                                 \\
+    while(defined($log=$file->read)) {                                                              \\
+      chomp $log;                                                                                   \\
+      if($log    =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print "$log\n"; exit; }                \\
+      elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) {                                 \\
+        if(length($log) > 200){ $log = substr($log,0,200); }                                        \\
+        print "$log\n"                                                                              \\
+      }                                                                                             \\
+    }                                                                                               \\
  '" '"
 
-alias buildcsharp 'echo $logSeparator; date;														\\
-    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogCSharp.build"	\\
- | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
- | $PERL -e ' "' "'																					\\
-     @l = <>;                                           											\\
-    $line = shift @l;                                   											\\
-    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){											\\
-      chomp $line;                                      											\\
-      $td=$1;$da=$2;$db=$3;$bl=$4;                      											\\
-      $line =~ s/.exe(,.+)/.exe/;                       											\\
-      $ver=$td; $ver =~ s/^.:.//;                       											\\
-    }                                                   											\\
-    print "touch $bl\n$line $td/trim/TRIMCSharp.sln /build $db /out $bl &\n" '"'"'					\\
- | dos2unix | /bin/sh																				\\
- | $PERL -le "print q{$var_buildLogCSharp.build :: $var_trimDir}"										\\
- | $PERL -e ' "' "'																					\\
-    $| = 1;        																					\\
-    use File::Tail;																					\\
-    @in = <>;      																					\\
-    $i = shift @in;																					\\
-    chomp $i;      																					\\
-    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }   													\\
-    $ver =~ s/^.:.//;                              													\\
-    print "LOG FILE: $b\n";                        													\\
-    $file = File::Tail->new(name=>$b, interval=>1);													\\
-    while(defined($log=$file->read)) {             													\\
-        chomp $log;                                													\\
-        if($log =~ /^={10}\s+Build:/){             													\\
-           print "$log\n";                         													\\
-           exit;                                   													\\
-        }                                          													\\
-        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {					\\
-          if(length($log) > 200){ $log = substr($log,0,200); }										\\
-          print "$log\n"                                      										\\
-        }                                                     										\\
-    }                                                         										\\
+alias buildcsharp 'echo $logSeparator; date;                                                        \\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogCSharp.build"  \\
+ | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'    \\
+ | $PERL -e ' "' "'                                                                                 \\
+     @l = <>;                                                                                       \\
+    $line = shift @l;                                                                               \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                            \\
+      chomp $line;                                                                                  \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                  \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                   \\
+      $ver=$td; $ver =~ s/^.:.//;                                                                   \\
+    }                                                                                               \\
+    print "touch $bl\n$line $td/trim/TRIMCSharp.sln /build $db /out $bl &\n" '"'"'                  \\
+ | dos2unix | /bin/sh                                                                               \\
+ | $PERL -le "print q{$var_buildLogCSharp.build :: $var_trimDir}"                                       \\
+ | $PERL -e ' "' "'                                                                                 \\
+    $| = 1;                                                                                         \\
+    use File::Tail;                                                                                 \\
+    @in = <>;                                                                                       \\
+    $i = shift @in;                                                                                 \\
+    chomp $i;                                                                                       \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                    \\
+    $ver =~ s/^.:.//;                                                                               \\
+    print "LOG FILE: $b\n";                                                                         \\
+    $file = File::Tail->new(name=>$b, interval=>1);                                                 \\
+    while(defined($log=$file->read)) {                                                              \\
+        chomp $log;                                                                                 \\
+        if($log =~ /^={10}\s+Build:/){                                                              \\
+           print "$log\n";                                                                          \\
+           exit;                                                                                    \\
+        }                                                                                           \\
+        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                    \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                      \\
+          print "$log\n"                                                                            \\
+        }                                                                                           \\
+    }                                                                                               \\
  '"'"
 alias bldcsharp 'buildcsharp; noaddins'
 alias kbldcsharp "killboth; bldcsharp"
 
-alias clncsharp 'echo $logSeparator;                                                               	\\
-    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogCSharp.clean" 	\\
- | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "'	\\
- | $PERL -e ' "' "'                                                                  				\\
-    @l = <>;                                                                         				\\
-    $line = shift @l;                                                                				\\
-    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                             				\\
-      chomp $line;                                                                   				\\
-      $td=$1;$da=$2;$db=$3;$bl=$4;                                                   				\\
-      $line =~ s/.exe(,.+)/.exe/;                                                    				\\
-      $ver=$td;                                                                      				\\
-      $ver =~ s/^.:.//;                                                              				\\
-    }                                                                                				\\
-    print "touch $bl\n$line $td/trim/TRIMCSharp.sln /clean $db /out $bl &\n" ' "' "' 				\\
- | dos2unix | /bin/sh                                                                				\\
- | $PERL -le "print q{$var_buildLogCSharp.clean :: $var_trimDir}"                        				\\
- | $PERL -e ' "' "'                                                                  				\\
-    $| = 1;                                                                          				\\
-    use File::Tail;                                                                  				\\
-    @in = <>;                                                                        				\\
-    $i = shift @in;                                                                  				\\
-    chomp $i;                                                                        				\\
-    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                     				\\
-    $ver =~ s/^.:.//;                                                                				\\
-    print "LOG FILE: $b\n";                                                          				\\
-    $file = File::Tail->new(name=>$b, interval=>0);                                  				\\
-    while(defined($log=$file->read)) {                                               				\\
-      chomp $log;                                                                    				\\
-      if($log    =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print "$log\n"; exit; } 				\\
-      elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) {                  				\\
-        if(length($log) > 200){ $log = substr($log,0,200); }                         				\\
-        print "$log\n"                                                               				\\
-      }                                                                              				\\
-    }                                                                                				\\
+alias clncsharp 'echo $logSeparator;                                                                \\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogCSharp.clean"  \\
+ | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  ' "' "' \\
+ | $PERL -e ' "' "'                                                                                 \\
+    @l = <>;                                                                                        \\
+    $line = shift @l;                                                                               \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                            \\
+      chomp $line;                                                                                  \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                  \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                   \\
+      $ver=$td;                                                                                     \\
+      $ver =~ s/^.:.//;                                                                             \\
+    }                                                                                               \\
+    print "touch $bl\n$line $td/trim/TRIMCSharp.sln /clean $db /out $bl &\n" ' "' "'                \\
+ | dos2unix | /bin/sh                                                                               \\
+ | $PERL -le "print q{$var_buildLogCSharp.clean :: $var_trimDir}"                                       \\
+ | $PERL -e ' "' "'                                                                                 \\
+    $| = 1;                                                                                         \\
+    use File::Tail;                                                                                 \\
+    @in = <>;                                                                                       \\
+    $i = shift @in;                                                                                 \\
+    chomp $i;                                                                                       \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                    \\
+    $ver =~ s/^.:.//;                                                                               \\
+    print "LOG FILE: $b\n";                                                                         \\
+    $file = File::Tail->new(name=>$b, interval=>0);                                                 \\
+    while(defined($log=$file->read)) {                                                              \\
+      chomp $log;                                                                                   \\
+      if($log    =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print "$log\n"; exit; }                \\
+      elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) {                                 \\
+        if(length($log) > 200){ $log = substr($log,0,200); }                                        \\
+        print "$log\n"                                                                              \\
+      }                                                                                             \\
+    }                                                                                               \\
  '"'"
 
-alias bldwix 'echo $logSeparator; date;																\\
-    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.build" 	\\
- | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
- | $PERL -e ' "' "'                                                                					\\
-    @l = <>;                                                                       					\\
-    $line = shift @l;                                                              					\\
-    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                           					\\
-      chomp $line;                                                                 					\\
-      $td=$1;$da=$2;$db=$3;$bl=$4;                                                 					\\
-      $line =~ s/.exe(,.+)/.exe/;                                                  					\\
-      $ver=$td; $ver =~ s/^.:.//;                                                  					\\
-    }                                                                              					\\
-    print "touch $bl\n$line $td/trim/WIX.sln /build \"$db|$da\" /out $bl &\n" '"'"'					\\
- | dos2unix | /bin/sh                                                              					\\
- | $PERL -le "print q{$var_buildLogWix.build :: $var_trimDir}"                         					\\
- | $PERL -e ' "' "'                                                                					\\
-    $| = 1;                                                                        					\\
-    use File::Tail;                                                                					\\
-    @in = <>;                                                                      					\\
-    $i = shift @in;                                                                					\\
-    chomp $i;                                                                      					\\
-    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                   					\\
-    $ver =~ s/^.:.//;                                                              					\\
-    print "LOG FILE: $b\n";                                                        					\\
-    $file = File::Tail->new(name=>$b, interval=>1);                                					\\
-    while(defined($log=$file->read)) {                                             					\\
-      chomp $log;                                                                  					\\
-        if($log =~ /^={10}\s+Build:/){                                             					\\
-           print "$log\n";                                                         					\\
-           exit;                                                                   					\\
-        }                                                                          					\\
-        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {   					\\
-          if(length($log) > 200){ $log = substr($log,0,200); }                     					\\
-          print "$log\n"                                                           					\\
-        }                                                                          					\\
-    }                                                                              					\\
+alias bldwix 'echo $logSeparator; date;                                                             \\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.build"     \\
+ | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'    \\
+ | $PERL -e ' "' "'                                                                                 \\
+    @l = <>;                                                                                        \\
+    $line = shift @l;                                                                               \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                            \\
+      chomp $line;                                                                                  \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                  \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                   \\
+      $ver=$td; $ver =~ s/^.:.//;                                                                   \\
+    }                                                                                               \\
+    print "touch $bl\n$line $td/trim/WIX.sln /build \"$db|$da\" /out $bl &\n" '"'"'                 \\
+ | dos2unix | /bin/sh                                                                               \\
+ | $PERL -le "print q{$var_buildLogWix.build :: $var_trimDir}"                                          \\
+ | $PERL -e ' "' "'                                                                                 \\
+    $| = 1;                                                                                         \\
+    use File::Tail;                                                                                 \\
+    @in = <>;                                                                                       \\
+    $i = shift @in;                                                                                 \\
+    chomp $i;                                                                                       \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                    \\
+    $ver =~ s/^.:.//;                                                                               \\
+    print "LOG FILE: $b\n";                                                                         \\
+    $file = File::Tail->new(name=>$b, interval=>1);                                                 \\
+    while(defined($log=$file->read)) {                                                              \\
+      chomp $log;                                                                                   \\
+        if($log =~ /^={10}\s+Build:/){                                                              \\
+           print "$log\n";                                                                          \\
+           exit;                                                                                    \\
+        }                                                                                           \\
+        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                    \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                      \\
+          print "$log\n"                                                                            \\
+        }                                                                                           \\
+    }                                                                                               \\
  '"'"
 
-alias bldwixproj 'echo $logSeparator; date;															\\
+alias bldwixproj 'echo $logSeparator; date;                                                         \\
     echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.proj,PROJ=\!:1" \\
- | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
- | $PERL -e ' "' "'                                                									\\
-    @l = <>;                                                       									\\
-    $line = shift @l;                                              									\\
-    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+),PROJ=(.+)/){ 									\\
-      chomp $line;                                                 									\\
-      $td=$1;$da=$2;$db=$3;$bl=$4;$proj=$5;                        									\\
-      $line =~ s/.exe(,.+)/.exe/;                                  									\\
-      $ver=$td; $ver =~ s/^.:.//;                                  									\\
-                                                                   									\\
-      open T, ">$bl.cmd_line";                                     									\\
-      print T "$line $td/trim/WIX.sln /build \"$db|$da\" /project $proj /out $bl";					\\
-      close T;                                														\\
-    }                                         														\\
-    else {                                    														\\
-      print "echo \"Invalid input : $line?\"";														\\
-      exit;                                   														\\
-    }                                         														\\
-    print "touch $bl\n$line $td/trim/WIX.sln /build \"$db|$da\" /project $proj /out $bl &\n" '"'"'	\\
- | dos2unix | /bin/sh                                    											\\
- | $PERL -le "print q{$var_buildLogWix.proj :: $var_trimDir}"											\\
- | $PERL -e ' "' "'																					\\
-    $| = 1;        																					\\
-    use File::Tail;																					\\
-    @in = <>;      																					\\
-    $i = shift @in;																					\\
-    chomp $i;      																					\\
-    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }   													\\
-    $ver =~ s/^.:.//;                              													\\
-                                                   													\\
-    # print the command line to console            													\\
-    open C, "$b.cmd_line"; @cl = <C>; close C;     													\\
-    print "COMMAND LINE: @cl";                     													\\
-                                                   													\\
-    print "LOG FILE: $b\n";                        													\\
-    $file = File::Tail->new(name=>$b, interval=>1);													\\
-    while(defined($log=$file->read)) {             													\\
-        chomp $log;                                													\\
-        if($log =~ /^={10}\s+Build:/){             													\\
-           print "$log\n";                         													\\
-           exit;                                   													\\
-        }                                          													\\
-        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {					\\
-          if(length($log) > 200){ $log = substr($log,0,200); }										\\
-          print "$log\n"                                      										\\
-        }                                                     										\\
-    }                                                         										\\
+ | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'    \\
+ | $PERL -e ' "' "'                                                                                 \\
+    @l = <>;                                                                                        \\
+    $line = shift @l;                                                                               \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+),PROJ=(.+)/){                                  \\
+      chomp $line;                                                                                  \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;$proj=$5;                                                         \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                   \\
+      $ver=$td; $ver =~ s/^.:.//;                                                                   \\
+                                                                                                    \\
+      open T, ">$bl.cmd_line";                                                                      \\
+      print T "$line $td/trim/WIX.sln /build \"$db|$da\" /project $proj /out $bl";                  \\
+      close T;                                                                                      \\
+    }                                                                                               \\
+    else {                                                                                          \\
+      print "echo \"Invalid input : $line?\"";                                                      \\
+      exit;                                                                                         \\
+    }                                                                                               \\
+    print "touch $bl\n$line $td/trim/WIX.sln /build \"$db|$da\" /project $proj /out $bl &\n" '"'"'  \\
+ | dos2unix | /bin/sh                                                                               \\
+ | $PERL -le "print q{$var_buildLogWix.proj :: $var_trimDir}"                                           \\
+ | $PERL -e ' "' "'                                                                                 \\
+    $| = 1;                                                                                         \\
+    use File::Tail;                                                                                 \\
+    @in = <>;                                                                                       \\
+    $i = shift @in;                                                                                 \\
+    chomp $i;                                                                                       \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                    \\
+    $ver =~ s/^.:.//;                                                                               \\
+                                                                                                    \\
+    # print the command line to console                                                             \\
+    open C, "$b.cmd_line"; @cl = <C>; close C;                                                      \\
+    print "COMMAND LINE: @cl";                                                                      \\
+                                                                                                    \\
+    print "LOG FILE: $b\n";                                                                         \\
+    $file = File::Tail->new(name=>$b, interval=>1);                                                 \\
+    while(defined($log=$file->read)) {                                                              \\
+        chomp $log;                                                                                 \\
+        if($log =~ /^={10}\s+Build:/){                                                              \\
+           print "$log\n";                                                                          \\
+           exit;                                                                                    \\
+        }                                                                                           \\
+        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                    \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                      \\
+          print "$log\n"                                                                            \\
+        }                                                                                           \\
+    }                                                                                               \\
  '"'"
 
 alias bldsetup "bldwixproj SetupExecutable"
 
-alias clnwix 'echo $logSeparator;																	\\
-    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.clean"		\\
- | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
- | $PERL -e ' "' "'                                      											\\
-    @l = <>;                                             											\\
-    $line = shift @l;                                    											\\
-    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){ 											\\
-      chomp $line;                                       											\\
-      $td=$1;$da=$2;$db=$3;$bl=$4;                       											\\
-      $line =~ s/.exe(,.+)/.exe/;                        											\\
-      $ver=$td;                                          											\\
-      $ver =~ s/^.:.//;                                  											\\
-    }                                                    											\\
-    print "touch $bl\n$line $td/trim/WIX.sln /clean \"$db|$da\" /out $bl &\n" '"'"'					\\
- | dos2unix | /bin/sh 																				\\
- | $PERL -le "print q{$var_buildLogWix.clean :: $var_trimDir}"											\\
- | $PERL -e ' "' "'                                													\\
-    $| = 1;                                        													\\
-    use File::Tail;                                													\\
-    @in = <>;                                      													\\
-    $i = shift @in;                                													\\
-    chomp $i;                                      													\\
-    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }   													\\
-    $ver =~ s/^.:.//;                              													\\
-    print "LOG FILE: $b\n";                        													\\
-    $file = File::Tail->new(name=>$b, interval=>1);													\\
-    while(defined($log=$file->read)) {             													\\
-      chomp $log;                                  													\\
-      if($log    =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print "$log\n"; exit; }				\\
-      elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) {									\\
-        if(length($log) > 200){ $log = substr($log,0,200); }       									\\
-        print "$log\n"                                             									\\
-      }                                                            									\\
-    }                                                              									\\
+alias clnwix 'echo $logSeparator;                                                                   \\
+    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLogWix.clean"     \\
+ | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'    \\
+ | $PERL -e ' "' "'                                                                                 \\
+    @l = <>;                                                                                        \\
+    $line = shift @l;                                                                               \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/){                                            \\
+      chomp $line;                                                                                  \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;                                                                  \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                   \\
+      $ver=$td;                                                                                     \\
+      $ver =~ s/^.:.//;                                                                             \\
+    }                                                                                               \\
+    print "touch $bl\n$line $td/trim/WIX.sln /clean \"$db|$da\" /out $bl &\n" '"'"'                 \\
+ | dos2unix | /bin/sh                                                                               \\
+ | $PERL -le "print q{$var_buildLogWix.clean :: $var_trimDir}"                                          \\
+ | $PERL -e ' "' "'                                                                                 \\
+    $| = 1;                                                                                         \\
+    use File::Tail;                                                                                 \\
+    @in = <>;                                                                                       \\
+    $i = shift @in;                                                                                 \\
+    chomp $i;                                                                                       \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                    \\
+    $ver =~ s/^.:.//;                                                                               \\
+    print "LOG FILE: $b\n";                                                                         \\
+    $file = File::Tail->new(name=>$b, interval=>1);                                                 \\
+    while(defined($log=$file->read)) {                                                              \\
+      chomp $log;                                                                                   \\
+      if($log    =~ /Clean:\s\d+\ssucceeded,\s\d+\sfailed/){ print "$log\n"; exit; }                \\
+      elsif($log =~ /Clean started|Deleting|error|fatal|failed/i) {                                 \\
+        if(length($log) > 200){ $log = substr($log,0,200); }                                        \\
+        print "$log\n"                                                                              \\
+      }                                                                                             \\
+    }                                                                                               \\
  '"'"
 
 alias checkFor3rdParty 'echo $var_trimDir/trim/sln/ThirdPartySource/$var_defArch/ThirdPartySource.sln \\
- | $PERL -ne '"'"'																					\\
-   chomp;         																					\\
-   if (not -e $_){																					\\
-      print "\n  ***  $_ NOT FOUND!  *** \n\n"														\\
-   }                                          														\\
+ | $PERL -ne '"'"'                                                                                  \\
+   chomp;                                                                                           \\
+   if (not -e $_){                                                                                  \\
+      print "\n  ***  $_ NOT FOUND!  *** \n\n"                                                      \\
+   }                                                                                                \\
  '"'"
 
-alias build3rdParty '  echo $logSeparator; date;													\\
-   echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.3rdParty"		\\
- | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
- | $PERL -e ' "' "'    																				\\
-      @l = <>;         																				\\
-      $line = shift @l;																				\\
-      chomp $line;     																				\\
-      $line =~ s/\\\s+$//;																			\\
-      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {											\\
-        $td=$1;$da=$2;$db=$3;$bl=$4;																\\
-        $line =~ s/.exe(,.+)/.exe/; 																\\
-        $ver=$td; $ver =~ s/^.:.//; 																\\
-        open T,">$bl.cmd_line";     																\\
+alias build3rdParty '  echo $logSeparator; date;                                                    \\
+   echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.3rdParty"      \\
+ | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'    \\
+ | $PERL -e ' "' "'                                                                                 \\
+      @l = <>;                                                                                      \\
+      $line = shift @l;                                                                             \\
+      chomp $line;                                                                                  \\
+      $line =~ s/\\\s+$//;                                                                          \\
+      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {                                         \\
+        $td=$1;$da=$2;$db=$3;$bl=$4;                                                                \\
+        $line =~ s/.exe(,.+)/.exe/;                                                                 \\
+        $ver=$td; $ver =~ s/^.:.//;                                                                 \\
+        open T,">$bl.cmd_line";                                                                     \\
         print T "$line $td/trim/sln/ThirdPartySource/$da/ThirdPartySource.sln /build $db /project ALL_BUILD /out $bl\n";\\
-        close T;																					\\
-      }         																					\\
-      else {    																					\\
-        print "echo \"Invalid input : $line?\"";													\\
-        exit;                                   													\\
-      }                                         													\\
+        close T;                                                                                    \\
+      }                                                                                             \\
+      else {                                                                                        \\
+        print "echo \"Invalid input : $line?\"";                                                    \\
+        exit;                                                                                       \\
+      }                                                                                             \\
       print "touch $bl\n$line $td/trim/sln/ThirdPartySource/$da/ThirdPartySource.sln /build $db /project ALL_BUILD /out $bl &\n"  \\
- ' "'"'              																				\\
- | dos2unix | /bin/sh																				\\
- | $PERL -le "print q{$var_buildLog.3rdParty :: $var_trimDir}"											\\
- | $PERL -e ' "' "'                                       											\\
-      $| = 1;                                             											\\
-      use File::Tail;                                     											\\
-      @in = <>; $i = shift @in; chomp $i;                 											\\
-      if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }        											\\
-      $ver =~ s/^.:.//;                                   											\\
-      # print the command line to console                 											\\
-      open C, "$b.cmd_line"; @cl = <C>; close C;          											\\
-      print "COMMAND LINE: @cl";                          											\\
-      print "LOG FILE    : $b\n";                         											\\
-      $file = File::Tail->new(name=>$b, interval=>1);     											\\
-      while(defined($log=$file->read)) {                  											\\
-        chomp $log;                                       											\\
-        if($log =~ /^={10}\s+Build:/){                    											\\
-           print "$log\n";                                											\\
-           exit;                                          											\\
-        }                                                 											\\
-        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {					\\
-          if(length($log) > 200){ $log = substr($log,0,200); }										\\
-          print "$log\n"                                      										\\
-        }                                                     										\\
-      }                                                       										\\
+ ' "'"'                                                                                             \\
+ | dos2unix | /bin/sh                                                                               \\
+ | $PERL -le "print q{$var_buildLog.3rdParty :: $var_trimDir}"                                          \\
+ | $PERL -e ' "' "'                                                                                 \\
+      $| = 1;                                                                                       \\
+      use File::Tail;                                                                               \\
+      @in = <>; $i = shift @in; chomp $i;                                                           \\
+      if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                  \\
+      $ver =~ s/^.:.//;                                                                             \\
+      # print the command line to console                                                           \\
+      open C, "$b.cmd_line"; @cl = <C>; close C;                                                    \\
+      print "COMMAND LINE: @cl";                                                                    \\
+      print "LOG FILE    : $b\n";                                                                   \\
+      $file = File::Tail->new(name=>$b, interval=>1);                                               \\
+      while(defined($log=$file->read)) {                                                            \\
+        chomp $log;                                                                                 \\
+        if($log =~ /^={10}\s+Build:/){                                                              \\
+           print "$log\n";                                                                          \\
+           exit;                                                                                    \\
+        }                                                                                           \\
+        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                    \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                      \\
+          print "$log\n"                                                                            \\
+        }                                                                                           \\
+      }                                                                                             \\
  '"'"
 
 
-alias bldproject 'echo $logSeparator; date;															\\
+alias bldproject 'echo $logSeparator; date;                                                         \\
     echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.proj,PROJ=\!:1" \\
- | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'	\\
- | $PERL -e ' "' "'  																				\\
-    @l = <>;         																				\\
-    $line = shift @l;																				\\
-    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+),PROJ=(.+)/){									\\
-      chomp $line;                         															\\
-      $td=$1;$da=$2;$db=$3;$bl=$4;$proj=$5;															\\
-      $line =~ s/.exe(,.+)/.exe/;          															\\
-      $ver=$td; $ver =~ s/^.:.//;          															\\
-                                           															\\
-      open T, ">$bl.cmd_line";             															\\
-      print T "$line $td/trim/sln/TRIM/$da/TRIM.sln /build \"$db|$da\" /project $proj /out $bl\n";	\\
-      close T;                                														\\
-    }                                         														\\
-    else {                                    														\\
-      print "echo \"Invalid input : $line?\"";														\\
-      exit;                                   														\\
-    }                                         														\\
+ | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'    \\
+ | $PERL -e ' "' "'                                                                                 \\
+    @l = <>;                                                                                        \\
+    $line = shift @l;                                                                               \\
+    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+),PROJ=(.+)/){                                  \\
+      chomp $line;                                                                                  \\
+      $td=$1;$da=$2;$db=$3;$bl=$4;$proj=$5;                                                         \\
+      $line =~ s/.exe(,.+)/.exe/;                                                                   \\
+      $ver=$td; $ver =~ s/^.:.//;                                                                   \\
+                                                                                                    \\
+      open T, ">$bl.cmd_line";                                                                      \\
+      print T "$line $td/trim/sln/TRIM/$da/TRIM.sln /build \"$db|$da\" /project $proj /out $bl\n";  \\
+      close T;                                                                                      \\
+    }                                                                                               \\
+    else {                                                                                          \\
+      print "echo \"Invalid input : $line?\"";                                                      \\
+      exit;                                                                                         \\
+    }                                                                                               \\
     print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build \"$db|$da\" /project $proj /out $bl &\n" '"'"'\\
- | dos2unix | /bin/sh                                 												\\
- | $PERL -le "print q{$var_buildLog.proj :: $var_trimDir}"												\\
- | $PERL -e ' "' "'                                   												\\
-    $| = 1;                                           												\\
-    use File::Tail;                                   												\\
-    @in = <>;                                         												\\
-    $i = shift @in;                                   												\\
-    chomp $i;                                         												\\
-    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }      												\\
-    $ver =~ s/^.:.//;                                 												\\
-                                                      												\\
-    # print the command line to console               												\\
-    open C, "$b.cmd_line"; @cl = <C>; close C;        												\\
-    print "COMMAND LINE: @cl";                        												\\
-                                                      												\\
-    print "LOG FILE: $b\n";                           												\\
-    $file = File::Tail->new(name=>$b, interval=>1);   												\\
-    while(defined($log=$file->read)) {                												\\
-        chomp $log;                                   												\\
-        if($log =~ /^={10}\s+Build:/){                												\\
-           print "$log\n";                            												\\
-           exit;                                      												\\
-        }                                             												\\
-        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {					\\
-          if(length($log) > 200){ $log = substr($log,0,200); }										\\
-          print "$log\n"																			\\
-        }               																			\\
-    }                   																			\\
+ | dos2unix | /bin/sh                                                                               \\
+ | $PERL -le "print q{$var_buildLog.proj :: $var_trimDir}"                                              \\
+ | $PERL -e ' "' "'                                                                                 \\
+    $| = 1;                                                                                         \\
+    use File::Tail;                                                                                 \\
+    @in = <>;                                                                                       \\
+    $i = shift @in;                                                                                 \\
+    chomp $i;                                                                                       \\
+    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                    \\
+    $ver =~ s/^.:.//;                                                                               \\
+                                                                                                    \\
+    # print the command line to console                                                             \\
+    open C, "$b.cmd_line"; @cl = <C>; close C;                                                      \\
+    print "COMMAND LINE: @cl";                                                                      \\
+                                                                                                    \\
+    print "LOG FILE: $b\n";                                                                         \\
+    $file = File::Tail->new(name=>$b, interval=>1);                                                 \\
+    while(defined($log=$file->read)) {                                                              \\
+        chomp $log;                                                                                 \\
+        if($log =~ /^={10}\s+Build:/){                                                              \\
+           print "$log\n";                                                                          \\
+           exit;                                                                                    \\
+        }                                                                                           \\
+        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                    \\
+          if(length($log) > 200){ $log = substr($log,0,200); }                                      \\
+          print "$log\n"                                                                            \\
+        }                                                                                           \\
+    }                                                                                               \\
  '"'"
 alias bldproj bldproject
 alias kbldproject  "killboth; bldproject"
-alias kbldproj	"killboth; bldproject"
+alias kbldproj  "killboth; bldproject"
 
 ##############################################################################
 #######################         LOG VIEWING         ##########################
 
-alias wglogfull 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMWorkgroup* 	\\
- | head -1 																							\\
- | $PERL -ne '"'"' chomp; print "tail -f $_"; '"'"'													\\
+alias wglogfull 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMWorkgroup*   \\
+ | head -1                                                                                          \\
+ | $PERL -ne '"'"' chomp; print "tail -f $_"; '"'"'                                                 \\
  | /bin/sh '
 
 set LOGBASIC = "(SELECT\s+TOP\s+\d+.+FROM\s+TSEVENTDAT|"
 set LOGBASIC = $LOGBASIC"SELECT.+FROM\s+TSTWRSYS\s+WITH)"
 
 alias wglogbasic ' ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
- | head -1																							\\
- | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'												\\
- | /bin/sh																							\\
+ | head -1                                                                                          \\
+ | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                                                \\
+ | /bin/sh                                                                                          \\
  | grep -Eiv $LOGBASIC ' 
 
 
@@ -535,37 +532,37 @@ set LOG9  = "|SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDue
 set LOG10 = "|INSERT\s+INTO\s+TSXMLDATA"
 set LOGEND = ")"
 
-alias wglog 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMWorkgroup*	\\
- | head -1																						\\
- | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'											\\
- | /bin/sh																						\\
+alias wglog 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMWorkgroup*   \\
+ | head -1                                                                                      \\
+ | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                                            \\
+ | /bin/sh                                                                                      \\
  | grep -Eiv "$LOGSTART$LOG1$LOG2$LOG3$LOG4$LOG5$LOG6$LOG7$LOG8$LOG9$LOG10$LOGEND" '
 
 
-alias cleanlog  ' cat \!^ 																									\\
- | $PERL -e ' "' "'       																									\\
-    $| = 1;               																									\\
-   while(<>){             																									\\
-      chomp;              																									\\
-      /select\s+top\s+\d+\s+uri\s+from\s+tseventdat/i and next;																\\
-      /SELECT\s+\*\s+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(code\s+=/i and next;									\\
-      /SELECT\s+TOP\s+\d+\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt/i and next;					\\
-      /SELECT\s+uri,edDateTime,edEventType.+FROM\sTSEVENTDAT.+rownum\s<\s\d+/i and next;									\\
+alias cleanlog  ' cat \!^                                                                                                   \\
+ | $PERL -e ' "' "'                                                                                                         \\
+    $| = 1;                                                                                                                 \\
+   while(<>){                                                                                                               \\
+      chomp;                                                                                                                \\
+      /select\s+top\s+\d+\s+uri\s+from\s+tseventdat/i and next;                                                             \\
+      /SELECT\s+\*\s+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(code\s+=/i and next;                                   \\
+      /SELECT\s+TOP\s+\d+\s+\*\s+FROM\s+TSTODOITEM\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tdoDoneAt/i and next;                    \\
+      /SELECT\s+uri,edDateTime,edEventType.+FROM\sTSEVENTDAT.+rownum\s<\s\d+/i and next;                                    \\
       /SELECT\s+uri,edDateTime,edEventType.+FROM\sTSEVENTDAT WHERE uri IN\s+\( SELECT TOP \d+ uri FROM TSEVENTDAT/i and next; \\
-      /SELECT\s+COUNT_BIG\(uri\)\s+ FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri/i and next;				\\
-      /SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)/i and next;  				\\
-      /SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI/i and next;				\\
-      /UPDATE\s+TSTWRSYS\s+SET\s+value\s+=\s+/i and next;																	\\
-      /SELECT\s+\*\s+ FROM\s+TSTASK\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tkTriggerDate/i and next;								\\
-      /select\s+uri\s+from\s+tsrecord\s+with\s+\(nolock\)\s+where\s+\(rcfileplanuri/i and next;								\\
+      /SELECT\s+COUNT_BIG\(uri\)\s+ FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri/i and next;               \\
+      /SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)/i and next;                 \\
+      /SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI/i and next;               \\
+      /UPDATE\s+TSTWRSYS\s+SET\s+value\s+=\s+/i and next;                                                                   \\
+      /SELECT\s+\*\s+ FROM\s+TSTASK\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(tkTriggerDate/i and next;                               \\
+      /select\s+uri\s+from\s+tsrecord\s+with\s+\(nolock\)\s+where\s+\(rcfileplanuri/i and next;                             \\
       /SELECT\s+TOP\s+\d+\s+A0.uri,A0.wesEscalatedOn,A0.wesEscalatedToUri,A0.wesActivityUri,A0.wesWaitSecs,A1.wacDueDate\s+FROM\s+TSWKESCALA/i and next;          \\
       /SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rqDateCreated\s+BETWEEN /i and next; \\
-      /ExecTransaction:[\w-]+:\d+\s+EvpLastRunDate\s*$/i and next;															\\
-      /logout:\s+machine=.+,\s+username=.+/i and next;            															\\
-      /RCF\s+client\s+has\s+disconnected\s+from\s+I_WorkgroupService.\s+RCF\s+session:/i and next;							\\
-      #//i and next;																										\\
-      #//i and next;																										\\
-      print "$_\n";																											\\
-   } ' "'"'																													\\
+      /ExecTransaction:[\w-]+:\d+\s+EvpLastRunDate\s*$/i and next;                                                          \\
+      /logout:\s+machine=.+,\s+username=.+/i and next;                                                                      \\
+      /RCF\s+client\s+has\s+disconnected\s+from\s+I_WorkgroupService.\s+RCF\s+session:/i and next;                          \\
+      #//i and next;                                                                                                        \\
+      #//i and next;                                                                                                        \\
+      print "$_\n";                                                                                                         \\
+   } ' "'"'                                                                                                                 \\
  > wg_log_clean.txt '
 
