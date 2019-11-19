@@ -42,7 +42,7 @@ alias idolrecordsdb     '$CURLQUERY\&text=\*\&databasematch=\!^\&MaxResults=999 
 alias idolrecords       '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=\!^             $CURL_OPTS | $XMLFORMAT'
 alias idolrecordsall    '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=1000000         $CURL_OPTS | $XMLFORMAT'
 alias idolreference     '$CURLQUERY\&text=\*\&MatchReference=trim:$var_idolDBID/rec/\!^            $CURL_OPTS | $XMLFORMAT'
-alias idolreferencev    '$CURLQUERY\&text=\*\&Print=All\&MatchReference=trim:$var_idolDBID/rec/\!^ $CURL_OPTS | $XMLFORMAT'
+alias idolreferencev    '$CURLQUERY\&text=\*\&Print=All\&MaxResults=1000\&MatchReference=trim:$var_idolDBID/rec/\!^ $CURL_OPTS | $XMLFORMAT'
 alias idolquery         '$CURLQUERY\&text=\!^\&MaxResults=1000\&databasematch=$var_idolDb           $CURL_OPTS | $XMLFORMAT'
 alias idolqueryv        '$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&databasematch=$var_idolDb $CURL_OPTS | $XMLFORMAT'
 
