@@ -55,8 +55,41 @@ alias idolqueryv        '$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&da
 #     %7D => }
 #
 alias idolcategoryrecs  '$CURLQUERY\&FieldText=STRING%7Btrim:$var_idolDBID/pln/\!^%7D:TS_CLASSIFICATION\&Sort=TD_DATEREGISTERED:alphabetical $CURL_OPTS | $XMLFORMAT'
-
-alias formatidol                '$PERL -e  '"'"'        \\
+alias idolcatrecs       'idolcategoryrecs \!^ | perl -e  '"'"'          \\
+                                                                        \\
+my ($HITS,$success,$recs);                                              \\
+my @in = <>;                                                            \\
+$success = 0;                                                           \\
+for (@in) {                                                             \\
+  if(/<response>SUCCESS/){                                              \\
+    $success = 1;                                                       \\
+    last;                                                               \\
+  }                                                                     \\
+}                                                                       \\
+if(not $success){                                                       \\
+  for(@in) {                                                            \\
+    print;                                                              \\
+  }                                                                     \\
+  exit;                                                                 \\
+}                                                                       \\
+for (@in) {                                                             \\
+  chomp;                                                                \\
+  if(/numhits>(\d+)</){                                                 \\
+    $HITS = $1;                                                         \\
+    next;                                                               \\
+  }                                                                     \\
+  if(/reference>(.+)<\/autn:reference>/){                               \\
+    $recs .= "$1  TITLE: ";                                             \\
+    next;                                                               \\
+  }                                                                     \\
+  if(/title>(.+)<\/autn:title>/){                                       \\
+    $recs .= "$1\n";                                                    \\
+    next;                                                               \\
+  }                                                                     \\
+}                                                                       \\
+print "SUCCESS ($HITS hits):\n\n".$recs;                                \\
+'"'"
+alias formatidol                '$PERL -e  '"'"'                        \\
 my $sortbyweight = $ENV{BYWEIGHT};                                      \\
 my @in = <STDIN>;                                                       \\
 my (%HITS,%BYWEIGHT,$HITCOUNT,$max);                                    \\
