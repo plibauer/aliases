@@ -46,6 +46,16 @@ alias idolreferencev    '$CURLQUERY\&text=\*\&Print=All\&MaxResults=1000\&MatchR
 alias idolquery         '$CURLQUERY\&text=\!^\&MaxResults=1000\&databasematch=$var_idolDb           $CURL_OPTS | $XMLFORMAT'
 alias idolqueryv        '$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&databasematch=$var_idolDb $CURL_OPTS | $XMLFORMAT'
 
+#   In the following alias
+#
+#     %7B => {  
+#
+#   and 
+#
+#     %7D => }
+#
+alias idolcategoryrecs  '$CURLQUERY\&FieldText=STRING%7Btrim:$var_idolDBID/pln/\!^%7D:TS_CLASSIFICATION\&Sort=TD_DATEREGISTERED:alphabetical $CURL_OPTS | $XMLFORMAT'
+
 alias formatidol                '$PERL -e  '"'"'        \\
 my $sortbyweight = $ENV{BYWEIGHT};                                      \\
 my @in = <STDIN>;                                                       \\
