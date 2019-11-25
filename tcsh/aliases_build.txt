@@ -39,6 +39,11 @@ alias evlog 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/T
  | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                        \\
  | /bin/sh '
  
+alias evlogidol 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMEvent_$var_idolDBID* \\
+ | head -1                                                                  \\
+ | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                        \\
+ | /bin/sh '
+ 
 alias idxlog 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/IDX_$var_DBID* \\
  | head -1                                                                  \\
  | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                        \\

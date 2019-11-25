@@ -54,7 +54,7 @@ alias idolqueryv        '$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&da
 #
 #     %7D => }
 #
-alias idolcategoryrecs  '$CURLQUERY\&FieldText=STRING%7Btrim:$var_idolDBID/pln/\!^%7D:TS_CLASSIFICATION\&Sort=TD_DATEREGISTERED:alphabetical $CURL_OPTS | $XMLFORMAT'
+alias idolcategoryrecs  '$CURLQUERY\&MaxResults=1000\&FieldText=STRING%7Btrim:$var_idolDBID/pln/\!^%7D:TS_CLASSIFICATION\&Sort=TD_DATEREGISTERED:alphabetical $CURL_OPTS | $XMLFORMAT'
 alias idolcatrecs       'idolcategoryrecs \!^ | perl -e  '"'"'          \\
                                                                         \\
 my ($HITS,$success,$recs);                                              \\
