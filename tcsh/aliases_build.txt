@@ -9,6 +9,7 @@ alias nuke             "gosln;./NukeSolutions.bat"
 alias gensln           "gosln;./GenerateSolutions.bat"
 alias nukeandgen       "nuke;gensln"
 alias touchcopy        'touch $var_trimDir/trim/src/CopyFiles/CopyFiles.cpp'
+alias copyfilescs      'cygstart cmd.exe /c $var_trimDir/trim/CSharp/TRIMCsBuild/CopyFilesPreBuild.bat $var_trimDir/AnyCPU/$var_defBuild $var_defBuild'
 alias bldlog           'tail -f $var_buildLog.build'
 alias bldlogcs         'tail -f $var_buildLogCSharp.build'
 alias bldlogwix        'tail -f $var_buildLogWix'
