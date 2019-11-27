@@ -50,6 +50,7 @@ alias vistatic          via static
 alias visvn             via svn
 alias vitrim            via trim
 alias whichalias        'grep -is \!^ $env_alias_dir/*'
+alias grepalias         whichalias
 alias vilocal           'vi $env_alias_dir/LOCAL.txt; unset var_*; source $env_alias_dir/LOCAL.txt; refresh'
 alias vil               vilocal
 alias redo              'unset include_"\!^"; src'
@@ -59,12 +60,6 @@ alias x86               'set var_defArch = x86;      src'
 alias x64               'set var_defArch = x64;      src'
 alias debug             'set var_defBuild = Debug;   src'
 alias release           'set var_defBuild = Release; src'
-
-alias dbdefault         '              \\
-set var_dbSession = $env_dbDefault;    \\
-set var_dbServer  = $LOCAL_SQLSVR;     \\
-set var_DBID      = $env_default_dbid; \\
-source $include_file; settitle'
 
 alias defaultconfig     dbdefault 
 alias dbcurrent         'echo $var_dbSession'

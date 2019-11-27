@@ -2,6 +2,7 @@
 #   The dynamic variables file must always be sourced first
 #
 
+echo "including $env_alias_dir/aliases_dynamic.txt"
 source $env_alias_dir/aliases_dynamic.txt
 
 #

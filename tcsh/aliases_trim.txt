@@ -32,12 +32,12 @@ alias popdb             populatedb
 alias popdbhelp         'populatedb -h'
 alias restorepopdb      'popdb --load --dbid $var_DBID --dbname $var_dbSession'
 alias reloadpopdb       restorepopdb
-alias defaultconfig     'setdbid $env_default_dbid; dbsession $env_dbDefault'
+alias defaultconfig     'unset var_DBID; unset var_dbSession; redo dynamic'
 alias elasticconfig     defaultconfig
 alias popdboracle       'popdb --db oracle64'
 alias popdbidol         'populatedb --dci idol --dbid $var_idolDBID --dbname $var_idolDbSession; bkupidolcfg'
 alias restoreidol       'popdb --load --dci idol --dbid $var_idolDBID --dbname $var_idolDbSession'
-alias idolconfig        'setdbid $env_default_dbid_pref"5"; dbsession $var_idolDbSession'
+alias idolconfig        'setdbid $env_idolDbid; dbsession $var_idolDbSession'
 alias popdbbig          'popdb --big'
 alias bigconfig         'setdbid 41; dbsession Test_Big_"$env_revision"_SqlServer'
 alias popdbelastic      'popdb --dciServer $var_elasticHost --snapshotPath "/usr/share/elasticsearch/data/snapshots"'
