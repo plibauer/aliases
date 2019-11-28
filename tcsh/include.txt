@@ -73,6 +73,12 @@ if (! $?include_journal) then
     set include_journal = 1
 endif
 
+if (! $?include_octane) then
+    echo "including $env_alias_dir/aliases_octane.txt"
+    source $env_alias_dir/aliases_octane.txt
+    set include_octane = 1
+endif
+
 if (! $?include_svn) then
     echo "including $env_alias_dir/aliases_svn.txt"
     source $env_alias_dir/aliases_svn.txt

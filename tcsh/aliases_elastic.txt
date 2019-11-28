@@ -1,5 +1,9 @@
-##################################################################################
-########################   ELASTICSEARCH/elasticsearch  ##########################
+##################################################################################################################
+#                                                                                                                #
+#     ELASTICSEARCH/elasticsearch Specific aliases                                                               #
+#     This file should only be read once.                                                                        #
+#                                                                                                                #
+##################################################################################################################
 
 alias elasticblog         'vi $CLOUD_DIR/Work/elastic.txt; scrub $CLOUD_DIR/Work/elastic.txt' 
 alias eblog               elasticblog
