@@ -14,12 +14,16 @@ alias almschema         'alm --schema'
 
 alias curldefect        'curl -s "$var_elasticHost/octane_new/_search?pretty&q=\!^"'
 alias defect            '$PYTHON $PYTHON_HOME/octane.py'
-alias defectall         '$PYTHON $PYTHON_HOME/octane.py -v'
+alias defectv           '$PYTHON $PYTHON_HOME/octane.py -v'
 alias cr                defect
-alias crall             defectall
-alias crv               defectall
-alias currentdefects   '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octane_new/_search?pretty" -c current_defects -f $ELASTIC_QUERIES \!^'
-alias defectprocessor  '$PERL -e ' "'" ' \\
+alias crv				defectv
+alias pythoncurl        '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octane_new/_search?pretty" -f $ELASTIC_QUERIES'
+alias currentdefects    'pythoncurl -c current_defects \!^'
+alias defectbyrelease   'pythoncurl -c defects_by_release \!:1 \!:2'
+alias alldefects        'pythoncurl -c all_defects \!^'
+
+
+alias defectprocessor   '$PERL -e ' "'" ' \\
 use Term::ANSIColor qw(:constants :constants256);                     \\
 sub parse {                                                           \\
   my $l = shift;                                                      \\
@@ -125,8 +129,14 @@ for(sort keys %releases) {                                            \\
   }                                                                   \\
 }                                                                     \\
 ' "'"
+
 alias defectsuser   'currentdefects \!^ | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
 alias defects       'defectsuser paul.libauer'
 alias defectsuserv  'setenv DEFECT_OUTPUT "verbose"; currentdefects \!^ | egrep "_id|_phase|_severity|_release|_name|_priority|_defect_type" | defectprocessor ; unsetenv DEFECT_OUTPUT'
-
 alias defectsv      'defectsuserv paul.libauer'
+
+
+alias def94p1		'defectbyrelease paul.libauer "9.40 Patch 1" | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
+alias def10			'defectbyrelease paul.libauer "10.0" | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
+
+alias defectsall    'alldefects paul.libauer | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
