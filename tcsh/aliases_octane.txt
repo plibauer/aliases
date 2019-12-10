@@ -12,7 +12,9 @@ alias almmatchv         'alm --match'
 alias almsummary        'alm --summary --cr'
 alias almschema         'alm --schema'
 
+
 alias curldefect        'curl -s "$var_elasticHost/octane_new/_search?pretty&q=\!^"'
+alias defectraw         curldefect
 alias defect            '$PYTHON $PYTHON_HOME/octane.py'
 alias defectv           '$PYTHON $PYTHON_HOME/octane.py -v'
 alias cr                defect
@@ -21,6 +23,7 @@ alias pythoncurl        '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octa
 alias currentdefects    'pythoncurl -c current_defects \!^'
 alias defectbyrelease   'pythoncurl -c defects_by_release \!:1 \!:2'
 alias alldefects        'pythoncurl -c all_defects \!^'
+alias syncoctane        '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/_reindex" -c reindex_octane -f $ELASTIC_QUERIES'
 
 
 alias defectprocessor   '$PERL -e ' "'" ' \\

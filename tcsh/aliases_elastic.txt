@@ -19,6 +19,7 @@ alias elasticup           'usingport 9200'
 alias elasticstatus       'elasticup; kibanaup'
 alias esstatus            elasticstatus
 alias eshost              'elastichost http://\!^'
+alias eshostlocal         'elastichost http://localhost:9200'
 alias esindex             elasticindex
 alias esdefault           elasticdefault
 

@@ -143,4 +143,96 @@ all_defects:
 }
 
 # ------------------------------------------------
+
+reindex_octane:
+{
+  "max_docs": 1000000,
+  "conflicts": "proceed", 
+  "source": {
+    "index": "octane_new",
+    "_source": [
+      "_author",
+      "_comments",
+      "_defect_type",
+      "_detected_by",
+      "_detected_in_release",
+      "_exists_in_release_udf",
+      "_last_modifier_udf",
+      "_owner",
+      "_phase",
+      "_priority",
+      "_product_areas",
+      "_qa_owner",
+      "_regression_udf",
+      "_release",
+      "_severity",
+      "_team",
+      "closed_on",
+      "creation_time",
+      "customer_encountered_udf",
+      "customer_resolution_udf",
+      "customer_visible_udf",
+      "depends_on_ids_udf",
+      "description",
+      "detected_in_build_udf",
+      "duplicate_of_udf",
+      "fixed_on_date_udf",
+      "global_id_udf",
+      "has_attachments",
+      "has_comments",
+      "id",
+      "last_modified",
+      "legacy_id_udf",
+      "name",
+      "source_ids_udf",
+      "svn_reference_udf",
+      "technical_resolution_udf",
+      "workaround_udf"
+      ],
+    "query" : { 
+      "match_all" : {}
+    }
+  },
+  "dest": {
+    "index": "octane",
+    "version_type": "external"
+  },
+   "script": {
+    "source": """
+  ctx._source.author               = ctx._source.remove('_author');
+  ctx._source.comments             = ctx._source.remove('_comments');
+  ctx._source.defect_type          = ctx._source.remove('_defect_type');
+  ctx._source.detected_by          = ctx._source.remove('_detected_by');
+  ctx._source.detected_in_release  = ctx._source.remove('_detected_in_release');
+  ctx._source.exists_in_release    = ctx._source.remove('_exists_in_release_udf');
+  ctx._source.last_modifier        = ctx._source.remove('_last_modifier_udf');
+  ctx._source.owner                = ctx._source.remove('_owner');
+  ctx._source.phase                = ctx._source.remove('_phase');
+  ctx._source.priority             = ctx._source.remove('_priority');
+  ctx._source.product_areas        = ctx._source.remove('_product_areas');
+  ctx._source.qa_owner             = ctx._source.remove('_qa_owner');
+  ctx._source.regression           = ctx._source.remove('_regression_udf');
+  ctx._source.release              = ctx._source.remove('_release');
+  ctx._source.severity             = ctx._source.remove('_severity');
+  ctx._source.team                 = ctx._source.remove('_team');
+  ctx._source.customer_encountered = ctx._source.remove('customer_encountered_udf');
+  ctx._source.customer_resolution  = ctx._source.remove('customer_resolution_udf');
+  ctx._source.customer_visible     = ctx._source.remove('customer_visible_udf');
+  ctx._source.depends_on_ids       = ctx._source.remove('depends_on_ids_udf');
+  ctx._source.detected_in_build    = ctx._source.remove('detected_in_build_udf');
+  ctx._source.duplicate_of         = ctx._source.remove('duplicate_of_udf');
+  ctx._source.fixed_on_date        = ctx._source.remove('fixed_on_date_udf');
+  ctx._source.global_id            = ctx._source.remove('global_id_udf');
+  ctx._source.legacy_id            = ctx._source.remove('legacy_id_udf');
+  ctx._source.source_ids           = ctx._source.remove('source_ids_udf');
+  ctx._source.svn_reference        = ctx._source.remove('svn_reference_udf');
+  ctx._source.technical_resolution = ctx._source.remove('technical_resolution_udf');
+  ctx._source.workaround           = ctx._source.remove('workaround_udf');
+"""
+  }
+}
+
+# ------------------------------------------------
+# ------------------------------------------------
+# ------------------------------------------------
 # ------------------------------------------------
