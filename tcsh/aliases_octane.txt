@@ -32,7 +32,7 @@ use Term::ANSIColor qw(:constants :constants256);                     \\
 sub parse {                                                           \\
   my $l = shift;                                                      \\
   chomp $l;                                                           \\
-  $l =~ s/^\s+\"(\w+)\"\s+:\s+//;                                     \\
+  $l =~ s/^\s+\"(\w+)\"\s*:\s+//;                                     \\
   my $field = $1;                                                     \\
   $l =~ s/^"//;                                                       \\
   $l =~ s/"?,*\s*$//;                                                 \\
