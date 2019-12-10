@@ -24,6 +24,7 @@ alias currentdefects    'pythoncurl -c current_defects \!^'
 alias defectbyrelease   'pythoncurl -c defects_by_release \!:1 \!:2'
 alias alldefects        'pythoncurl -c all_defects \!^'
 alias syncoctane        '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/_reindex" -c reindex_octane -f $ELASTIC_QUERIES'
+alias octanesync        syncoctane
 
 
 alias defectprocessor   '$PERL -e ' "'" ' \\
