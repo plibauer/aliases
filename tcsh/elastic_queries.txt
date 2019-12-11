@@ -144,6 +144,35 @@ all_defects:
 
 # ------------------------------------------------
 
+search_defect_by_title:
+{
+  "_source":[
+  	"name",
+  	"closed_on",
+  	"_release",
+  	"_severity",
+  	"_defect_type",
+  	"_detected_in_release",
+  	"_qa_owner",
+  	"last_modified",
+  	"_priority",
+  	"_phase"
+  ],
+  "query": {
+     "match_phrase": { "name": "ARG1" }
+  },
+  "sort": [
+    {
+      "_release.keyword": {
+        "order": "asc"
+      }
+    }
+  ], 
+  "size": 1000
+}
+
+# ------------------------------------------------
+
 reindex_octane:
 {
   "max_docs": 1000000,

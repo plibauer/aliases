@@ -23,11 +23,22 @@ alias pythoncurl        '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/octa
 alias currentdefects    'pythoncurl -c current_defects \!^'
 alias defectbyrelease   'pythoncurl -c defects_by_release \!:1 \!:2'
 alias alldefects        'pythoncurl -c all_defects \!^'
+alias octanesearchtitle 'pythoncurl -c search_defect_by_title \!^' 
 alias syncoctane        '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/_reindex" -c reindex_octane -f $ELASTIC_QUERIES'
 alias octanesync        syncoctane
 
+set DEFECT_FIELDS='_id|_phase|_severity|_release|name|_priority|_defect_type'
 
-alias defectprocessor   '$PERL -e ' "'" ' \\
+alias defectsuser       'currentdefects \!^ | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
+alias defects           'defectsuser paul.libauer'
+alias defectsuserv      'setenv DEFECT_OUTPUT "verbose"; currentdefects \!^ | egrep "_id|_phase|_severity|_release|_name|_priority|_defect_type" | defectprocessor ; unsetenv DEFECT_OUTPUT'
+alias defectsv          'defectsuserv paul.libauer'
+alias def94p1	        'defectbyrelease paul.libauer "9.40 Patch 1" | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
+alias def10		        'defectbyrelease paul.libauer "10.0" | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
+alias defectsall        'alldefects paul.libauer | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
+alias crmatch           'octanesearchtitle \!^ | egrep "$DEFECT_FIELDS" | defectprocessor '
+
+alias defectprocessor   '$PERL -e ' "'" '                             \\
 use Term::ANSIColor qw(:constants :constants256);                     \\
 sub parse {                                                           \\
   my $l = shift;                                                      \\
@@ -38,6 +49,33 @@ sub parse {                                                           \\
   $l =~ s/"?,*\s*$//;                                                 \\
   return ($field,$l);                                                 \\
 }                                                                     \\
+                                                                      \\
+sub sort_by_release {                                                 \\
+    # For releases like 'BACKLOG', sort last                          \\
+    if( $a !~ /^\d+/ ) { return -1; }                                 \\
+    if( $b !~ /^\d+/ ) { return 1; }                                  \\
+	my ($RELA, $RELB, $amaj,$amin,$apatch, $bmaj, $bmin, $bpatch);    \\
+    if ( $a =~ /^(\d+)\.(\d+)\s*(?:patch)*\s*(\d+)*$/i ) {            \\
+		($amaj,$amin,$apatch) = ($1,$2,$3);                           \\
+		$amin =~ s/^(\d)$/0$1/;                                       \\
+		if($apatch){ $apatch =~ s/^(\d)$/0$1/; }                      \\
+		else { $apatch = "00"; }                                      \\
+		$RELA = $amaj.$amin.$apatch;                                  \\
+		#print "  RELA = $RELA\n";                                    \\
+    }                                                                 \\
+    else { return -1; }                                               \\
+    if ( $b =~ /^(\d+)\.(\d+)\s*(?:patch)*\s*(\d+)*$/i ) {            \\
+		($bmaj,$bmin,$bpatch) = ($1,$2,$3);                           \\
+		$bmin =~ s/^(\d)$/0$1/;                                       \\
+		if($bpatch){ $bpatch =~ s/^(\d)$/0$1/; }                      \\
+		else { $bpatch = "00"; }                                      \\
+		$RELB = $bmaj.$bmin.$bpatch;                                  \\
+		#print "  RELB = $RELB\n";                                    \\
+    }                                                                 \\
+    else { return 1; }                                                \\
+    return $RELA <=> $RELB;                                           \\
+}                                                                     \\
+                                                                      \\
 @IN = <>;                                                             \\
 my $VERBOSE = 0;                                                      \\
 if($ENV{DEFECT_OUTPUT} eq "verbose"){ $VERBOSE = 1;}                  \\
@@ -104,12 +142,12 @@ while(my $l = shift @IN) {                                            \\
   }                                                                   \\
 }                                                                     \\
 my $SPACE = length("[Awaiting Decision,Critical,Very High,Enhancement]"); \\
-for(sort keys %releases) {                                            \\
+for(sort sort_by_release keys %releases) {                            \\
   my $rel = $_;                                                       \\
   s/^.+"([\s\w\d\.]+)".*$/$1/;                                        \\
   print BOLD, YELLOW, "\nTarget Release:$_\n", RESET;                 \\
   my %defects;                                                        \\
-  foreach(@{$releases{$rel}}) {                                       \\
+  foreach(sort @{$releases{$rel}}) {                                  \\
     my $id = $_;                                                      \\
     my $lead = "[".$ids{$id}{phase}.                                  \\
                ",".$ids{$id}{severity}.                               \\
@@ -134,13 +172,3 @@ for(sort keys %releases) {                                            \\
 }                                                                     \\
 ' "'"
 
-alias defectsuser   'currentdefects \!^ | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
-alias defects       'defectsuser paul.libauer'
-alias defectsuserv  'setenv DEFECT_OUTPUT "verbose"; currentdefects \!^ | egrep "_id|_phase|_severity|_release|_name|_priority|_defect_type" | defectprocessor ; unsetenv DEFECT_OUTPUT'
-alias defectsv      'defectsuserv paul.libauer'
-
-
-alias def94p1		'defectbyrelease paul.libauer "9.40 Patch 1" | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
-alias def10			'defectbyrelease paul.libauer "10.0" | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
-
-alias defectsall    'alldefects paul.libauer | egrep "_id|_phase|_severity|_release|name|_priority|_defect_type" | defectprocessor '
