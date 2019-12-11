@@ -78,6 +78,8 @@ alias slogurlr          'svn log \!:1 -r \!:2\:\!:3 | svn_parse_log'
 
 # Update from local servers if possible
 alias svnuplocal        'echo "Relocating $var_trimDir to $SVN_LOCAL_LAB ..."; trim2local; svnuptrim; echo "Relocating $var_trimDir to $SVN_LAB_URI ..."; trim2remote'  
+alias svnstaticlocal    'echo "Relocating $STATIC_REPO to $SVN_LOCAL_STATIC ..."; static2local; svnstatic; echo "Relocating $STATIC_REPO to $SVN_STATIC_URI ..."; static2remote'  
+
 
 # Setup the documentation directory
 alias makedoco      'mkdir -p $var_trimDir/doc/doc; cd -p $var_trimDir/doc/doc; svn co $SVN_LAB_URI/REPOS/doc/trunk/DocPub' 
