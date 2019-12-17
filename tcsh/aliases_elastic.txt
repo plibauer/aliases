@@ -80,6 +80,7 @@ alias esdelete            '$CURL -X DELETE "$var_elasticHost/\!^"'
 alias esrefresh           '$CURL -X POST "$var_elasticHost/_refresh?pretty=true"'
 alias escontentsrch       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&pretty=true"'
 alias docid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
+alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=Number:REC_\!^&pretty=true"'
 alias contents            'docid \!^ \\
 | $PERL -ne '"'"'                          \\
   if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){  \\
