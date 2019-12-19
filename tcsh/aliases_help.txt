@@ -159,7 +159,11 @@ alias escurlhelp            'echo                                               
 
 alias elastichelp      'echo                                                            \\
 "                                                                                       \\
---- Elastic Index ---                                                                   \\
+---     Searching      ---                                                              \\
+  docid "document id" : print doc with given _id                                        \\
+  recid "number"      : print doc with record number ('REC_' is prefixed)               \\
+                                                                                        \\
+---   Elastic Index    ---                                                              \\
   mapping        : Show mapping for the default elastic index                           \\
   espym 'index'  : Show mapping for 'index'                                             \\
   settings       : Show settings for default index                                      \\
@@ -175,7 +179,7 @@ alias elastichelp      'echo                                                    
   estype <type>  : Query one of the types from the previous command                     \\
   aclabels       : Print _id, document count, uri and name for all categories/labels    \\
                                                                                         \\
--- Word statistics ---                                                                  \\
+---   Word statistics  ---                                                              \\
                                                                                         \\
   getwords \042id\042  <arg1> <arg2> <arg3>                                             \\
              Print tabulated words using _id from acwordlabels                          \\
