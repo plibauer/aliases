@@ -77,7 +77,7 @@ alias bitvise           'set var_vpnConfig      = BITVISE; src'
 alias pulse             'set var_vpnConfig      = PULSE; src'
 alias novpn             'set var_vpnConfig      = LOCAL; src'
 
-alias whichenv  'echo "\n                   \\
+alias whichenv  'echo "\n                      \\
 Trim Directory      = $var_trimDir             \\
 Build Architecture  = $var_defArch             \\
 Build Config        = $var_defBuild            \\
@@ -89,10 +89,13 @@ DBSession           = $var_dbSession           \\
 DBSession Idol      = $var_idolDbSession       \\
 DBServer            = $var_dbServer            \\
 Idol Database       = $var_idolDb              \\
-SVN Static Database = $SVN_STATIC_DB         \\
-SVN Lab Database    = $SVN_STATIC_DB         \\
-Elastic Index       = $var_elasticIndex          \\
+Elastic Index       = $var_elasticIndex        \\
 Elastic Host        = $var_elasticHost         \\
+Elastic Host Octane = $var_elasticHostOctane   \\
+SVN Lab Server      = $SVN_LAB_URI             \\
+SVN Lab Database    = $SVN_LAB_DB              \\
+SVN Static Server   = $SVN_STATIC_URI          \\
+SVN Static Database = $SVN_STATIC_DB           \\
 VPN Config          = $var_vpnConfig           \\
 "'
 alias showenv           whichenv
