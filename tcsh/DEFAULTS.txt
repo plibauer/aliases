@@ -63,6 +63,7 @@ set ELASTIC_HOST            = http://localhost:9200
 set ELASTIC_HOST5           = http://localhost:9200
 set ELASTIC_HOST6           = http://localhost:9200
 set ELASTIC_HOST7           = http://localhost:9200
+set ELASTIC_HOST_OCTANE     = $ELASTIC_HOST
 set ELK_VERSION             = $SET_THIS_VALUE
 set ELASTIC_DIR             = $REPOS_ROOT/Elastic
 set ELASTIC_HOME            = $ELASTIC_DIR/search/$ELK_VERSION
