@@ -126,12 +126,12 @@ while($l = shift @in){                      \\
   
 alias svnservers      'echo "\n                          \\
 LOCAL SERVERS:                                           \\
-\tLAB URL    : $SVN_LOCAL_LAB                            \\
-\tSTATIC URL : $SVN_LOCAL_STATIC                         \\
+\tSVN_LOCAL_LAB    : $SVN_LOCAL_LAB                      \\
+\tSVN_LOCAL_STATIC : $SVN_LOCAL_STATIC                   \\
 \n                                                       \\
 REMOTE SERVERS:                                          \\
-\tLAB URL    : $SVN_LAB_URI                              \\
-\tSTATIC URL : $SVN_STATIC_URI                           \\
+\tSVN_LAB_URI      : $SVN_LAB_URI                        \\
+\tSVN_STATIC_URI   : $SVN_STATIC_URI                     \\
 "'
 
 alias processSvnLog  '$PERL -e  '"'"'                    \\
