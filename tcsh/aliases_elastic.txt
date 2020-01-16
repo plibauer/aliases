@@ -120,7 +120,7 @@ alias curldel7            '$CURL -X DELETE "$ELASTIC_HOST7/\!^"'
 alias eshost7             'elastichost $ELASTIC_HOST7'
 alias esinfo7             'echo "HOST    : $ELASTIC_HOST7"; elasticversion $ELASTIC_HOST7; elasticindexes $ELASTIC_HOST7' 
 
-alias espy                '$PYTHON $PYTHON_HOME/elasticClient/elasticClient.py --config $PYTHON_HOME/elasticClient/elastic.config'
+alias espy                '$PYTHON $PYTHON_HOME/elasticClient.py --config $PYTHON_HOME/elastic.config'
 alias espya               'espy "\!^/all"'
 alias espym               'espy "\!^/mapping"'
 alias espys               'espy "\!^/settings"'
