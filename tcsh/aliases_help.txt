@@ -160,14 +160,15 @@ alias escurlhelp            'echo                                               
 alias elastichelp      'echo                                                            \\
 "                                                                                       \\
 ---     Searching      ---                                                              \\
-  docid "document id" : print doc with given _id                                        \\
-  recid "number"      : print doc with record number ('REC_' is prefixed)               \\
+  docid \042document id\042 : print doc with given _id                                  \\
+  recid \042number\042      : print doc with record number ('REC_' is prefixed)         \\
+  allids              : print every elastic document id found                           \\
                                                                                         \\
 ---   Elastic Index    ---                                                              \\
   mapping        : Show mapping for the default elastic index                           \\
-  espym 'index'  : Show mapping for 'index'                                             \\
+  espym \042index\042  : Show mapping for \042index\042                                 \\
   settings       : Show settings for default index                                      \\
-  espys 'index'  : Show settings for 'index'                                            \\
+  espys \042index\042  : Show settings for \042index\042                                \\
   espyhelp(espyh): See examples of extended espy commands                               \\
   escontentsrch  : Search using curl for a specific term in Document.Content            \\
                                                                                         \\

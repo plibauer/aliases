@@ -96,6 +96,7 @@ alias escommand           '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$v
 
 alias hascontent          'escommand has_document_content | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
 alias allids              'escommand match_all | grep _id | sort'
+alias esalldocs           allids
 alias estitles            'escommand titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 
 alias titles              'estitles | sort'
 
