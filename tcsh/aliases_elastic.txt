@@ -58,6 +58,7 @@ set ELASTIC_QUERIES = $env_alias_dir/elastic_queries.txt
 alias elasticversion      '$CURL \!^ | grep number | sed -E '"'"' s/number/VERSION/; s/[\",]//g; s/^\s+//; '"'"
 alias esversion           'elasticversion $var_elasticHost' 
 alias esget               '$CURL "$var_elasticHost/\!^"'
+alias escurl              'esget \!^?pretty=true'
 alias esgetp              'esget \!^?pretty=true'
 alias esgetaliases        'esget _aliases?pretty=true'
 alias elasticindexes      '$CURL "\!^/_cat/indices?v"'
@@ -120,7 +121,7 @@ alias curldel7            '$CURL -X DELETE "$ELASTIC_HOST7/\!^"'
 alias eshost7             'elastichost $ELASTIC_HOST7'
 alias esinfo7             'echo "HOST    : $ELASTIC_HOST7"; elasticversion $ELASTIC_HOST7; elasticindexes $ELASTIC_HOST7' 
 
-alias espy                '$PYTHON $PYTHON_HOME/elasticClient.py --config $PYTHON_HOME/elastic.config'
+alias espy                '$PYTHON $PYTHON_HOME/elasticClient.py --config $PYTHON_HOME/elastic.config --server $var_elasticHost'
 alias espya               'espy "\!^/all"'
 alias espym               'espy "\!^/mapping"'
 alias espys               'espy "\!^/settings"'
