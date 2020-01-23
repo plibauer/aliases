@@ -79,7 +79,7 @@ alias essearch            'esgetp $var_elasticIndex/_search'
 alias searchindex         'esgetp \!^/_search'
 alias esdelete            '$CURL -X DELETE "$var_elasticHost/\!^"'
 alias esrefresh           '$CURL -X POST "$var_elasticHost/_refresh?pretty=true"'
-alias escontentsrch       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&pretty=true"'
+alias escontentsrch       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&pretty=true"'
 alias docid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
 alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=Number:REC_\!^&pretty=true"'
 alias contents            'docid \!^ \\
@@ -91,9 +91,11 @@ alias contents            'docid \!^ \\
       print "$_\n";                        \\
     }                                      \\
   }  '"'"
-alias esquery             '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticIndex/_search?pretty" \!^' 
-alias esqueryi            '$PYTHON_CYG $PYTHON_HOME/curl.py -i "$var_elasticHost/$var_elasticIndex/_search?pretty"' 
-alias escommand           '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHost/$var_elasticIndex/_search?pretty" -c \!^ -f $ELASTIC_QUERIES'
+alias pycurl		  '$PYTHON_CYG $PYTHON_HOME/curl.py'
+alias pyc		  'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -i -s; cat /c/tmp/pycurl_output.txt'
+alias esquery             'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" \!^' 
+alias esqueryi            'pycurl -i "$var_elasticHost/$var_elasticIndex/_search?pretty"' 
+alias escommand           'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -c \!^ -f $ELASTIC_QUERIES'
 
 alias hascontent          'escommand has_document_content | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
 alias allids              'escommand match_all | grep _id | sort'
