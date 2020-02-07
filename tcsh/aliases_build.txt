@@ -452,60 +452,86 @@ alias build3rdParty '  echo $logSeparator; date;                                
       }                                                                                             \\
  '"'"
 
+################################################
+# Build a specific project in a solution file
+# ARG 1 : Path to solution file
+# ARG 2 : Project name
+# ARG 3 : build/clean
+# ARG 4 : Architecture (AnyCPU/x86/x64/Win32)
+# ARG 5 : Debug/Release
+# ARG 6 : Name of log file
+#
+# NOTE: the redirection of STDERR following the $CMD_LINE 
+#       before being passed to /bin/sh
 
-alias bldproject 'echo $logSeparator; date;                                                         \\
-    echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.proj,PROJ=\!:1" \\
+alias bldproject 'echo $logSeparator; date; setenv PROJ_BUILD_LOG \!:6;                             \\
+    echo -n "$var_devenvexe,ARG1=\!:1,ARG2=\!:2,ARG3=\!:3,ARG4=\!:4,ARG5=\!:5,ARG6=\!:6"            \\
  | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n" '"'"'    \\
  | $PERL -e ' "' "'                                                                                 \\
     @l = <>;                                                                                        \\
     $line = shift @l;                                                                               \\
-    if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+),PROJ=(.+)/){                                  \\
+    if($line =~ /.exe,ARG1=(.+),ARG2=(.+),ARG3=(.+),ARG4=(.+),ARG5=(.+),ARG6=(.+)/){                \\
       chomp $line;                                                                                  \\
-      $td=$1;$da=$2;$db=$3;$bl=$4;$proj=$5;                                                         \\
-      $line =~ s/.exe(,.+)/.exe/;                                                                   \\
-      $ver=$td; $ver =~ s/^.:.//;                                                                   \\
+      $SLN_FILE     = $1;                                                                           \\
+      $PROJECT      = $2;                                                                           \\
+      $BLD_OR_CLEAN = $3;                                                                           \\
+      $ARCH         = $4;                                                                           \\
+      $TYPE         = $5;                                                                           \\
+      $LOG          = $6;                                                                           \\
+      $line =~ s/.exe(,.+)$/.exe/;                                                                  \\
                                                                                                     \\
-      open T, ">$bl.cmd_line";                                                                      \\
-      print T "$line $td/trim/sln/TRIM/$da/TRIM.sln /build \"$db|$da\" /project $proj /out $bl\n";  \\
+      $CMD_LINE = "$line $SLN_FILE /$BLD_OR_CLEAN \"$TYPE|$ARCH\" /project $PROJECT /out $LOG";     \\
+      open T, ">$LOG.cmd_line";                                                                     \\
+      print T $CMD_LINE."\n";                                                                       \\
       close T;                                                                                      \\
     }                                                                                               \\
     else {                                                                                          \\
       print "echo \"Invalid input : $line?\"";                                                      \\
       exit;                                                                                         \\
     }                                                                                               \\
-    print "touch $bl\n$line $td/trim/sln/TRIM/$da/TRIM.sln /build \"$db|$da\" /project $proj /out $bl &\n" '"'"'\\
+    unlink($LOG);                                                                                   \\
+    print "touch $LOG\n$CMD_LINE 2>&1 &\n" '"'"'                                                    \\
  | dos2unix | /bin/sh                                                                               \\
- | $PERL -le "print q{$var_buildLog.proj :: $var_trimDir}"                                              \\
  | $PERL -e ' "' "'                                                                                 \\
     $| = 1;                                                                                         \\
     use File::Tail;                                                                                 \\
-    @in = <>;                                                                                       \\
-    $i = shift @in;                                                                                 \\
-    chomp $i;                                                                                       \\
-    if($i =~ /^(.+) :: (.+)$/){ $b=$1; $ver=$2 }                                                    \\
-    $ver =~ s/^.:.//;                                                                               \\
                                                                                                     \\
+    $log = $ENV{PROJ_BUILD_LOG};                                                                    \\
     # print the command line to console                                                             \\
-    open C, "$b.cmd_line"; @cl = <C>; close C;                                                      \\
+    open C, "$log.cmd_line"; @cl = <C>; close C;                                                    \\
     print "COMMAND LINE: @cl";                                                                      \\
                                                                                                     \\
-    print "LOG FILE: $b\n";                                                                         \\
-    $file = File::Tail->new(name=>$b, interval=>1);                                                 \\
+    print "LOG FILE: $log\n";                                                                       \\
+    $file = File::Tail->new(name=>$log, interval=>1);                                               \\
     while(defined($log=$file->read)) {                                                              \\
         chomp $log;                                                                                 \\
-        if($log =~ /^={10}\s+Build:/){                                                              \\
+        if($log =~ /^={10}\s+(Build|Clean):/i){                                                     \\
            print "$log\n";                                                                          \\
            exit;                                                                                    \\
         }                                                                                           \\
-        elsif($log =~ /^\d+>-+ Build started|\serror\s|\sfatal\s|\sfailed\s/i) {                    \\
+        elsif($log =~ /^\d+>-+ (Build|Clean) started|\serror\s|\sfatal\s|\sfailed\s/i) {            \\
           if(length($log) > 200){ $log = substr($log,0,200); }                                      \\
           print "$log\n"                                                                            \\
         }                                                                                           \\
     }                                                                                               \\
- '"'"
-alias bldproj bldproject
-alias kbldproject  "killboth; bldproject"
-alias kbldproj  "killboth; bldproject"
+'"'"
+
+alias bldtrimproj 'bldproject $var_trimDir/trim/sln/TRIM/$var_defArch/TRIM.sln \!:1 build $var_defArch $var_defBuild $var_buildLog.build.proj' 
+alias clntrimproj 'bldproject $var_trimDir/trim/sln/TRIM/$var_defArch/TRIM.sln \!:1 clean $var_defArch $var_defBuild $var_buildLog.clean.proj' 
+alias bldcshproj  'bldproject $var_trimDir/trim/TrimCSharp.sln \!:1 build AnyCPU $var_defBuild $var_buildLogCSharp.build.proj' 
+alias clncshproj  'bldproject $var_trimDir/trim/TrimCSharp.sln \!:1 clean AnyCPU $var_defBuild $var_buildLogCSharp.clean.proj' 
+
+#  Build the combuilder solution separately since there are issues running the Finalbuild script
+alias ddruncomcln   'rm $var_buildLogDir/DDrun_ComBuilder_Clean.log;                 \\
+                    "$var_devenvexe" $var_trimDir/trim/src/com/combuilder.sln        \\
+                                     /clean                                          \\
+                                     "Debug|Win32"                                   \\
+                                    /out $var_buildLogDir/DDrun_ComBuilder_Clean.log \\
+                  | grep "Clean"'
+alias ddrunclean    'ddruncomcln; cat $var_buildLogDir/DDrun_ComBuilder_Clean.log | grep "Clean"'
+alias bldtypelib    'bldproject $var_trimDir/trim/src/com/combuilder.sln sdkTlb    build Win32 Debug $var_buildLogDir/DDrun_sdkTlb_proj.log'
+alias bldimportlib  'bldproject $var_trimDir/trim/src/com/combuilder.sln sdkImport build Win32 Debug $var_buildLogDir/DDrun_sdkImport_proj.log'
+alias ddruncom      'ddrunclean; bldtypelib; bldimportlib'
 
 ##############################################################################
 #######################         LOG VIEWING         ##########################

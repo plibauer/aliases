@@ -1,7 +1,7 @@
 #################################################################################
 #  JOURNAL ALIASES
 
-set CurrentJournal = /c/tmp/journalname.txt
+set CurrentJournal = $CLOUD_DIR/journalname.txt
 
 alias vip             'vi $JOURNAL_DIR/DIARY.txt; scrub $JOURNAL_DIR/DIARY.txt'
 alias todo            'vi $CLOUD_DIR/Work/TODO.txt; scrub $CLOUD_DIR/Work/TODO.txt'
@@ -36,7 +36,7 @@ alias refreshjournal  'echo `date +%B%Y` $WIKI_DIR                              
      $path=$3;                                                                    \\
      print "$path/journals/$y/$m$y.txt"                                           \\
   } ' "' "'                                                                       \\
-> /c/tmp/journalname.txt'
+> $CurrentJournal '
 
 alias scrub           '$PERL $PERL_HOME/scrub.pl --file'
 alias viwiki          'vi \!^; scrub  \!^'

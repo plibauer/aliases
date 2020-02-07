@@ -149,8 +149,9 @@ set var_trimcfg         = "$var_trimcfgdir/TRIMconfig.tcfg"
 set var_currentEnv      = $env_alias_dir/../"$env_revision"environment
 set var_trimDoc         = $var_trimDir/doc/doc/DocPub
 
-set var_buildLog        = "${REPOS_ROOT}/TEMP/TRIM-$env_folder-$var_defArch-$var_defBuild.log"
-set var_buildLogCSharp  = "${REPOS_ROOT}/TEMP/TRIMCSharp-$env_folder-$var_defArch-$var_defBuild.log"
-set var_buildLogWix     = "${REPOS_ROOT}/TEMP/WIX-$env_folder-$var_defArch-$var_defBuild.log"
+set var_buildLogDir     = ${REPOS_ROOT}/TEMP
+set var_buildLog        = "$var_buildLogDir/TRIM-$env_folder-$var_defArch-$var_defBuild.log"
+set var_buildLogCSharp  = "$var_buildLogDir/TRIMCSharp-$env_folder-$var_defArch-$var_defBuild.log"
+set var_buildLogWix     = "$var_buildLogDir/WIX-$env_folder-$var_defArch-$var_defBuild.log"
 
 
