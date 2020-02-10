@@ -531,7 +531,8 @@ alias ddruncomcln   'rm $var_buildLogDir/DDrun_ComBuilder_Clean.log;            
 alias ddrunclean    'ddruncomcln; cat $var_buildLogDir/DDrun_ComBuilder_Clean.log | grep "Clean"'
 alias bldtypelib    'bldproject $var_trimDir/trim/src/com/combuilder.sln sdkTlb    build Win32 Debug $var_buildLogDir/DDrun_sdkTlb_proj.log'
 alias bldimportlib  'bldproject $var_trimDir/trim/src/com/combuilder.sln sdkImport build Win32 Debug $var_buildLogDir/DDrun_sdkImport_proj.log'
-alias ddruncom      'ddrunclean; bldtypelib; bldimportlib'
+alias ddruncom      'bldtypelib; bldimportlib'
+alias ddruncomclean 'ddrunclean; bldtypelib; bldimportlib'
 
 ##############################################################################
 #######################         LOG VIEWING         ##########################
