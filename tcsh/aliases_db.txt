@@ -116,9 +116,12 @@ alias sqldbstat             cygstart cmd.exe /c sqlite3.exe $SQLITE_DB_STAT
 alias almsqlitedb           cygstart cmd.exe /c sqlite3.exe $SQLITE_ALM 
 alias sqliteanal            sqlite3_analyzer.exe
 alias filepath              sqlite3.exe $SQLITE_DB_LAB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
-alias sqlitefp              sqlite3.exe $SQLITE_DB_LAB \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias sqlitefp              filepath
 alias sqlitem               sqlite3.exe $SQLITE_DB_LAB \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
 alias sqlmatch              'sqlitem \!^ |   $PERL -ne '"'"'  if(/^(\d+)\|(.+)$/){ print "-------------------------| $1 |--------------------------\n$2\n" }else{print}    '"'"
+alias svnmatch              sqlmatch
+alias svnsearch             sqlmatch
+alias revmatch              sqlmatch
 
 # Query the SVN sqlite database for the UUID of a given checked out path
 alias sqliteuuid            sqlite .svn/wc.db 'select uuid from REPOSITORY where id=1'
