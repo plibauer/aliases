@@ -143,15 +143,25 @@ NUMBER OF COLUMNS : 1                                                           
 alias escurlhelp            'echo                                                       \\
 "\n                                                                                     \\
 1. Show all index aliases [esgetaliases]                                                \\
-     >curl -XGET http://localhost:9200/_aliases\?pretty=true                       \n   \\
+                                                                                        \\
+     >curl -XGET http://localhost:9200/_aliases\?pretty=true                            \\
+                                                                                        \\
 2. Show all entries for an index called <news> [essearchindex news]                     \\
-     >curl -XGET http://localhost:9200/news/_search\?pretty=true                   \n   \\
+                                                                                        \\
+     >curl -XGET http://localhost:9200/news/_search\?pretty=true                        \\
+                                                                                        \\
 3. Add detailed explanation to queries (add double quotes around uri)  [esgetexplain]   \\
-    >curl -XGET http://localhost:9200/news/_search?explain=true\&pretty=true       \n   \\
+                                                                                        \\
+    >curl -XGET http://localhost:9200/news/_search?explain=true\&pretty=true            \\
+                                                                                        \\
 4. Delete an index called <news> [esdelete news]                                        \\
-    >curl -XDELETE http://localhost:9200/news                                      \n   \\
+                                                                                        \\
+    >curl -XDELETE http://localhost:9200/news                                           \\
+                                                                                        \\
 5. Show the settings for a given index <news> [esindxsettings news]                     \\
-    >curl -XGET http://localhost:9200/news/_settings                               \n   \\
+                                                                                        \\
+    >curl -XGET http://localhost:9200/news/_settings                                    \\
+                                                                                        \\
 "                                                                                       \\
 ' 
 
@@ -159,6 +169,13 @@ alias escurlhelp            'echo                                               
 
 alias elastichelp      'echo                                                            \\
 "                                                                                       \\
+For curl commands, see : escurlhelp                                                     \\
+                                                                                        \\
+---      Basics        ---                                                              \\
+  esinfo              : Show the current configuration                                  \\
+  eshost <host:port>  : Set the default host server and port                            \\
+  esindex <name>      : Set the default index                                           \\
+                                                                                        \\
 ---     Searching      ---                                                              \\
   docid \042document id\042 : print doc with given _id                                  \\
   recid \042number\042      : print doc with record number ('REC_' is prefixed)         \\
