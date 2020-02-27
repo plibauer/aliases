@@ -91,8 +91,12 @@ alias contents            'docid \!^ \\
       print "$_\n";                        \\
     }                                      \\
   }  '"'"
-alias pycurl		  '$PYTHON_CYG $PYTHON_HOME/curl.py'
-alias pyc		  'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -i -s; cat /c/tmp/pycurl_output.txt'
+alias esdeldocid          '$CURL -XDELETE "$var_elasticHost/$var_elasticIndex/_doc/\!^"'
+alias deldoc              esdeldocid
+alias delid               esdeldocid
+
+alias pycurl		      '$PYTHON_CYG $PYTHON_HOME/curl.py'
+alias pyc		          'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -i -s; cat /c/tmp/pycurl_output.txt'
 alias esquery             'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" \!^' 
 alias esqueryi            'pycurl -i "$var_elasticHost/$var_elasticIndex/_search?pretty"' 
 alias escommand           'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -c \!^ -f $ELASTIC_QUERIES'

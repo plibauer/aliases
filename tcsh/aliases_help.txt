@@ -180,6 +180,7 @@ For curl commands, see : escurlhelp                                             
   docid \042document id\042 : print doc with given _id                                  \\
   recid \042number\042      : print doc with record number ('REC_' is prefixed)         \\
   allids              : print every elastic document id found                           \\
+  delid \042document id\042 : delete the doc with given _id                             \\
                                                                                         \\
 ---   Elastic Index    ---                                                              \\
   mapping        : Show mapping for the default elastic index                           \\
