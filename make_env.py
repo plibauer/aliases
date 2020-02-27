@@ -295,19 +295,19 @@ def main(argv):
 
         # Try to preserve the existing LOCAL.txt file and also check for LOCAL.txt.bak
         if os.path.exists(locPath):
-            txt = input(f"{locPath} already exists - do you want to keep the existing file? [Y/n] : ")
+            txt = input(f"{locPath} already exists - do you want to keep the existing file? ([Y]es/No) : ")
             if re.search("^y(es)*$", txt, re.IGNORECASE):
                 print(f"{locPath} has not been changed")
                 sys.exit(1)
           
             if os.path.exists(f"{locPath}.bak"):
-            txt = input(f"The backup file {locPath}.bak exists!\nOVERWRITE? [Y/n] : ")
-            if re.search("^y(es)*$", txt, re.IGNORECASE):
-                shutil.copy2(locPath, f"{locPath}.bak")
-                print(f"*** Backed-up existing {locFile} => {locPath}.bak ***")
+                txt = input(f"The backup file {locPath}.bak exists!\nOVERWRITE? ([Y]es/No) : ")
+                if re.search("^y(es)*$", txt, re.IGNORECASE):
+                    shutil.copy2(locPath, f"{locPath}.bak")
+                    print(f"*** Overwrote existing {locFile}.bak with {locPath} ***")
             else:
-            shutil.copy2(locPath, f"{locPath}.bak")
-            print(f"Backed-up existing {locFile} => {locPath}.bak ***")
+                shutil.copy2(locPath, f"{locPath}.bak")
+                print(f"Backed-up existing {locFile} => {locPath}.bak ***")
 
 
         shutil.copy2(defPath, locPath)
