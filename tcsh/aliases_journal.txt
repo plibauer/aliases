@@ -8,6 +8,8 @@ alias todo            'vi $CLOUD_DIR/Work/TODO.txt; scrub $CLOUD_DIR/Work/TODO.t
 alias haihai          'vi $JOURNAL_DIR/HaiHaiTransfers.txt'
 alias viubuntu        'vi $CLOUD_DIR/Work/UBUNTU.txt; scrub $CLOUD_DIR/Work/UBUNTU.txt'
 alias ublog           viubuntu
+alias vihome620       'vi $CLOUD_DIR/Work/HOME620.txt; scrub $CLOUD_DIR/Work/HOME620.txt'
+alias home620         vihome620
 
 alias grepjd          ' ls $WIKI_DIR/journals/*/*                                                                       \\
 | $PERL -e '"'"'                                                                                                        \\

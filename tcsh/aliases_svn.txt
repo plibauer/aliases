@@ -80,6 +80,35 @@ alias slogurlr          'svn log \!:1 -r \!:2\:\!:3 | svn_parse_log'
 alias svnuplocal        'echo "Relocating $var_trimDir to $SVN_LOCAL_LAB ..."; trim2local; svnuptrim; echo "Relocating $var_trimDir to $SVN_LAB_URI ..."; trim2remote'  
 alias svnstaticlocal    'echo "Relocating $STATIC_REPO to $SVN_LOCAL_STATIC ..."; static2local; svnstatic; echo "Relocating $STATIC_REPO to $SVN_STATIC_URI ..."; static2remote'  
 
+#--------------------------------------------
+# SQLITE
+
+set SQLITE_DB_STAT = $SVN_STATIC_DB/svn.db
+set SQLITE_DB_LAB  = $SVN_LAB_DB/svn.db
+
+alias labsqldb          'cygstart cmd.exe /c sqlite3.exe $SQLITE_DB_LAB'
+alias statsqldb         'cygstart cmd.exe /c sqlite3.exe $SQLITE_DB_STAT'
+
+alias labsql            'sqlite3.exe $SQLITE_DB_LAB'
+alias labfilepath       labsql \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias labsqlfind        labsql \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
+alias labmatch          'labsqlfind \!^ |   $PERL -ne '"'"'  if(/^(\d+)\|(.+)$/){ print "-------------------------| $1 |--------------------------\n$2\n" }else{print}    '"'"
+alias labsearch         labmatch
+alias labfind           labmatch
+
+alias statsql           'sqlite3.exe $SQLITE_DB_STAT'
+alias statfilepath      statsql \"SELECT \* FROM files WHERE PATH LIKE \'%\!^%\'\"
+alias statsqlfind       statsql \"SELECT \* FROM messages WHERE message LIKE \'%\!^%\'\"
+alias statmatch         'statsqlfind \!^ |   $PERL -ne '"'"'  if(/^(\d+)\|(.+)$/){ print "-------------------------| $1 |--------------------------\n$2\n" }else{print}    '"'"
+alias statsearch        statmatch
+alias statfind          statmatch
+
+# Query the SVN sqlite database for the UUID of a given checked out path
+alias sqliteuuid            sqlite .svn/wc.db 'select uuid from REPOSITORY where id=1'
+alias uuidupdate            sqlite .svn/wc.db 'update REPOSITORY set uuid=\!^ where id=1'
+alias repoinfo              sqlite .svn/wc.db 'select * from REPOSITORY'
+
+#----------------------------------------------
 
 # Setup the documentation directory
 alias makedoco      'mkdir -p $var_trimDir/doc/doc; cd -p $var_trimDir/doc/doc; svn co $SVN_LAB_URI/REPOS/doc/trunk/DocPub' 
