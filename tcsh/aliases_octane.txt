@@ -12,6 +12,18 @@ alias almmatchv         'alm --match'
 alias almsummary        'alm --summary --cr'
 alias almschema         'alm --schema'
 
+#--------------------------------------------
+# SQLITE
+
+set SQLITE_ALM = $ALM_DB/database/ALM.db
+alias almsqlite         'sqlite3.exe $SQLITE_ALM'
+alias crmatch           almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'0\' ORDER BY CAST\(id AS INTEGER\)\"
+alias crmatchdesc       almsqlite \"SELECT id,message FROM messages WHERE message MATCH \'\!^\' AND type = \'1\' ORDER BY CAST\(id AS INTEGER\)\"
+alias almsqlitedb       cygstart cmd.exe /c sqlite3.exe $SQLITE_ALM
+
+#---------------------------------------------
+
+
 
 alias curldefect        'curl -s "$var_elasticHostOctane/octane_new/_search?pretty&q=\!^"'
 alias defectraw         curldefect
@@ -26,7 +38,7 @@ alias alldefects        'octcurl -c all_defects \!^'
 alias octanesearchtitle 'octcurl -c search_defect_by_title \!^' 
 alias eshostoctane      elastichost $var_elasticHostOctane
 alias syncoctane        '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHostOctane/_reindex" -c reindex_octane -f $ELASTIC_QUERIES'
-alias octanesync        syncoctane
+alias octanesync        'syncoctane && esrefresh && esinfo'
 
 set DEFECT_FIELDS='_id|_phase|_severity|_release|name|_priority|_defect_type'
 
