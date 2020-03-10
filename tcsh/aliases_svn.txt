@@ -40,7 +40,8 @@ alias repoinfostat    svnrepoinfostat
 alias statproc        '$PERL $SVN_STATIC_DB/svn_log_processor.pl'
 alias statrev         'statproc --rev'
 alias statrevhead     'statrev head'
-alias statupdate      'statproc --update'
+alias statupdate      'statproc --update --repo $SVN_STATIC_URI/REPOS'
+alias statupdatelocal 'statproc --update --repo $SVN_LOCAL_STATIC/REPOS'
 alias statlook        'svnlook pg --revprop -r0 $SVN_STATIC_PATH svn:sync-from-url'
 
 #
@@ -53,6 +54,7 @@ alias revhead        'rev head'
 alias revlocal       'labproc --use_local --rev'
 alias match          'labproc --no_case --limit 30 --match'
 alias labupdate      'labproc --update --repo $SVN_LAB_URI/REPOS'
+alias labupdatelocal 'labproc --update --repo $SVN_LOCAL_LAB/REPOS'
 alias labhelp        'labproc --help'
 alias lablook        'svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url'
 
