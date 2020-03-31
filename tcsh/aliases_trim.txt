@@ -71,6 +71,7 @@ alias elasticcfg        'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELA
 
 alias testtrim          '$var_trimDir/$var_defArch/$var_defBuild/testTrim.exe'
 alias trimtest          testtrim
+alias testinplace       'testtrim --inplace'
 alias testhelp          'testtrim --help'
 alias testlist          'testtrim --list'
 alias testcases         testlist

@@ -99,13 +99,16 @@ alias pycurl		      '$PYTHON_CYG $PYTHON_HOME/curl.py'
 alias pyc		          'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -i -s; cat /c/tmp/pycurl_output.txt'
 alias esquery             'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" \!^' 
 alias esqueryi            'pycurl -i "$var_elasticHost/$var_elasticIndex/_search?pretty"' 
-alias escommand           'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -c \!^ -f $ELASTIC_QUERIES'
+alias escommand           'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -f $ELASTIC_QUERIES'
 
-alias hascontent          'escommand has_document_content | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
-alias allids              'escommand match_all | grep _id | sort'
+alias hascontent          'escommand -c has_document_content | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
+alias allids              'escommand -c match_all | grep _id | sort'
 alias esalldocs           allids
-alias estitles            'escommand titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 
+alias estitles            'escommand -c titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 
 alias titles              'estitles | sort'
+alias doccontent          'escommand -c get_record_content \!^'
+alias content             doccontent
+alias escontent           doccontent
 
 alias elasticinfo         'echo "HOST    : $var_elasticHost"; echo "INDEX   : $var_elasticIndex"; esversion; echo; indexes'  
 alias esinfo              elasticinfo

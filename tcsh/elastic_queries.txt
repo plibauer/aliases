@@ -12,6 +12,26 @@ has_document_content:
 
 # ------------------------------------------------
 
+get_record_content:
+{
+  "_source": "Document.Content",
+  "query": {
+    "has_parent": {
+      "parent_type": "metadata",
+      "query": {
+        "term": {
+          "_id": {
+            "value": "ARG1"
+          }
+        }
+      }
+    }
+  },
+  "size": 100
+}
+
+# ------------------------------------------------
+
 match_all:
 {
   "_source": false,
