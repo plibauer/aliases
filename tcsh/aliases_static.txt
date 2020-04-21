@@ -76,6 +76,7 @@ alias idolindex         'set var_idolDb         = \!^; src'
 alias bitvise           'set var_vpnConfig      = BITVISE; src'
 alias pulse             'set var_vpnConfig      = PULSE; src'
 alias novpn             'set var_vpnConfig      = LOCAL; src'
+alias svnhome           'set var_vpnConfig      = HOME; src'
 
 alias whichenv  'echo "\n                      \\
 Trim Directory      = $var_trimDir             \\

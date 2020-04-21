@@ -5,7 +5,7 @@ set STATIC_REPO             = $REPOS_ROOT/TRIMStaticRepo
 set SVN_BIN                 = "/c/Program Files/TortoiseSVN/bin"
 
 #
-# (BITVISE, PULSE, LOCAL or NONE)
+# (BITVISE, PULSE, LOCAL, HOME or NONE)
 set DEFAULT_VPN             = NONE  
 #
 set SVN_PULSE_LAB           = svn://15.114.89.246:1137/TRIM
@@ -15,6 +15,9 @@ set SVN_PULSE_PROXY         = web-proxy.in.softwaregrp.net:8080
 set SVN_BVISE_LAB           = svn://localhost:11137/TRIM
 set SVN_BVISE_STATIC        = svn://localhost:11137/Static
 set SVN_BVISE_PROXY         = 127.0.0.1:8080
+
+set SVN_HOME_LAB            = svn://10.11.12.2
+set SVN_HOME_STATIC         = svn://10.11.12.2:5000
 
 set SVN_LOCAL_LAB           = svn://localhost
 set SVN_LOCAL_STATIC        = svn://localhost:5000

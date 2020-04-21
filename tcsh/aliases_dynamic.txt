@@ -11,58 +11,44 @@ endif
 
 if (! $?var_dbServer) then       
   set var_dbServer   = $LOCAL_SQLSVR
-else
-  if ("$var_dbServer" == "")  then
-     set var_dbServer   = $LOCAL_SQLSVR
-  endif
+else if ("$var_dbServer" == "")  then
+  set var_dbServer   = $LOCAL_SQLSVR
 endif
 
 if (! $?var_dbSession) then       
   set var_dbSession = Test_"$env_revision"_SqlServer
-else
-  if ("$var_dbSession" == "")  then
-     set var_dbSession = Test_"$env_revision"_SqlServer
-  endif
+else if ("$var_dbSession" == "")  then
+  set var_dbSession = Test_"$env_revision"_SqlServer
 endif
 
 if (! $?var_idolDbSession) then       
   set var_idolDbSession = Test_"$env_revision"_SqlServer_idol
-else
-  if ("$var_idolDbSession" == "")  then
-     set var_idolDbSession = Test_"$env_revision"_SqlServer_idol
-  endif
+else if ("$var_idolDbSession" == "")  then
+  set var_idolDbSession = Test_"$env_revision"_SqlServer_idol
 endif
 
 if (! $?var_DBID) then
    set var_DBID = $env_dbid
-else
-  if ("$var_DBID" == "")  then
-     set var_DBID = $env_dbid
-  endif
+else if ("$var_DBID" == "")  then
+   set var_DBID = $env_dbid
 endif
 
 if (! $?var_idolDBID) then
    set var_idolDBID = $env_idolDbid
-else
-  if ("$var_idolDBID" == "")  then
-     set var_idolDBID= $env_idolDbid
-  endif
+else if ("$var_idolDBID" == "")  then
+   set var_idolDBID= $env_idolDbid
 endif
 
 if (! $?var_defArch) then
    set var_defArch = $env_defArch
-else
-  if ("$var_defArch" == "")  then
-     set var_defArch = $env_defArch
-  endif
+else if ("$var_defArch" == "")  then
+   set var_defArch = $env_defArch
 endif
 
 if (! $?var_defBuild) then
    set var_defBuild = $env_defBuild
-else
-  if ("$var_defBuild" == "")  then
-     set var_defBuild = $env_defBuild
-  endif
+else if ("$var_defBuild" == "")  then
+   set var_defBuild = $env_defBuild
 endif
 
 #------------------------------------------------------
@@ -95,36 +81,37 @@ set var_devenvexe = "$var_devenvRoot/Common7/IDE/devenv.exe"
 
 if (! $?var_vpnConfig) then       
   set var_vpnConfig   = $DEFAULT_VPN
-else
-  if ("$var_vpnConfig" == "")  then
-     set var_vpnConfig   = $DEFAULT_VPN
-  endif
+else if ("$var_vpnConfig" == "")  then
+  set var_vpnConfig   = $DEFAULT_VPN
 endif
+
+# ---
 
 if (! $?var_elasticHost) then
   set var_elasticHost = $ELASTIC_HOST
-else
-  if ("$var_elasticHost" == "")  then
-     set var_elasticHost = $ELASTIC_HOST
-  endif
+else if ("$var_elasticHost" == "")  then
+  set var_elasticHost = $ELASTIC_HOST
 endif
+
+# ---
 
 if (! $?var_elasticIndex) then
   set var_elasticIndex = `echo "$env_elasticDbPrefix$var_DBID" | /bin/tr '[A-Z]' '[a-z]'` 
-else
-  if ("$var_elasticIndex" == "")  then
-     set var_elasticIndex = `echo "$env_elasticDbPrefix$var_DBID" | /bin/tr '[A-Z]' '[a-z]'`
-  endif
+else if ("$var_elasticIndex" == "")  then
+  set var_elasticIndex = `echo "$env_elasticDbPrefix$var_DBID" | /bin/tr '[A-Z]' '[a-z]'`
 endif
+
 set var_elasticHostOctane = $ELASTIC_HOST_OCTANE
+
+# ---
 
 if (! $?var_idolDb) then
   set var_idolDb = "$env_idolDbPrefix$var_idolDBID" 
-else
-  if ("$var_idolDb" == "")  then
-     set var_idolDb = "$env_idolDbPrefix$var_idolDBID"
-  endif
+else if ("$var_idolDb" == "")  then
+  set var_idolDb = "$env_idolDbPrefix$var_idolDBID"
 endif
+
+# ---
 
 set vpn_directory   = $NETWORK_DIR/vpn
 set hosts_directory = $SYSTEMROOT/System32/drivers/etc
@@ -134,25 +121,31 @@ if ("$var_vpnConfig" == "BITVISE") then
     set SVN_STATIC_URI = $SVN_BVISE_STATIC
     set PROXY_SERVER   = $SVN_BVISE_PROXY
     /bin/cp $vpn_directory/hosts.bitvise $hosts_directory/hosts
-else
-  if ("$var_vpnConfig" == "PULSE") then
+
+else if ("$var_vpnConfig" == "PULSE") then
     set SVN_LAB_URI    = $SVN_PULSE_LAB
     set SVN_STATIC_URI = $SVN_PULSE_STATIC
     set PROXY_SERVER   = $SVN_PULSE_PROXY
     /bin/cp $vpn_directory/hosts.pulse $hosts_directory/hosts
-  else
-    if ("$var_vpnConfig" == "LOCAL") then
+
+else if ("$var_vpnConfig" == "LOCAL") then
     set SVN_LAB_URI    = $SVN_LOCAL_LAB
     set SVN_STATIC_URI = $SVN_LOCAL_STATIC
     set PROXY_SERVER   = ""
     /bin/cp $vpn_directory/hosts $hosts_directory/hosts
-    else
-        set SVN_LAB_URI    = $SVN_PULSE_LAB
-        set SVN_STATIC_URI = $SVN_PULSE_STATIC
-        set PROXY_SERVER   = $SVN_PULSE_PROXY
-        /bin/cp $vpn_directory/hosts.work $hosts_directory/hosts
-    endif
-  endif
+
+else if ("$var_vpnConfig" == "HOME") then
+    set SVN_LAB_URI    = $SVN_HOME_LAB
+    set SVN_STATIC_URI = $SVN_HOME_STATIC
+    set PROXY_SERVER   = ""
+    /bin/cp $vpn_directory/hosts $hosts_directory/hosts
+
+else
+    set SVN_LAB_URI    = $SVN_HOME_LAB
+    set SVN_STATIC_URI = $SVN_HOME_STATIC
+    set PROXY_SERVER   = ""
+   /bin/cp $vpn_directory/hosts $hosts_directory/hosts
+
 endif
 
 set PROXY               = http://$PROXY_SERVER
