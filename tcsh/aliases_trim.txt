@@ -29,36 +29,46 @@ alias killboth          'killtrim;killwgs'
 # Run populate database
 alias populatedb        'cd $var_trimDir; $var_trimDir/$var_defArch/$var_defBuild/PopulateDatabase.exe'
 alias popdb             populatedb
+alias popdbbig          'popdb --big'
+alias popdbelastic      'popdb --dciServer $var_elasticHost --snapshotPath "/usr/share/elasticsearch/data/snapshots"'
+alias popdbac           'popdb      --dbid AC            --dbname elastic_autoclass'
+alias popdbelasticbig   'popdb      --dbid EB            --dbname elastic_100000 --big 10000'
+alias popdbidol         'populatedb --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol; bkupidolcfg'
+alias popdbidolac       'popdb      --dbid IA            --dbname idol_autoclass'
+alias popdbidolbig      'populatedb --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol --big 10000; bkupidolcfg'
+alias popdboracle       'popdb --db oracle64'
+
+alias restorepopdb      'popdb --load --dbid $var_DBID     --dbname $var_dbSession'
+alias restoreac         'popdb --load --dbid AC            --dbname elastic_autoclass'
+alias restoreesbig      'popdb --load --dbid EB            --dbname elastic_100000'
+alias restoreidol       'popdb --load --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol'
+alias restoreidolac     'popdb --load --dbid IA            --dbname idol_autoclass'
+
+alias savepopdb         'popdb --save --dbid $var_DBID     --dbname $var_dbSession'
+alias saveac            'popdb --save --dbid AC            --dbname elastic_autoclass'
+alias saveesbig         'popdb --save --dbid EB            --dbname elastic_100000'
+alias saveidol          'popdb --save --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol'
+alias saveidolac        'popdb --save --dbid IA            --dbname idol_autoclass'
+
 alias popdbhelp         'populatedb -h'
-alias restorepopdb      'popdb --load --dbid $var_DBID --dbname $var_dbSession'
-alias reloadpopdb       restorepopdb
+alias bigconfig         'setdbid 41; dbsession Test_Big_"$env_revision"_SqlServer'
 alias defaultconfig     'unset var_DBID; unset var_dbSession; redo dynamic'
 alias elasticconfig     defaultconfig
-alias popdboracle       'popdb --db oracle64'
-alias popdbidol         'populatedb --dci idol --dbid $var_idolDBID --dbname $var_idolDbSession; bkupidolcfg'
-alias popdbidolbig      'populatedb --big 10000 --dci idol --dbid $var_idolDBID --dbname $var_idolDbSession; bkupidolcfg'
-alias restoreidol       'popdb --load --dci idol --dbid $var_idolDBID --dbname $var_idolDbSession'
 alias idolconfig        'setdbid $env_idolDbid; dbsession $var_idolDbSession'
-alias popdbbig          'popdb --big'
-alias popdbelasticbig   'popdb --big 10000 --dbid EB --dbname elastic_100000'
-alias bigconfig         'setdbid 41; dbsession Test_Big_"$env_revision"_SqlServer'
-alias popdbelastic      'popdb --dciServer $var_elasticHost --snapshotPath "/usr/share/elasticsearch/data/snapshots"'
-alias popdbes           popdbelastic
 
-alias testac           'testtrim --test autoclassification'
-alias elk_train        'testac --load train '
-alias elk_test         'testac --load test --inplace'
-alias elk_both         'testac --load both '
-alias elk_classify     'testac --inplace --classify '
-alias elastic_train     elk_train
-alias elastic_test      elk_test
-alias elastic_both      elk_both
-alias elastic_classify  elk_classify
+set es_ac_params = '--test autoclassification --dbid AC --dbname elastic_autoclass'
+alias testac            'testtrim $es_ac_params; saveac'
+alias elastic_train     'testtrim $es_ac_params --load train '
+alias elastic_test      'testtrim $es_ac_params --load test --inplace'
+alias elastic_both      'testtrim $es_ac_params --load both '
+alias elastic_classify  'testtrim $es_ac_params --inplace --classify '
 
-alias idol_train        'testac --dbid $var_idolDBID --dbname $var_idolDbSession --load train'
-alias idol_test         'testac --dbid $var_idolDBID --dbname $var_idolDbSession --load test --inplace'
-alias idol_both         'testac --dbid $var_idolDBID --dbname $var_idolDbSession --load both'
-alias idol_classify     'testac --dbid $var_idolDBID --dbname $var_idolDbSession --classify --inplace'
+set idol_ac_params = '--test autoclassification --dbid IA --dbname idol_autoclass'
+alias testidolac        'testtrim $idol_ac_params; saveidolac'
+alias idol_train        'testtrim $idol_ac_params --load train'
+alias idol_test         'testtrim $idol_ac_params --load test --inplace'
+alias idol_both         'testtrim $idol_ac_params --load both'
+alias idol_classify     'testtrim $idol_ac_params --classify --inplace'
 
 alias trimconfig        'xmlconf $var_trimcfg'
 alias trimcfgsorted     'xmlformat $var_trimcfg | $PYTHON $PYTHON_HOME/sortXml.py'
