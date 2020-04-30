@@ -92,8 +92,9 @@ alias contents            'docid \!^ \\
     }                                      \\
   }  '"'"
 alias esdeldocid          '$CURL -XDELETE "$var_elasticHost/$var_elasticIndex/_doc/\!^"'
-alias deldoc              esdeldocid
-alias delid               esdeldocid
+alias delxx               'setenv ES_DOCID \!^; perl -e '"'"' $id=$ENV{ES_DOCID}; if($id =~ /^(\d+)\.\d+\.\d+$/){ $id .= "?routing=$1";} open F,">C:/tmp/perl_env.txt" or die; print F "set ES_DOCID = \"$id\"\n"; close F; '"'  ; unsetenv ES_DOCID "
+alias deldoc              'delxx \!^; source C:/tmp/perl_env.txt; esdeldocid $ES_DOCID '
+alias delid                deldoc
 
 alias pycurl		      '$PYTHON_CYG $PYTHON_HOME/curl.py'
 alias pyc		          'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -i -s; cat /c/tmp/pycurl_output.txt'
