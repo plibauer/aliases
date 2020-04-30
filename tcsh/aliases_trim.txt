@@ -29,26 +29,42 @@ alias killboth          'killtrim;killwgs'
 # Run populate database
 alias populatedb        'cd $var_trimDir; $var_trimDir/$var_defArch/$var_defBuild/PopulateDatabase.exe'
 alias popdb             populatedb
+
 alias popdbbig          'popdb --big'
 alias popdbelastic      'popdb --dciServer $var_elasticHost --snapshotPath "/usr/share/elasticsearch/data/snapshots"'
 alias popdbac           'popdb      --dbid AC            --dbname elastic_autoclass'
-alias popdbelasticbig   'popdb      --dbid EB            --dbname elastic_100000 --big 10000'
-alias popdbidol         'populatedb --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol; bkupidolcfg'
-alias popdbidolac       'popdb      --dbid IA            --dbname idol_autoclass'
-alias popdbidolbig      'populatedb --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol --big 10000; bkupidolcfg'
+alias popdbesbig        'popdb      --dbid EB            --dbname elastic_100000 --big 10000'
+
+alias popdbidol         'populatedb --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol'
+alias popdbidolac       'popdb      --dbid IA            --dbname idol_autoclass     --dci idol'
+alias popdbidolbig      'populatedb --dbid IB            --dbname idol_100000        --dci idol --big 10000'
+
 alias popdboracle       'popdb --db oracle64'
 
 alias restorepopdb      'popdb --load --dbid $var_DBID     --dbname $var_dbSession'
 alias restoreac         'popdb --load --dbid AC            --dbname elastic_autoclass'
 alias restoreesbig      'popdb --load --dbid EB            --dbname elastic_100000'
-alias restoreidol       'popdb --load --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol'
-alias restoreidolac     'popdb --load --dbid IA            --dbname idol_autoclass'
 
-alias savepopdb         'popdb --save --dbid $var_DBID     --dbname $var_dbSession'
-alias saveac            'popdb --save --dbid AC            --dbname elastic_autoclass'
-alias saveesbig         'popdb --save --dbid EB            --dbname elastic_100000'
-alias saveidol          'popdb --save --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol'
-alias saveidolac        'popdb --save --dbid IA            --dbname idol_autoclass'
+alias restoreidol       'popdb --load --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol'
+alias restoreidolac     'popdb --load --dbid IA            --dbname idol_autoclass     --dci idol'
+alias restoreidolbig    'popdb --load --dbid IB            --dbname idol_100000        --dci idol'
+
+alias savepopdb         'popdb --inplace --save --dbid $var_DBID     --dbname $var_dbSession'
+alias saveac            'popdb --inplace --save --dbid AC            --dbname elastic_autoclass'
+alias saveesbig         'popdb --inplace --save --dbid EB            --dbname elastic_100000'
+
+alias saveidol          'popdb --inplace --save --dbid $var_idolDBID --dbname $var_idolDbSession --dci idol'
+alias saveidolac        'popdb --inplace --save --dbid IA            --dbname idol_autoclass     --dci idol'
+alias saveidolbig       'popdb --inplace --save --dbid IB            --dbname idol_100000        --dci idol'
+
+# Switch configuration files - different to a restore above since it will using the existing db/estore/elastic 
+alias switchdefault     'cp $TESTDATASETS_DIR/$var_DBID/backup/TRIMConfig.tcfg $var_trimcfgdir' 
+alias switchac          'cp $TESTDATASETS_DIR/AC/backup/TRIMConfig.tcfg $var_trimcfgdir' 
+alias switchesbig       'cp $TESTDATASETS_DIR/EB/backup/TRIMConfig.tcfg $var_trimcfgdir' 
+
+alias switchidol        'cp $TESTDATASETS_DIR/$var_idolDBID/backup/TRIMConfig.tcfg $var_trimcfgdir' 
+alias switchidolac      'cp $TESTDATASETS_DIR/IA/backup/TRIMConfig.tcfg $var_trimcfgdir' 
+alias switchidolbig     'cp $TESTDATASETS_DIR/IB/backup/TRIMConfig.tcfg $var_trimcfgdir' 
 
 alias popdbhelp         'populatedb -h'
 alias bigconfig         'setdbid 41; dbsession Test_Big_"$env_revision"_SqlServer'
@@ -72,14 +88,10 @@ alias idol_classify     'testtrim $idol_ac_params --classify --inplace'
 
 alias trimconfig        'xmlconf $var_trimcfg'
 alias trimcfgsorted     'xmlformat $var_trimcfg | $PYTHON $PYTHON_HOME/sortXml.py'
-alias restoreconfig     'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg $var_trimcfgdir'
+alias restoreconfig     'cp $TESTDATASETS_DIR/$var_DBID/backup/TRIMConfig.tcfg $var_trimcfgdir' 
 alias xmltrim           'xmlformat $var_trimcfg'
 alias getconfig         'more $var_trimcfg'
 alias fixtrimconfig     'xmlformat -i -b .backup $var_trimcfg'
-alias bkupidolcfg       'cp $var_trimcfg /c/TestDatasets/$var_idolDBID/backup/TRIMConfig.tcfg.IDOL'
-alias bkupelasticcfg    'cp $var_trimcfg /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC'
-alias idolcfg           'cp /c/TestDatasets/$var_idolDBID/backup/TRIMConfig.tcfg.IDOL $var_trimcfg'
-alias elasticcfg        'cp /c/TestDatasets/$var_DBID/backup/TRIMConfig.tcfg.ELASTIC $var_trimcfg'
 
 alias testtrim          '$var_trimDir/$var_defArch/$var_defBuild/testTrim.exe'
 alias trimtest          testtrim

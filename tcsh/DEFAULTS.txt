@@ -61,6 +61,7 @@ set WIX_DIR                 = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
 set LOCAL_SQLSVR            = LOCALHOST
 set ALM_DB                  = $REPOS_ROOT/ALM_Data
 set IDOL_DIR                = "/e/IDOL Development Deployment"
+set TESTDATASETS_DIR        = /c/TestDatasets
 
 # ElasticSearch
 set ELASTIC_HOST            = http://localhost:9200
