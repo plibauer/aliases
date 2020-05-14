@@ -38,6 +38,7 @@ alias dresync           'curl "$IDOL_PROXY_IDX/DRESYNC"'
 alias removedocs        'curl "$IDOL_PROXY_IDX/DREDELDBASE?DREdbname=\!^"'
 alias removedb          'curl "$IDOL_PROXY_IDX/DREREMOVEDBASE?DREdbname=\!^"'
 alias idolcontent       '$CURLDEV=getcontent\&reference=trim:$var_idolDBID/rec/\!^                 $CURL_OPTS | $XMLFORMAT'
+alias idoluriv          idolcontent 
 alias idolrecordsdb     '$CURLQUERY\&text=\*\&databasematch=\!^\&MaxResults=999                     $CURL_OPTS | $XMLFORMAT'
 alias idolrecords       '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=\!^             $CURL_OPTS | $XMLFORMAT'
 alias idolrecordsall    '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=1000000         $CURL_OPTS | $XMLFORMAT'
@@ -46,14 +47,13 @@ alias idolreferencev    '$CURLQUERY\&text=\*\&Print=All\&MaxResults=1000\&MatchR
 alias idolquery         '$CURLQUERY\&text=\!^\&MaxResults=1000\&databasematch=$var_idolDb           $CURL_OPTS | $XMLFORMAT'
 alias idolqueryv        '$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&databasematch=$var_idolDb $CURL_OPTS | $XMLFORMAT'
 
-#   In the following alias
+#   Need to % encode left and right curly brackets
 #
-#     %7B => {  
+#     %7B => {   %7D => }
 #
-#   and 
-#
-#     %7D => }
-#
+alias idoluri           '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&FieldText=MATCH%7B\!^%7D:TN_URI $CURL_OPTS | $XMLFORMAT'
+alias idolrec           '$CURLQUERY\&text=\*\&MaxResults=1000\&databasematch=$var_idolDb\&FieldText=MATCH%7B\!^%7D:TS_NUMBER $CURL_OPTS | $XMLFORMAT'
+alias idolrecv          '$CURLQUERY\&text=\*\&MaxResults=1000\&databasematch=$var_idolDb\&FieldText=MATCH%7B\!^%7D:TS_NUMBER\&Print=All $CURL_OPTS | $XMLFORMAT'
 alias idolcategoryrecs  '$CURLQUERY\&MaxResults=1000\&FieldText=STRING%7Btrim:$var_idolDBID/pln/\!^%7D:TS_CLASSIFICATION\&Sort=TD_DATEREGISTERED:alphabetical $CURL_OPTS | $XMLFORMAT'
 alias idolcatrecs       'idolcategoryrecs \!^ | perl -e  '"'"'          \\
                                                                         \\
@@ -136,9 +136,6 @@ alias idolrecs      'unsetenv BYWEIGHT && idolrecords \!^  | formatidol'
 alias idolrecsall   'unsetenv BYWEIGHT && idolrecordsall   | formatidol'
 alias idolq         'setenv BYWEIGHT true && idolquery \!^ | formatidol'
 
-alias idolrec       idolreference 
-alias idolrecv      idolreferencev 
-alias idoluri       idolcontent 
 alias idolsync      dresync
 
 set LOG_CONTENT_DIR = "/e/IDOL Development Deployment/TRIM Content Service 1/logs/application.log"
