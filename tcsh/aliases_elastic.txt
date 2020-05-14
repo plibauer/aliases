@@ -80,6 +80,7 @@ alias searchindex         'esgetp \!^/_search'
 alias esdelete            '$CURL -X DELETE "$var_elasticHost/\!^"'
 alias esrefresh           '$CURL -X POST "$var_elasticHost/_refresh?pretty=true"'
 alias escontentsrch       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&pretty=true"'
+alias escontenthits       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&_source=false&pretty=true" | egrep "id|routing"'
 alias docid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
 alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=Number:REC_\!^&pretty=true"'
 alias contents            'docid \!^ \\
@@ -102,7 +103,8 @@ alias esquery             'pycurl "$var_elasticHost/$var_elasticIndex/_search?pr
 alias esqueryi            'pycurl -i "$var_elasticHost/$var_elasticIndex/_search?pretty"' 
 alias escommand           'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -f $ELASTIC_QUERIES'
 
-alias hascontent          'escommand -c has_document_content | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
+alias eshasfield          'escommand -c field_exists \!^ | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
+alias hascontent          'eshasfield Document.Content' 
 alias allids              'escommand -c match_all | grep _id | sort'
 alias esalldocs           allids
 alias estitles            'escommand -c titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 

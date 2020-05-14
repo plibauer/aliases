@@ -1,11 +1,11 @@
 
 # ------------------------------------------------
 
-has_document_content: 
+field_exists: 
 { 
   "_source": false, 
   "query" : { 
-    "exists" : { "field" : "Document.Content" } 
+    "exists" : { "field" : "ARG1" }
   }, 
   "size" : 10000 
 }
