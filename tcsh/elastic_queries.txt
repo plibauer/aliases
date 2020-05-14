@@ -4,8 +4,10 @@
 field_exists: 
 { 
   "_source": false, 
-  "query" : { 
-    "exists" : { "field" : "ARG1" }
+  "query" : {
+    "exists" : { 
+       "field" : "ARG1" 
+    }
   }, 
   "size" : 10000 
 }
