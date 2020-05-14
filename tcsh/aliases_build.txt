@@ -555,7 +555,7 @@ alias wglogbasic ' ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData
 set LOGSTART  = "("
 set LOG1  = "SELECT\s+TOP\s+\d+.+FROM\s+(TSEVENTDAT|TSTODOITEM|TSWKACTIVI)"
 set LOG2  = "|SELECT.+FROM\s+TSTWRSYS\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(\s+code\s+="
-set LOG3  = ""
+set LOG3  = "|TSEVENTDAT WITH \(NOLOCK\)  WHERE uri IN  \( SELECT TOP 30 uri   FROM TSEVENTDAT WITH \(NOLOCK\)"
 set LOG4  = "|SELECT\s+COUNT_BIG\(uri\)\s+FROM\s+TSRECORD\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(rcFilePlanUri"
 set LOG5  = "|SELECT\s+uri,raRecordUri,raUnitUri,raDueDateTime\s+FROM\s+TSRECACTST\s+WITH\s+\(NOLOCK\)"
 set LOG6  = "|UPDATE\s+TSTWRSYS\s+SET\s+value\s+=\s+"
@@ -563,13 +563,15 @@ set LOG7  = "|SELECT\s+uri\s+FROM\s+TSRECORD\s+WITH\s*\(NOLOCK\)\s*WHERE\s*\(\s*
 set LOG8  = "|SELECT\s+uri,rqRecordUri,rqLocUri,rqAt,rqHomeLocUri,rqDateCreated\s+FROM\s+TSRECREQUE"
 set LOG9  = "|SELECT\s+uri,wacWorkflowUri,wacAssigneeUri,wacSupervisorUri,wacDueDate\s+FROM\s+TSWKACTIVI"
 set LOG10 = "|INSERT\s+INTO\s+TSXMLDATA"
+set LOG11 = "|SELECT\s+COUNT_BIG\(.\)\s+FROM\s+TSRENDQUEU\s+WITH\s+\(NOLOCK\)\s+WHERE\s+\(\s+rnqRenditionType"
+set LOG12 = "|(Start|End)Transaction.+RenderHeartBeat"
 set LOGEND = ")"
 
 alias wglog 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMWorkgroup*   \\
  | head -1                                                                                      \\
  | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                                            \\
  | /bin/sh                                                                                      \\
- | grep -Eiv "$LOGSTART$LOG1$LOG2$LOG3$LOG4$LOG5$LOG6$LOG7$LOG8$LOG9$LOG10$LOGEND" '
+ | grep -Eiv "$LOGSTART$LOG1$LOG2$LOG3$LOG4$LOG5$LOG6$LOG7$LOG8$LOG9$LOG10$LOG11$LOG12$LOGEND" '
 
 
 alias cleanlog  ' cat \!^                                                                                                   \\
