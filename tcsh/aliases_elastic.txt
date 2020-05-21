@@ -98,11 +98,15 @@ alias deldoc              'delxx \!^; source C:/tmp/perl_env.txt; esdeldocid $ES
 alias delid                deldoc
 
 alias pycurl		      '$PYTHON_CYG $PYTHON_HOME/curl.py'
-alias pyc		          'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -i -s; cat /c/tmp/pycurl_output.txt'
-alias esquery             'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" \!^' 
-alias esqueryi            'pycurl -i "$var_elasticHost/$var_elasticIndex/_search?pretty"' 
-alias escommand           'pycurl "$var_elasticHost/$var_elasticIndex/_search?pretty" -f $ELASTIC_QUERIES'
+alias pycurldef	          'pycurl -u "$var_elasticHost/$var_elasticIndex/_search?pretty"'
+alias pyc		          'pycurldef  -i -s; cat /c/tmp/pycurl_output.txt'
+alias esquery             'pycurldef \!^' 
+alias esqueryi            'pycurldef -i' 
+alias esquerystring       'pycurldef -q'
+alias esqs                esquerystring
+alias qs                  esqs
 
+alias escommand           'pycurldef -f $ELASTIC_QUERIES'
 alias eshasfield          'escommand -c field_exists \!^ | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
 alias hascontent          'eshasfield Document.Content' 
 alias allids              'escommand -c match_all | grep _id | sort'
