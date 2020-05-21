@@ -31,13 +31,13 @@ alias defect            '$PYTHON $PYTHON_HOME/octane.py'
 alias defectv           '$PYTHON $PYTHON_HOME/octane.py -v'
 alias cr                defect
 alias crv				defectv
-alias octcurl        	'$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHostOctane/octane_new/_search?pretty" -f $ELASTIC_QUERIES'
+alias octcurl        	'$PYTHON_CYG $PYTHON_HOME/curl.py -u "$var_elasticHostOctane/octane_new/_search?pretty" -f $ELASTIC_QUERIES'
 alias currentdefects    'octcurl -c current_defects \!^'
 alias defectbyrelease   'octcurl -c defects_by_release \!:1 \!:2'
 alias alldefects        'octcurl -c all_defects \!^'
 alias octanesearchtitle 'octcurl -c search_defect_by_title \!^' 
 alias eshostoctane      elastichost $var_elasticHostOctane
-alias syncoctane        '$PYTHON_CYG $PYTHON_HOME/curl.py "$var_elasticHostOctane/_reindex" -c reindex_octane -f $ELASTIC_QUERIES'
+alias syncoctane        '$PYTHON_CYG $PYTHON_HOME/curl.py -u "$var_elasticHostOctane/_reindex" -c reindex_octane -f $ELASTIC_QUERIES'
 alias octanesync        'syncoctane && esrefresh && esinfo'
 
 set DEFECT_FIELDS='_id|_phase|_severity|_release|name|_priority|_defect_type'
