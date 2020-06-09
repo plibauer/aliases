@@ -74,6 +74,33 @@ alias settings            esgetsettings
 alias setting             'esget \!^/_settings?pretty'
 alias esmappings          'esget $var_elasticIndex/_mappings?pretty'
 alias mapping             'esget \!^/_mappings?pretty'
+alias esindexproperties   'esget $var_elasticIndex/_doc/index.properties'
+alias indexproperties     esindexproperties
+alias esindexmetadata     'esget $var_elasticIndex/_doc/index.metadatafields'
+alias esmetadata          esindexmetadata
+alias metadata            'esindexmetadata               \\
+| $PERL -e '"'"'                                         \\
+my @input = <>;                                          \\
+my $max = 10;                                            \\
+my $fields;                                              \\
+while (my $l = shift @input) {                           \\
+  chomp $l;                                              \\
+  if($l =~ /"key"\s+:\s+"(\w+)"/) {                      \\
+    my $key = $1;                                        \\
+    my $val = shift @input;                              \\
+    if($val =~ /"value"\s+:\s+"(\w+)"/) {                \\
+      $fields{$key} = $1;                                \\
+      $max = length($key) > $max ? length($key) : $max;  \\
+    }                                                    \\
+    else { print "EXPECTED 'value' line ???\n"; }        \\
+  }                                                      \\
+}                                                        \\
+for(sort keys %fields) {                                 \\
+  my $s = " " x ($max - length($_) + 2);                 \\
+  print "$_$s: ".$fields{$_}."\n";                       \\
+}                                                        \\
+'"'"
+
 alias essearchall         'esgetp _search'
 alias essearch            'esgetp $var_elasticIndex/_search'
 alias searchindex         'esgetp \!^/_search'
