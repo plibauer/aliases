@@ -30,12 +30,15 @@ alias eventidsr             dbv --id event -rev
 alias events                eventids
 alias eventsr               eventidsr
 
+
 alias table                 dbv -table
 alias tables                dbv -get_tables
 alias tableids              dbv --id table
 alias tableidsr             dbv --id table -rev
 alias tids                  tableids
 alias tidsr                 tableidsr
+
+alias usertypes             dbv --id userTypes
 
 alias dbsql                 db -sql
 alias sql                   dbsql
@@ -50,12 +53,35 @@ alias tblconstraints        "dbv -sql 'SELECT * FROM INFORMATION_SCHEMA.TABLE_CO
 
 alias locs                  db --object_type LOCATION --unadorned
 alias locsv                 dbv --object_type LOCATION --unadorned
+alias loctypes              dbv --id locs
 alias locuri                locsv --object_uri 
 alias locname               locsv --object_name 
 alias loceaddr              "dbv -sql 'SELECT * FROM TSLOCATION LOC INNER JOIN TSLOCEADDR EADD ON LOC.uri = EADD.leLocUri' -col 1,2,24,26,27,28 -num -verbose"
 
 alias locations             db  -table TSLOCATION -col 1,2
 alias locationsv            dbv -table TSLOCATION -col 1,2
+
+alias location              '(locuri \!^ && loctypes && usertypes)   \\
+ | $PERL -e '"'"'                                                    \\
+@in = <>;                                                            \\
+while(my $l = shift @in) {                                           \\
+  if($l =~ /^using checkout/i) { next; }                             \\
+  print "$l";                                                        \\
+  if($l =~ /^\s*\d+\s+.+\s(\d+)\s+\w*\s+(\d+)(\s+[\w\s]+)*$/) {      \\
+    $locType = $1;                                                   \\
+    $userType = $2;                                                  \\
+    print "\n";                                                      \\
+    while($l = shift @in) {                                          \\
+      if($l =~ /^$locType\s+:\s+(lc_.+)$/) {                         \\
+        print "lcType     => [$locType] $1\n";                       \\
+      }                                                              \\
+      elsif($l =~ /^$userType\s+:\s+(ut_.+)$/) {                     \\
+        print "luUserType => [$userType] $1\n";                      \\
+      }                                                              \\
+    }                                                                \\
+  }                                                                  \\
+}                                                                    \\
+'"'"
 
 alias recs                  db --object_type RECORD --unadorned --max 60
 alias recsv                 dbv --object_type RECORD --unadorned --max 60
