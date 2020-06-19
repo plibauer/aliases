@@ -60,6 +60,48 @@ titles:
 
 current_defects:
 {
+  "_source": [
+    "name",
+    "closed_on",
+    "_release",
+    "_severity",
+    "_defect_type",
+    "_detected_in_release",
+    "_qa_owner",
+    "last_modified",
+    "_priority",
+    "_phase"
+  ],
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "query_string": {
+            "query": "_owner:(ARG1) AND NOT _phase:(closed rejected duplicate fixed)"
+          }
+        },
+        {
+          "query_string": {
+            "query": "_qa_owner:(ARG1) AND NOT _phase:(closed rejected duplicate)"
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "_release.keyword": {
+        "order": "asc"
+      }
+    }
+  ],
+  "size": 100
+}
+
+# ------------------------------------------------
+
+current_defects_ORIGINAL:
+{
   "_source":[
   	"name",
   	"closed_on",
