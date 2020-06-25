@@ -5,24 +5,35 @@
 
 set logSeparator    = "\n----------------------------------------------------------------------------------------------------"
 
-alias nuke             "gosln;./NukeSolutions.bat"
-alias gensln           "gosln;./GenerateSolutions.bat"
-alias nukeandgen       "nuke;gensln"
+alias nuke             'gosln;./NukeSolutions.bat'
+alias gensln           'gosln;./GenerateSolutions.bat'
+alias nukeandgen       'nuke;gensln'
 alias touchcopy        'touch $var_trimDir/trim/src/CopyFiles/CopyFiles.cpp'
 alias copyfilescs      'cygstart cmd.exe /c $var_trimDir/trim/CSharp/TRIMCsBuild/CopyFilesPreBuild.bat $var_trimDir/AnyCPU/$var_defBuild $var_defBuild'
 alias bldlog           'tail -f $var_buildLog.build'
 alias bldlogcs         'tail -f $var_buildLogCSharp.build'
 alias bldlogwix        'tail -f $var_buildLogWix'
-alias bldall           "date; bldsln; bldcsharp; bldwix; date"
-alias kbldall          "killboth; bldall"
-alias bldboth          "release; bldsln; debug; bldsln"
-alias clnall           "clnsln; clncsharp; clnwix"
-alias clnallboth       "release; clnall; debug; clnall"
-alias logs             "golog; xt 'TRIMWorkgroupServer log';golog;  xt 'TRIMEvent log'; golog;  xt 'TRIMDCI log'"
-alias rmlogs           "rm $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/*.log"
-alias rmlogsboth       "rm $var_trimDir/$var_defArch/{Debug,Release}/ServerLocalData/Log/*.log"
-alias rmlogslocal      "golocallog; rm -f *.log; back" 
+alias bldall           'date; bldsln; bldcsharp; bldwix; date'
+alias kbldall          'killboth; bldall'
+alias bldboth          'release; bldsln; debug; bldsln'
+alias clnall           'clnsln; clncsharp; clnwix'
+alias clnallboth       'release; clnall; debug; clnall'
+alias logs             'golog; xt "TRIMWorkgroupServer log";golog;  xt "TRIMEvent log"; golog;  xt "TRIMDCI log"'
+alias rmlogs           'rm $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/*.log'
+alias rmlogsboth       'rm $var_trimDir/$var_defArch/{Debug,Release}/ServerLocalData/Log/*.log'
+alias rmlogslocal      'golocallog; rm -f *.log; back' 
 
+# Search for which project a source module belongs to
+alias findproject      'grep -is \!^ $var_trimDir/trim/sln/TRIM/*/CMakeLists.txt  \\
+ | $PERL -ne '"'"'                                                                \\
+chomp;                                                                            \\
+if (/sln.TRIM.(\w+).CMakeLists.txt:\s+(.+)$/i) {                                  \\
+  print "Project $1\t: $2\n";                                                     \\
+}                                                                                 \\
+ '"'"
+alias fproj             findproject
+alias findproj          findproject
+alias projfind          findproject
 
 alias evlog_clean "cat \!^                              |\\
 grep -v 'No events waiting at workgroup'                |\\

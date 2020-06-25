@@ -142,7 +142,7 @@ while(my $l = shift @IN) {                                            \\
     $rel =~ s/^(\d+)\.(\d)$/$1.$+0/;                                  \\
     # Remove any escaped double quotes from the title                 \\
     $name =~ s/\\"/"/g;                                               \\
-    #print "ID:$id\nPH:$ph\nSEV:$sev\nREL:$rel\nNAM:$name\nPR:$pr\nDET:$det\nTYP:$typ\n\n"; \\
+    print "ID:$id\nPH:$ph\nSEV:$sev\nREL:$rel\nNAM:$name\nPR:$pr\nDET:$det\nTYP:$typ\n\n"; \\
     $ids{$id} = { id          => $id,                                 \\
                   phase       => $ph,                                 \\
                   severity    => $sev,                                \\
