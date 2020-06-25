@@ -24,13 +24,30 @@ alias rmlogsboth       'rm $var_trimDir/$var_defArch/{Debug,Release}/ServerLocal
 alias rmlogslocal      'golocallog; rm -f *.log; back' 
 
 # Search for which project a source module belongs to
-alias findproject      'grep -is \!^ $var_trimDir/trim/sln/TRIM/*/CMakeLists.txt  \\
- | $PERL -ne '"'"'                                                                \\
-chomp;                                                                            \\
-if (/sln.TRIM.(\w+).CMakeLists.txt:\s+(.+)$/i) {                                  \\
-  print "Project $1\t: $2\n";                                                     \\
-}                                                                                 \\
- '"'"
+alias findproject      'setenv PROJSRCH \!^; grep -is \!^ $var_trimDir/trim/sln/TRIM/x64/*/*.filters   \\
+ | $PERL -e '"'"' use Term::ANSIColor qw(:constants :constants256); \\
+while(<>) {                                                         \\
+  my $projects;                                                     \\
+  my $srch = $ENV{PROJSRCH};                                        \\
+  chomp;                                                            \\
+  if (/TRIM.x64.([\w\.]+)\/.+filters:\s+.+include="(.+)">$/i) {     \\
+    ($p,$f) = ($1,$2);                                              \\
+    if($f =~ /\\([^\\]+)$/) {                                       \\
+      $filename = $1;                                               \\
+      if($filename =~ /$srch/i) {                                   \\
+        push @{$projects{$p}}, $f;                                  \\
+      }                                                             \\
+    }                                                               \\
+  }                                                                 \\
+}                                                                   \\
+for(sort keys %projects) {                                          \\
+  print BOLD, YELLOW, "$_\n", RESET ;                               \\
+  $mods = $projects{$_};                                            \\
+  for(sort @$mods) {                                                \\
+    print "\t$_\n";                                                 \\
+  }                                                                 \\
+}                                                                   \\
+ '"'" 
 alias fproj             findproject
 alias findproj          findproject
 alias projfind          findproject
