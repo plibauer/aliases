@@ -251,8 +251,9 @@ alias xmlformat       $PERL_HOME/xmlformat.pl
 alias xmlf            xmlformat
 
 # Lookup a perl function using perldoc
-alias perldoc         '$PERL/perldoc.bat \!:1 | more'
-alias perlfunc        '$PERL/perldoc.bat -f'
+alias perldoc         '$PERL_PATH/perldoc.bat'
+alias perlmodules     'perldoc -q installed'
+alias perlfunc        '$PERL_PATH/perldoc.bat -f'
 alias unicode         '$PERL $STATIC_PERL/misc/unicodeTools.pl'
 
 # JSON pretty print
