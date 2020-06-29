@@ -6,6 +6,23 @@
 #  Any variables that might change due to the environment should have deferred substitution
 #
 
+alias svnhelp     'echo                                                                                 \\
+"\n                                                                                                     \\
+\t svninfo              : Show details for the 3 main checkouts, trim, doc and TRIMStaticRepo           \\
+\t revhead, statrevhead : Show last update to trim/staticrepo checkout                                  \\
+\t showlatest           : Show last 10 changes to current path                                          \\
+\t match <string>       : Search for log entries matching <string>                                      \\
+\t labmatch <string>    : Search for log entries matching <string> in the sqlite database (faster)      \\
+\t sync{lab,static}     : Run svn sync for lab/static                                                   \\
+\t labupdate[local], statupdate[local]                                                                  \\
+\t                      : update the sqlite databases from a remote or local svn server                 \\
+\t refresh{lab,static}  : Combination of above 2 aliases                                                \\
+\t remlock, remlockstat : Remove database locks                                                         \\
+\t lablook, statlook    : Check the sync URL from which we are mirroring                                \\
+\t                                                                                                      \\
+\n\n"                                                                                                   \\
+' 
+
 alias svnuptrim       'svn update $var_trimDir'
 alias svnuptrimdoco   'svn update $var_trimDir/doc/doc/DocPub'
 alias svnup           'svnuptrim; date; svnuptrimdoco'
@@ -30,7 +47,9 @@ alias showchanges     showrevs
 
 alias svnstatus       'svn info $var_trimDir | $PERL -ne '"'"' print if /^Path|^URL:|^\n/; '"'"
 alias svnstatusfull   'svn info $var_trimDir | $PERL -ne '"'"' print unless /^(Working Copy|Relative|Node Kind|Schedule)/; '"'"
-alias svninfo         svnstatusfull
+alias svninfostat     'svn info $STATIC_REPO | $PERL -ne '"'"' print unless /^(Working Copy|Relative|Node Kind|Schedule)/; '"'"
+alias svninfodoc      'svn info $var_trimDir/doc/doc/DocPub | $PERL -ne '"'"' print unless /^(Working Copy|Relative|Node Kind|Schedule)/; '"'"
+alias svninfo	      'svnstatusfull && echo && svninfodoc && echo && svninfostat'
 
 alias svnrepoinfo     'cat $SVN_LAB_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
 alias svnrepoinfostat 'cat $SVN_STATIC_PATH/db/revprops/0/0 | egrep -v "^(K|V) " '
@@ -42,7 +61,7 @@ alias statrev         'statproc --rev'
 alias statrevhead     'statrev head'
 alias statupdate      'statproc --update --repo $SVN_STATIC_URI/REPOS'
 alias statupdatelocal 'statproc --update --repo $SVN_LOCAL_STATIC/REPOS'
-alias statlook        'svnlook pg --revprop -r0 $SVN_STATIC_PATH svn:sync-from-url'
+alias statlook        'svnlook pg --revprop -r0 $SVN_STATIC_PATH svn:sync-from-url && echo'
 
 #
 #  LAB Aliases
@@ -56,7 +75,7 @@ alias match          'labproc --no_case --limit 30 --match'
 alias labupdate      'labproc --update --repo $SVN_LAB_URI/REPOS'
 alias labupdatelocal 'labproc --update --repo $SVN_LOCAL_LAB/REPOS'
 alias labhelp        'labproc --help'
-alias lablook        'svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url'
+alias lablook        'svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url  && echo'
 
 # If svnserve is running, the sync command below will work, otherwise the subsequent one should always work
 # alias syncsvn    "svnsync sync svn://localhost/"
@@ -64,7 +83,11 @@ alias lablook        'svnlook pg --revprop -r0 $SVN_LAB_PATH svn:sync-from-url'
 alias syncsvn           'svnsync sync $SVN_LAB_FILE'
 alias synclab           'svnsync sync $SVN_LAB_FILE $SVN_LAB_URI'
 alias synclabwork       'svnsync sync $SVN_LAB_FILE svn://labsvn:1137/TRIM'
+alias refreshlab        'synclab && labupdate'
+
 alias syncstatic        'svnsync sync $SVN_STATIC_FILE $SVN_STATIC_URI'
+alias refreshstatic     'syncstatic && statupdate'
+
 alias remlock           'svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB_FILE'
 alias remlockstat       'svn propdel svn:sync-lock --revprop -r 0 $SVN_STATIC_FILE'
 alias trim2local        'svnrelocate $var_trimDir $SVN_LOCAL_LAB'
