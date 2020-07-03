@@ -24,27 +24,34 @@ alias rmlogsboth       'rm $var_trimDir/$var_defArch/{Debug,Release}/ServerLocal
 alias rmlogslocal      'golocallog; rm -f *.log; back' 
 
 # Search for which project a source module belongs to
-alias findproject      'setenv PROJSRCH \!^; grep -is \!^ $var_trimDir/trim/sln/TRIM/x64/*/*.filters   \\
+alias findproject      'setenv PROJSRCH \!^; grep -is -A 1 \!^ $var_trimDir/trim/sln/TRIM/x64/*/*.filters   \\
  | $PERL -e '"'"' use Term::ANSIColor qw(:constants :constants256); \\
-while(<>) {                                                         \\
+@input = <>; $i = 0;                                                \\
+for(@input) {                                                       \\
   my $projects;                                                     \\
   my $srch = $ENV{PROJSRCH};                                        \\
   chomp;                                                            \\
   if (/TRIM.x64.([\w\.]+)\/.+filters:\s+.+include="(.+)">$/i) {     \\
-    ($p,$f) = ($1,$2);                                              \\
-    if($f =~ /\\([^\\]+)$/) {                                       \\
+    ($proj,$file) = ($1,$2);                                        \\
+    if($file =~ /\\([^\\]+)$/) {                                    \\
       $filename = $1;                                               \\
       if($filename =~ /$srch/i) {                                   \\
-        push @{$projects{$p}}, $f;                                  \\
+        # See if there is a folder                                  \\
+        $folder = "";                                               \\
+        if($input[$i + 1] =~ /<filter>(.+)</i) {                    \\
+           $folder = $1;                                            \\
+        }                                                           \\
+        push @{$projects{$proj}}, {f => $file, folder => $folder};  \\
       }                                                             \\
     }                                                               \\
   }                                                                 \\
+  ++$i;                                                             \\
 }                                                                   \\
 for(sort keys %projects) {                                          \\
   print BOLD, YELLOW, "$_\n", RESET ;                               \\
   $mods = $projects{$_};                                            \\
   for(sort @$mods) {                                                \\
-    print "\t$_\n";                                                 \\
+    print "  ".$_->{f}." [", BOLD, CYAN, $_->{folder}, RESET,"]\n"; \\
   }                                                                 \\
 }                                                                   \\
  '"'" 
