@@ -228,9 +228,15 @@ alias hosts           'cat C:/Windows/System32/drivers/etc/hosts'
 alias vhosts          'vi C:/Windows/System32/drivers/etc/hosts'
 alias vihosts         vhosts
 alias lansettings     'rundll32.exe shell32.dll,Control_RunDLL inetcpl.cpl,,4 &'
+
 alias netbiosname     'nbtstat -A \!^'
 alias windowsname     netbiosname
 alias winhost         netbiosname
+alias windowspath     'cygpath -aw'
+alias winpath         windowspath
+alias winupath        'cygpath -am'
+alias abspath         'cygpath -a'
+
 alias get_title       'xprop -id ${WINDOWID}  | $PERL -e ' "'" ' while(<>){ if(/^WM_NAME.+= \"(.*)\"$/) {$t=$1} }  print "TITLE = $t\n"   ' "'" 
 alias clear_title     'echo -n "\033]0;xterm\007" '
 alias xterm_title     'echo -n "\033]0;\!^\007" '
