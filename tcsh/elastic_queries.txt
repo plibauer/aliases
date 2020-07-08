@@ -1,5 +1,37 @@
+# -----------------------------------------------------------------------------
 
-# ------------------------------------------------
+# The format of a command entry starts with the name on a single line ending 
+# with a ':'. 
+# 
+# If the API required is not '_search', then the next line is 'API=...' where 
+# the endpoint gets specified. Any options can be placed after the endpoint as
+# per the usual REST syntax (Eg. '?conflicts=proceed&pretty')
+#
+# Any strings that need substitution are labelled ARG1, ARG2, ... ARGX
+#
+# -----------------------------------------------------------------------------
+
+delete_children:
+API=_delete_by_query
+{
+  "query": {
+    "has_parent": {
+      "parent_type": "metadata",
+      "query": {
+        "term": {
+          "Uri": { "value": "ARG1" }
+        }
+      }
+    }
+  }
+}
+
+# -------------------------------------------------------------
+
+# For any query below that does not specify an 'API=...' line, 
+# they default to using _search
+
+# -------------------------------------------------------------
 
 field_exists: 
 { 
@@ -238,6 +270,7 @@ search_defect_by_title:
 # ------------------------------------------------
 
 reindex_octane:
+API=_reindex
 {
   "max_docs": 1000000,
   "conflicts": "proceed", 

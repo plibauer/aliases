@@ -122,10 +122,10 @@ alias contents            'docid \!^ \\
 alias esdeldocid          '$CURL -XDELETE "$var_elasticHost/$var_elasticIndex/_doc/\!^"'
 alias delxx               'setenv ES_DOCID \!^; perl -e '"'"' $id=$ENV{ES_DOCID}; if($id =~ /^(\d+)\.\d+\.\d+$/){ $id .= "?routing=$1";} open F,">C:/tmp/perl_env.txt" or die; print F "set ES_DOCID = \"$id\"\n"; close F; '"'  ; unsetenv ES_DOCID "
 alias deldoc              'delxx \!^; source C:/tmp/perl_env.txt; esdeldocid $ES_DOCID '
-alias delid                deldoc
+alias delid               'delxx \!^; source C:/tmp/perl_env.txt; esdeldocid $ES_DOCID '
 
 alias pycurl		      '$PYTHON_CYG $PYTHON_HOME/curl.py'
-alias pycurldef	          'pycurl -u "$var_elasticHost/$var_elasticIndex/_search?pretty"'
+alias pycurldef	          'pycurl -u "$var_elasticHost/$var_elasticIndex" -a "_search?pretty"'
 alias pyc		          'pycurldef  -i -s; cat /c/tmp/pycurl_output.txt'
 alias esquery             'pycurldef \!^' 
 alias esqueryi            'pycurldef -i' 
@@ -134,6 +134,7 @@ alias esqs                esquerystring
 alias qs                  esqs
 
 alias escommand           'pycurldef -f $ELASTIC_QUERIES'
+alias escommand_debug     'pycurldef -d -f $ELASTIC_QUERIES'
 alias eshasfield          'escommand -c field_exists \!^ | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
 alias hascontent          'eshasfield Document.Content' 
 alias allids              'escommand -c match_all | grep _id | sort'
@@ -143,6 +144,9 @@ alias titles              'estitles | sort'
 alias doccontent          'escommand -c get_record_content \!^'
 alias content             doccontent
 alias escontent           doccontent
+
+# Delete a document/record and its children
+alias esdelparentchild    'escommand -c delete_children \!^ && esdeldocid \!^'
 
 alias elasticinfo         'echo "HOST    : $var_elasticHost"; echo "INDEX   : $var_elasticIndex"; esversion; echo; indexes'  
 alias esinfo              elasticinfo
