@@ -3,10 +3,49 @@
 #   Database access aliases
 #   This file should only have to be source once
 #
-
-
 #--------------------------------------------
+
 #PERL DATABASE ACCESS
+
+##########################
+
+alias dbhelp      'echo                                                                                 \\
+"\n                                                                                                     \\
+\t whichenv             : displays current settings                                                     \\
+\t dbsession <value>    : sets the database to run against                                              \\
+\t dbserver  <value>    : sets the database instance to use                                             \\
+\t db        <options>  : general db operations                                                         \\
+\t dbs                  : list available databases for current SERVER ($var_dbServer)                   \\
+\t dbdetails            : as above, but with verbose outout                                             \\
+\t dbsql     <string>   : run the SQL specified by double quoted <string>                               \\
+\t                                                                                                      \\
+\t add -verbose to any command to see what is actually being run                                        \\
+\t                                                                                                      \\
+\t EXAMPLE                                                                                              \\
+\\
+\t Set the server to SQL2016  :  >dbserver SQL2016                                                      \\
+\t Set the database to TEST91 :  >dbsession TEST91                                                      \\
+\t                                                                                                      \\
+\t Query the number of rows in the TSRECORD table;                                                      \\
+\t                                                                                                      \\
+\t   >dbsql \042SELECT COUNT(*) FROM TSRECORD\042 --verbose  --unadorned                                \\
+                                                                                                        \\
+SERVER            : SQL2016                                                                             \\
+DATABASE          : TEST91                                                                              \\
+CONNECTION STRING : dbi:ODBC:driver={SQL Server};Server=SQL2016;Database=TEST91;Trusted_Connection=Yes  \\
+SQL QUERY         : SELECT COUNT(*) FROM TSRECORD                                                       \\
+MAX COLUMN WIDTH  : UNDEFINED                                                                           \\
+NUMBER OF ROWS    : 1                                                                                   \\
+NUMBER OF COLUMNS : 1                                                                                   \\
+                                                                                                        \\
+ 306                                                                                                    \\
+                                                                                                        \\
+\tFor more detailed help, db -help                                                                      \\
+\n\n"                                                                                                   \\
+'                                                                                                       \\
+
+##########################
+
 
 alias dbpl                  $PERL $STATIC_PERL/db/db.pl --server \$var_dbServer --database \$var_dbSession
 alias dbid                  dbpl --get_dbid
@@ -92,8 +131,8 @@ alias recname               recsv--object_name
 
 alias rectypes              db --object_type RECTYPE --unadorned
 alias rectypesv             dbv --object_type RECTYPE --unadorned
-alias rectypeuri            rectypesv --object_uri 
-alias rectypename           rectypesv --object_name 
+alias rectypeuri            rectypes --object_uri \!^ --row 
+alias rectypename           rectypes --object_name 
 
 alias mklocdata            "    \\
 sqlv 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.uri = PER.lpLocUri' \\

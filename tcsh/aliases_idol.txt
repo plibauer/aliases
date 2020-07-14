@@ -10,6 +10,57 @@ set IDOL_PROXY = http://localhost:11000
 set IDOL_PROXY_IDX = http://localhost:11001
 set DEVURL = $IDOL_PROXY/action
 
+##############################################################################
+#
+#  IDOL HELP INFO
+
+alias idolhelp      'echo                                                                           \\
+"\n                                                                                                 \\
+idolconfig            : Sets up DBID with suffix 5 and dataset name with suffix '_idol'             \\
+popdbidol             : Runs popdb for above settings                                               \\
+restoreidol           : Restores above database                                                     \\
+goidol                : Change directory to Idol Development Deployment                             \\
+idolconfig            : View the TRIM IDOL Service configuration file                               \\
+idolconfigcontent     : View the TRIM Content Service configuration file                            \\
+editidolconfig        : Edit  TRIM IDOL Service configuration file                                  \\
+editidolconfigcontent : Edit  TRIM IDOL Content Service configuration file                          \\
+\\
+idoluri <uri>     : Search for a record with <uri> and print basic fields                           \\
+idolcontent <uri> : Search for a record with <uri> and print all fields and content                 \\
+idolrec <number>  : Search based on record number, ie. 200 for REC_200                              \\
+idolrecv <number> : Same as above, but print all fields including content                           \\
+idolrectype <uri> : Search for records that have the Record Type <uri>                              \\
+idolrectypev <uri>: Search as above and print full output                                           \\
+\\
+idolsync          : Send a DRESYNC to the index to make sure all records are available              \\
+                                                                                                    \\
+TestTrim Autoclassification                                                                         \\
+idol_train      : loads training records for above dataset                                          \\
+idol_test       : loads test records data for above dataset                                         \\
+idol_both       : loads both above sets                                                             \\
+idol_classify   : Runs classify on records in Holding Bay                                           \\
+                                                                                                    \\
+Category commands                                                                                   \\
+idolcatids              : Print all category IDs                                                    \\
+idolcaturis             : Print all category names, URIs and IDs                                    \\
+idolcat <id>            : Get the category with 'id'                                                \\
+idolsuggesturi <uri>    : Suggest a category for the document with uri <uri>                        \\
+idoltraining <id>       : Get the data that has been used to train the category                     \\
+idolterms <id>          : Get extended term information with 'id'                                   \\
+idolcatdel(ete) <id>    : Delete the category with 'id'                                             \\
+idolcatdelete_all       : Delete all categories                                                     \\
+idolcathier(archy) <id> : Get the hierarchy details for 'id'                                        \\
+idolclass <opt>         : Search for categories and print uri, name, urn, database, id and terms    \\
+    (a)ll      - show all categories with name, urn, category ID, term count and terms              \\
+    (s)ummary  - Show summarised version of categories (no terms shown)                             \\
+    uri        - show category matching the 'uri' value                                             \\
+    string     - show all categories with names matching the 'string'                               \\
+\n\n"                                                                                               \\
+'
+
+
+##############################################################################
+
 alias idolenv          'echo                              \\
 "                                                         \\
 IDOL Proxy host : $IDOL_PROXY                             \\
@@ -19,15 +70,18 @@ DBID            : $var_idolDBID    (set with setdbid  )   \\
 "                                                         \\
 '
 alias idolinfo         'idolenv; idoldbs'
+
 alias goidol           'cd "$IDOL_DIR"'
-alias goidols          'cd "$IDOL_DIR/TRIM IDOL Service"'
-alias idolscfg         'more "$IDOL_DIR/TRIM IDOL Service/TRIM IDOL Service.cfg"'
-alias editidolscfg     'vi "$IDOL_DIR/TRIM IDOL Service/TRIM IDOL Service.cfg"'
-alias goidolc1         'cd "$IDOL_DIR/TRIM Content Service 1"'
-alias idolc1cfg        'more "$IDOL_DIR/TRIM Content Service 1/TRIM Content Service 1.cfg"'
-alias editidolc1cfg    'vi "$IDOL_DIR/TRIM Content Service 1/TRIM Content Service 1.cfg"'
-alias idolcurl         'curl -XGET "$IDOL_PROXY/\!^"   --noproxy "*" --silent'
-alias idolstatus       'curl -XGET "$DEVURL=GetStatus" --noproxy "*" --silent' | $PERL $PERL_HOME/xmlformat.pl
+alias goidolservice    'cd "$IDOL_DIR/TRIM IDOL Service"'
+alias goidolcontent    'cd "$IDOL_DIR/TRIM Content Service 1"'
+
+alias idolconfig            'more "$IDOL_DIR/TRIM IDOL Service/TRIM IDOL Service.cfg"'
+alias idolconfigcontent     'more "$IDOL_DIR/TRIM Content Service 1/TRIM Content Service 1.cfg"'
+alias editidolconfig        'vi "$IDOL_DIR/TRIM IDOL Service/TRIM IDOL Service.cfg"'
+alias editidolconfigcontent 'vi "$IDOL_DIR/TRIM Content Service 1/TRIM Content Service 1.cfg"'
+
+alias idolcurl              'curl -XGET "$IDOL_PROXY/\!^"   --noproxy "*" --silent'
+alias idolstatus            'curl -XGET "$DEVURL=GetStatus" --noproxy "*" --silent' | $PERL $PERL_HOME/xmlformat.pl
 
 set CURL_OPTS = --silent
 set XMLFORMAT = "$PERL $PERL_HOME/xmlformat.pl"
@@ -51,10 +105,62 @@ alias idolqueryv        '$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&da
 #
 #     %7B => {   %7D => }
 #
-alias idoluri           '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&FieldText=MATCH%7B\!^%7D:TN_URI $CURL_OPTS | $XMLFORMAT'
-alias idolrec           '$CURLQUERY\&text=\*\&MaxResults=1000\&databasematch=$var_idolDb\&FieldText=MATCH%7B\!^%7D:TS_NUMBER $CURL_OPTS | $XMLFORMAT'
-alias idolrecv          '$CURLQUERY\&text=\*\&MaxResults=1000\&databasematch=$var_idolDb\&FieldText=MATCH%7B\!^%7D:TS_NUMBER\&Print=All $CURL_OPTS | $XMLFORMAT'
-alias idolcategoryrecs  '$CURLQUERY\&MaxResults=1000\&FieldText=STRING%7Btrim:$var_idolDBID/pln/\!^%7D:TS_CLASSIFICATION\&Sort=TD_DATEREGISTERED:alphabetical $CURL_OPTS | $XMLFORMAT'
+set IDOLRECQRY = "$CURLQUERY\&text=\*\&MaxResults=1000\&databasematch=$var_idolDb\&FieldText=MATCH"
+alias idoluri           "$IDOLRECQRY%7B\!^%7D:TN_URI                   $CURL_OPTS | $XMLFORMAT"
+alias idolrec           "$IDOLRECQRY%7BREC_\!^%7D:TS_NUMBER            $CURL_OPTS | $XMLFORMAT"
+alias idolrecv          "$IDOLRECQRY%7BREC_\!^%7D:TS_NUMBER\&Print=All $CURL_OPTS | $XMLFORMAT"
+
+alias idol_getUrnString '(echo $var_idolDBID && rectypeuri \!^) | \\
+$PERL -e '"'"'                                                \\
+@in = <>;                                                     \\
+my $DBID,$URI,$NAME;                                          \\
+$DBID = shift @in; chomp $DBID;                               \\
+for (@in) {                                                   \\
+  chomp;                                                      \\
+  if(/^\s+uri\s+\.+\s+(\d+)/i){$URI=$1; next;}                \\
+  if(/^\s+rectypename\s+\.+\s+(.+)$/i){$NAME=$1; next;}       \\
+}                                                             \\
+$SRCH = "$NAME [trim:$DBID/rty/$URI]";                        \\
+#print "SEARCH BEFORE : $SRCH\n";                             \\
+$SRCH =~ s/\s/+/g;                                            \\
+$SRCH =~ s/\(/%28/g;                                          \\
+$SRCH =~ s/\)/%29/g;                                          \\
+$SRCH =~ s/\[/%5B/g;                                          \\
+$SRCH =~ s/]/%5D/g;                                           \\
+$SRCH =~ s/:/%3A/g;                                           \\
+$SRCH =~ s|/|%2F|g;                                           \\
+print $SRCH;                                                  \\
+'"'"
+
+set IDOLRECTYPEURN=""
+alias setidolurn        'set IDOLRECTYPEURN="`idol_getUrnString \!^`"'
+alias idol_rectypev     "$IDOLRECQRY%7B\!^%7D:TS_RECORDTYPE\&Print=All  $CURL_OPTS | $XMLFORMAT"
+alias idolrectypev      'setidolurn \!^; echo "SEARCH TERM: $IDOLRECTYPEURN"; idol_rectypev $IDOLRECTYPEURN'
+alias idol_rectype_s    "$IDOLRECQRY%7B\!^%7D:TS_RECORDTYPE  $CURL_OPTS | $XMLFORMAT"
+alias idolrectype_s     'setidolurn \!^; echo ; idol_rectype_s $IDOLRECTYPEURN'
+
+alias idolrectype       'idolrectype_s \!^ | \\
+$PERL -e '"'"'                       \\
+@in = <>;                            \\
+$hits = 0;                           \\
+while($_ = shift @in){               \\
+  chomp;                             \\
+  if(/autn:reference>(.+)<\/autn/){  \\
+    print "$1 ";                     \\
+    ++$hits;                         \\
+    next;                            \\
+  }                                  \\
+  if(/autn:title>(.+)<\/autn/) {     \\
+    print "TITLE: $1\n";             \\
+    next;                            \\
+  }                                  \\
+}                                    \\
+print "\nTOTAL HITS => $hits\n\n";   \\
+'"'"
+
+alias idolcategoryrecs  '$CURLQUERY\&MaxResults=1000\&FieldText=STRING%7Btrim:$var_idolDBID\\
+/pln/\!^%7D:TS_CLASSIFICATION\&Sort=TD_DATEREGISTERED:alphabetical $CURL_OPTS | $XMLFORMAT'
+
 alias idolcatrecs       'idolcategoryrecs \!^ | perl -e  '"'"'          \\
                                                                         \\
 my ($HITS,$success,$recs);                                              \\

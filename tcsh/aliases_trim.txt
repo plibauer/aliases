@@ -70,8 +70,8 @@ alias switchidolbig     'cp $TESTDATASETS_DIR/IB/backup/TRIMConfig.tcfg $var_tri
 alias popdbhelp         'populatedb -h'
 alias bigconfig         'setdbid 41; dbsession Test_Big_"$env_revision"_SqlServer'
 alias defaultconfig     'unset var_DBID; unset var_dbSession; redo dynamic'
-alias elasticconfig     defaultconfig
-alias idolconfig        'setdbid $env_idolDbid; dbsession $var_idolDbSession'
+alias setelasticconfig  defaultconfig
+alias setidolconfig     'setdbid $env_idolDbid; dbsession $var_idolDbSession'
 
 set es_ac_params = '--test autoclassification --dbid AC --dbname elastic_autoclass'
 alias testac            'testtrim $es_ac_params; saveac'
