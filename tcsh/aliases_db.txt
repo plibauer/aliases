@@ -48,11 +48,13 @@ NUMBER OF COLUMNS : 1                                                           
 
 
 alias dbpl                  $PERL $STATIC_PERL/db/db.pl --server \$var_dbServer --database \$var_dbSession
+alias dbplidol              $PERL $STATIC_PERL/db/db.pl --server \$var_dbServer --database \$var_idolDbSession
 alias dbid                  dbpl --get_dbid
 
 # Unadorned perl script to allow connections to other servers
 alias dbquery               $PERL $STATIC_PERL/db/db.pl --server \$var_dbServer
 alias db                    dbpl
+alias dbidol                dbplidol
 alias dbv                   dbpl --version \$env_revision --root \$env_folder
 alias dbs                   dbquery --database tempdb --list
 alias dbdetails             dbquery --database tempdb --list --verbose
@@ -133,6 +135,9 @@ alias rectypes              db --object_type RECTYPE --unadorned
 alias rectypesv             dbv --object_type RECTYPE --unadorned
 alias rectypeuri            rectypes --object_uri \!^ --row 
 alias rectypename           rectypes --object_name 
+
+alias rectypes_idol	    'dbidol --object_type RECTYPE --unadorned'
+alias rectypeuri_idol        'rectypes_idol --object_uri \!^ --row'
 
 alias mklocdata            "    \\
 sqlv 'SELECT * FROM TSLOCATION LOC JOIN TSLOCPERSO PER on LOC.uri = PER.lpLocUri' \\

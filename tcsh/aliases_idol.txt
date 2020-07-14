@@ -110,7 +110,7 @@ alias idoluri           "$IDOLRECQRY%7B\!^%7D:TN_URI                   $CURL_OPT
 alias idolrec           "$IDOLRECQRY%7BREC_\!^%7D:TS_NUMBER            $CURL_OPTS | $XMLFORMAT"
 alias idolrecv          "$IDOLRECQRY%7BREC_\!^%7D:TS_NUMBER\&Print=All $CURL_OPTS | $XMLFORMAT"
 
-alias idol_getUrnString '(echo $var_idolDBID && rectypeuri \!^) | \\
+alias idol_getUrnString '(echo $var_idolDBID && rectypeuri_idol \!^) | \\
 $PERL -e '"'"'                                                \\
 @in = <>;                                                     \\
 my $DBID,$URI,$NAME;                                          \\
