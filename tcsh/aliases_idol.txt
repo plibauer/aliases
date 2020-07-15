@@ -29,6 +29,9 @@ idoluri <uri>     : Search for a record with <uri> and print basic fields       
 idolcontent <uri> : Search for a record with <uri> and print all fields and content                 \\
 idolrec <number>  : Search based on record number, ie. 200 for REC_200                              \\
 idolrecv <number> : Same as above, but print all fields including content                           \\
+idolref  <urn>    : Search for a record based on the URN, eg. trim:N5/rec/9000000238:1              \\
+                    Use idolcontent if you only want to specify the URI                             \\
+\\
 idolrectype <uri> : Search for records that have the Record Type <uri>                              \\
 idolrectypev <uri>: Search as above and print full output                                           \\
 \\
@@ -91,8 +94,8 @@ set CURLQUERY = "curl -XGET $DEVURL=query"
 alias dresync           'curl "$IDOL_PROXY_IDX/DRESYNC"'
 alias removedocs        'curl "$IDOL_PROXY_IDX/DREDELDBASE?DREdbname=\!^"'
 alias removedb          'curl "$IDOL_PROXY_IDX/DREREMOVEDBASE?DREdbname=\!^"'
-alias idolcontent       '$CURLDEV=getcontent\&reference=trim:$var_idolDBID/rec/\!^                 $CURL_OPTS | $XMLFORMAT'
-alias idoluriv          idolcontent 
+alias idolcontent       '$CURLDEV=getcontent\&reference=trim:$var_idolDBID/rec/\!^                  $CURL_OPTS | $XMLFORMAT'
+alias idolref           '$CURLDEV=getcontent\&reference=\!^                                         $CURL_OPTS | $XMLFORMAT'
 alias idolrecordsdb     '$CURLQUERY\&text=\*\&databasematch=\!^\&MaxResults=999                     $CURL_OPTS | $XMLFORMAT'
 alias idolrecords       '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=\!^             $CURL_OPTS | $XMLFORMAT'
 alias idolrecordsall    '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=1000000         $CURL_OPTS | $XMLFORMAT'
@@ -107,6 +110,7 @@ alias idolqueryv        '$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&da
 #
 set IDOLRECQRY = "$CURLQUERY\&text=\*\&MaxResults=1000\&databasematch=$var_idolDb\&FieldText=MATCH"
 alias idoluri           "$IDOLRECQRY%7B\!^%7D:TN_URI                   $CURL_OPTS | $XMLFORMAT"
+alias idoluriv          idolcontent 
 alias idolrec           "$IDOLRECQRY%7BREC_\!^%7D:TS_NUMBER            $CURL_OPTS | $XMLFORMAT"
 alias idolrecv          "$IDOLRECQRY%7BREC_\!^%7D:TS_NUMBER\&Print=All $CURL_OPTS | $XMLFORMAT"
 

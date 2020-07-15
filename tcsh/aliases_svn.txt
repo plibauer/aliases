@@ -6,21 +6,24 @@
 #  Any variables that might change due to the environment should have deferred substitution
 #
 
-alias svnhelp     'echo                                                                                 \\
-"\n                                                                                                     \\
-\t svninfo              : Show details for the 3 main checkouts, trim, doc and TRIMStaticRepo           \\
-\t revhead, statrevhead : Show last update to trim/staticrepo checkout                                  \\
-\t showlatest           : Show last 10 changes to current path                                          \\
-\t match <string>       : Search for log entries matching <string>                                      \\
-\t labmatch <string>    : Search for log entries matching <string> in the sqlite database (faster)      \\
-\t sync{lab,static}     : Run svn sync for lab/static                                                   \\
-\t labupdate[local], statupdate[local]                                                                  \\
-\t                      : update the sqlite databases from a remote or local svn server                 \\
-\t refresh{lab,static}  : Combination of above 2 aliases                                                \\
-\t remlock, remlockstat : Remove database locks                                                         \\
-\t lablook, statlook    : Check the sync URL from which we are mirroring                                \\
-\t                                                                                                      \\
-\n\n"                                                                                                   \\
+alias svnhelp     'echo                                                                                    \\
+"\n                                                                                                        \\
+\t rev, statrev <revision> : Show the log for the given <revision>                                         \\
+\t              --diff     : With no argument, diff all files in the revision, otherwise a list/range can  \\
+\t                           can be specified, eg. --diff 1-5,7,9                                          \\
+\t revhead, statrevhead    : Show last update to trim/staticrepo checkout                                  \\
+\t showlatest              : Show last 10 changes to current path                                          \\
+\t match <string>          : Search for log entries matching <string>                                      \\
+\t labmatch <string>       : Search for log entries matching <string> in the sqlite database (faster)      \\
+\t sync{lab,static}        : Run svn sync for lab/static                                                   \\
+\t labupdate[local], statupdate[local]                                                                     \\
+\t                         : update the sqlite databases from a remote or local svn server                 \\
+\t svninfo                 : Show details for the 3 main checkouts, trim, doc and TRIMStaticRepo           \\
+\t refresh{lab,static}     : Combination of above 2 aliases                                                \\
+\t remlock, remlockstat    : Remove database locks                                                         \\
+\t lablook, statlook       : Check the sync URL from which we are mirroring                                \\
+\t                                                                                                         \\
+\n\n"                                                                                                      \\
 ' 
 
 alias svnuptrim       'svn update $var_trimDir'
