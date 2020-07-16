@@ -113,7 +113,7 @@ alias idoluriv          idolcontent
 alias idoluri           "$IDOLRECQRY=MATCH%7B\!^%7D:TN_URI                                            $CURL_OPTS | $XMLFORMAT"
 alias idolrec           "$IDOLRECQRY=MATCH%7BREC_\!^%7D:TS_NUMBER                                     $CURL_OPTS | $XMLFORMAT"
 alias idolrecv          "$IDOLRECQRY=MATCH%7BREC_\!^%7D:TS_NUMBER\&Print=All                          $CURL_OPTS | $XMLFORMAT"
-alias irt               "$IDOLRECQRY=STRING%7Btrim:$var_idolDBID/rty/\!^%7D:TS_RECORDTYPE             $CURL_OPTS | $XMLFORMAT"
+alias irt               "$IDOLRECQRY=STRING%7Btrim:$var_idolDBID/rty/\!^%7D:TS_RECORDTYPE\&combine=DREROOTFAMILYREFERENCE $CURL_OPTS | $XMLFORMAT"
 alias irtv              "$IDOLRECQRY=STRING%7Btrim:$var_idolDBID/rty/\!^%7D:TS_RECORDTYPE\&print=all  $CURL_OPTS | $XMLFORMAT"
 
 alias idolrectype       'irt \!^ |   \\
