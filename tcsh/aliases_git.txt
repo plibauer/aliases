@@ -17,7 +17,7 @@ alias gitpull           'git pull'
 alias gitstatus         'git status'
 alias gitcheckout       'git clone ${GIT_URL}plibauer/aliases.git'
 alias checkout          gitcheckout
-alias commit            gitcommit
+alias commit            'gitcommit; gitpush'
 alias status            gitstatus
 alias gitsetrepo        'git remote set-url origin "git@github.com:plibauer/aliases.git"'
 alias gitconfig         'git config -l'
