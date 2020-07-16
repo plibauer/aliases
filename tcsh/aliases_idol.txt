@@ -108,42 +108,15 @@ alias idolqueryv        '$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&da
 #
 #     %7B => {   %7D => }
 #
-set IDOLRECQRY = "$CURLQUERY\&text=\*\&MaxResults=1000\&databasematch=$var_idolDb\&FieldText=MATCH"
-alias idoluri           "$IDOLRECQRY%7B\!^%7D:TN_URI                   $CURL_OPTS | $XMLFORMAT"
+set IDOLRECQRY = "$CURLQUERY\&text=\*\&MaxResults=1000\&databasematch=$var_idolDb\&FieldText"
 alias idoluriv          idolcontent 
-alias idolrec           "$IDOLRECQRY%7BREC_\!^%7D:TS_NUMBER            $CURL_OPTS | $XMLFORMAT"
-alias idolrecv          "$IDOLRECQRY%7BREC_\!^%7D:TS_NUMBER\&Print=All $CURL_OPTS | $XMLFORMAT"
+alias idoluri           "$IDOLRECQRY=MATCH%7B\!^%7D:TN_URI                                            $CURL_OPTS | $XMLFORMAT"
+alias idolrec           "$IDOLRECQRY=MATCH%7BREC_\!^%7D:TS_NUMBER                                     $CURL_OPTS | $XMLFORMAT"
+alias idolrecv          "$IDOLRECQRY=MATCH%7BREC_\!^%7D:TS_NUMBER\&Print=All                          $CURL_OPTS | $XMLFORMAT"
+alias irt               "$IDOLRECQRY=STRING%7Btrim:$var_idolDBID/rty/\!^%7D:TS_RECORDTYPE             $CURL_OPTS | $XMLFORMAT"
+alias irtv              "$IDOLRECQRY=STRING%7Btrim:$var_idolDBID/rty/\!^%7D:TS_RECORDTYPE\&print=all  $CURL_OPTS | $XMLFORMAT"
 
-alias idol_getUrnString '(echo $var_idolDBID && rectypeuri_idol \!^) | \\
-$PERL -e '"'"'                                                \\
-@in = <>;                                                     \\
-my $DBID,$URI,$NAME;                                          \\
-$DBID = shift @in; chomp $DBID;                               \\
-for (@in) {                                                   \\
-  chomp;                                                      \\
-  if(/^\s+uri\s+\.+\s+(\d+)/i){$URI=$1; next;}                \\
-  if(/^\s+rectypename\s+\.+\s+(.+)$/i){$NAME=$1; next;}       \\
-}                                                             \\
-$SRCH = "$NAME [trim:$DBID/rty/$URI]";                        \\
-#print "SEARCH BEFORE : $SRCH\n";                             \\
-$SRCH =~ s/\s/+/g;                                            \\
-$SRCH =~ s/\(/%28/g;                                          \\
-$SRCH =~ s/\)/%29/g;                                          \\
-$SRCH =~ s/\[/%5B/g;                                          \\
-$SRCH =~ s/]/%5D/g;                                           \\
-$SRCH =~ s/:/%3A/g;                                           \\
-$SRCH =~ s|/|%2F|g;                                           \\
-print $SRCH;                                                  \\
-'"'"
-
-set IDOLRECTYPEURN=""
-alias setidolurn        'set IDOLRECTYPEURN="`idol_getUrnString \!^`"'
-alias idol_rectypev     "$IDOLRECQRY%7B\!^%7D:TS_RECORDTYPE\&Print=All  $CURL_OPTS | $XMLFORMAT"
-alias idolrectypev      'setidolurn \!^; echo "SEARCH TERM: $IDOLRECTYPEURN"; idol_rectypev $IDOLRECTYPEURN'
-alias idol_rectype_s    "$IDOLRECQRY%7B\!^%7D:TS_RECORDTYPE  $CURL_OPTS | $XMLFORMAT"
-alias idolrectype_s     'setidolurn \!^; echo ; idol_rectype_s $IDOLRECTYPEURN'
-
-alias idolrectype       'idolrectype_s \!^ | \\
+alias idolrectype       'irt \!^ |   \\
 $PERL -e '"'"'                       \\
 @in = <>;                            \\
 $hits = 0;                           \\
@@ -159,7 +132,9 @@ while($_ = shift @in){               \\
     next;                            \\
   }                                  \\
 }                                    \\
-print "\nTOTAL HITS => $hits\n\n";   \\
+if($hits > 3){                       \\
+  print "\nTOTAL HITS => $hits\n\n"; \\
+}                                    \\
 '"'"
 
 alias idolcategoryrecs  '$CURLQUERY\&MaxResults=1000\&FieldText=STRING%7Btrim:$var_idolDBID\\
