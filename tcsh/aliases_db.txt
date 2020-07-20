@@ -21,6 +21,8 @@ alias dbhelp      'echo                                                         
 \t rectypes             : get RecordTypes                                                               \\
 \t classifications      : get Classifications                                                           \\
 \t                                                                                                      \\
+\t boxdrawing           : Show box-drawing unicode symbols and values                                   \\
+\\
 \t add -verbose to any command to see what is actually being run                                        \\
 \t                                                                                                      \\
 \t EXAMPLE                                                                                              \\
@@ -52,6 +54,7 @@ NUMBER OF COLUMNS : 1                                                           
 alias dbpl                  $PERL $STATIC_PERL/db/db.pl --server \$var_dbServer --database \$var_dbSession
 alias dbplidol              $PERL $STATIC_PERL/db/db.pl --server \$var_dbServer --database \$var_idolDbSession
 alias dbid                  dbpl --get_dbid
+alias boxdrawing            $PERL $STATIC_PERL/db/db.pl --box_drawing
 
 # Unadorned perl script to allow connections to other servers
 alias dbquery               $PERL $STATIC_PERL/db/db.pl --server \$var_dbServer
@@ -139,6 +142,7 @@ alias rectypeuri             rectypes --object_uri \!^ --row
 alias rectypename            rectypes --object_name 
 alias classifications        db --object_type CLASS --unadorned
 
+alias locations_idol         dbidol -table TSLOCATION -col 1,2
 alias rectypes_idol	         dbidol --object_type RECTYPE --unadorned
 alias rectypeuri_idol        rectypes_idol --object_uri \!^ --row
 alias classifications_idol   dbidol --object_type CLASS --unadorned
