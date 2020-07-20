@@ -136,6 +136,7 @@ if($hits > 3){                       \\
   print "\nTOTAL HITS => $hits\n\n"; \\
 }                                    \\
 '"'"
+alias idolrectypev  irtv
 
 alias idolcategoryrecs  '$CURLQUERY\&MaxResults=1000\&FieldText=STRING%7Btrim:$var_idolDBID\\
 /pln/\!^%7D:TS_CLASSIFICATION\&Sort=TD_DATEREGISTERED:alphabetical $CURL_OPTS | $XMLFORMAT'
