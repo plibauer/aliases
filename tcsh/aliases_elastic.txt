@@ -20,6 +20,11 @@ For curl commands, see : escurlhelp                                             
   allids              : print every elastic document id found                           \\
   delid \042doc id\042      : delete the doc with given _id                             \\
   content \042doc id\042    : print the content for parent _id                          \\
+  hasclassification   : Show records with the field \042Classification\042              \\
+  hascontainer        : Show records with the field \042Container\042                   \\
+  hascontent          : Show records with the field \042Document.Content\042            \\
+  hasexternalref      : Show records with the field \042ExternalReference\042           \\
+  hasnotes            : Show records with the field \042Notes\042                       \\
                                                                                         \\
 ---   Elastic Index    ---                                                              \\
   mapping        : Show mapping for the default elastic index                           \\
@@ -221,6 +226,38 @@ alias contents            'docid \!^ \\
       print "$_\n";                        \\
     }                                      \\
   }  '"'"
+
+alias containers          'eshasfield_withsrc Container  \\
+| $PERL -e '"'"'                                         \\
+@in = <>;                                                \\
+while(my $l = shift @in) {                               \\
+  $cont = $uri = "";                                     \\
+  if($l =~ /"_source"/){                                 \\
+    $l = shift @in;                                      \\
+    while($l and $l !~ /"_source"/) {                    \\
+      if($l =~ /"Container":\s+(\d+)/i) {                \\
+        $cont = $1;                                      \\
+      }                                                  \\
+      elsif($l =~ /"Uri":\s+(\d+)/i) {                   \\
+        $uri = $1;                                       \\
+      }                                                  \\
+      $l = shift @in;                                    \\
+    }                                                    \\
+    push @{$containers{$cont}}, $uri;                    \\
+    if($l =~ /"_source"/){                               \\
+      unshift @in, $l;                                   \\
+    }                                                    \\
+  }                                                      \\
+}                                                        \\
+for(sort keys %containers) {                             \\
+  $k = $_;                                               \\
+  print "$k:\n";                                         \\
+  for(sort @{$containers{$k}}) {                         \\
+    print "\t$_\n";                                      \\
+  }                                                      \\
+}                                                        \\
+'"'"
+
 alias esdeldocid          '$CURL -XDELETE "$var_elasticHost/$var_elasticIndex/_doc/\!^"'
 alias delxx               'setenv ES_DOCID \!^; perl -e '"'"' $id=$ENV{ES_DOCID}; if($id =~ /^(\d+)\.\d+\.\d+$/){ $id .= "?routing=$1";} open F,">C:/tmp/perl_env.txt" or die; print F "set ES_DOCID = \"$id\"\n"; close F; '"'  ; unsetenv ES_DOCID "
 alias deldoc              'delxx \!^; source C:/tmp/perl_env.txt; esdeldocid $ES_DOCID '
@@ -238,7 +275,12 @@ alias qs                  esqs
 alias escommand           'pycurldef -f $ELASTIC_QUERIES'
 alias escommand_debug     'pycurldef -d -f $ELASTIC_QUERIES'
 alias eshasfield          'escommand -c field_exists \!^ | grep _id | sort | sed -E '"'"' s/[",]//g; '"'" 
+alias eshasfield_withsrc  'escommand --source -c field_exists \!^' 
+alias hasclassification   'eshasfield Classification' 
+alias hascontainer        'eshasfield Container' 
 alias hascontent          'eshasfield Document.Content' 
+alias hasexternalref      'eshasfield ExternalReference' 
+alias hasnotes            'eshasfield Notes' 
 alias allids              'escommand -c match_all | grep _id | sort'
 alias esalldocs           allids
 alias estitles            'escommand -c titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 
