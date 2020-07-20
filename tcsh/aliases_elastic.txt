@@ -25,6 +25,7 @@ For curl commands, see : escurlhelp                                             
   hascontent          : Show records with the field \042Document.Content\042            \\
   hasexternalref      : Show records with the field \042ExternalReference\042           \\
   hasnotes            : Show records with the field \042Notes\042                       \\
+  containers          : Show container records with their contained records             \\
                                                                                         \\
 ---   Elastic Index    ---                                                              \\
   mapping        : Show mapping for the default elastic index                           \\
