@@ -35,6 +35,10 @@ idolref  <urn>    : Search for a record based on the URN, eg. trim:N5/rec/900000
 idolrectype <uri> : Search for records that have the Record Type <uri>                              \\
 idolrectypev <uri>: Search as above and print full output                                           \\
 \\
+dbidol               : Connect to the Idol SqlServer instance using db.pl                           \\
+rectypes_idol        : Use dbidol to get RecordTypes                                                \\
+classifications_idol : Use dbidol to get Classifications                                            \\
+\\
 idolsync          : Send a DRESYNC to the index to make sure all records are available              \\
                                                                                                     \\
 TestTrim Autoclassification                                                                         \\
