@@ -4,7 +4,9 @@
 #     This file should only be read once.                                                                        #
 #                                                                                                                #
 ##################################################################################################################
-
+#
+set PYTHONCOG = "$PYTHON $STATIC_REPO/libs/python/cogapp/2.5.1/scripts/cog.py"
+alias pycog $PYTHONCOG
 #
 #
 alias tes               '$var_trimDir/$var_defArch/$var_defBuild/TRIMEnterpriseStudio.exe &'
