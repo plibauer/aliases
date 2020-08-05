@@ -26,6 +26,7 @@ For curl commands, see : escurlhelp                                             
   hasexternalref      : Show records with the field \042ExternalReference\042           \\
   hasnotes            : Show records with the field \042Notes\042                       \\
   containers          : Show container records with their contained records             \\
+  estitles            : Show record titles             \\
                                                                                         \\
 ---   Elastic Index    ---                                                              \\
   mapping        : Show mapping for the default elastic index                           \\
@@ -34,6 +35,11 @@ For curl commands, see : escurlhelp                                             
   espys \042index\042  : Show settings for \042index\042                                \\
   espyhelp(espyh): See examples of extended espy commands                               \\
   escontentsrch  : Search using curl for a specific term in Document.Content            \\
+  esmetadata     : Show metadata fields (use 'metadata' for brief output)               \\
+  esmetadatasrch : Search on a metadata field (eg. Notes:spoon). Spaces need to be      \\
+                   encoded as %20, Eg. Notes:spoon%20AND%20Title:refresh                \\
+  metasearch     : Same as above                                                        \\
+  esindexproperties : Show index properties                                             \\
                                                                                         \\
 --- Autoclassification ---                                                              \\
   acmapping      : Show mapping for the autoclassification index                        \\
@@ -169,7 +175,7 @@ alias esget               '$CURL "$var_elasticHost/\!^"'
 alias escurl              'esget \!^?pretty=true'
 alias esgetp              'esget \!^?pretty=true'
 alias esgetaliases        'esget _aliases?pretty=true'
-alias elasticindexes      '$CURL "\!^/_cat/indices?v"'
+alias elasticindexes      '$CURL "\!^/_cat/indices?v&s=index"'
 alias esindexesv          'elasticindexes $var_elasticHost'
 alias esindexes           'elasticindexes $var_elasticHost | $PERL -ne '"'"' chomp; if(/^\w+\s+\w+\s+\.\w+/){}else{print "$_\n"} '"'"
 alias getindexes          esindexes
@@ -182,9 +188,9 @@ alias settings            esgetsettings
 alias setting             'esget \!^/_settings?pretty'
 alias esmappings          'esget $var_elasticIndex/_mappings?pretty'
 alias mapping             'esget \!^/_mappings?pretty'
-alias esindexproperties   'esget $var_elasticIndex/_doc/index.properties'
+alias esindexproperties   'esget $var_elasticIndex.properties/_doc/_properties'
 alias indexproperties     esindexproperties
-alias esindexmetadata     'esget $var_elasticIndex/_doc/index.metadatafields'
+alias esindexmetadata     'esget $var_elasticIndex.properties/_doc/_metadata'
 alias esmetadata          esindexmetadata
 alias metadata            'esindexmetadata               \\
 | $PERL -e '"'"'                                         \\
@@ -193,10 +199,10 @@ my $max = 10;                                            \\
 my $fields;                                              \\
 while (my $l = shift @input) {                           \\
   chomp $l;                                              \\
-  if($l =~ /"key"\s+:\s+"(\w+)"/) {                      \\
+  if($l =~ /"Name"\s+:\s+"(\w+)"/) {                     \\
     my $key = $1;                                        \\
     my $val = shift @input;                              \\
-    if($val =~ /"value"\s+:\s+"(\w+)"/) {                \\
+    if($val =~ /"PropertyOrFieldID"\s+:\s+"(\w+)"/) {    \\
       $fields{$key} = $1;                                \\
       $max = length($key) > $max ? length($key) : $max;  \\
     }                                                    \\
@@ -218,6 +224,8 @@ alias escontentsrch       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(
 alias escontenthits       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&_source=false&pretty=true" | egrep "id|routing"'
 alias docid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
 alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=Number:REC_\!^&pretty=true"'
+alias esmetadatasrch      '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(\!^)&size=1000&pretty=true"'
+alias metasearch          esmetadatasrch
 alias contents            'docid \!^ \\
 | $PERL -ne '"'"'                          \\
   if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){  \\
