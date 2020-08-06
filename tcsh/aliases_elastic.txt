@@ -20,13 +20,15 @@ For curl commands, see : escurlhelp                                             
   allids              : print every elastic document id found                           \\
   delid \042doc id\042      : delete the doc with given _id                             \\
   content \042doc id\042    : print the content for parent _id                          \\
+  hasallcontacts      : Show records with the field \042AllContacts\042                 \\
   hasclassification   : Show records with the field \042Classification\042              \\
   hascontainer        : Show records with the field \042Container\042                   \\
   hascontent          : Show records with the field \042Document.Content\042            \\
   hasexternalref      : Show records with the field \042ExternalReference\042           \\
   hasnotes            : Show records with the field \042Notes\042                       \\
   containers          : Show container records with their contained records             \\
-  estitles            : Show record titles             \\
+  estitles            : Show record titles                                              \\
+  esrectypes          : Show record uris and their associated record types              \\
                                                                                         \\
 ---   Elastic Index    ---                                                              \\
   mapping        : Show mapping for the default elastic index                           \\
@@ -290,6 +292,7 @@ alias hascontainer        'eshasfield Container'
 alias hascontent          'eshasfield Document.Content' 
 alias hasexternalref      'eshasfield ExternalReference' 
 alias hasnotes            'eshasfield Notes' 
+alias hasallcontacts      'eshasfield AllContacts'
 alias allids              'escommand -c match_all | grep _id | sort'
 alias esalldocs           allids
 alias estitles            'escommand -c titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 
@@ -297,6 +300,25 @@ alias titles              'estitles | sort'
 alias doccontent          'escommand -c get_record_content \!^'
 alias content             doccontent
 alias escontent           doccontent
+alias esrectypes          'eshasfield_withsrc RecordType | egrep "_id|RecordType" \\
+| $PERL -e '"'"'                            \\
+@in = <>;                                   \\
+while(my $l = shift @in) {                  \\
+  chomp $l;                                 \\
+  if($l =~ /"_id":\s+"(\d+)/) {             \\
+    $uri = $1;                              \\
+    $l = shift @in;                         \\
+    chomp $l;                               \\
+    if($l =~ /RecordType":\s+(\d+)/) {      \\
+      $rectypes{$uri} = $1;                 \\
+    }                                       \\
+  }                                         \\
+}                                           \\
+for (sort {$a<=>$b} keys %rectypes) {       \\
+  print "$_ => RecordType $rectypes{$_}\n"; \\
+}                                           \\
+'"'"
+
 
 # Delete a document/record and its children
 alias esdelparentchild    'escommand -c delete_children \!^ && esdeldocid \!^'
