@@ -29,26 +29,25 @@ alias example_3c '$PERL -e '"'"' print "ARGUMENT IS: $ARGV[0]\n" '"'"
 alias example_3   'example_3b hello_everyone; example_3c $EXAMPLE3VAL'
 
 
-alias perlshellhelp      'echo                                                                               \\
-"\n                                                                                                          \\
-  1. In order to match single quotes in a pattern, or print, use the escape                                  \\
-     sequence \\047 instead of a literal \047 . For example to match the following string:                   \\
-                                                                                                             \\
-         \047Hello World!\047                                                                                \\
-                                                                                                             \\
-     The perl command line would be;                                                                         \\
-                                                                                                             \\
-         > cat file.txt | perl -ne \047 if (/(\\047Hello World!\\047)/) { print \042\044\061\\n\042 } \047   \\
-                                                                                                             \\
-     The equavalent for a double quote \042 is \\042 and for \044 is \\044                                   \\
-                                                                                                             \\
-  2.                                                                                                         \\
-                                                                                                             \\
-  3.                                                                                                         \\
-                                                                                                             \\
-  4.                                                                                                         \\
-\n\n"                                                                                                        \\
+alias perlshellhelp      'echo                                                                                  \\
+"\n                                                                                                             \\
+  1. In order to match single quotes in a pattern, or print, use the escape                                     \\
+     sequence \\047 instead of a literal \047 . For example to match the following string:                      \\
+                                                                                                                \\
+         \047Hello World!\047                                                                                   \\
+                                                                                                                \\
+     The perl command line would be;                                                                            \\
+                                                                                                                \\
+         > cat file.txt | perl -ne \047 if (/(\\047Hello World!\\047)/) { print \042\044\061\\n\042 } \047      \\
+                                                                                                                \\
+     The equavalent for a double quote \042 is \\042 and for \044 is \\044                                      \\
+                                                                                                                \\
+  2. Pass command line arguments into alias with Perl scripting                                                 \\
+     alias example1  \047\044PERL -e \047\042\047\042\047 print \044ARGV[0]; \047\042\047 <argument here> \042  \\
+                                                                                                                \\
+\n\n"                                                                                                           \\
 '
+alias shellhelp perlshellhelp
 #
 #
 ######################################################################################

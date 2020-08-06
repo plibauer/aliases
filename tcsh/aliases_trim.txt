@@ -20,6 +20,28 @@ alias properties        'cat $var_trimDir/trim/src/DD/properties.txt | pgrep -i 
 alias viewprop          'view $var_trimDir/trim/src/DD/properties.txt'
 alias propids           'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs | pgrep -i '
 alias propidx           'cat $var_trimDir/trim/src/Core/PRPpropertyFind.cpp | pgrep -i '
+alias searchclause      '                              \\
+$PERL -e '"'"'                                         \\
+$pat = $ARGV[0];                                       \\
+$file = $ARGV[1];                                      \\
+open F, $file or die;                                  \\
+$max = 10;                                             \\
+while(<F>) {                                           \\
+  chomp;                                               \\
+  if(/trim::srch_rec$pat/i) {                          \\
+    s/(TRIM::srch_\w+)\s+.+"(\w+)/$1 $2/;              \\
+    $srch{$1} = $2;                                    \\
+    $max = length($1) > $max ? length($1) : $max;      \\
+  }                                                    \\
+}                                                      \\
+for(sort keys %srch) {                                 \\
+  print "$_";                                          \\
+  print " " x ($max - length($_) + 1);                 \\
+  print "$srch{$_}\n";                                 \\
+}                                                      \\
+'"' \!^ $var_trimDir/trim/src/rc/PRPstringTable.rc2 "
+alias searchclauses     'searchclause .'
+
 
 alias database          'cat $var_trimDir/trim/src/DD/DATABASE.TXT | pgrep -i '
 alias viewdb            'view $var_trimDir/trim/src/DD/DATABASE.TXT'
