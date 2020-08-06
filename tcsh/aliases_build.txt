@@ -59,6 +59,11 @@ alias fproj             findproject
 alias findproj          findproject
 alias projfind          findproject
 
+alias dcilog            'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/DCI_$var_DBID* \\
+ | head -1                                                                                                \\
+ | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                                                      \\
+ | /bin/sh '
+
 alias evlog_clean "cat \!^                              |\\
 grep -v 'No events waiting at workgroup'                |\\
 grep -v 'processing  buffered events' > event_log.clean"
