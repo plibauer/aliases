@@ -223,11 +223,19 @@ alias searchindex         'esgetp \!^/_search'
 alias esdelete            '$CURL -X DELETE "$var_elasticHost/\!^"'
 alias esrefresh           '$CURL -X POST "$var_elasticHost/_refresh?pretty=true"'
 alias escontentsrch       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&pretty=true"'
-alias escontenthits       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&_source=false&pretty=true" | egrep "id|routing"'
 alias docid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
 alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=Number:REC_\!^&pretty=true"'
 alias esmetadatasrch      '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(\!^)&size=1000&pretty=true"'
 alias metasearch          esmetadatasrch
+
+alias escontenthits       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&_source=false&pretty=true" \\
+| $PERL -ne '"'"'                          \\
+chomp;                                     \\
+/"_id"\s+:\s+"([\d\.]+)/ and do            \\
+{ print "$1\n"; }                          \\
+'"' | sort " 
+alias searchcontents      escontenthits
+
 alias contents            'docid \!^ \\
 | $PERL -ne '"'"'                          \\
   if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){  \\
