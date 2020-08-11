@@ -308,6 +308,10 @@ alias titles              'estitles | sort'
 alias doccontent          'escommand -c get_record_content \!^'
 alias content             doccontent
 alias escontent           doccontent
+alias trimcontent         'escommand --size 1000 -c search_record_content \!^'
+alias trimcontentids      'trimcontent \!^ | grep _id | sort | sed -E '"'"' s/[",]//g; '"'"
+alias nottrimcontent      'escommand --size 1000 -c not_search_record_content \!^'
+alias nottrimcontentids   'nottrimcontent \!^ | grep _id | sort | sed -E '"'"' s/[",]//g; '"'"
 alias esrectypes          'eshasfield_withsrc RecordType | egrep "_id|RecordType" \\
 | $PERL -e '"'"'                            \\
 @in = <>;                                   \\
