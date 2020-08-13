@@ -166,6 +166,7 @@ alias filebeat            '$BEATS_HOME/filebeat.exe'
 
 # Format JSON document using single quotes for C++ string definitions
 alias jsonsingle          'cat \!^ | $PERL -ne '"'"' s/"/\047/g; print '"'"
+alias cleanjson           '$PERL -ne '"'"'  s/\\//g; print '"'"
 
 set CURL = "curl -s"
 set ELASTIC_QUERIES = $env_alias_dir/elastic_queries.txt
