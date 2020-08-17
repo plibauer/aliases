@@ -66,6 +66,64 @@ get_record_content:
 
 # ------------------------------------------------
 
+search_record_content:
+{
+  "query": {
+    "bool": {
+      "must": [
+        { 
+          "term": { 
+            "ObjectType": "Record" 
+          }
+        },
+        {
+          "has_child": {
+		    "type": "content",
+            "query": {
+		      "query_string": {
+                "query": "Document.Content:(ARG1)"
+			  }
+	        }
+	      }
+        }
+      ]
+    }
+  },
+  "size": 100
+}
+
+# ------------------------------------------------
+
+not_search_record_content:
+{
+  "query": {
+    "bool": {
+      "must": [
+        { 
+          "term": { 
+            "ObjectType": "Record" 
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "has_child": {
+		    "type": "content",
+            "query": {
+		      "query_string": {
+                "query": "Document.Content:(ARG1)"
+			  }
+	        }
+	      }
+        }
+      ]
+    }
+  },
+  "size": 100
+}
+
+# ------------------------------------------------
+
 match_all:
 {
   "_source": false,
