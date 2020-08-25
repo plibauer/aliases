@@ -187,7 +187,7 @@ alias buildsolution '  echo $logSeparator; date;                                
            print "$log\n";                                                                               \\
            exit;                                                                                         \\
         }                                                                                                \\
-        elsif($log =~ /\s(warning|error|fatal|failed)\s/i) {                                              \\
+        elsif($log =~ /\s(warning|error|fatal|failed)\s|>Error:/i) {                                     \\
           if(length($log) > 200){ $log = substr($log,0,200); }                                           \\
           print "$log\n"                                                                                 \\
         }                                                                                                \\
