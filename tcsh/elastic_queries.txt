@@ -78,13 +78,39 @@ search_record_content:
         },
         {
           "has_child": {
-		    "type": "content",
+            "type": "content",
             "query": {
-		      "query_string": {
+              "query_string": {
                 "query": "Document.Content:(ARG1)"
-			  }
-	        }
-	      }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "size": 100
+}
+
+search_record_content_phrase:
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "ObjectType": "Record"
+          }
+        },
+        {
+          "has_child": {
+            "type": "content",
+            "query": {
+              "query_string": {
+                "query": "Document.Content:(\"ARG1\")"
+              }
+            }
+          }
         }
       ]
     }
@@ -115,6 +141,34 @@ not_search_record_content:
 			  }
 	        }
 	      }
+        }
+      ]
+    }
+  },
+  "size": 100
+}
+
+not_search_record_content_phrase:
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "ObjectType": "Record"
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "has_child": {
+            "type": "content",
+            "query": {
+              "query_string": {
+                "query": "Document.Content:(\"ARG1\")"
+              }
+            }
+          }
         }
       ]
     }

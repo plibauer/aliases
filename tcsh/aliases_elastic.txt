@@ -306,13 +306,24 @@ alias allids              'escommand -c match_all | grep _id | sort'
 alias esalldocs           allids
 alias estitles            'escommand -c titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 
 alias titles              'estitles | sort'
+alias booktitles          'estitles | sort | $PERL -ne '"'"' /^(\d+)/ and do { print if $1 >= 9000000500 } '"'"
+
 alias doccontent          'escommand -c get_record_content \!^'
 alias content             doccontent
 alias escontent           doccontent
+
 alias trimcontent         'escommand --size 1000 -c search_record_content \!^'
 alias trimcontentids      'trimcontent \!^ | grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+
+alias trimphrase          'escommand --size 1000 -c search_record_content_phrase \!^'
+alias trimphraseids       'trimphrase \!^ | grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+
 alias not_trimcontent     'escommand --size 1000 -c not_search_record_content \!^'
 alias not_trimcontentids  'not_trimcontent \!^ | grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+
+alias not_trimphrase     'escommand --size 1000 -c not_search_record_content_phrase \!^'
+alias not_trimphraseids  'not_trimphrase \!^ | grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+
 alias esrectypes          'eshasfield_withsrc RecordType | egrep "_id|RecordType" \\
 | $PERL -e '"'"'                            \\
 @in = <>;                                   \\
