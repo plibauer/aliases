@@ -1,0 +1,6 @@
+Create shortcut on desktop with following target:
+
+C:\Windows\System32\cmd.exe /c start /b wt
+
+Then set Advanced... properties to always run as admin
+The icon can be changed by browsing to file C:\Windows\System32\Shell32.dll
