@@ -81,7 +81,10 @@ alias svnhome           'set var_vpnConfig      = HOME; src'
 alias wintermpath       'echo $LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_*'
 alias wintermsettings   'cat $LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json'
 alias gowinterm         'cd `wintermpath`'
-alias syncwinterm       'cp $LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json ~/aliases/terminal'
+alias winterm2aliases   'cp $LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json ~/aliases/terminal'
+alias wt2a              winterm2aliases
+alias aliases2winterm   'cp ~/aliases/terminal/settings.json $LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_*/LocalState'
+alias a2wt              aliases2winterm
 
 alias whichenv  'echo "\n                      \\
 Trim Directory      = $var_trimDir             \\
