@@ -7,19 +7,55 @@
 
 alias elastichelp      'echo                                                            \\
 "                                                                                       \\
+For elastic search commands : eshelpsearch                                              \\
 For curl commands, see : escurlhelp                                                     \\
+For auto-classification commands, see : esautohelp                                      \\
                                                                                         \\
 ---      Basics        ---                                                              \\
   esinfo              : Show the current configuration                                  \\
   eshost <host:port>  : Set the default host server and port                            \\
   esindex <name>      : Set the default index                                           \\
                                                                                         \\
----     Searching      ---                                                              \\
-  docid \042doc id\042      : print doc with given _id                                  \\
-  recid \042number\042      : print doc with record number ('REC_' is prefixed)         \\
+---   Elastic Index    ---                                                              \\
+  mapping        : Show mapping for the default elastic index                           \\
+  espym \042index\042  : Show mapping for \042index\042                                 \\
+  settings       : Show settings for default index                                      \\
+  espys \042index\042  : Show settings for \042index\042                                \\
+  espyhelp(espyh): See examples of extended espy commands                               \\
+  esindexproperties : Show index properties                                             \\
+  esmetadata        : Show metadata fields (use 'metadata' for brief output)            \\
+"                                                                                       \\
+'
+
+alias eshelpsearch      'echo                                                           \\
+"                                                                                       \\
+For elastic help : elastichelp (or eshelp)                                              \\
+                                                                                        \\
+------ Using IDs -------                                                                \\
+  docid <id>          : print doc with given id                                         \\
+  recid <number>      : print doc with record number ('REC_' is prefixed)               \\
   allids              : print every elastic document id found                           \\
-  delid \042doc id\042      : delete the doc with given _id                             \\
-  content \042doc id\042    : print the content for parent _id                          \\
+  delid <id>          : delete the doc with given id                                    \\
+                                                                                        \\
+------- Content --------                                                                \\
+  content <id>        : print the Document.Content field for parent id                  \\
+  escontentsrch       : Search using curl for a specific term in Document.Content       \\
+  escontentids        : Search for a specific term in Document.Content and return the ids  \\
+  ---                                                                                   \\
+  trimcontent         : Search in Document.Content with same query syntax as TRIM       \\
+  trimcontentids      : As above, but return the URIs                                   \\
+  not_trimcontent     : As above, but negated                                           \\
+  not_trimcontentids  : As above, but return the URIs                                   \\
+  ---                                                                                   \\
+  trimphrase          : Search in Document.Content as above, but perform a phrase search\\
+  trimphraseids       : As above, but return the URIs                                   \\
+  not_trimphrase      : As above, but negated                                           \\
+  not_trimphraseids   : As above, but return the URIs                                   \\
+                                                                                        \\
+------- Metadata -------                                                                \\
+  esmetadatasrch      : Search on a metadata field (eg. Notes:spoon). Spaces need to be \\
+                        encoded as %20, Eg. Notes:spoon%20AND%20Title:refresh           \\
+  metasearch          : Same as above                                                   \\
   hasallcontacts      : Show records with the field \042AllContacts\042                 \\
   hasclassification   : Show records with the field \042Classification\042              \\
   hascontainer        : Show records with the field \042Container\042                   \\
@@ -29,19 +65,13 @@ For curl commands, see : escurlhelp                                             
   containers          : Show container records with their contained records             \\
   estitles            : Show record titles                                              \\
   esrectypes          : Show record uris and their associated record types              \\
-                                                                                        \\
----   Elastic Index    ---                                                              \\
-  mapping        : Show mapping for the default elastic index                           \\
-  espym \042index\042  : Show mapping for \042index\042                                 \\
-  settings       : Show settings for default index                                      \\
-  espys \042index\042  : Show settings for \042index\042                                \\
-  espyhelp(espyh): See examples of extended espy commands                               \\
-  escontentsrch  : Search using curl for a specific term in Document.Content            \\
-  esmetadata     : Show metadata fields (use 'metadata' for brief output)               \\
-  esmetadatasrch : Search on a metadata field (eg. Notes:spoon). Spaces need to be      \\
-                   encoded as %20, Eg. Notes:spoon%20AND%20Title:refresh                \\
-  metasearch     : Same as above                                                        \\
-  esindexproperties : Show index properties                                             \\
+"                                                                                       \\
+'
+
+alias esautohelp      'echo                                                             \\
+"                                                                                       \\
+For curl commands, see : escurlhelp                                                     \\
+For elastic search commands, see : elastichelp (or eshelp)                              \\
                                                                                         \\
 --- Autoclassification ---                                                              \\
   acmapping      : Show mapping for the autoclassification index                        \\
@@ -229,13 +259,13 @@ alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=N
 alias esmetadatasrch      '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(\!^)&size=1000&pretty=true"'
 alias metasearch          esmetadatasrch
 
-alias escontenthits       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&_source=false&pretty=true" \\
+alias escontentids       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&_source=false&pretty=true" \\
 | $PERL -ne '"'"'                          \\
 chomp;                                     \\
 /"_id"\s+:\s+"([\d\.]+)/ and do            \\
 { print "$1\n"; }                          \\
 '"' | sort " 
-alias searchcontents      escontenthits
+alias searchcontents      escontentids
 
 alias contents            'docid \!^ \\
 | $PERL -ne '"'"'                          \\
