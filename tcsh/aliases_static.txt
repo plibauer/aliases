@@ -78,6 +78,11 @@ alias pulse             'set var_vpnConfig      = PULSE; src'
 alias novpn             'set var_vpnConfig      = LOCAL; src'
 alias svnhome           'set var_vpnConfig      = HOME; src'
 
+alias wintermpath       'echo $LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_*'
+alias wintermsettings   'cat $LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json'
+alias gowinterm         'cd `wintermpath`'
+alias syncwinterm       'cp $LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_*/LocalState/settings.json ~/aliases/terminal'
+
 alias whichenv  'echo "\n                      \\
 Trim Directory      = $var_trimDir             \\
 Build Architecture  = $var_defArch             \\
