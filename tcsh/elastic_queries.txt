@@ -64,10 +64,25 @@ get_record_content:
   "size": 100
 }
 
+search_content_phrase:
+{
+  "_source": false,
+  "query": {
+    "query_string": {
+      "analyze_wildcard": true,
+      "default_operator": "AND",
+      "quote_field_suffix": ".phrase",
+      "query": "Document.Content:(\"ARG1\")"
+    }
+  },
+  "size": 100
+}
+
 # ------------------------------------------------
 
 search_record_content:
 {
+  "_source": false,
   "query": {
     "bool": {
       "must": [
@@ -81,6 +96,9 @@ search_record_content:
             "type": "content",
             "query": {
               "query_string": {
+                "analyze_wildcard" : true,
+                "default_operator" : "AND",
+                "quote_field_suffix" : ".phrase",
                 "query": "Document.Content:(ARG1)"
               }
             }
@@ -94,6 +112,7 @@ search_record_content:
 
 search_record_content_phrase:
 {
+  "_source": false,
   "query": {
     "bool": {
       "must": [
@@ -107,6 +126,9 @@ search_record_content_phrase:
             "type": "content",
             "query": {
               "query_string": {
+                "analyze_wildcard" : true,
+                "default_operator" : "AND",
+                "quote_field_suffix" : ".phrase",
                 "query": "Document.Content:(\"ARG1\")"
               }
             }
@@ -122,6 +144,7 @@ search_record_content_phrase:
 
 not_search_record_content:
 {
+  "_source": false,
   "query": {
     "bool": {
       "must": [
@@ -137,6 +160,9 @@ not_search_record_content:
 		    "type": "content",
             "query": {
 		      "query_string": {
+                "analyze_wildcard" : true,
+                "default_operator" : "AND",
+                "quote_field_suffix" : ".phrase",
                 "query": "Document.Content:(ARG1)"
 			  }
 	        }
@@ -150,6 +176,7 @@ not_search_record_content:
 
 not_search_record_content_phrase:
 {
+  "_source": false,
   "query": {
     "bool": {
       "must": [
@@ -165,6 +192,9 @@ not_search_record_content_phrase:
             "type": "content",
             "query": {
               "query_string": {
+                "analyze_wildcard" : true,
+                "default_operator" : "AND",
+                "quote_field_suffix" : ".phrase",
                 "query": "Document.Content:(\"ARG1\")"
               }
             }

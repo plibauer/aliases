@@ -38,9 +38,15 @@ For elastic help : elastichelp (or eshelp)                                      
   delid <id>          : delete the doc with given id                                    \\
                                                                                         \\
 ------- Content --------                                                                \\
-  content <id>        : print the Document.Content field for parent id                  \\
-  escontentsrch       : Search using curl for a specific term in Document.Content       \\
-  escontentids        : Search for a specific term in Document.Content and return the ids  \\
+  NOTE: contentsrch and phrasesrch will print the actual contents of the document,      \\
+        converting \042\\n\042 into newlines, whereas the 'trim' variants return the metadata  \\
+        documents                                                                       \\
+                                                                                        \\
+  content <id>        : print all the child Document.Content fields for parent id       \\
+  contentsrch         : Search for term(s) in child Document.Content fields             \\
+  contentids          : Search for term(s) in Document.Content and return the ids       \\
+  phrasesrch          : Search for a phrase in child Document.Content fields            \\
+  phrasesrchids       : Search for a phrase in Document.Content and return the ids      \\
   ---                                                                                   \\
   trimcontent         : Search in Document.Content with same query syntax as TRIM       \\
   trimcontentids      : As above, but return the URIs                                   \\
@@ -53,7 +59,7 @@ For elastic help : elastichelp (or eshelp)                                      
   not_trimphraseids   : As above, but return the URIs                                   \\
                                                                                         \\
 ------- Metadata -------                                                                \\
-  esmetadatasrch      : Search on a metadata field (eg. Notes:spoon). Spaces need to be \\
+  metadatasrch        : Search on a metadata field (eg. Notes:spoon). Spaces need to be \\
                         encoded as %20, Eg. Notes:spoon%20AND%20Title:refresh           \\
   metasearch          : Same as above                                                   \\
   hasallcontacts      : Show records with the field \042AllContacts\042                 \\
@@ -253,29 +259,12 @@ alias essearch            'esgetp $var_elasticIndex/_search'
 alias searchindex         'esgetp \!^/_search'
 alias esdelete            '$CURL -X DELETE "$var_elasticHost/\!^"'
 alias esrefresh           '$CURL -X POST "$var_elasticHost/_refresh?pretty=true"'
-alias escontentsrch       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&pretty=true"'
 alias docid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
 alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=Number:REC_\!^&pretty=true"'
-alias esmetadatasrch      '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(\!^)&size=1000&pretty=true"'
-alias metasearch          esmetadatasrch
+alias metadatasrch        '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(\!^)&size=1000&pretty=true"'
+alias metasearch          metadatasrch
 
-alias escontentids       '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&_source=false&pretty=true" \\
-| $PERL -ne '"'"'                          \\
-chomp;                                     \\
-/"_id"\s+:\s+"([\d\.]+)/ and do            \\
-{ print "$1\n"; }                          \\
-'"' | sort " 
-alias searchcontents      escontentids
 
-alias contents            'docid \!^ \\
-| $PERL -ne '"'"'                          \\
-  if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){  \\
-    @l=split /\\n/, $1;                    \\
-    for(@l){                               \\
-      s/\\"/"/g;                           \\
-      print "$_\n";                        \\
-    }                                      \\
-  }  '"'"
 
 alias containers          'eshasfield_withsrc Container  \\
 | $PERL -e '"'"'                                         \\
@@ -338,21 +327,63 @@ alias estitles            'escommand -c titles | egrep "_id|Title" | $PERL -ne  
 alias titles              'estitles | sort'
 alias booktitles          'estitles | sort | $PERL -ne '"'"' /^(\d+)/ and do { print if $1 >= 9000000500 } '"'"
 
-alias doccontent          'escommand -c get_record_content \!^'
+alias doccontent          'escommand -c get_record_content \!^ \\
+ | $PERL -ne '"'"'            \\
+if(/\\n/) {                   \\
+  @m = split /\\n/;           \\
+  for(@m) {                   \\
+    s/\\"/"/g;                \\
+    print "$_\n";             \\
+  }                           \\
+}                             \\
+else { print }                \\
+'"'"
+
 alias content             doccontent
-alias escontent           doccontent
+alias getcontent          doccontent
 
-alias trimcontent         'escommand --size 1000 -c search_record_content \!^'
-alias trimcontentids      'trimcontent \!^ | grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+alias contentsrch         '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&pretty=true"'
 
-alias trimphrase          'escommand --size 1000 -c search_record_content_phrase \!^'
-alias trimphraseids       'trimphrase \!^ | grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+alias contentids          '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&_source=false&pretty=true" \\
+| $PERL -ne '"'"'                          \\
+chomp;                                     \\
+/"_id"\s*:\s*"([\d\.]+)/ and do            \\
+{ print "$1\n"; }                          \\
+'"' | sort " 
 
-alias not_trimcontent     'escommand --size 1000 -c not_search_record_content \!^'
-alias not_trimcontentids  'not_trimcontent \!^ | grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+alias searchcontents      contentids
 
-alias not_trimphrase     'escommand --size 1000 -c not_search_record_content_phrase \!^'
-alias not_trimphraseids  'not_trimphrase \!^ | grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+alias phrasesrchids      'escommand --size 1000 -c search_content_phrase \!^ \\
+ | $PERL -ne '"'"'                         \\
+chomp;                                     \\
+/"_id"\s*:\s*"([\d\.]+)/ and do            \\
+{ print "$1\n"; }                          \\
+'"' | sort "
+
+alias phrasesrch         'escommand --source --size 1000 -c search_content_phrase \!^ \\
+| $PERL -ne '"'"'          \\
+if(/\\n/) {                \\
+  @m = split /\\n/;        \\
+  for(@m) { print "$_\n"; }\\
+}                          \\
+else { print }             \\
+'"'"
+
+alias trimcontent         'escommand --source --size 1000 -c search_record_content \!^'
+alias trimcontentids      'escommand --size 1000 -c search_record_content \!^ \\
+| grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+
+alias trimphrase          'escommand --source --size 1000 -c search_record_content_phrase \!^'
+alias trimphraseids       'escommand --size 1000 -c search_record_content_phrase \!^ \\
+| grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+
+alias not_trimcontent     'escommand --source --size 1000 -c not_search_record_content \!^'
+alias not_trimcontentids  'escommand --size 1000 -c not_search_record_content \!^ \\
+| grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+
+alias not_trimphrase     'escommand --source --size 1000 -c not_search_record_content_phrase \!^'
+alias not_trimphraseids  'escommand --size 1000 -c not_search_record_content_phrase \!^ \\
+| grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
 
 alias esrectypes          'eshasfield_withsrc RecordType | egrep "_id|RecordType" \\
 | $PERL -e '"'"'                            \\
