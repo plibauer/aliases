@@ -44,7 +44,7 @@ For elastic help : elastichelp (or eshelp)                                      
                                                                                         \\
   content <id>        : print all the child Document.Content fields for parent id       \\
   contentsrch         : Search for term(s) in child Document.Content fields             \\
-  contentids          : Search for term(s) in Document.Content and return the ids       \\
+  contentsrchids      : Search for term(s) in Document.Content and return the ids       \\
   phrasesrch          : Search for a phrase in child Document.Content fields            \\
   phrasesrchids       : Search for a phrase in Document.Content and return the ids      \\
   ---                                                                                   \\
@@ -342,9 +342,20 @@ else { print }                \\
 alias content             doccontent
 alias getcontent          doccontent
 
-alias contentsrch         '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&pretty=true"'
+alias contentsrch         '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&pretty=true" \\
+ | $PERL -ne '"'"'            \\
+if(/\\n/) {                   \\
+  @m = split /\\n/;           \\
+  for(@m) {                   \\
+    s/\\"/"/g;                \\
+    print "$_\n";             \\
+  }                           \\
+}                             \\
+else { print }                \\
+'"'"
 
-alias contentids          '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&_source=false&pretty=true" \\
+
+alias contentsrchids          '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(Document.Content:\!^)&size=1000&_source=false&pretty=true" \\
 | $PERL -ne '"'"'                          \\
 chomp;                                     \\
 /"_id"\s*:\s*"([\d\.]+)/ and do            \\
