@@ -33,6 +33,7 @@ For elastic help : elastichelp (or eshelp)                                      
                                                                                         \\
 ------ Using IDs -------                                                                \\
   docid <id>          : print doc with given id                                         \\
+  contents <id>       : print the Document.Content field for given id as original text  \\
   recid <number>      : print doc with record number ('REC_' is prefixed)               \\
   allids              : print every elastic document id found                           \\
   delid <id>          : delete the doc with given id                                    \\
@@ -264,6 +265,15 @@ alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=N
 alias metadatasrch        '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(\!^)&size=1000&pretty=true"'
 alias metasearch          metadatasrch
 
+alias contents            'docid \!^     \\
+| $PERL -ne '"'"'                        \\
+if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){  \\
+  @l=split /\\n/, $1;                    \\
+  for(@l){                               \\
+    s/\\"/"/g;                           \\
+    print "$_\n";                        \\
+  }                                      \\
+}  '"'"
 
 
 alias containers          'eshasfield_withsrc Container  \\
