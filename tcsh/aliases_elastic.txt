@@ -366,13 +366,13 @@ alias booktitles          'booktitlesv                          \\
   print "\nOrder by URI\t\t|\tOrder by Acronym\n";              \\
   print "--------------------------------------------------\n"; \\
   @acrons = sort keys %acr;                                     \\
-  for($i=0; $i<$#col1; $i++) {                                  \\
+  for($i=0; $i <= $#col1; $i++) {                               \\
     $ac = $acrons[$i];                                          \\
     print $col1[$i]."|\t".$ac."\t".$acr{$ac}."\n";              \\
   }                                                             \\
 '"'"
 
-alias map2acronym      'booktitlesv > /c/temp/booktitles.txt;   \\
+alias docid2acronym    'booktitlesv > /c/temp/booktitles.txt;   \\
 cat | $PERL -e '"'"'                                            \\
    @input = <>;                                                 \\
    for(@input){                                                 \\
@@ -381,7 +381,6 @@ cat | $PERL -e '"'"'                                            \\
      $docids .= "$_,";                                          \\
    }                                                            \\
    chop $docids;                                                \\
-                                                                \\
                                                                 \\
   open F, "C:/temp/booktitles.txt" or                           \\
       die "Couldnt read /c/temp/booktitles.txt\n";              \\
@@ -392,11 +391,12 @@ cat | $PERL -e '"'"'                                            \\
        $uri{$1} = $2;                                           \\
     }                                                           \\
   }                                                             \\
-  %ids = map { s/^(\d+).+$/$1/; $_ => 1 } split /,/, $docids;   \\
+  %ids = map { s/^(\d+).*$/$1/; $_ => 1 } split /,/, $docids;   \\
   $acr = join ",", sort map { $uri{$_} } (keys %ids) ;          \\
-  $acr =~ s/^,|,$//;                                            \\
-  $acr =~ s/,+/,/g;                                             \\
-  print "\n$acr\n\n";                                           \\
+  $acrbyid = join ",", map { $uri{$_} } (sort keys %ids) ;      \\
+  $acr =~ s/^,|,$//;  $acrbyid =~ s/^,|,$//;                    \\
+  $acr =~ s/,+/,/g;   $acrbyid =~ s/,+/,/g;                     \\
+  print "\n$acr\n\n"; print "ORDERED BY ID:\n$acrbyid\n\n";     \\
 '"'"
 
 alias doccontent          'escommand -c get_record_content \!^ \\
