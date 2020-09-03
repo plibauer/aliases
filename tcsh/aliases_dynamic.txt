@@ -102,6 +102,8 @@ else if ("$var_elasticIndex" == "")  then
 endif
 
 set var_elasticHostOctane = $ELASTIC_HOST_OCTANE
+set var_elasticIndexAC = $var_elasticIndex".auto-class"
+set var_elasticIndexCW = $var_elasticIndexAC".custom-weights"
 
 # ---
 

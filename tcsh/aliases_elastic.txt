@@ -335,7 +335,42 @@ alias allids              'escommand -c match_all | grep _id | sort'
 alias esalldocs           allids
 alias estitles            'escommand -c titles | egrep "_id|Title" | $PERL -ne  '"'"' if(/,$/){ chomp; s/[":,\s]//g; s/_id//; print; } else { s/^\s+"Title" ://; print; } '"'" 
 alias titles              'estitles | sort'
-alias booktitles          'estitles | sort | $PERL -ne '"'"' /^(\d+)/ and do { print if $1 >= 9000000500 } '"'"
+alias booktitlesv         'estitles | sort               \\
+| $PERL -ne '"'"'                                        \\
+/^(\d+)\s+"title"\s*:\s+"([^"]+)"/i and do {             \\
+  if ($1 >= 9000000500) {                                \\
+    ($u,$t) = ($1,$2);                                   \\
+    $a = $t;                                             \\
+    $a =~ s/[^A-z ]//g;                                  \\
+    $a =~ s/(\w)\w+/$1/g;                                \\
+    $a =~ s/ //g;                                        \\
+    $a =~ s/^(...).+$/$1/g;                              \\
+    $a = uc $a;                                          \\
+    print "$u\t$a\t$t\n";                                \\
+  }                                                      \\
+}                                                        \\
+'"'"
+
+alias booktitles          'booktitlesv                          \\
+ | $PERL -e '"'"'                                               \\
+  @in = <>;                                                     \\
+  my $acr;                                                      \\
+  for(@in) {                                                    \\
+    chomp;                                                      \\
+    if(/^(\d+)\s+(\w+)/) {                                      \\
+      ($u,$a) = ($1,$2);                                        \\
+      push @col1, "$u\t$a\t";                                   \\
+      $acr{$a} = $u;                                            \\
+    }                                                           \\
+  }                                                             \\
+  print "\nOrder by URI\t\t|\tOrder by Acronym\n";              \\
+  print "--------------------------------------------------\n"; \\
+  @acrons = sort keys %acr;                                     \\
+  for($i=0; $i<$#col1; $i++) {                                  \\
+    $ac = $acrons[$i];                                          \\
+    print $col1[$i]."|\t".$ac."\t".$acr{$ac}."\n";              \\
+  }                                                             \\
+'"'"
 
 alias doccontent          'escommand -c get_record_content \!^ \\
  | $PERL -ne '"'"'            \\
@@ -454,12 +489,12 @@ alias espya               'espy "\!^/all"'
 alias espym               'espy "\!^/mapping"'
 alias espys               'espy "\!^/settings"'
 
-alias acmapping           'espy autoclass_$var_elasticIndex/m'
-alias acsettings          'espy autoclass_$var_elasticIndex/s'
-alias autoclasstypes      'espy search/autoclass_$var_elasticIndex -s type --compact --size 10000 | grep type | sort | uniq'
-alias estype              'espy search/autoclass_$var_elasticIndex/q:type:\!^'
+alias acmapping           'espy $var_elasticIndexAC/m'
+alias acsettings          'espy $var_elasticIndexAC/s'
+alias autoclasstypes      'espy search/$var_elasticIndexAC -s type --compact --size 10000 | grep type | sort | uniq'
+alias estype              'espy search/$var_elasticIndexAC/q:type:\!^'
 
-alias aclabels  'espy search/autoclass_$var_elasticIndex/q:type:word_label_counts -e word_count:type --compact --size 10000 \\
+alias aclabels  'espy search/$var_elasticIndexAC/q:type:word_label_counts -e word_count:type --compact --size 10000 \\
 | $PERL -e '"'"'                                                   \\
 while(<>){                                                         \\
   chomp;                                                           \\
@@ -487,7 +522,7 @@ alias elastic_add_wlc_prefix 'set wlcIndex=`echo \!^ | sed -r -e "s/^([[:digit:]
 #
 alias getwords 'setenv AC_SEARCH_STR "\!*"                          \\
 && elastic_add_wlc_prefix \!:1                              \\
-&& espy search/autoclass_$var_elasticIndex/$wlcIndex --compact -s word_count        \\
+&& espy search/$var_elasticIndexAC/$wlcIndex --compact -s word_count        \\
 | $PERL -e '"'"'                                    \\
 my ($cols, $width) = (10, 30);                                                      \\
 @a = split /\s+/, $ENV{AC_SEARCH_STR};                                              \\
