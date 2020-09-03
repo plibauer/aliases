@@ -372,6 +372,33 @@ alias booktitles          'booktitlesv                          \\
   }                                                             \\
 '"'"
 
+alias map2acronym      'booktitlesv > /c/temp/booktitles.txt;   \\
+cat | $PERL -e '"'"'                                            \\
+   @input = <>;                                                 \\
+   for(@input){                                                 \\
+     chomp;                                                     \\
+     s/\s+//;                                                   \\
+     $docids .= "$_,";                                          \\
+   }                                                            \\
+   chop $docids;                                                \\
+                                                                \\
+                                                                \\
+  open F, "C:/temp/booktitles.txt" or                           \\
+      die "Couldnt read /c/temp/booktitles.txt\n";              \\
+  @in = <F>;                                                    \\
+  for(@in){                                                     \\
+    chomp;                                                      \\
+    if(/^(\d+)\s+(\w+)/){                                       \\
+       $uri{$1} = $2;                                           \\
+    }                                                           \\
+  }                                                             \\
+  %ids = map { s/^(\d+).+$/$1/; $_ => 1 } split /,/, $docids;   \\
+  $acr = join ",", sort map { $uri{$_} } (keys %ids) ;          \\
+  $acr =~ s/^,|,$//;                                            \\
+  $acr =~ s/,+/,/g;                                             \\
+  print "\n$acr\n\n";                                           \\
+'"'"
+
 alias doccontent          'escommand -c get_record_content \!^ \\
  | $PERL -ne '"'"'            \\
 if(/\\n/) {                   \\
