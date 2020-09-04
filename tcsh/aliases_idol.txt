@@ -24,6 +24,8 @@ idolconfig            : View the TRIM IDOL Service configuration file           
 idolconfigcontent     : View the TRIM Content Service configuration file                            \\
 editidolconfig        : Edit  TRIM IDOL Service configuration file                                  \\
 editidolconfigcontent : Edit  TRIM IDOL Content Service configuration file                          \\
+idol_log_<type>       : Tail an IDOL log file, eg. idol_log_index                                   \\
+                      : <type> one of action, agent, app, cat, query, svc_app                       \\
 \\
 idoluri <uri>     : Search for a record with <uri> and print basic fields                           \\
 idolcontent <uri> : Search for a record with <uri> and print all fields and content                 \\
@@ -230,16 +232,16 @@ alias idolsync      dresync
 
 set LOG_CONTENT_DIR = "/e/IDOL Development Deployment/TRIM Content Service 1/logs/application.log"
 
-alias idologca      'tail -f "$IDOL_DIR/TRIM Content Service 1/logs/application.log"'
-alias idologci      'tail -f "$IDOL_DIR/TRIM Content Service 1/logs/index.log"'
-alias idologcq      'tail -f "$IDOL_DIR/TRIM Content Service 1/logs/query.log"'
+alias idol_log_app     'tail -f "$IDOL_DIR/TRIM Content Service 1/logs/application.log"'
+alias idol_log_index   'tail -f "$IDOL_DIR/TRIM Content Service 1/logs/index.log"'
+alias idol_log_query   'tail -f "$IDOL_DIR/TRIM Content Service 1/logs/query.log"'
 
-alias idologcat     'tail -f "$IDOL_DIR/TRIM IDOL Service/logs/category_category.log"'
-alias idologsa      'tail -f "$IDOL_DIR/TRIM IDOL Service/logs/application.log"'
-alias idologsi      'tail -f "$IDOL_DIR/TRIM IDOL Service/logs/agentstore_agent_index.log"'
+alias idol_log_cat     'tail -f "$IDOL_DIR/TRIM IDOL Service/logs/category_category.log"'
+alias idol_log_svc_app 'tail -f "$IDOL_DIR/TRIM IDOL Service/logs/application.log"'
+alias idol_log_agent   'tail -f "$IDOL_DIR/TRIM IDOL Service/logs/agentstore_agent_index.log"'
 
 set ACT_LOG = ": Request (completed in|from)|: Generated ActionId"
-alias idologsac     'tail -f "$IDOL_DIR/TRIM IDOL Service/logs/action.log" | grep -Eiv "$ACT_LOG"'
+alias idol_log_action  'tail -f "$IDOL_DIR/TRIM IDOL Service/logs/action.log" | grep -Eiv "$ACT_LOG"'
 
 alias grepilogs     'grep -i \!^ "$IDOL_DIR/TRIM Content Service 1/logs/"*.log && grep -i \!^ "$IDOL_DIR/TRIM IDOL Service/logs/"*.log'
 alias grepidol      grepilogs
