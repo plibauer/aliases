@@ -228,31 +228,50 @@ alias settings            esgetsettings
 alias setting             'esget \!^/_settings?pretty'
 alias esmappings          'esget $var_elasticIndex/_mappings?pretty'
 alias mapping             'esget \!^/_mappings?pretty'
-alias esindexproperties   'esget $var_elasticIndex.properties/_doc/_properties'
+alias esindexproperties   'esget $var_elasticIndex.properties/_doc/_properties?pretty'
 alias indexproperties     esindexproperties
-alias esindexmetadata     'esget $var_elasticIndex.properties/_doc/_metadata'
+alias esindexmetadata     'esget $var_elasticIndex.properties/_doc/_metadata?pretty'
 alias esmetadata          esindexmetadata
-alias metadata            'esindexmetadata               \\
-| $PERL -e '"'"'                                         \\
-my @input = <>;                                          \\
-my $max = 10;                                            \\
-my $fields;                                              \\
-while (my $l = shift @input) {                           \\
-  chomp $l;                                              \\
-  if($l =~ /"Name"\s+:\s+"(\w+)"/) {                     \\
-    my $key = $1;                                        \\
-    my $val = shift @input;                              \\
-    if($val =~ /"PropertyOrFieldID"\s+:\s+"(\w+)"/) {    \\
-      $fields{$key} = $1;                                \\
-      $max = length($key) > $max ? length($key) : $max;  \\
-    }                                                    \\
-    else { print "EXPECTED 'value' line ???\n"; }        \\
-  }                                                      \\
-}                                                        \\
-for(sort keys %fields) {                                 \\
-  my $s = " " x ($max - length($_) + 2);                 \\
-  print "$_$s: ".$fields{$_}."\n";                       \\
-}                                                        \\
+alias metadata            'esindexmetadata                  \\
+| $PERL -e '"'"'                                            \\
+use strict;                                                 \\
+my @input = <>;                                             \\
+my $max = 20;                                               \\
+my %fields;                                                 \\
+my $startProcessing = 0;                                    \\
+while (my $l = shift @input) {                              \\
+  chomp $l;                                                 \\
+  if($startProcessing){                                     \\
+                                                            \\
+    if($l =~ /^\s+"(\w+)"\s*:\s+\{/) {                      \\
+      my $key = $1;                                         \\
+      my $typ = shift @input; chomp $typ;                   \\
+      $typ =~ s/^.+:\s+"(\w+)".*$/$1/;                      \\
+      my $enabled = shift @input; chomp $enabled;           \\
+      $enabled =~ s/^.+:\s+(\w+).*$/$1/;                    \\
+      my $isdef = shift @input; chomp $isdef;               \\
+      $isdef =~ s/^.+:\s+(\w+).*$/$1/;                      \\
+      my $propid = shift @input; chomp $propid;             \\
+      $propid =~ s/^.+:\s+"(\w+)".*$/$1/;                   \\
+      $fields{$key} = [$typ, $enabled, $isdef, $propid];    \\
+      print "$key,$typ,$enabled,$isdef,$propid\n";          \\
+    }                                                       \\
+    next;                                                   \\
+  }                                                         \\
+  if($l =~ /"Metadata"/){                                   \\
+    $startProcessing = 1;                                   \\
+    next;                                                   \\
+  }                                                         \\
+}                                                           \\
+print "NAME                ID   TYPE   DEFAULT ENABLED\n";  \\
+print "-----------------------------------------------\n";  \\
+for(sort keys %fields) {                                    \\
+  my($typ,$enab,$def,$prop) = @{$fields{$_}};               \\
+  my $s = " " x ($max - length($_));                        \\
+  my $s1 = " " x (5 - length($prop));                       \\
+  my $s2 = " " x (8 - length($typ));                        \\
+  print "$_$s$prop$s1$typ$s2$def\t$enab\n";                 \\
+}                                                           \\
 '"'"
 
 alias essearchall         'esgetp _search'
