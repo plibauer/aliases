@@ -44,7 +44,6 @@
             },
             // CNTRL+SHIFT+2
             {
-                // Make changes here to the powershell.exe profile.
                 "guid": "{61c65bbd-c3c7-5271-96e7-009a87ff44bf}",
                 "name": "Elastic Search",
                 "tabTitle": "Elastic Search 7.9.1",
@@ -54,7 +53,6 @@
             },
             // CNTRL+SHIFT+3
             {
-                // Make changes here to the powershell.exe profile.
                 "guid": "{62c76bbd-c4c8-5271-96e7-009a87ff44bf}",
                 "name": "Kibana",
                 "tabTitle": "Kibana 7.9.1",
@@ -63,14 +61,12 @@
                 "hidden": false
             },
             {
-                // Make changes here to the powershell.exe profile.
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "name": "Windows PowerShell",
                 "commandline": "powershell.exe",
                 "hidden": false
             },
             {
-                // Make changes here to the cmd.exe profile.
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "name": "Command Prompt",
                 "commandline": "cmd.exe",
