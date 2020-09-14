@@ -236,7 +236,10 @@ alias metadata            'esindexmetadata                  \\
 | $PERL -e '"'"'                                            \\
 use strict;                                                 \\
 my @input = <>;                                             \\
-my $max = 20;                                               \\
+my $max1 = 15;                                              \\
+my $max2 = 5;                                               \\
+my $max3 = 8;                                               \\
+my $max4 = 8;                                               \\
 my %fields;                                                 \\
 my $startProcessing = 0;                                    \\
 while (my $l = shift @input) {                              \\
@@ -245,16 +248,24 @@ while (my $l = shift @input) {                              \\
                                                             \\
     if($l =~ /^\s+"(\w+)"\s*:\s+\{/) {                      \\
       my $key = $1;                                         \\
+      $max1 = length($key) > $max1 ? length($key) : $max1;  \\
+                                                            \\
       my $typ = shift @input; chomp $typ;                   \\
       $typ =~ s/^.+:\s+"(\w+)".*$/$1/;                      \\
+      $max3 = length($typ) > $max3 ? length($typ) : $max3;  \\
+                                                            \\
       my $enabled = shift @input; chomp $enabled;           \\
       $enabled =~ s/^.+:\s+(\w+).*$/$1/;                    \\
+                                                            \\
       my $isdef = shift @input; chomp $isdef;               \\
       $isdef =~ s/^.+:\s+(\w+).*$/$1/;                      \\
-      my $propid = shift @input; chomp $propid;             \\
-      $propid =~ s/^.+:\s+"(\w+)".*$/$1/;                   \\
-      $fields{$key} = [$typ, $enabled, $isdef, $propid];    \\
-      print "$key,$typ,$enabled,$isdef,$propid\n";          \\
+                                                            \\
+      my $pid = shift @input; chomp $pid;                   \\
+      $pid =~ s/^.+:\s+"(\w+)".*$/$1/;                      \\
+      $max2 = length($pid) > $max2 ? length($pid) : $max2;  \\
+                                                            \\
+      $fields{$key} = [$typ, $enabled, $isdef, $pid];       \\
+      #print "$key,$typ,$enabled,$isdef,$propid\n";         \\
     }                                                       \\
     next;                                                   \\
   }                                                         \\
@@ -263,14 +274,26 @@ while (my $l = shift @input) {                              \\
     next;                                                   \\
   }                                                         \\
 }                                                           \\
-print "NAME                ID   TYPE   DEFAULT ENABLED\n";  \\
-print "-----------------------------------------------\n";  \\
+                                                            \\
+++$max1; ++$max2; ++$max3;                                  \\
+my $n = "NAME";                                             \\
+my $s = " " x ($max1 - length($n));                         \\
+my $i = "ID";                                               \\
+my $s1 = " " x ($max2 - length($i));                        \\
+my $t = "TYPE";                                             \\
+my $s2 = " " x ($max3 - length($t));                        \\
+my $title = $n.$s.$i.$s1.$t.$s2."DEFAULT ENABLED";          \\
+my $len = length($title);                                   \\
+                                                            \\
+print $title."\n".("-" x $len)."\n";                        \\
+                                                            \\
 for(sort keys %fields) {                                    \\
   my($typ,$enab,$def,$prop) = @{$fields{$_}};               \\
-  my $s = " " x ($max - length($_));                        \\
-  my $s1 = " " x (5 - length($prop));                       \\
-  my $s2 = " " x (8 - length($typ));                        \\
-  print "$_$s$prop$s1$typ$s2$def\t$enab\n";                 \\
+  $s = " " x ($max1 - length($_));                          \\
+  $s1 = " " x ($max2 - length($prop));                      \\
+  $s2 = " " x ($max3 - length($typ));                       \\
+  my $s3 = " " x ($max4 - length($def));                    \\
+  print "$_$s$prop$s1$typ$s2$def$s3$enab\n";                \\
 }                                                           \\
 '"'"
 
