@@ -1,10 +1,11 @@
+// RENAME this file to settings.local before running terminal.py
 // Put _GUID_ anywhere you want a guid generated
             {
                 "guid": "{_GUID_}",
                 "name": "Elasticsearch 7.3.0",
                 "tabTitle": "Elastic Search 7.3.0",
                 "startingDirectory": "E:/Elastic/search/7.3.0/bin",
-                "commandline": "cmd.exe /k elasticsearch.bat",
+                "commandline": "elasticsearch.bat",
                 "hidden": false
             },
             {
@@ -12,7 +13,7 @@
                 "name": "Kibana 7.3.0",
                 "tabTitle": "Kibana 7.3.0",
                 "startingDirectory": "E:/Elastic/kibana/7.3.0/bin",
-                "commandline": "cmd.exe /k kibana.bat",
+                "commandline": "kibana.bat",
                 "hidden": false
             },
             {
@@ -20,6 +21,6 @@
                 "name": "Logstash 7.3.0",
                 "tabTitle": "Logstash 7.3.0",
                 "startingDirectory": "E:/Elastic/Logstash/7.3.0/bin",
-                "commandline": "logstash.bat -f C:\cygwin\home\plibauer\octane\jdbc_logstash\latest",
+                "commandline": "logstash.bat -f C:/cygwin/home/plibauer/octane/jdbc_logstash/latest",
                 "hidden": false
             },

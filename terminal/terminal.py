@@ -43,7 +43,6 @@ def writeFile(inputFile, localSettings, elkVersion):
 
 def main(argv):
 
-  global ConfigFile
   global ScriptName
   global AliasPath
 
@@ -52,7 +51,6 @@ def main(argv):
   TerminalPath = AliasPath + r'\terminal'
   localSettings = TerminalPath + 'settings.local'  
 
-  numberOfArgs = len(argv)
   Short_Options = 'f:h'
   Long_Options = ['file=', 'help']
 
@@ -90,9 +88,10 @@ def main(argv):
     print("KIBANA_HOME is not set")
     sys.exit(1)
 
-  elasticPath += r'\bin'
-  kibanaPath += r'\bin'
-  print(f"ELK Version: {elkVersion}, Elastic: {elasticPath}, Kibana: {kibanaPath}")  
+  elasticPath += '/bin'
+  kibanaPath += '/bin'
+  print(f"ELK Version: {elkVersion}\nElastic Path: {elasticPath}\nKibana Path: {kibanaPath}")
+  
   sys.exit(0)
 
 
