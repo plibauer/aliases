@@ -46,8 +46,8 @@
             {
                 "guid": "{61c65bbd-c3c7-5271-96e7-009a87ff44bf}",
                 "name": "Elastic Search",
-                "tabTitle": "Elastic Search 7.9.1",
-                "startingDirectory": "D:/Elastic/Search/7.9.1/bin",
+                "tabTitle": "Elastic Search _ELK_VERSION_",
+                "startingDirectory": "_ELASTIC_BIN_PATH_",
                 "commandline": "cmd.exe /k elasticsearch.bat",
                 "hidden": false
             },
@@ -55,11 +55,12 @@
             {
                 "guid": "{62c76bbd-c4c8-5271-96e7-009a87ff44bf}",
                 "name": "Kibana",
-                "tabTitle": "Kibana 7.9.1",
-                "startingDirectory": "D:/Elastic/Kibana/7.9.1/bin",
+                "tabTitle": "Kibana _ELK_VERSION_",
+                "startingDirectory": "_KIBANA_BIN_PATH_",
                 "commandline": "cmd.exe /k kibana.bat",
                 "hidden": false
-            },
+            },  
+//LOCAL_SETTINGS   - LOCAL SETTINGS WILL GO HERE
             {
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "name": "Windows PowerShell",

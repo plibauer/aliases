@@ -1,0 +1,25 @@
+// Put _GUID_ anywhere you want a guid generated
+            {
+                "guid": "{_GUID_}",
+                "name": "Elasticsearch 7.3.0",
+                "tabTitle": "Elastic Search 7.3.0",
+                "startingDirectory": "E:/Elastic/search/7.3.0/bin",
+                "commandline": "cmd.exe /k elasticsearch.bat",
+                "hidden": false
+            },
+            {
+                "guid": "{_GUID_}",
+                "name": "Kibana 7.3.0",
+                "tabTitle": "Kibana 7.3.0",
+                "startingDirectory": "E:/Elastic/kibana/7.3.0/bin",
+                "commandline": "cmd.exe /k kibana.bat",
+                "hidden": false
+            },
+            {
+                "guid": "{_GUID_}",
+                "name": "Logstash 7.3.0",
+                "tabTitle": "Logstash 7.3.0",
+                "startingDirectory": "E:/Elastic/Logstash/7.3.0/bin",
+                "commandline": "logstash.bat -f C:\cygwin\home\plibauer\octane\jdbc_logstash\latest",
+                "hidden": false
+            },
