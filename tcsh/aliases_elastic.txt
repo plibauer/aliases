@@ -34,7 +34,7 @@ For elastic help : elastichelp (or eshelp)                                      
 ------ Using IDs -------                                                                \\
   docid <id>          : print doc with given id                                         \\
   contents <id>       : print the Document.Content field for given id as original text  \\
-  recid <number>      : print doc with record number ('REC_' is prefixed)               \\
+  recid <number>      : print doc with record number (\042REC_\042 is prefixed)         \\
   allids              : print every elastic document id found                           \\
   delid <id>          : delete the doc with given id                                    \\
                                                                                         \\
@@ -62,7 +62,10 @@ For elastic help : elastichelp (or eshelp)                                      
 ------- books -------                                                                   \\
 booktitles            : Print URIs => Title Acronym and vice versa                      \\
 booktitlesv           : Print URIs, Acronym and Title                                   \\
-docid2acronym         : Convert a list of URIs to Acronyms for search tests             \\
+docid2acronym         : Pipe output of commands that return a list of URIs to this      \\
+                        command to convert them to acronyms                             \\
+toacronyms,getacronyms: Same as above                                                   \\
+                                                                                        \\
                                                                                         \\
 ------- Metadata -------                                                                \\
   metadatasrch        : Search on a metadata field (eg. Notes:spoon). Spaces need to be \\
@@ -459,6 +462,8 @@ $PERL -e '"'"'                                                                  
   print "\n$acr\n\n"; print "ORDERED BY ID:\n$acrbyid\n\n";                      \\
   print "\n$uribyid\n";                                                          \\
 '"'"
+alias getacronyms           docid2acronym
+alias toacronyms            docid2acronym
 
 alias doccontent          'escommand -c get_record_content \!^ \\
  | $PERL -ne '"'"'            \\
