@@ -452,15 +452,30 @@ $PERL -e '"'"'                                                                  
        $uri{$1} = $2;                                                            \\
     }                                                                            \\
   }                                                                              \\
+                                                                                 \\
   %ids = map { s/^(\d+).*$/$1/; $_ => 1 } split /,/, $docids;                    \\
-  $acr = join ",", sort map { $uri{$_} } (keys %ids) ;                           \\
-  $acrbyid = join ",", map { $uri{$_} } (sort keys %ids) ;                       \\
-  $uribyid = join "\n",                                                          \\
-             map { "$_\t".$uri{$_} if exists $uri{$_} } (sort keys %ids) ;       \\
+                                                                                 \\
+  for(keys %ids){                                                                \\
+    if(exists $uri{$_}) { $valid{$_} = 1; }                                      \\
+  }                                                                              \\
+                                                                                 \\
+  for(keys %uri){                                                                \\
+    if(not exists $valid{$_}){                                                   \\
+      $missing .= $uri{$_}.",";                                                  \\
+    }                                                                            \\
+  }                                                                              \\
+  $missing =~ s/,$//;                                                            \\
+                                                                                 \\
+  $acr = join ",", sort map { $uri{$_} } (keys %valid) ;                         \\
+  $acrbyid = join ",", map { $uri{$_} } (sort keys %valid) ;                     \\
+  $uribyid = join "\n", map { "$_\t".$uri{$_} } (sort keys %valid);              \\
   $acr =~ s/^,|,$//;  $acrbyid =~ s/^,|,$//;                                     \\
   $acr =~ s/,+/,/g;   $acrbyid =~ s/,+/,/g;                                      \\
   print "\n$acr\n\n"; print "ORDERED BY ID:\n$acrbyid\n\n";                      \\
-  print "\n$uribyid\n";                                                          \\
+  print "$uribyid\n";                                                            \\
+  if($missing ne ""){                                                            \\
+    print "\n[NOT MATCHED: $missing]\n";                                         \\
+  }                                                                              \\
 '"'"
 alias getacronyms           docid2acronym
 alias toacronyms            docid2acronym
