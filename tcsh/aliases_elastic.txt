@@ -59,6 +59,11 @@ For elastic help : elastichelp (or eshelp)                                      
   not_trimphrase      : As above, but negated                                           \\
   not_trimphraseids   : As above, but return the URIs                                   \\
                                                                                         \\
+------- books -------                                                                   \\
+booktitles            : Print URIs => Title Acronym and vice versa                      \\
+booktitlesv           : Print URIs, Acronym and Title                                   \\
+docid2acronym         : Convert a list of URIs to Acronyms for search tests             \\
+                                                                                        \\
 ------- Metadata -------                                                                \\
   metadatasrch        : Search on a metadata field (eg. Notes:spoon). Spaces need to be \\
                         encoded as %20, Eg. Notes:spoon%20AND%20Title:refresh           \\
@@ -414,31 +419,45 @@ alias booktitles          'booktitlesv                          \\
   }                                                             \\
 '"'"
 
-alias docid2acronym    'booktitlesv > /c/temp/booktitles.txt;   \\
-cat | $PERL -e '"'"'                                            \\
-   @input = <>;                                                 \\
-   for(@input){                                                 \\
-     chomp;                                                     \\
-     s/\s+//;                                                   \\
-     $docids .= "$_,";                                          \\
-   }                                                            \\
-   chop $docids;                                                \\
-                                                                \\
-  open F, "C:/temp/booktitles.txt" or                           \\
-      die "Couldnt read /c/temp/booktitles.txt\n";              \\
-  @in = <F>;                                                    \\
-  for(@in){                                                     \\
-    chomp;                                                      \\
-    if(/^(\d+)\s+(\w+)/){                                       \\
-       $uri{$1} = $2;                                           \\
-    }                                                           \\
-  }                                                             \\
-  %ids = map { s/^(\d+).*$/$1/; $_ => 1 } split /,/, $docids;   \\
-  $acr = join ",", sort map { $uri{$_} } (keys %ids) ;          \\
-  $acrbyid = join ",", map { $uri{$_} } (sort keys %ids) ;      \\
-  $acr =~ s/^,|,$//;  $acrbyid =~ s/^,|,$//;                    \\
-  $acr =~ s/,+/,/g;   $acrbyid =~ s/,+/,/g;                     \\
-  print "\n$acr\n\n"; print "ORDERED BY ID:\n$acrbyid\n\n";     \\
+alias capture_input    '$PERL -e '"'"'                            \\
+@in=<>;                                                           \\
+open T, ">C:/temp/xxx.txt" or die "Couldnt open /c/temp/xxx.txt"; \\
+for(@in){                                                         \\
+  print T $_;                                                     \\
+} '"'" 
+
+alias docid2acronym    'capture_input && booktitlesv > /c/temp/booktitles.txt;   \\
+$PERL -e '"'"'                                                                   \\
+                                                                                 \\
+   open IN, "C:/temp/xxx.txt" or die "Couldnt read /c/temp/xxx.txt";             \\
+   @input = <IN>;                                                                \\
+   close IN;                                                                     \\
+                                                                                 \\
+   for(@input){                                                                  \\
+     chomp;                                                                      \\
+     s/\s+//;                                                                    \\
+     $docids .= "$_,";                                                           \\
+   }                                                                             \\
+   chop $docids;                                                                 \\
+                                                                                 \\
+  open F, "C:/temp/booktitles.txt" or                                            \\
+      die "Couldnt read /c/temp/booktitles.txt\n";                               \\
+  @in = <F>;                                                                     \\
+  for(@in){                                                                      \\
+    chomp;                                                                       \\
+    if(/^(\d+)\s+(\w+)/){                                                        \\
+       $uri{$1} = $2;                                                            \\
+    }                                                                            \\
+  }                                                                              \\
+  %ids = map { s/^(\d+).*$/$1/; $_ => 1 } split /,/, $docids;                    \\
+  $acr = join ",", sort map { $uri{$_} } (keys %ids) ;                           \\
+  $acrbyid = join ",", map { $uri{$_} } (sort keys %ids) ;                       \\
+  $uribyid = join "\n",                                                          \\
+             map { "$_\t".$uri{$_} if exists $uri{$_} } (sort keys %ids) ;       \\
+  $acr =~ s/^,|,$//;  $acrbyid =~ s/^,|,$//;                                     \\
+  $acr =~ s/,+/,/g;   $acrbyid =~ s/,+/,/g;                                      \\
+  print "\n$acr\n\n"; print "ORDERED BY ID:\n$acrbyid\n\n";                      \\
+  print "\n$uribyid\n";                                                          \\
 '"'"
 
 alias doccontent          'escommand -c get_record_content \!^ \\
