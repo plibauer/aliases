@@ -458,23 +458,33 @@ $PERL -e '"'"'                                                                  
   for(keys %ids){                                                                \\
     if(exists $uri{$_}) { $valid{$_} = 1; }                                      \\
   }                                                                              \\
+  $COUNT = scalar(keys %valid);                                                  \\
                                                                                  \\
   for(keys %uri){                                                                \\
     if(not exists $valid{$_}){                                                   \\
       $missing .= $uri{$_}.",";                                                  \\
+      push @missSorted, $uri{$_};                                                \\
     }                                                                            \\
   }                                                                              \\
   $missing =~ s/,$//;                                                            \\
+  $miss_sort = join ",", sort @missSorted;                                       \\
+  $COUNT_NOMATCH = scalar(@missSorted);                                          \\
                                                                                  \\
   $acr = join ",", sort map { $uri{$_} } (keys %valid) ;                         \\
   $acrbyid = join ",", map { $uri{$_} } (sort keys %valid) ;                     \\
   $uribyid = join "\n", map { "$_\t".$uri{$_} } (sort keys %valid);              \\
   $acr =~ s/^,|,$//;  $acrbyid =~ s/^,|,$//;                                     \\
   $acr =~ s/,+/,/g;   $acrbyid =~ s/,+/,/g;                                      \\
-  print "\n$acr\n\n"; print "ORDERED BY ID:\n$acrbyid\n\n";                      \\
-  print "$uribyid\n";                                                            \\
+  #print "\n$acr\n\n"; print "ORDERED BY ID:\n$acrbyid\n\n";                     \\
+                                                                                 \\
+  print "\nMatched: $COUNT (unmatched $COUNT_NOMATCH)\n".                        \\
+          "Matches: $acr\n".                                                     \\
+          "By ID  : $acrbyid\n\n$uribyid\n";                                     \\
+                                                                                 \\
   if($missing ne ""){                                                            \\
-    print "\n[NOT MATCHED: $missing]\n";                                         \\
+    print "\n[Count      : $COUNT_NOMATCH]\n";                                   \\
+    print   "[NOT MATCHED: $missing]\n";                                         \\
+    print   "[SORTED     : $miss_sort]\n";                                       \\
   }                                                                              \\
 '"'"
 alias getacronyms           docid2acronym
