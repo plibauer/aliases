@@ -5,7 +5,7 @@
                 "name": "Elasticsearch 7.3.0",
                 "tabTitle": "Elastic Search 7.3.0",
                 "startingDirectory": "E:/Elastic/search/7.3.0/bin",
-                "commandline": "elasticsearch.bat",
+                "commandline": "cmd.exe /k elasticsearch.bat",
                 "hidden": false
             },
             {
@@ -13,7 +13,7 @@
                 "name": "Kibana 7.3.0",
                 "tabTitle": "Kibana 7.3.0",
                 "startingDirectory": "E:/Elastic/kibana/7.3.0/bin",
-                "commandline": "kibana.bat",
+                "commandline": "cmd.exe /k kibana.bat",
                 "hidden": false
             },
             {
@@ -21,6 +21,6 @@
                 "name": "Logstash 7.3.0",
                 "tabTitle": "Logstash 7.3.0",
                 "startingDirectory": "E:/Elastic/Logstash/7.3.0/bin",
-                "commandline": "logstash.bat -f C:/cygwin/home/plibauer/octane/jdbc_logstash/latest",
+                "commandline": "cmd.exe /k logstash.bat -f C:\\cygwin\\home\\plibauer\\octane\\jdbc_logstash\\latest",
                 "hidden": false
             },
