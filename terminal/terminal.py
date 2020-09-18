@@ -3,6 +3,7 @@ import re
 import sys
 import getopt
 import shutil
+import uuid
 
 ScriptName = None
 AliasPath  = None
@@ -27,15 +28,75 @@ def printUsage(script):
     print(usage.format(script=script))
 
 # ------------------------------------------------------------------
+
+def insertLocalSettings(tmpfile, local, pattern):
+
+  localStr = []
+  if local != "":
+    with open(local) as inputFile:
+      for line in inputFile:
+        # Ignore comment lines
+        if re.search(r'^\s*//', line):
+          continue
+        localStr.append(line)
+
+  combined = []
+  with open(tmpfile) as tmp:
+    for line in tmp:
+      if re.search(r'^\s*//\s*' + pattern, line):
+        combined.extend(localStr)
+      else:
+        combined.append(line)
+
+  return combined
+
+
 # ------------------------------------------------------------------
 
-def writeFile(inputFile, localSettings, elkVersion):
+# ------------------------------------------------------------------
 
-	newFile = "settings.json.generated"
-	f = open(newFile, "w")
-	f.write("Something done")
-	f.close()
-	print(f"Created settings.json file : {newFile}")
+def createSettingsFile(settingsFile, localSettings, elkVersion, elasticPath, kibanaPath):
+
+  global scriptPath
+
+  newFile = scriptPath + r"\settings.json.generated"
+  # tmpFile = scriptPath + r"\settings.tmp"
+
+  # shutil.copyfile(settingsFile, tmpFile)
+
+  elkPattern     = '_ELK_VERSION_'
+  elasticPattern = '_ELASTIC_BIN_PATH_'
+  kibanaPattern  = '_KIBANA_BIN_PATH_'
+  guidPattern    = '_GUID_'
+  guidDefPattern = '_GUID_DEFAULT_'
+
+  GUID_DEF = str(uuid.uuid4())
+
+  localSettingsPattern = 'LOCAL_SETTINGS'
+  filelist = insertLocalSettings(settingsFile, localSettings, localSettingsPattern)
+
+  with open(newFile, mode="w") as new:
+    for l in filelist:
+
+      if re.search(elkPattern, l):
+        l = l.replace(elkPattern, elkVersion)
+
+      elif re.search(elasticPattern, l):
+        l = l.replace(elasticPattern, elasticPath)
+
+      elif re.search(kibanaPattern, l):
+        l = l.replace(kibanaPattern, kibanaPath)
+
+      elif re.search(guidDefPattern, l):
+        l = l.replace(guidDefPattern, GUID_DEF)
+
+      elif re.search(guidPattern, l):
+        newguid = str(uuid.uuid4())
+        l = l.replace(guidPattern, newguid)
+
+      new.write(l)
+
+  print(f"Created new settings.json file : {newFile}")
 
 # ------------------------------------------------------------------
 
@@ -44,12 +105,10 @@ def writeFile(inputFile, localSettings, elkVersion):
 def main(argv):
 
   global ScriptName
-  global AliasPath
+  global scriptPath
 
-  scriptPath = os.path.realpath(__file__)
-  AliasPath = os.path.dirname(scriptPath)
-  TerminalPath = AliasPath + r'\terminal'
-  localSettings = TerminalPath + 'settings.local'  
+  scriptPath = os.path.dirname(os.path.realpath(__file__))
+  localSettings = scriptPath + r'\settings.local'  
 
   Short_Options = 'f:h'
   Long_Options = ['file=', 'help']
@@ -61,7 +120,7 @@ def main(argv):
     print("Use -h(elp) to see further help")
     sys.exit(1)
 
-  alias_dir = inputFile = localSettings = None  
+  inputFile = None  
   for opt, arg in opts:  
     if opt == "-f":
       inputFile = arg
@@ -72,7 +131,15 @@ def main(argv):
         printUsage(ScriptName)
         sys.exit(0)  
   if inputFile is None:
-    inputFile = AliasPath + r'\terminal\settings.json'
+    inputFile = scriptPath + r'\settings.json'
+
+  if not os.path.isfile(inputFile):
+    print(f"No input file found. Tried {inputFile}")
+    sys.exit(1)
+
+  # If there is no local settings file, pass in an empty string below
+  if not os.path.isfile(localSettings):
+    localSettings = ""
 
   elkVersion = os.environ.get('ELK_VERSION')
   elasticPath = os.environ.get('ELASTIC_HOME')
@@ -90,8 +157,13 @@ def main(argv):
 
   elasticPath += '/bin'
   kibanaPath += '/bin'
-  print(f"ELK Version: {elkVersion}\nElastic Path: {elasticPath}\nKibana Path: {kibanaPath}")
+  print()
+  print(f"ELK Version : {elkVersion}\n"
+        f"Elastic Path: {elasticPath}\n"
+        f"Kibana Path : {kibanaPath}\n")
   
+  createSettingsFile(inputFile, localSettings, elkVersion, elasticPath, kibanaPath)
+
   sys.exit(0)
 
 
