@@ -1,79 +1,79 @@
 #  Put local aliases specific to this machine here
 
-set REPOS_ROOT              = $SET_THIS_VALUE
-set STATIC_REPO             = $REPOS_ROOT/TRIMStaticRepo
-set SVN_BIN                 = "/c/Program Files/TortoiseSVN/bin"
+setenv REPOS_ROOT              $SET_THIS_VALUE
+setenv STATIC_REPO             $REPOS_ROOT/TRIMStaticRepo
+setenv SVN_BIN                 "/c/Program Files/TortoiseSVN/bin"
 
 #
 # (BITVISE, PULSE, LOCAL, HOME or NONE)
-set DEFAULT_VPN             = NONE  
+setenv DEFAULT_VPN             NONE  
 #
-set SVN_PULSE_LAB           = svn://15.114.89.246:1137/TRIM
-set SVN_PULSE_STATIC        = svn://15.114.89.246:1137/Static
-set SVN_PULSE_PROXY         = web-proxy.in.softwaregrp.net:8080
+setenv SVN_PULSE_LAB           svn://15.114.89.246:1137/TRIM
+setenv SVN_PULSE_STATIC        svn://15.114.89.246:1137/Static
+setenv SVN_PULSE_PROXY         web-proxy.in.softwaregrp.net:8080
 
-set SVN_BVISE_LAB           = svn://localhost:11137/TRIM
-set SVN_BVISE_STATIC        = svn://localhost:11137/Static
-set SVN_BVISE_PROXY         = 127.0.0.1:8080
+setenv SVN_BVISE_LAB           svn://localhost:11137/TRIM
+setenv SVN_BVISE_STATIC        svn://localhost:11137/Static
+setenv SVN_BVISE_PROXY         127.0.0.1:8080
 
-set SVN_HOME_LAB            = svn://10.11.12.2
-set SVN_HOME_STATIC         = svn://10.11.12.2:5000
+setenv SVN_HOME_LAB            svn://10.11.12.2
+setenv SVN_HOME_STATIC         svn://10.11.12.2:5000
 
-set SVN_LOCAL_LAB           = svn://localhost
-set SVN_LOCAL_STATIC        = svn://localhost:5000
+setenv SVN_LOCAL_LAB           svn://localhost
+setenv SVN_LOCAL_STATIC        svn://localhost:5000
 #
-set SVN_LAB_PATH            = $REPOS_ROOT/svn_lab
-set SVN_LAB_FILE            = file:///$SVN_LAB_PATH
-set SVN_LAB_DB              = $REPOS_ROOT/svnLogDatabase_lab
+setenv SVN_LAB_PATH            $REPOS_ROOT/svn_lab
+setenv SVN_LAB_FILE            file:///$SVN_LAB_PATH
+setenv SVN_LAB_DB              $REPOS_ROOT/svnLogDatabase_lab
 #
-set SVN_STATIC_PATH         = $REPOS_ROOT/svn_static
-set SVN_STATIC_FILE         = file:///$SVN_STATIC_PATH
-set SVN_STATIC_DB           = $REPOS_ROOT/svnLogDatabase
+setenv SVN_STATIC_PATH         $REPOS_ROOT/svn_static
+setenv SVN_STATIC_FILE         file:///$SVN_STATIC_PATH
+setenv SVN_STATIC_DB           $REPOS_ROOT/svnLogDatabase
 #
-set CYGUSER                 = plibauer
-set CYG_WIN_HOME            = /c/Users/$CYGUSER
-set WIN_HOME                = C:/Users/$CYGUSER
-set CLOUD_DIR               = $WIN_HOME/CLOUD
-set WIKI_DIR                = $CLOUD_DIR/Work/Wiki/paul_libauer
-set JOURNAL_DIR             = $WIN_HOME/Dropbox/Personal/journals
-set NETWORK_DIR             = $CLOUD_DIR/Network
+setenv CYGUSER                 plibauer
+setenv CYG_WIN_HOME            /c/Users/$CYGUSER
+setenv WIN_HOME                C:/Users/$CYGUSER
+setenv CLOUD_DIR               $WIN_HOME/CLOUD
+setenv WIKI_DIR                $CLOUD_DIR/Work/Wiki/paul_libauer
+setenv JOURNAL_DIR             $WIN_HOME/Dropbox/Personal/journals
+setenv NETWORK_DIR             $CLOUD_DIR/Network
 
-set GIT_HOST                = github.com
-set GIT_URL                 = git://$GIT_HOST/
+setenv GIT_HOST                github.com
+setenv GIT_URL                 git://$GIT_HOST/
 
-set PERL_PATH               = /c/strawberry/perl/bin
-set PERL                    = $PERL_PATH/perl.exe
-set PERL_HOME               = C:/cygwin/home/$CYGUSER/perl
-set STATIC_PERL             = $STATIC_REPO/libs/Perl
+setenv PERL_PATH               /c/strawberry/perl/bin
+setenv PERL                    $PERL_PATH/perl.exe
+setenv PERL_HOME               C:/cygwin/home/$CYGUSER/perl
+setenv STATIC_PERL             $STATIC_REPO/libs/Perl
 
-set PYTHON_PATH             = /c/python/3.7
-set PYTHON_SCRIPTS          = $PYTHON_PATH/Scripts
-set PYTHON                  = $PYTHON_PATH/python.exe
-set PYTHON_CYG              = /bin/python3
-set PYTHON_HOME             = C:/cygwin/home/$CYGUSER/python
-set STATIC_PY               = $STATIC_REPO/libs/Python
+setenv PYTHON_PATH             /c/python/3.7
+setenv PYTHON_SCRIPTS          $PYTHON_PATH/Scripts
+setenv PYTHON                  $PYTHON_PATH/python.exe
+setenv PYTHON_CYG              /bin/python3
+setenv PYTHON_HOME             C:/cygwin/home/$CYGUSER/python
+setenv STATIC_PY               $STATIC_REPO/libs/Python
 
-set DEVENV_ROOT             = "C:/Program Files (x86)"
-set DEVENV_ROOT_2017        = "$DEVENV_ROOT/Microsoft Visual Studio/2017/Enterprise"
-set DEVENV_ROOT_2019        = "$DEVENV_ROOT/Microsoft Visual Studio/2019/Enterprise"
-set WIX_DIR                 = "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
+setenv DEVENV_ROOT             "C:/Program Files (x86)"
+setenv DEVENV_ROOT_2017        "$DEVENV_ROOT/Microsoft Visual Studio/2017/Enterprise"
+setenv DEVENV_ROOT_2019        "$DEVENV_ROOT/Microsoft Visual Studio/2019/Enterprise"
+setenv WIX_DIR                 "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
 
-set LOCAL_SQLSVR            = LOCALHOST
-set ALM_DB                  = $REPOS_ROOT/ALM_Data
-set IDOL_DIR                = "/e/IDOL Development Deployment"
-set TESTDATASETS_DIR        = /c/TestDatasets
+setenv LOCAL_SQLSVR            LOCALHOST
+setenv ALM_DB                  $REPOS_ROOT/ALM_Data
+setenv IDOL_DIR                "/e/IDOL Development Deployment"
+setenv TESTDATASETS_DIR        /c/TestDatasets
 
 # ElasticSearch
-set ELASTIC_HOST            = http://localhost:9200
-set ELASTIC_HOST5           = http://localhost:9200
-set ELASTIC_HOST6           = http://localhost:9200
-set ELASTIC_HOST7           = http://localhost:9200
-set ELASTIC_HOST_OCTANE     = $ELASTIC_HOST
-set ELK_VERSION             = $SET_THIS_VALUE
-set ELASTIC_DIR             = $REPOS_ROOT/Elastic
-set ELASTIC_HOME            = $ELASTIC_DIR/search/$ELK_VERSION
-set KIBANA_HOME             = $ELASTIC_DIR/kibana/$ELK_VERSION
-set LOGSTASH_HOME           = $ELASTIC_DIR/logstash/$ELK_VERSION
-set BEATS_HOME              = $ELASTIC_DIR/beats/$ELK_VERSION
-set DEF_ELASTIC_INDX        = reuters
+setenv ELASTIC_HOST            http://localhost:9200
+setenv ELASTIC_HOST5           http://localhost:9200
+setenv ELASTIC_HOST6           http://localhost:9200
+setenv ELASTIC_HOST7           http://localhost:9200
+setenv ELASTIC_HOST_OCTANE     $ELASTIC_HOST
+setenv ELK_VERSION             $SET_THIS_VALUE
+setenv ELASTIC_DIR             $REPOS_ROOT/Elastic
+setenv ELASTIC_HOME            $ELASTIC_DIR/search/$ELK_VERSION
+setenv KIBANA_HOME             $ELASTIC_DIR/kibana/$ELK_VERSION
+setenv LOGSTASH_HOME           $ELASTIC_DIR/logstash/$ELK_VERSION
+setenv BEATS_HOME              $ELASTIC_DIR/beats/$ELK_VERSION
+setenv DEF_ELASTIC_INDX        reuters
 
