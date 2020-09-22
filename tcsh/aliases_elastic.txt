@@ -75,6 +75,8 @@ toacronyms,getacronyms: Same as above                                           
   hasclassification   : Show records with the field \042Classification\042              \\
   hascontainer        : Show records with the field \042Container\042                   \\
   hascontent          : Show records with the field \042Document.Content\042            \\
+  hascontenttrim      : As above, but only shows parent URIs, not child documents       \\
+  withandwithout      : Shows output of above with the gaps in a second column          \\
   hasexternalref      : Show records with the field \042ExternalReference\042           \\
   hasnotes            : Show records with the field \042Notes\042                       \\
   containers          : Show container records with their contained records             \\
@@ -373,11 +375,41 @@ alias qs                  esqs
 
 alias escommand           'pycurldef -f $ELASTIC_QUERIES'
 alias escommand_debug     'pycurldef -d -f $ELASTIC_QUERIES'
-alias eshasfield          'escommand -c field_exists \!^ | grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+alias eshasfield          'escommand -c field_exists \!^ | grep _id | sort | $PERL -ne '"'"' s/^.+:\s*"([^"]+)".+$/$1/; chomp; print "$_\n"; '"'"
 alias eshasfield_withsrc  'escommand --source -c field_exists \!^' 
 alias hasclassification   'eshasfield Classification' 
 alias hascontainer        'eshasfield Container' 
 alias hascontent          'eshasfield Document.Content' 
+alias hascontenttrim      'eshasfield Document.Content | $PERL -e '"'"' @i=<>; for(@i){ chomp; s/^(\d+)\..+$/$1/; $u{$_}=1;} for(sort {$a<=>$b} keys %u){print "$_\n"} '"'" 
+alias withandwithout      'hascontenttrim       \\
+ | $PERL -e '"'"'                               \\
+@in = <>;                                       \\
+$current = 0;                                   \\
+for(@in){                                       \\
+  chomp;                                        \\
+  if($current) {                                \\
+     $next = $current + 1;                      \\
+     if($next == $_){                           \\
+       print "$_\n";                            \\
+     }                                          \\
+     else {                                     \\
+       $prev = $_ - 1;                          \\
+       $sp = " " x length($current);            \\
+       if($next == $prev) {                     \\
+         $missing = "$sp$next";                 \\
+       }                                        \\
+       else {                                   \\
+         $diff = $prev - $next;                 \\
+         $missing = "$sp$next -> $prev ($diff)";\\
+       }                                        \\
+       print " $missing\n$_\n";                 \\
+     }                                          \\
+  }                                             \\
+  else { print "$_\n" }                         \\
+  $current = $_;                                \\
+}                                               \\
+'"'"
+
 alias hasexternalref      'eshasfield ExternalReference' 
 alias hasnotes            'eshasfield Notes' 
 alias hasallcontacts      'eshasfield AllContacts'
