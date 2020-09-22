@@ -1,7 +1,9 @@
 #  Put local aliases specific to this machine here
 
-setenv REPOS_ROOT              $SET_THIS_VALUE
-setenv STATIC_REPO             $REPOS_ROOT/TRIMStaticRepo
+setenv REPOS_ROOT              C:  *** SET THIS VALUE ***
+setenv STORE_DRIVE             D:  *** SET THIS VALUE ***
+
+setenv STATIC_REPO             $STORE_DRIVE/TRIMStaticRepo
 setenv SVN_BIN                 "/c/Program Files/TortoiseSVN/bin"
 
 #
@@ -22,13 +24,13 @@ setenv SVN_HOME_STATIC         svn://10.11.12.2:5000
 setenv SVN_LOCAL_LAB           svn://localhost
 setenv SVN_LOCAL_STATIC        svn://localhost:5000
 #
-setenv SVN_LAB_PATH            $REPOS_ROOT/svn_lab
+setenv SVN_LAB_PATH            $STORE_DRIVE/svn_lab
 setenv SVN_LAB_FILE            file:///$SVN_LAB_PATH
-setenv SVN_LAB_DB              $REPOS_ROOT/svnLogDatabase_lab
+setenv SVN_LAB_DB              $STORE_DRIVE/svnLogDatabase_lab
 #
-setenv SVN_STATIC_PATH         $REPOS_ROOT/svn_static
+setenv SVN_STATIC_PATH         $STORE_DRIVE/svn_static
 setenv SVN_STATIC_FILE         file:///$SVN_STATIC_PATH
-setenv SVN_STATIC_DB           $REPOS_ROOT/svnLogDatabase
+setenv SVN_STATIC_DB           $STORE_DRIVE/svnLogDatabase
 #
 setenv CYGUSER                 plibauer
 setenv CYG_WIN_HOME            /c/Users/$CYGUSER
@@ -59,7 +61,7 @@ setenv DEVENV_ROOT_2019        "$DEVENV_ROOT/Microsoft Visual Studio/2019/Enterp
 setenv WIX_DIR                 "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
 
 setenv LOCAL_SQLSVR            LOCALHOST
-setenv ALM_DB                  $REPOS_ROOT/ALM_Data
+setenv ALM_DB                  $STORE_DRIVE/ALM_Data
 setenv IDOL_DIR                "/e/IDOL Development Deployment"
 setenv TESTDATASETS_DIR        /c/TestDatasets
 
