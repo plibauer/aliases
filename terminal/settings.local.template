@@ -6,6 +6,7 @@
                 "tabTitle": "Elastic Search 7.3.0",
                 "startingDirectory": "E:/Elastic/search/7.3.0/bin",
                 "commandline": "cmd.exe /k elasticsearch.bat",
+                "tabColor": "#FFFF00",
                 "hidden": false
             },
             {
@@ -14,6 +15,7 @@
                 "tabTitle": "Kibana 7.3.0",
                 "startingDirectory": "E:/Elastic/kibana/7.3.0/bin",
                 "commandline": "cmd.exe /k kibana.bat",
+                "tabColor": "#FF8C00",
                 "hidden": false
             },
             {
@@ -22,5 +24,6 @@
                 "tabTitle": "Logstash 7.3.0",
                 "startingDirectory": "E:/Elastic/Logstash/7.3.0/bin",
                 "commandline": "cmd.exe /k logstash.bat -f C:\\cygwin\\home\\plibauer\\octane\\jdbc_logstash\\latest",
+                "tabColor": "#0997B3",
                 "hidden": false
             },

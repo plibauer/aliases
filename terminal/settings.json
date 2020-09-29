@@ -21,6 +21,7 @@
 	
     "showTabsInTitlebar": false,
     "tabWidthMode": "equal",
+    "multiLinePasteWarning": false,
 
     // A profile specifies a command to execute paired with information about how it should look and feel.
     // Each one of them will appear in the 'New Tab' dropdown,
@@ -39,6 +40,7 @@
                 "guid": "{_GUID_DEFAULT_}",
                 "name": "Cygwin",
                 "commandline": "C:/cygwin/Cygwin.bat",
+                "historySize": 50000,
                 "hidden": false,
                 "icon": "C:/cygwin/Cygwin-Terminal.ico"
             },
@@ -49,6 +51,7 @@
                 "tabTitle": "Elastic Search _ELK_VERSION_",
                 "startingDirectory": "_ELASTIC_BIN_PATH_",
                 "commandline": "cmd.exe /k elasticsearch.bat",
+                "tabColor": "#13A10E",
                 "hidden": false
             },
             // CNTRL+SHIFT+3
@@ -58,6 +61,7 @@
                 "tabTitle": "Kibana _ELK_VERSION_",
                 "startingDirectory": "_KIBANA_BIN_PATH_",
                 "commandline": "cmd.exe /k kibana.bat",
+                "tabColor": "#C50F1F",
                 "hidden": false
             },  
 //LOCAL_SETTINGS   - LOCAL SETTINGS WILL GO HERE
@@ -65,12 +69,23 @@
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "name": "Windows PowerShell",
                 "commandline": "powershell.exe",
+                "colorScheme": "Campbell Powershell",
                 "hidden": false
             },
             {
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "name": "Command Prompt",
                 "commandline": "cmd.exe",
+                "colorScheme": "Tango Dark",
+                "antialiasingMode": "grayscale",
+                "closeOnExit": "graceful",
+                "cursorShape": "bar",
+                "fontFace": "Cascadia Mono",
+                "fontSize": 12,
+                "historySize": 20000,
+                "padding": "8, 8, 8, 8",
+                "snapOnInput": true,
+                "altGrAliasing": true,
                 "hidden": false
             },
             {
