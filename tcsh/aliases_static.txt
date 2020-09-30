@@ -107,7 +107,7 @@ SVN Static Server   = $SVN_STATIC_URI          \\
 SVN Static Database = $SVN_STATIC_DB           \\
 VPN Config          = $var_vpnConfig           \\
 "'
-alias showenv           whichenv
+alias showenv           'whichenv && svnservers'
 alias trimversion       'cat $var_trimDir/trim/wix/version.wxi | grep -i "version ="'
 
 alias settitle          'echo -ne "\033]0;         [${var_trimDir}] ${var_defArch}/${var_defBuild} __${var_dbServer}:${var_dbSession}(dbid ${var_DBID})__ ELK=${var_elasticHost} [${var_elasticIndex}]__ VPN=${var_vpnConfig}\007"'
