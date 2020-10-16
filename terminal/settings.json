@@ -45,6 +45,16 @@
                 "icon": "C:/cygwin/Cygwin-Terminal.ico"
             },
             // CNTRL+SHIFT+2
+			{
+                "guid": "{_GUID_}",
+                "name": "Cygwin - Release mode",
+                "commandline": "C:/cygwin/Cygwin.bat",
+                "historySize": 50000,
+                "hidden": false,
+                "tabColor": "#6A5ACD",
+                "icon": "C:/cygwin/Cygwin-Terminal.ico"
+            },
+            // CNTRL+SHIFT+3
             {
                 "guid": "{_GUID_}",
                 "name": "Elastic Search",
@@ -54,7 +64,7 @@
                 "tabColor": "#13A10E",
                 "hidden": false
             },
-            // CNTRL+SHIFT+3
+            // CNTRL+SHIFT+4
             {
                 "guid": "{_GUID_}",
                 "name": "Kibana",
