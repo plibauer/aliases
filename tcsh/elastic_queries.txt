@@ -219,13 +219,13 @@ match_all:
 
 # ------------------------------------------------
 
-titles:
+get_field:
 {
   "size" : 10000,
-  "_source": "Title",
+  "_source": "ARG1",
   "query" : {
     "exists" : { 
-      "field" : "Title"
+      "field" : "ARG1"
     }
   }
 }
