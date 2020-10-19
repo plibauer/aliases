@@ -522,6 +522,36 @@ $PERL -e '"'"'                                                                  
 alias getacronyms           docid2acronym
 alias toacronyms            docid2acronym
 
+alias bookdates           '(booktitlesv && esgetfield DateCreated)  \\
+ | $PERL -e '"'"'                         \\
+while(<>){                                \\
+  chomp;                                  \\
+                                          \\
+  if(/^(\d+)\s+(\w+)\s+(\w.+)$/) {        \\
+    my($u,$a,$t) = ($1,$2,$3);            \\
+    $title{$u} = $t;                      \\
+  }                                       \\
+  elsif(/^(\d+)\s+"([^"]+)"/){            \\
+    my($u,$d) = ($1,$2);                  \\
+    $date{$u} = $d;                       \\
+    $byDate{$d} = $u;                     \\
+  }                                       \\
+}                                         \\
+                                          \\
+for(sort keys %title){                    \\
+  my $date = $date{$_};                   \\
+  print "$_  $date  $title{$_}\n";        \\
+}                                         \\
+print "\n---- BY DATE ----\n\n";          \\
+for(sort keys %byDate){                   \\
+  my $uri = $byDate{$_};                  \\
+  if(exists $title{$uri}){                \\
+    my $title = $title{$uri};             \\
+    print "$_  $uri  $title\n";           \\
+  }                                       \\
+}                                         \\
+'"'"
+
 alias doccontent          'escommand -c get_record_content \!^ \\
  | $PERL -ne '"'"'            \\
 if(/\\n/) {                   \\
