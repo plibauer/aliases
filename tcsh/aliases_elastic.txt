@@ -419,7 +419,7 @@ alias esgetfield          'escommand -c get_field \!^ | egrep "_id|\!^" | $PERL 
 alias titles              'esgetfield Title | sort'
 alias booktitlesv         'esgetfield Title | sort       \\
 | $PERL -ne '"'"'                                        \\
-/^(\d+)\s+"title"\s*:\s+"([^"]+)"/i and do {             \\
+/^(\d+)\s+"([^"]+)"/i and do {             \\
   if ($1 >= 9000000500) {                                \\
     ($u,$t) = ($1,$2);                                   \\
     $a = $t;                                             \\
