@@ -131,8 +131,7 @@ while(my $l = shift @in) {                                           \\
 
 alias recs                   db --object_type RECORD --unadorned --max 60
 alias recsv                  dbv --object_type RECORD --unadorned --max 60
-alias records                recs
-alias recordsv               recsv
+alias records                'gtable record -col 1,2,3,5,6,24,25 -max 65'
 alias recuri                 recsv --object_uri 
 alias recname                recsv--object_name 
 
