@@ -605,15 +605,69 @@ alias wglogfull 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/L
  | $PERL -ne '"'"' chomp; print "tail -f $_"; '"'"'                                                 \\
  | /bin/sh '
 
-set LOGBASIC = "(SELECT\s+TOP\s+\d+.+FROM\s+TSEVENTDAT|"
-set LOGBASIC = $LOGBASIC"SELECT.+FROM\s+TSTWRSYS\s+WITH)"
+set LOGBASIC = "(selectEvents|"
+set LOGBASIC = $LOGBASIC"SELECT.+FROM\s+TSRENDQUEU)"
 
-alias wglogbasic ' ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
+alias wglog      ' ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMWorkgroup* \\
  | head -1                                                                                          \\
  | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                                                \\
  | /bin/sh                                                                                          \\
  | grep -Eiv $LOGBASIC ' 
 
+alias showtails 'ps | grep "/tail" | /bin/perl -e '"'"'   \\
+$i=0;                                                     \\
+while(<>) {                                               \\
+  chomp;                                                  \\
+                                                          \\
+  # Get the process id (PID)                              \\
+  s/^\s*(\d+).+$/$1/;                                     \\
+  my $f = "/proc/$_/cmdline";                             \\
+  if(-e $f){                                              \\
+    open my $in, $f or die;                               \\
+    binmode $in;                                          \\
+    my $stuff;                                            \\
+    while(( my $n = read $in, my $data, 1) != 0) {        \\
+      $stuff .= chr(unpack('C', $data));                  \\
+    }                                                     \\
+                                                          \\
+    # There are some funny characters at the start        \\
+    $stuff =~ s/^tail...//;                               \\
+    print "[$i] $_ => $stuff\n";                          \\
+    push @ps,$_;                                          \\
+    ++$i;                                                 \\
+  }                                                       \\
+  else { print "Command line not found: $f\n"; }          \\
+}                                                         \\
+if(scalar(@ps) > 0){                                      \\
+  print "\nRun >killtail <number>\n";                     \\
+}                                                         \\
+'"'"
+alias showtail showtails
+
+alias killtail  ' (gettailprocs && echo \!^)         \\
+| perl -e '"'"'                                      \\
+                                                     \\
+while(<>){                                           \\
+  chomp;                                             \\
+  if(/^\[(\d+)\]\s+(\d+)\s+=>\s+(.+)$/){             \\
+     $c{$1}{pid} = $2;                               \\
+     $c{$1}{command} = $3;                           \\
+  }                                                  \\
+  elsif(/^(\d+)/){                                   \\
+     $no = $1;                                       \\
+  }                                                  \\
+}                                                    \\
+                                                     \\
+if(exists $c{$no}){                                  \\
+  ($pid,$command) = ($c{$no}{pid},$c{$no}{command}); \\
+  print "Killing process $pid : $command\n";         \\
+  print `kill $pid`;                                 \\
+}                                                    \\
+else {                                               \\
+  print "Invalid number for list of processes\n";    \\
+}                                                    \\
+                                                     \\
+'"'"
 
 set LOGSTART  = "("
 set LOG1  = "SELECT\s+TOP\s+\d+.+FROM\s+(TSEVENTDAT|TSTODOITEM|TSWKACTIVI)"
@@ -630,7 +684,7 @@ set LOG11 = "|SELECT\s+COUNT_BIG\(.\)\s+FROM\s+TSRENDQUEU\s+WITH\s+\(NOLOCK\)\s+
 set LOG12 = "|(Start|End)Transaction.+RenderHeartBeat"
 set LOGEND = ")"
 
-alias wglog 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMWorkgroup*   \\
+alias wglogextended 'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/TRIMWorkgroup*   \\
  | head -1                                                                                      \\
  | $PERL -ne '"'"' chomp; print "tail -f $_";  '"'"'                                            \\
  | /bin/sh                                                                                      \\
