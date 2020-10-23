@@ -644,30 +644,43 @@ if(scalar(@ps) > 0){                                      \\
 '"'"
 alias showtail showtails
 
-alias killtail  ' (gettailprocs && echo \!^)         \\
-| perl -e '"'"'                                      \\
-                                                     \\
-while(<>){                                           \\
-  chomp;                                             \\
-  if(/^\[(\d+)\]\s+(\d+)\s+=>\s+(.+)$/){             \\
-     $c{$1}{pid} = $2;                               \\
-     $c{$1}{command} = $3;                           \\
-  }                                                  \\
-  elsif(/^(\d+)/){                                   \\
-     $no = $1;                                       \\
-  }                                                  \\
-}                                                    \\
-                                                     \\
-if(exists $c{$no}){                                  \\
-  ($pid,$command) = ($c{$no}{pid},$c{$no}{command}); \\
-  print "Killing process $pid : $command\n";         \\
-  print `kill $pid`;                                 \\
-}                                                    \\
-else {                                               \\
-  print "Invalid number for list of processes\n";    \\
-}                                                    \\
-                                                     \\
+alias killtail  ' (showtails && echo \!^)                \\
+| perl -e '"'"'                                          \\
+                                                         \\
+@nums = ();                                              \\
+while(<>){                                               \\
+  chomp;                                                 \\
+  #print "$_\n";                                         \\
+  if(/^\[(\d+)\]\s+(\d+)\s+=>\s+(.+)$/){                 \\
+     $c{$1}{pid} = $2;                                   \\
+     $c{$1}{command} = $3;                               \\
+     push @allnums, $1;                                  \\
+  }                                                      \\
+  elsif(/^\d+\s*,\s*\d+/){                               \\
+     s/\s+//g;                                           \\
+     @nums = split /,/;                                  \\
+  }                                                      \\
+  elsif(/^(\d+)/){                                       \\
+     push @nums,$1;                                      \\
+  }                                                      \\
+  elsif(/^all/i){                                        \\
+     @nums = @allnums;                                   \\
+  }                                                      \\
+}                                                        \\
+                                                         \\
+foreach $num (@nums){                                    \\
+  if(exists $c{$num}){                                   \\
+    ($pid,$command) = ($c{$num}{pid},$c{$num}{command}); \\
+    print "Killing process $pid : $command\n";           \\
+    print `kill $pid`;                                   \\
+  }                                                      \\
+  else {                                                 \\
+    print "Invalid number for list of processes\n";      \\
+  }                                                      \\
+}                                                        \\
+                                                         \\
 '"'"
+alias killalltails  'killtail all'
 
 set LOGSTART  = "("
 set LOG1  = "SELECT\s+TOP\s+\d+.+FROM\s+(TSEVENTDAT|TSTODOITEM|TSWKACTIVI)"
