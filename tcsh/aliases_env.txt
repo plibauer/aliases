@@ -264,6 +264,7 @@ alias perldoc         '$PERL_PATH/perldoc.bat'
 alias perlmodules     'perldoc -q installed'
 alias perlfunc        '$PERL_PATH/perldoc.bat -f'
 alias unicode         '$PERL $STATIC_PERL/misc/unicodeTools.pl'
+alias cpan	      '$PERL_PATH/cpan.bat'
 
 # JSON pretty print
 alias jsonpretty      'cat | $PYTHON -m json.tool'  
