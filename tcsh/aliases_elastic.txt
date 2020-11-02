@@ -238,58 +238,65 @@ alias settings            esgetsettings
 alias setting             'esget \!^/_settings?pretty'
 alias esmappings          'esget $var_elasticIndex/_mappings?pretty'
 alias mapping             'esget \!^/_mappings?pretty'
+alias estemplate          'esget _template/cm-template-$var_elasticIndex?pretty'
+alias estemplateraw       'esget _template/cm-template-$var_elasticIndex'
+alias estemplatemapping   '(echo cm-template-$var_elasticIndex && estemplateraw )                               \\
+ | $PERL -e '"'"'                                             \\
+use strict;                                                   \\
+use JSON;                                                     \\
+                                                              \\
+my @in = <>;                                                  \\
+my $template = shift @in;                                     \\
+chomp $template;                                              \\
+my $input = shift @in;                                        \\
+                                                              \\
+my $j = JSON->new->allow_nonref;                              \\
+my $parsed = $j->decode($input);                              \\
+#print $j->pretty->encode($parsed->{$template}{"mappings"});  \\
+my $map = $parsed->{$template}{"mappings"}{properties};       \\
+                                                              \\
+my %mapping;                                                  \\
+my $max = 15;                                                 \\
+for (sort keys %$map){                                        \\
+   $max = $max > length($_) ? $max : length($_);              \\
+   if($map->{$_}{type}){                                      \\
+     $mapping{$_} = $map->{$_}{type};                         \\
+   }                                                          \\
+   else {                                                     \\
+     $mapping{$_} = "";                                       \\
+   }                                                          \\
+}                                                             \\
+                                                              \\
+for(sort keys %mapping){                                      \\
+  my $sp = " " x ($max - length($_) + 1);                     \\
+  print $_.$sp.": ".$mapping{$_}."\n";                        \\
+}                                                             \\
+'"'"
+
 alias esindexproperties   'esget $var_elasticIndex.properties/_doc/_properties?pretty'
 alias indexproperties     esindexproperties
 alias esindexmetadata     'esget $var_elasticIndex.properties/_doc/_metadata?pretty'
-alias esmetadata          esindexmetadata
 alias metadata            'esindexmetadata                          \\
 | $PERL -e '"'"'                                                    \\
-use strict;                                                         \\
+use strict; use JSON;                                               \\
 my @input = <>;                                                     \\
-my $max1 = 15;                                                      \\
-my $max2 = 5;                                                       \\
-my $max3 = 8;                                                       \\
-my $max4 = 8;                                                       \\
+my ($max1,$max2,$max3,$max4) = (15,5,8,8);                          \\
 my %fields;                                                         \\
-my $startProcessing = 0;                                            \\
-while (my $l = shift @input) {                                      \\
-  chomp $l;                                                         \\
-  if($startProcessing){                                             \\
-    if($l =~ /^\s+"(\w+)"\s*:\s+\{/) {                              \\
-      my $key = $1;                                                 \\
-      $max1 = length($key) > $max1 ? length($key) : $max1;          \\
+my $j = JSON->new;                                                  \\
+my $parsed = $j->decode("@input");                                  \\
+#print $j->pretty->encode($parsed->{"_source"}{Metadata});          \\
+my $meta = $parsed->{"_source"}{Metadata};                          \\
+for(keys %$meta){                                                   \\
+    my $typ = $meta->{$_}{ElasticType};                             \\
+    my $isdef = $meta->{$_}{IsDefault} ? "true" : "false";          \\
+    my $enabled = $meta->{$_}{Enabled} ? "true" : "false";          \\
+    my $pid = $meta->{$_}{PropertyOrFieldID};                       \\
                                                                     \\
-      my ($field,$typ,$isdef,$enabled,$pid);                        \\
-      do {                                                          \\
-         chomp($field = shift @input);                              \\
-         #chomp $field;                                             \\
-         $_ = $field;                                               \\
-         #print "FIELD: $field\n";                                  \\
-         /"ElasticType"\s*:\s*"([^"]+)"/ and do {                   \\
-             $typ = $1;                                             \\
-             $max3 = length($typ) > $max3 ? length($typ) : $max3;   \\
-         };                                                         \\
-         /"IsDefault"\s*:\s*(false|true)/i and do {                 \\
-             $isdef = $1;                                           \\
-         };                                                         \\
-         /"Enabled"\s*:\s*(false|true)/i and do {                   \\
-             $enabled = $1;                                         \\
-         };                                                         \\
-         /"PropertyOrFieldID"\s*:\s*"([^"]+)"/ and do {             \\
-             $pid = $1;                                             \\
-             $max2 = length($pid) > $max2 ? length($pid) : $max2;   \\
-         };                                                         \\
-      }                                                             \\
-      while ($field !~ /^\s+\}/);                                   \\
-      $fields{$key} = [$typ, $enabled, $isdef, $pid];               \\
-      #print "$key,$typ,$enabled,$isdef,$pid\n";                    \\
-    }                                                               \\
-    next;                                                           \\
-  }                                                                 \\
-  if($l =~ /"Metadata"/){                                           \\
-    $startProcessing = 1;                                           \\
-    next;                                                           \\
-  }                                                                 \\
+    $max1 = length($_) > $max1 ? length($_) : $max1;                \\
+    $max2 = length($pid) > $max2 ? length($pid) : $max2;            \\
+    $max3 = length($typ) > $max3 ? length($typ) : $max3;            \\
+                                                                    \\
+    $fields{$_} = [$typ, $enabled, $isdef, $pid];                   \\
 }                                                                   \\
                                                                     \\
 ++$max1; ++$max2; ++$max3;                                          \\
@@ -313,6 +320,7 @@ for(sort keys %fields) {                                            \\
   print "$_$s$prop$s1$typ$s2$def$s3$enab\n";                        \\
 }                                                                   \\
 '"'"
+
 
 alias essearchall         'esgetp _search'
 alias essearch            'esgetp $var_elasticIndex/_search'
