@@ -321,7 +321,6 @@ for(sort keys %fields) {                                            \\
 }                                                                   \\
 '"'"
 
-
 alias essearchall         'esgetp _search'
 alias essearch            'esgetp $var_elasticIndex/_search'
 alias searchindex         'esgetp \!^/_search'
