@@ -273,15 +273,6 @@ for(sort keys %mapping){                                      \\
 }                                                             \\
 '"'"
 
-alias essearchall         'esgetp _search'
-alias essearch            'esgetp $var_elasticIndex/_search'
-alias searchindex         'esgetp \!^/_search'
-alias esdelete            '$CURL -X DELETE "$var_elasticHost/\!^"'
-alias esrefresh           '$CURL -X POST "$var_elasticHost/_refresh?pretty=true"'
-alias docid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
-alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=Number:REC_\!^&pretty=true"'
-alias metadatasrch        '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(\!^)&size=1000&pretty=true"'
-alias metasearch          metadatasrch
 alias esindexproperties   'esget $var_elasticIndex.properties/_doc/_properties?pretty'
 alias indexproperties     esindexproperties
 alias esindexmetadata     'esget $var_elasticIndex.properties/_doc/_metadata?pretty'
@@ -329,6 +320,16 @@ for(sort keys %fields) {                                            \\
   print "$_$s$prop$s1$typ$s2$def$s3$enab\n";                        \\
 }                                                                   \\
 '"'"
+
+alias essearchall         'esgetp _search'
+alias essearch            'esgetp $var_elasticIndex/_search'
+alias searchindex         'esgetp \!^/_search'
+alias esdelete            '$CURL -X DELETE "$var_elasticHost/\!^"'
+alias esrefresh           '$CURL -X POST "$var_elasticHost/_refresh?pretty=true"'
+alias docid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_id:\!^&pretty=true"'
+alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=Number:REC_\!^&pretty=true"'
+alias metadatasrch        '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(\!^)&size=1000&pretty=true"'
+alias metasearch          metadatasrch
 
 alias contents            'docid \!^     \\
 | $PERL -ne '"'"'                        \\
