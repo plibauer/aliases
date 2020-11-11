@@ -97,7 +97,7 @@ To build the auto-classification dataset, run the following commands;           
              call saveac                                                                \\
    restoreac - load the above saved data                                                \\
                                                                                         \\
-buildac is a shortcut to run the first 2 aliases above                                  \\
+buildac is a shortcut to run both popdbac and testac                                    \\
                                                                                         \\
 --- Autoclassification ---                                                              \\
   acmapping      : Show mapping for the autoclassification index                        \\
