@@ -90,6 +90,15 @@ alias esautohelp      'echo                                                     
 For curl commands, see : escurlhelp                                                     \\
 For elastic search commands, see : elastichelp (or eshelp)                              \\
                                                                                         \\
+To build the auto-classification dataset, run the following commands;                   \\
+   popdbac - runs podpb with --dbid AC and --dbname elastic_autoclass                   \\
+   saveac  - save the dataset with above data                                           \\
+   testac  - runs testttrim with above for autoclassification test --all and then       \\
+             call saveac                                                                \\
+   restoreac - load the above saved data                                                \\
+                                                                                        \\
+buildac is a shortcut to run the first 2 aliases above                                  \\
+                                                                                        \\
 --- Autoclassification ---                                                              \\
   acmapping      : Show mapping for the autoclassification index                        \\
   acsettings     : Show settings for autoclassification index                           \\

@@ -99,6 +99,7 @@ alias setidolconfig     'setdbid $env_idolDbid; dbsession $var_idolDbSession'
 
 set es_ac_params = '--test autoclassification --dbid AC --dbname elastic_autoclass'
 alias testac            'testtrim $es_ac_params; saveac'
+alias buildac           'popdbac; testac'
 alias elastic_train     'testtrim $es_ac_params --load train '
 alias elastic_test      'testtrim $es_ac_params --load test --inplace'
 alias elastic_both      'testtrim $es_ac_params --load both '
