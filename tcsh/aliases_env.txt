@@ -258,6 +258,7 @@ alias xconf           '$PERL $PERL_HOME/xmlconfig.pl'
 alias xmlnoc          '$PERL $PERL_HOME/stripXMLcomments.pl'
 alias xmlformat       $PERL_HOME/xmlformat.pl
 alias xmlf            xmlformat
+alias xmlpretty       '$PERL $PERL_HOME/xml_libxml.pl --xml --file'
 
 # Lookup a perl function using perldoc
 alias perldoc         '$PERL_PATH/perldoc.bat'

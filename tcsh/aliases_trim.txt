@@ -112,13 +112,14 @@ alias idol_test         'testtrim $idol_ac_params --load test --inplace'
 alias idol_both         'testtrim $idol_ac_params --load both'
 alias idol_classify     'testtrim $idol_ac_params --classify --inplace'
 
-alias trimconfig        'xmlconf $var_trimcfg'
-alias trimcfgsorted     'xmlformat $var_trimcfg | $PYTHON $PYTHON_HOME/sortXml.py'
-alias restoreconfig     'cp $TESTDATASETS_DIR/$var_DBID/backup/TRIMConfig.tcfg $var_trimcfgdir' 
-alias xmltrim           'xmlformat $var_trimcfg'
-alias getconfig         'more $var_trimcfg'
-alias fixtrimconfig     'xmlformat -i -b .backup $var_trimcfg'
-alias trimconfigdci     'xmlconf $var_trimcfg |                                    \\
+alias trimconfig          '$PERL $PERL_HOME/xml_libxml.pl --file $var_trimcfg'
+alias trimdatasets        '$PERL $PERL_HOME/xml_libxml.pl --file $var_trimcfg --datasets'
+alias restoreconfig       'cp $TESTDATASETS_DIR/$var_DBID/backup/TRIMConfig.tcfg $var_trimcfgdir' 
+alias xmltrim             '$PERL $PERL_HOME/xml_libxml.pl --file '
+alias xmltrimdatasets     '$PERL $PERL_HOME/xml_libxml.pl --datasets --file '
+alias getconfig           'more $var_trimcfg'
+alias fixtrimconfig       'xmlformat -i -b .backup $var_trimcfg'
+alias trimconfigdci       'xmlconf $var_trimcfg |                                    \\
 $PERL -e '"'"'                                                                     \\
   @in = <>; $outStr;                                                               \\
   $pattern = "ContentIndex|MaxArchive|MaxDci|DCIServer|Elastic|DocumentField".     \\
