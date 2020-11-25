@@ -36,6 +36,7 @@ For elastic help : elastichelp (or eshelp)                                      
   contents <id>       : print the Document.Content field for given id as original text  \\
   recid <number>      : print doc with record number (\042REC_\042 is prefixed)         \\
   allids              : print every elastic document id found                           \\
+  trimallids          : print every unique URI found                                    \\
   delid <id>          : delete the doc with given id                                    \\
                                                                                         \\
 ------- Content --------                                                                \\
@@ -437,6 +438,22 @@ alias hasnotes            'eshasfield Notes'
 alias hasallcontacts      'eshasfield AllContacts'
 alias allids              'escommand -c match_all | grep _id | sort'
 alias esalldocs           allids
+alias trimallids          ' allids \\
+ | $PERL -e  '"'"'                 \\
+                                   \\
+@in = <>;                          \\
+for(@in) {                         \\
+  chomp;                           \\
+  s/^\D+//;                        \\
+  s/\D+$//;                        \\
+  s/\.\d+\.\d+$//;                 \\
+  $uniq{$_} = 1;                   \\
+}                                  \\
+for (sort keys %uniq){             \\
+  print "$_\n";                    \\
+}                                  \\
+'"'"
+
 alias esgetfield          '(echo \!^ && escommand -c get_field \!^)  \\
  | $PERL -e  '"'"'                                             \\
                                            \\
