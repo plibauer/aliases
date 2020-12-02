@@ -91,6 +91,7 @@ alias refreshlab        'synclab && labupdate'
 alias syncstatic        'svnsync sync $SVN_STATIC_FILE $SVN_STATIC_URI'
 alias refreshstatic     'syncstatic && statupdate'
 
+alias refreshboth	'refreshlab; refreshstatic'
 alias remlock           'svn propdel svn:sync-lock --revprop -r 0 $SVN_LAB_FILE'
 alias remlockstat       'svn propdel svn:sync-lock --revprop -r 0 $SVN_STATIC_FILE'
 alias trim2local        'svnrelocate $var_trimDir $SVN_LOCAL_LAB'
