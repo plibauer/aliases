@@ -37,7 +37,7 @@ setenv CYG_WIN_HOME            /c/Users/$CYGUSER
 setenv WIN_HOME                C:/Users/$CYGUSER
 setenv CLOUD_DIR               $WIN_HOME/CLOUD
 setenv WIKI_DIR                $CLOUD_DIR/Work/Wiki/paul_libauer
-setenv JOURNAL_DIR             $WIN_HOME/Dropbox/Personal/journals
+setenv JOURNAL_DIR             $CLOUD_DIR/Personal/journals
 setenv NETWORK_DIR             $CLOUD_DIR/Network
 
 setenv GIT_HOST                github.com
