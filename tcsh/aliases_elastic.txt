@@ -24,6 +24,8 @@ For auto-classification commands, see : esautohelp                              
   espyhelp(espyh): See examples of extended espy commands                               \\
   esindexproperties : Show index properties                                             \\
   esmetadata        : Show metadata fields (use 'metadata' for brief output)            \\
+  espolicy          : Show the policy settings if ILM is enabled on the index           \\
+  estemplate        : Show the template settings if ILM is enabled on the index         \\
 "                                                                                       \\
 '
 
@@ -248,6 +250,7 @@ alias settings            esgetsettings
 alias setting             'esget \!^/_settings?pretty'
 alias esmappings          'esget $var_elasticIndex/_mappings?pretty'
 alias mapping             'esget \!^/_mappings?pretty'
+alias espolicy            'esget _ilm/policy/cm-policy-$var_elasticIndex?pretty'
 alias estemplate          'esget _template/cm-template-$var_elasticIndex?pretty'
 alias estemplateraw       'esget _template/cm-template-$var_elasticIndex'
 alias estemplatemapping   '(echo cm-template-$var_elasticIndex && estemplateraw )                               \\
