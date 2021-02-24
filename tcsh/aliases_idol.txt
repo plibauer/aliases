@@ -27,29 +27,31 @@ editidolconfigcontent : Edit  TRIM IDOL Content Service configuration file      
 idol_log_<type>       : Tail an IDOL log file, eg. idol_log_index                                   \\
                       : <type> one of action, agent, app, cat, query, svc_app                       \\
 \\
-idoluri <uri>     : Search for a record with <uri> and print basic fields                           \\
-idolcontent <uri> : Search for a record with <uri> and print all fields and content                 \\
-idolrec <number>  : Search based on record number, ie. 200 for REC_200                              \\
-idolrecv <number> : Same as above, but print all fields including content                           \\
-idolref  <urn>    : Search for a record based on the URN, eg. trim:N5/rec/9000000238:1              \\
-                    Use idolcontent if you only want to specify the URI                             \\
+---------------------- SEARCHING -------------------------------------------------------            \\
+idolquery/idolsearch  : Do a content search for a given string                                      \\
+idoluri <uri>         : Search for a record with <uri> and print basic fields                       \\
+idolcontent <uri>     : Search for a record with <uri> and print all fields and content             \\
+idolrec <number>      : Search based on record number, ie. 200 for REC_200                          \\
+idolrecv <number>     : Same as above, but print all fields including content                       \\
+idolref  <urn>        : Search for a record based on the URN, eg. trim:N5/rec/9000000238:1          \\
+                        Use idolcontent if you only want to specify the URI                         \\
 \\
-idolrectype <uri> : Search for records that have the Record Type <uri>                              \\
-idolrectypev <uri>: Search as above and print full output                                           \\
+idolrectype <uri>     : Search for records that have the Record Type <uri>                          \\
+idolrectypev <uri>    : Search as above and print full output                                       \\
 \\
-dbidol               : Connect to the Idol SqlServer instance using db.pl                           \\
-rectypes_idol        : Use dbidol to get RecordTypes                                                \\
-classifications_idol : Use dbidol to get Classifications                                            \\
+dbidol                : Connect to the Idol SqlServer instance using db.pl                          \\
+rectypes_idol         : Use dbidol to get RecordTypes                                               \\
+classifications_idol  : Use dbidol to get Classifications                                           \\
 \\
-idolsync          : Send a DRESYNC to the index to make sure all records are available              \\
+idolsync              : Send a DRESYNC to the index to make sure all records are available          \\
                                                                                                     \\
-TestTrim Autoclassification                                                                         \\
-idol_train      : loads training records for above dataset                                          \\
-idol_test       : loads test records data for above dataset                                         \\
-idol_both       : loads both above sets                                                             \\
-idol_classify   : Runs classify on records in Holding Bay                                           \\
+---------------------- AUTOCLASSIFICATION ----------------------------------------------            \\
+idol_train            : loads training records for above dataset                                    \\
+idol_test             : loads test records data for above dataset                                   \\
+idol_both             : loads both above sets                                                       \\
+idol_classify         : Runs classify on records in Holding Bay                                     \\
                                                                                                     \\
-Category commands                                                                                   \\
+CATEGORY commands                                                                                   \\
 idolcatids              : Print all category IDs                                                    \\
 idolcaturis             : Print all category names, URIs and IDs                                    \\
 idolcat <id>            : Get the category with 'id'                                                \\
@@ -108,7 +110,52 @@ alias idolrecordsall    '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResu
 alias idolreference     '$CURLQUERY\&text=\*\&MatchReference=trim:$var_idolDBID/rec/\!^            $CURL_OPTS | $XMLFORMAT'
 alias idolreferencev    '$CURLQUERY\&text=\*\&Print=All\&MaxResults=1000\&MatchReference=trim:$var_idolDBID/rec/\!^ $CURL_OPTS | $XMLFORMAT'
 alias idolquery         '$CURLQUERY\&text=\!^\&MaxResults=1000\&databasematch=$var_idolDb           $CURL_OPTS | $XMLFORMAT'
+
+#   Need to % encode left and right brackets
+#
+#     %28 => (   %29 => )
+#
+alias idolcontentsearch '$CURLQUERY\&databasematch=$var_idolDb\&combine=DREROOTFAMILYREFERENCE\&predict=false\&anylanguage=true\&start=1\&maxresults=100000\&totalresults=true\&storestate=true\&text=%28\!^%29:DRECONTENT       $CURL_OPTS | $XMLFORMAT'
+alias idolcontentsearchv '$CURLQUERY\&xmlmeta=true\&databasematch=$var_idolDb\&combine=DREROOTFAMILYREFERENCE\&predict=false\&anylanguage=true\&start=1\&maxresults=100000\&totalresults=true\&storestate=true\&text=%28\!^%29:DRECONTENT       $CURL_OPTS | $XMLFORMAT'
+
 alias idolqueryv        '$CURLQUERY\&text=\!^\&MaxResults=1000\&XMLMeta=true\&databasematch=$var_idolDb $CURL_OPTS | $XMLFORMAT'
+alias idolsearchids     'idolcontentsearch \!^ | $PERL -ne '"'"' if(/autn:reference>trim:\w+\/rec\/([\w\:]+)</) { print "$1\n" } '"'"
+alias idolsearchtable   'idolcontentsearch \!^ | $PERL -e '"'"'        \\
+my @res = <>;                                                          \\
+my $line = shift @res;                                                 \\
+my (%hits,@weights);                                                   \\
+while($line) {                                                         \\
+  chomp $line;                                                         \\
+  if($line =~ /<autn:hit>/) {                                          \\
+    my ($hit,$weight,$title);                                          \\
+    $line = shift @res;                                                \\
+    while( $line !~ /<\/autn:hit>/ ) {                                 \\
+      chomp $line;                                                     \\
+      if( $line =~ /<autn:reference>trim:\w+\/rec\/([\w\:]+)</ ) {     \\
+         $hit = $1;                                                    \\
+      }                                                                \\
+      elsif( $line =~ /<autn:weight>([\d+\.]+)</ ) {                   \\
+         $weight = $1;                                                 \\
+      }                                                                \\
+      elsif( $line =~ /<autn:title>(.+)<\/autn:title>/ ) {             \\
+         $title = $1;                                                  \\
+      }                                                                \\
+      $line = shift @res;                                              \\
+    }                                                                  \\
+    $hits{$hit} = { weight => $weight, title => $title };              \\
+    push @weights, { hit => $hit, weight => $weight, title => $title };\\
+  }                                                                    \\
+                                                                       \\
+  $line = shift @res;                                                  \\
+  if(scalar(@res) == 0){                                               \\
+    last;                                                              \\
+  }                                                                    \\
+}                                                                      \\
+                                                                       \\
+for(@weights) {                                                        \\
+  print $_->{hit}."\t".$_->{weight}."\t".$_->{title}."\n";             \\
+}                                                                      \\
+'"'"
 
 #   Need to % encode left and right curly brackets
 #

@@ -53,9 +53,10 @@ For elastic help : elastichelp (or eshelp)                                      
   phrasesrchids       : Search for a phrase in Document.Content and return the ids      \\
   ---                                                                                   \\
   trimcontent         : Search in Document.Content with same query syntax as TRIM       \\
-  trimcontentids      : As above, but return the URIs                                   \\
+  trimcontentid       : As above, but return the URIs                                   \\
+  trimcontentidsorted : As above, but return the URIs sorted by URI                     \\
   not_trimcontent     : As above, but negated                                           \\
-  not_trimcontentids  : As above, but return the URIs                                   \\
+  not_trimcontentid   : As above, but return the URIs                                   \\
   ---                                                                                   \\
   trimphrase          : Search in Document.Content as above, but perform a phrase search\\
   trimphraseids       : As above, but return the URIs                                   \\
@@ -396,8 +397,6 @@ alias pyc		          'pycurldef  -i -s; cat /c/tmp/pycurl_output.txt'
 alias esquery             'pycurldef \!^' 
 alias esqueryi            'pycurldef -i' 
 alias esquerystring       'pycurldef -q'
-alias esqs                esquerystring
-alias qs                  esqs
 
 alias escommand           'pycurldef -f $ELASTIC_QUERIES'
 alias escommand_debug     'pycurldef -d -f $ELASTIC_QUERIES'
@@ -670,20 +669,22 @@ else { print }             \\
 '"'"
 
 alias trimcontent         'escommand --source --size 1000 -c search_record_content \!^'
-alias trimcontentids      'escommand --size 1000 -c search_record_content \!^ \\
+alias trimcontentid       'escommand --size 1000 -c search_record_content \!^ \\
+| grep _id | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+alias trimcontentidsorted 'escommand --size 1000 -c search_record_content \!^ \\
 | grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
 
 alias trimphrase          'escommand --source --size 1000 -c search_record_content_phrase \!^'
 alias trimphraseids       'escommand --size 1000 -c search_record_content_phrase \!^ \\
-| grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+| grep _id | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
 
 alias not_trimcontent     'escommand --source --size 1000 -c not_search_record_content \!^'
-alias not_trimcontentids  'escommand --size 1000 -c not_search_record_content \!^ \\
-| grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+alias not_trimcontentid   'escommand --size 1000 -c not_search_record_content \!^ \\
+| grep _id | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
 
 alias not_trimphrase     'escommand --source --size 1000 -c not_search_record_content_phrase \!^'
 alias not_trimphraseids  'escommand --size 1000 -c not_search_record_content_phrase \!^ \\
-| grep _id | sort | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
+| grep _id | $PERL -ne '"'"' s/\D//g; print "$_\n"; '"'"
 
 alias esrectypes          'eshasfield_withsrc RecordType | egrep "_id|RecordType" \\
 | $PERL -e '"'"'                            \\
