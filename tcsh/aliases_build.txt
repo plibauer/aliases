@@ -28,7 +28,7 @@ alias rmlogsboth       'rm $var_trimDir/$var_defArch/{Debug,Release}/ServerLocal
 alias rmlogslocal      'golocallog; rm -f *.log; back' 
 
 # Search for which project a source module belongs to
-alias findproject       '$PERL $PERL_HOME/find_in_visual_studio.pl --solution $var_trimDir/trim/sln/TRIM/x64/TRIM.sln \!^'
+alias findproject       '$PERL $STATIC_PERL/misc/find_in_visual_studio.pl --solution $var_trimDir/trim/sln/TRIM/x64/TRIM.sln \!^'
 alias findproject_XXX      'setenv PROJSRCH \!^; grep -is -A 1 \!^ $var_trimDir/trim/sln/TRIM/x64/*/*.filters   \\
  | $PERL -e '"'"' use Term::ANSIColor qw(:constants :constants256); \\
 @input = <>; $i = 0;                                                \\
@@ -64,8 +64,8 @@ alias fproj             findproject
 alias findproj          findproject
 alias projfind          findproject
 alias findtrim          findproject
-alias findcsharp        '$PERL $PERL_HOME/find_in_visual_studio.pl --solution $var_trimDir/trim/TRIMCSharp.sln \!^'
-alias findwix           '$PERL $PERL_HOME/find_in_visual_studio.pl --solution $var_trimDir/trim/WIX.sln \!^'
+alias findcsharp        '$PERL $STATIC_PERL/misc/find_in_visual_studio.pl --solution $var_trimDir/trim/TRIMCSharp.sln \!^'
+alias findwix           '$PERL $STATIC_PERL/misc/find_in_visual_studio.pl --solution $var_trimDir/trim/WIX.sln \!^'
 
 alias dcilog            'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/DCI_$var_DBID* \\
  | head -1                                                                                                \\
