@@ -16,58 +16,58 @@ def printUsage(script):
 
     usage = '''
  NAME
-        {script}
+    {script}
 
  DESCRIPTION
-        Setup a shell environment for a given release (Eg. 9.2 or 92). Without any arguments,
-        the script will look for the file make_env.config in the local directory and 
-        process all the entries it finds.
+    Setup a shell environment for a given release (Eg. 9.2 or 92). Without any arguments,
+    the script will look for the file make_env.config in the local directory and 
+    process all the entries it finds.
 
  OPTIONS
 
-                -a <architecture>
-                        Eg. x64 or x86
-                
-                -b <build>
-                    Eg. Debug or Release
-                        
-                -c <compiler>
-                        Eg. VS2013 or VS2015 or VS2017 etc.
-                
-                --config <config file path>
-                        Speficy the path to the configuration file (Default is [PYTHON_HOME]/make_env.config)
-                        
-                -e <elastic prefix>
-                        Eg. CM_
-                        
-                -f <folder path>
-                        Eg. 'trunk' when the revision is the latest branch, otherwise
-                        aliases will expect that the folder name is the same as the revision
-                        number. Also, if a checkout was to C:/9.3 for example, then the 
-                        'folder' value should be specified as 9.3 because by default it will
-                        expect the checkout folder to be '93'
+    -a <architecture>
+       Eg. x64 or x86
+    
+    -b <build>
+       Eg. Debug or Release
+            
+    -c <compiler>
+       Eg. VS2013 or VS2015 or VS2017 etc.
+    
+    --config <config file path>
+       Specify the path to the configuration file (Default is [PYTHON_HOME]/make_env.config)
+            
+    -e <elastic prefix>
+       Eg. CM_
+            
+    -f <folder path>
+       Eg. 'trunk' when the revision is the latest branch, otherwise
+       aliases will expect that the folder name is the same as the revision
+       number. Also, if a checkout was to C:/9.3 for example, then the 
+       'folder' value should be specified as 9.3 because by default it will
+       expect the checkout folder to be '93'
 
-                -h
-        --help
-            Print this help page
-                        
-                -i <idol prefix>
-                        Eg. HPERM_ or CM_
-                        
-                -p <prefix>
-                        Eg, K, J, L, M, ....
-                        
-                -r <release version>
-                        Eg, 83, 8.3, 90, 91 etc.
+    -h
+    --help
+       Print this help page
+                    
+    -i <idol prefix>
+       Eg. HPERM_ or CM_
+            
+    -p <prefix>
+       Eg, K, J, L, M, ....
+            
+    -r <release version>
+       Eg, 83, 8.3, 90, 91 etc.
                         
  EXAMPLES
 
-        1. Configure settings for release version 9.2
-                {script} -r 9.2
+    1. Configure settings for release version 9.2
+       >{script} -r 9.2
 
 
-                2. Specify all values on command line
-                                {script} -a x64 -b Debug -c VS2017 -e CM_ -f trunk -i CM_ -p M -r 9.4
+    2. Specify all values on command line
+       >{script} -a x64 -b Debug -c VS2017 -e CM_ -f trunk -i CM_ -p M -r 9.4
                                 
 '''
     print(usage.format(script=script))
@@ -197,6 +197,8 @@ def main(argv):
     alias_dir = arch = build = compiler = elastic = folder =\
         idol = prefix = release = None
 
+
+    singleOperation = False
     for opt, arg in opts:
 
         if opt == "-a":
@@ -239,14 +241,14 @@ def main(argv):
 
         elif opt == "-r":
             release = arg
+            singleOperation = True
 
     config = configparser.ConfigParser()
     if ConfigFile is None:
         ConfigFile = AliasPath + '\make_env.config'
 
     if not os.path.isfile(ConfigFile):
-        print(
-            f"Configuration file {ConfigFile} not found! Tried => {AliasPath}")
+        print(f"Configuration file {ConfigFile} not found! Tried => {AliasPath}")
         sys.exit(1)
 
     config.read(ConfigFile)
@@ -263,17 +265,17 @@ def main(argv):
     else :
         # If no release version specified but there are unprocessed command line options,
         # assume the first available option is the release version
-        if len(args) > 0:
-            release = args[0]
+        if release is None:
+            if len(args) > 0:
+                release = args[0]
 
-        else:
-            release = input("Specify the release version \(Eg. 9.2\) : ")
+            else:
+                release = input("Specify the release version \(Eg. 9.2\) : ")
 
         release = release.replace(".", "")
         if re.search(r'^\d{2,3}$', release):
             if release not in config:
-                print(
-                    f"Release {release} not found in configuration file {configFile}")
+                print(f"Release {release} not found in configuration file {configFile}")
                 sys.exit(1)
         else:
             print(f"Invalid release version {release} (expect \d.\d or \d{{2,3}})")
@@ -281,39 +283,41 @@ def main(argv):
 
         configs2process.append(release)
 
-        
     for rev in configs2process:
         writeFile(config, rev, arch, build, compiler, elastic, folder, idol, prefix)
 
-    # Copy the DEFAULTS.txt file => LOCAL.txt
-    defFile = "tcsh\DEFAULTS.txt"
-    defPath = f"{AliasPath}\{defFile}"
-    locFile = "tcsh\LOCAL.txt"
-    locPath = f"{AliasPath}\{locFile}"
-    print()
-    if os.path.exists(defPath):
 
-        # Try to preserve the existing LOCAL.txt file and also check for LOCAL.txt.bak
-        if os.path.exists(locPath):
-            txt = input(f"{locPath} already exists - do you want to keep the existing file? ([Y]es/No) : ")
-            if re.search("^y(es)*$", txt, re.IGNORECASE):
-                print(f"{locPath} has not been changed")
-                sys.exit(1)
-          
-            if os.path.exists(f"{locPath}.bak"):
-                txt = input(f"The backup file {locPath}.bak exists!\nOVERWRITE? ([Y]es/No) : ")
+    if not singleOperation:
+
+        # Copy the DEFAULTS.txt file => LOCAL.txt
+        defFile = "tcsh\DEFAULTS.txt"
+        defPath = f"{AliasPath}\{defFile}"
+        locFile = "tcsh\LOCAL.txt"
+        locPath = f"{AliasPath}\{locFile}"
+        print()
+        if os.path.exists(defPath):
+
+            # Try to preserve the existing LOCAL.txt file and also check for LOCAL.txt.bak
+            if os.path.exists(locPath):
+                txt = input(f"{locPath} already exists - do you want to keep the existing file? ([Y]es/No) : ")
                 if re.search("^y(es)*$", txt, re.IGNORECASE):
+                    print(f"{locPath} has not been changed")
+                    sys.exit(1)
+            
+                if os.path.exists(f"{locPath}.bak"):
+                    txt = input(f"The backup file {locPath}.bak exists!\nOVERWRITE? ([Y]es/No) : ")
+                    if re.search("^y(es)*$", txt, re.IGNORECASE):
+                        shutil.copy2(locPath, f"{locPath}.bak")
+                        print(f"*** Overwrote existing {locFile}.bak with {locPath} ***")
+                else:
                     shutil.copy2(locPath, f"{locPath}.bak")
-                    print(f"*** Overwrote existing {locFile}.bak with {locPath} ***")
-            else:
-                shutil.copy2(locPath, f"{locPath}.bak")
-                print(f"Backed-up existing {locFile} => {locPath}.bak ***")
+                    print(f"Backed-up existing {locFile} => {locPath}.bak ***")
 
 
-        shutil.copy2(defPath, locPath)
-        print(f"Copied {defFile} => {locFile}\n(!!! CHANGE !!! the parameters in {locFile} as required)")
-    else:
-        print(f"The file {defPath} was not found?")
+            shutil.copy2(defPath, locPath)
+            print(f"Copied {defFile} => {locFile}\n(!!! CHANGE !!! the parameters in {locFile} as required)")
+        else:
+            print(f"The file {defPath} was not found?")
 
     sys.exit(0)
 
