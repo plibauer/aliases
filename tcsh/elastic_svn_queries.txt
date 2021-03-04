@@ -1,0 +1,54 @@
+# -----------------------------------------------------------------------------
+
+# The format of a command entry starts with the name on a single line ending 
+# with a ':'. 
+# 
+# If the API required is not '_search', then the next line is 'API=...' where 
+# the endpoint gets specified. Any options can be placed after the endpoint as
+# per the usual REST syntax (Eg. '?conflicts=proceed&pretty')
+#
+# Any strings that need substitution are labelled ARG1, ARG2, ... ARGX
+#
+# -----------------------------------------------------------------------------
+
+# -------------------------------------------------------------
+
+# For any query below that does not specify an 'API=...' line, 
+# they default to using _search
+
+# -------------------------------------------------------------
+
+search_by_file:
+{
+  "_source": {
+    "includes": [
+      "revision",
+      "author",
+      "date",
+      "message"
+    ]
+  },
+  "query": {
+    "nested": {
+      "path": "files",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "files.name": "ARG1"
+              }
+            }
+          ]
+        }
+      },
+      "inner_hits": {}
+    }
+  },
+  "track_total_hits": true,
+  "size": 100
+}
+
+# ------------------------------------------------
+# ------------------------------------------------
+# ------------------------------------------------

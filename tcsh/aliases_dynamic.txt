@@ -95,6 +95,14 @@ endif
 
 # ---
 
+if (! $?var_elasticHostSvn) then
+  set var_elasticHostSvn = $ELASTIC_SVN_HOST
+else if ("$var_elasticHostSvn" == "")  then
+  set var_elasticHostSvn = $ELASTIC_SVN_HOST
+endif
+
+# ---
+
 if (! $?var_elasticIndex) then
   set var_elasticIndex = `echo "$env_elasticDbPrefix$var_DBID" | /bin/tr '[A-Z]' '[a-z]'` 
 else if ("$var_elasticIndex" == "")  then
@@ -105,6 +113,14 @@ set var_elasticHostOctane = $ELASTIC_HOST_OCTANE
 set var_elasticIndexAC = $var_elasticIndex".auto-class"
 set var_elasticIndexCW = $var_elasticIndexAC".custom-weights"
 
+# ---
+
+if (! $?var_elasticIndexSvn) then
+  set var_elasticIndexSvn = $ELASTIC_SVN_INDEX 
+else if ("$var_elasticIndexSvn" == "")  then
+  set var_elasticIndexSvn = $ELASTIC_SVN_INDEX
+endif
+ 
 # ---
 
 if (! $?var_idolDb) then

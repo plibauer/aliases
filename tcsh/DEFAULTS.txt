@@ -67,6 +67,7 @@ setenv TESTDATASETS_DIR        /c/TestDatasets
 
 # ElasticSearch
 setenv ELASTIC_HOST            http://localhost:9200
+setenv ELASTIC_SVN_HOST        $ELASTIC_HOST
 setenv ELASTIC_HOST5           http://localhost:9200
 setenv ELASTIC_HOST6           http://localhost:9200
 setenv ELASTIC_HOST7           http://localhost:9200
@@ -78,4 +79,5 @@ setenv KIBANA_HOME             $ELASTIC_DIR/kibana/$ELK_VERSION
 setenv LOGSTASH_HOME           $ELASTIC_DIR/logstash/$ELK_VERSION
 setenv BEATS_HOME              $ELASTIC_DIR/beats/$ELK_VERSION
 setenv DEF_ELASTIC_INDX        reuters
+setenv ELASTIC_SVN_INDEX       svn_trim
 

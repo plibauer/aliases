@@ -7,9 +7,10 @@
 
 alias elastichelp      'echo                                                            \\
 "                                                                                       \\
-For elastic search commands : eshelpsearch                                              \\
-For curl commands, see : escurlhelp                                                     \\
+For elastic search commands           : eshelpsearch                                    \\
+For curl commands, see                : escurlhelp                                      \\
 For auto-classification commands, see : esautohelp                                      \\
+For subversion related commands, see  : essvnhelp                                       \\
                                                                                         \\
 ---      Basics        ---                                                              \\
   esinfo              : Show the current configuration                                  \\
@@ -180,6 +181,12 @@ alias espyhelp      'echo                                                       
 \n\n"                                                                                           \\
 '
 
+alias essvnhelp      'echo                                                                      \\
+"                                                                                               \\
+  essvn <command> [args]  Run an elastic command with optional arguments                        \\
+  essvnfile \042file\042        Search for all revisions that modified \042file\042                 \\
+\n\n"                                                                                           \\
+'
 
 alias elasticblog         'vi $CLOUD_DIR/Work/elastic.txt; scrub $CLOUD_DIR/Work/elastic.txt' 
 alias eblog               elasticblog
@@ -229,7 +236,8 @@ alias jsonsingle          'cat \!^ | $PERL -ne '"'"' s/"/\047/g; print '"'"
 alias cleanjson           '$PERL -ne '"'"'  s/\\//g; print '"'"
 
 set CURL = "curl -s"
-set ELASTIC_QUERIES = $env_alias_dir/elastic_queries.txt
+set ELASTIC_QUERIES     = $env_alias_dir/elastic_queries.txt
+set ELASTIC_SVN_QUERIES = $env_alias_dir/elastic_svn_queries.txt
 
 # Querying Elastic
 alias elasticversion      '$CURL \!^ | grep number | sed -E '"'"' s/number/VERSION/; s/[\",]//g; s/^\s+//; '"'"
@@ -334,7 +342,7 @@ for(sort keys %fields) {                                            \\
   print "$_$s$prop$s1$typ$s2$def$s3$enab\n";                        \\
 }                                                                   \\
 '"'"
-
+alias esmetadata          metadata
 alias essearchall         'esgetp _search'
 alias essearch            'esgetp $var_elasticIndex/_search'
 alias searchindex         'esgetp \!^/_search'
@@ -862,4 +870,12 @@ for(sort keys %bytime){                                    \\
                                                            \\
                                                            \\
 '"'"
+
+# SVN aliases for trim_svn index
+
+alias pycurlsvn	          'pycurl -u "$var_elasticHostSvn/$var_elasticIndexSvn" -a "_search?pretty"'
+alias essvn               'pycurlsvn -f $ELASTIC_SVN_QUERIES'
+alias essvn_debug         'pycurlsvn -d -f $ELASTIC_SVN_QUERIES'
+alias essvnfile           'essvn -c search_by_file \!^ | grep _id | sort | $PERL -ne '"'"' s/^.+:\s*"([^"]+)".+$/$1/; chomp; print "$_\n"; '"'"
+alias eshasfield_withsrc  'escommand --source -c field_exists \!^' 
 
