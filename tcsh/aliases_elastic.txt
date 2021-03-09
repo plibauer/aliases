@@ -217,6 +217,20 @@ $PERL -ne "                                                 \\
 alias startelasticsvc     'setelasticservice  && sc start $elastic_service_name'
 alias stopelasticsvc      'setelasticservice  && sc stop $elastic_service_name'
 
+# Find what java.exe process belongs to 
+alias wmicjavaargs        'echo -n "path win32_process where \042name like \047java.exe\047\042 get Caption,Processid,Commandline"'
+alias wmicjava           "/c/Windows/System32/wbem/WMIC.exe `wmicjavaargs`" 
+alias javapaths           'wmicjava | perl -ne '"'"'                      \\
+chomp;                                                                    \\
+if(/^(java.exe).+-Des.path.home=([^\s]+)\s.+\s(\d+)\s*$/){                \\
+  $s = "$1\t$3\t$2\n";                                                    \\
+  $s =~ s/\"//g;                                                          \\
+  print $s;                                                               \\
+}                                                                         \\
+elsif(/^(java.exe).+(\w:\\Elastic\\Logstash\\[\d\.]+)\\.+\s(\d+)\s*$/i){  \\
+  print "$1\t$3\t$2\n"                                                    \\
+}'"'"
+
 # Kibana
 alias kibana              '$KIBANA_HOME/bin/kibana.bat && settitle2str KIBANA'
 alias kibanaconfig        'cat $KIBANA_HOME/config/kibana.yml'
