@@ -231,6 +231,22 @@ elsif(/^(java.exe).+(\w:\\Elastic\\Logstash\\[\d\.]+)\\.+\s(\d+)\s*$/i){  \\
   print "$1\t$3\t$2\n"                                                    \\
 }'"'"
 
+# Convert WKS polygon string to GeoJSON
+alias geojson                 '$PERL -e '"'"'    \\
+my $in = join "", @ARGV;              \\
+chomp $in;                            \\
+if($in =~ /^POLYGON\(\((.+)\)\)$/){   \\
+  @c = split /,/,$1;                  \\
+  my $str;                            \\
+  for(@c){                            \\
+    s/ /,/;                           \\
+    $str .= "[$_],\n";                \\
+  }                                   \\
+  $str =~ s/,\n$/\n/;                 \\
+  print "\n$str\n";                   \\
+}                                     \\
+'"' \!* "
+
 # Kibana
 alias kibana              '$KIBANA_HOME/bin/kibana.bat && settitle2str KIBANA'
 alias kibanaconfig        'cat $KIBANA_HOME/config/kibana.yml'
