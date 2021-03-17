@@ -139,7 +139,6 @@ alias grepui        'fromunicode \!:2 | pgrep -i \!:1'
 alias sync          rsync -avub --size-only --exclude '.svn' --exclude '*~'
 alias syncdry       rsync -avubn --size-only --exclude '.svn' --exclude '*~'
 
-
 # Path conversion using cygpath
 alias towin         'cygpath -t windows \!^'
 alias tounix        'cygpath -t unix    \!^'
@@ -271,3 +270,7 @@ alias cpan	      '$PERL_PATH/cpan.bat'
 alias jsonpretty      'cat | $PYTHON -m json.tool'  
 alias json            jsonpretty
 
+# Get GUIDs from MSI/MSP files
+alias getguids        '$STATIC_REPO/tools/Wix/MsiProperties/MsiProperties.exe'
+alias msiproperties   getguids
+alias msiguids        getguids
