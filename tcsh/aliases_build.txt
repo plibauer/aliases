@@ -64,8 +64,8 @@ alias fproj             findproject
 alias findproj          findproject
 alias projfind          findproject
 alias findtrim          findproject
-alias findcsharp        '$PERL $STATIC_PERL/misc/find_in_visual_studio.pl --solution $var_trimDir/trim/TRIMCSharp.sln \!^'
-alias findwix           '$PERL $STATIC_PERL/misc/find_in_visual_studio.pl --solution $var_trimDir/trim/WIX.sln \!^'
+alias findcsharp        '$PERL $STATIC_PERL/misc/find_in_visual_studio.pl --solution $var_trimDir/trim/TRIMCSharp.sln \!*'
+alias findwix           '$PERL $STATIC_PERL/misc/find_in_visual_studio.pl --solution $var_trimDir/trim/WIX.sln \!*'
 
 alias dcilog            'ls -t $var_trimDir/$var_defArch/$var_defBuild/ServerLocalData/Log/DCI_$var_DBID* \\
  | head -1                                                                                                \\
