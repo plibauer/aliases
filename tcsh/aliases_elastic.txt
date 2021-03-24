@@ -903,10 +903,11 @@ for(sort keys %bytime){                                    \\
 
 # SVN aliases for trim_svn index
 
+alias essvnupdate         '$PERL $PERL_HOME/svnLogProcessor/svnlog_to_elastic.pl -update -svn $SVN_LAB_FILE --elastic $ELASTIC_SVN_HOST -work E:/tmp'
 alias pycurlsvn	          'pycurl -u "$var_elasticHostSvn/$var_elasticIndexSvn" -a "_search?pretty"'
 alias essvn               'pycurlsvn -f $ELASTIC_SVN_QUERIES'
 alias essvn_debug         'pycurlsvn -d -f $ELASTIC_SVN_QUERIES'
-alias essvnfile           'essvn --size 1000 -c search_by_file \!^ | $PERL -e '"'"' \\
+alias essvnfile           'essvn --size 10000 -c search_by_file \!^ | $PERL -e '"'"' \\
 use JSON::MaybeXS;                                                             \\
 use strict;                                                                    \\
 my @in = <>;                                                                   \\
