@@ -122,6 +122,7 @@ alias wixcomponents     makewix
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
 alias goa                'cd $env_alias'
+alias gotcsh             'cd $env_alias/tcsh'
 alias gocfg              'cd $var_trimcfgdir'
 alias godoc              'cd $var_trimDoc'
 alias gocs               'cd $var_trimDir/AnyCPU/$var_defBuild'

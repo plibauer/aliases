@@ -907,39 +907,66 @@ alias essvnupdate         '$PERL $PERL_HOME/svnLogProcessor/svnlog_to_elastic.pl
 alias pycurlsvn	          'pycurl -u "$var_elasticHostSvn/$var_elasticIndexSvn" -a "_search?pretty"'
 alias essvn               'pycurlsvn -f $ELASTIC_SVN_QUERIES'
 alias essvn_debug         'pycurlsvn -d -f $ELASTIC_SVN_QUERIES'
-alias essvnfile           'essvn --size 10000 -c search_by_file \!^ | $PERL -e '"'"' \\
-use JSON::MaybeXS;                                                             \\
-use strict;                                                                    \\
-my @in = <>;                                                                   \\
-# remove last line which is not JSON                                           \\
-pop @in;                                                                       \\
-my $json = join "", map { chomp $_; $_ } @in;                                  \\
-my $obj = decode_json($json);                                                  \\
-my $out = encode_json($obj);                                                   \\
-my $max = 10;                                                                  \\
-my %hits;                                                                      \\
-if(exists $obj->{hits}{total}{value}){                                         \\
-  print "[".$obj->{hits}{total}{value}." hits]\n";                             \\
-  for my $h (@{$obj->{hits}{hits}}) {                                          \\
-    my $r = $h->{_source}{revision};                                           \\
-    my $a = $h->{_source}{author};                                             \\
-    $max = length($a) > $max ? length($a) : $max;                              \\
-    $hits{$r}{source} = $h->{_source};                                         \\
-    my $inner = $h->{inner_hits}{files}{hits}{hits}[0]{_source};               \\
-    $hits{$r}{inner} = $inner;                                                 \\
-  }                                                                            \\
-  #print "MAX = $max\n"; exit;                                                 \\
-  for(sort {$a<=>$b} keys %hits){                                              \\
-    my $s = $hits{$_}{source};                                                 \\
-    my $in = $hits{$_}{inner};                                                 \\
-    my ($r,$a,$d,$m) = ($s->{revision},$s->{author},$s->{date},$s->{message}); \\
-    my $sp = " " x ($max - length($a) + 1);                                    \\
-    my $action = $in->{action};                                                \\
-    $action =~ s/^(.).+$/$1/;                                                  \\
-    my $parent = $in->{parent};                                                \\
-    $parent =~ s/^\/repos//i;                                                  \\
-    print "$r\t$a$sp$d  [$action] $parent\n";                                  \\
-  }                                                                            \\
-}                                                                              \\
-'"'"
+alias essvnfile           'essvn --size 10000 -c search_by_file \!^ | lookForSvnFile '
+alias essvnfilev           'setenv ESSVNFILE verbose; essvn --size 10000 -c search_by_file \!^ | lookForSvnFile ; unsetenv ESSVNFILE'
 
+alias lookForSvnFile      ' $PERL -e '"'"'                                            \\
+use JSON::MaybeXS;                                                                    \\
+use strict;                                                                           \\
+                                                                                      \\
+my $verbose = $ENV{ESSVNFILE};                                                        \\
+my @in = <>;                                                                          \\
+# remove last line which is not JSON                                                  \\
+pop @in;                                                                              \\
+my $json = join "", map { chomp $_; $_ } @in;                                         \\
+my $obj = decode_json($json);                                                         \\
+my $out = encode_json($obj);                                                          \\
+my $maxa = 10;                                                                        \\
+my $maxParent = 40;                                                                   \\
+my $maxMessage = 100;                                                                 \\
+my %hits;                                                                             \\
+if(exists $obj->{hits}{total}{value}){                                                \\
+  print "[".$obj->{hits}{total}{value}." hits]\n";                                    \\
+  for my $h (@{$obj->{hits}{hits}}) {                                                 \\
+    my $r = $h->{_source}{revision};                                                  \\
+    my $a = $h->{_source}{author};                                                    \\
+    $maxa= length($a) > $maxa ? length($a) : $maxa;                                   \\
+    $hits{$r}{source} = $h->{_source};                                                \\
+    my $inner = $h->{inner_hits}{files}{hits}{hits}[0]{_source};                      \\
+    $hits{$r}{inner} = $inner;                                                        \\
+  }                                                                                   \\
+  #print "MAX = $maxa\n"; exit;                                                       \\
+  for(sort {$a<=>$b} keys %hits){                                                     \\
+    my $s = $hits{$_}{source};                                                        \\
+    my $in = $hits{$_}{inner};                                                        \\
+    my ($r,$a,$d,$message) = ($s->{revision},$s->{author},$s->{date},$s->{message});  \\
+    my $sp = " " x ($maxa - length($a) + 1);                                          \\
+    my $action = $in->{action};                                                       \\
+    $action =~ s/^(.).+$/$1/;                                                         \\
+    print "$r\t$a$sp$d  [$action] ";                                                  \\
+                                                                                      \\
+    my $parent = $in->{parent};                                                       \\
+    $parent =~ s/^\/repos//i;                                                         \\
+    if(not $verbose) {                                                                \\
+       print "$parent\n";                                                             \\
+    }                                                                                 \\
+    else {                                                                            \\
+      my $pl = length($parent);                                                       \\
+      if($pl > $maxParent) {                                                          \\
+        my $cut = $pl - $maxParent;                                                   \\
+        $parent =~ s/^.{$cut}//;                                                      \\
+        $parent = "...".$parent;                                                      \\
+      }                                                                               \\
+      my $sp2 = " " x ($maxParent + 4 - length($parent));                             \\
+                                                                                      \\
+      $message =~ s/[\r\n]+/ /g;                                                      \\
+      my $ml = length($message);                                                      \\
+      if ($ml > $maxMessage) {                                                        \\
+        my $cut = $ml - $maxMessage;                                                  \\
+        $message =~ s/.{$cut}$/ .../;                                                 \\
+      }                                                                               \\
+      print "$parent$sp2$message\n";                                                  \\
+    }                                                                                 \\
+  }                                                                                   \\
+}                                                                                     \\
+'"'"
