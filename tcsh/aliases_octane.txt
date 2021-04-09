@@ -5,6 +5,22 @@
 #                                                                                                                #
 ##################################################################################################################
 
+alias eshelpoctane      'echo                                                           \\
+"                                                                                       \\
+                                                                                        \\
+---    ALM database    ---                                                              \\
+  almcr               : Search the ALM database using a legacy ALM id                   \\
+  almmatch <text>     : Search defect titles matching <text>                            \\
+  almmatchv <text>    : Search defect titles, description and comments for <text>       \\
+                                                                                        \\
+---    Octane Index    ---                                                              \\
+  defect <id>         : Search for a defect with ID <id>                                \\
+  defectv <id>        : Verbose form of above                                           \\
+  crmatch <text>      : Search defect titles for <text>                                 \\
+  crlegacy <id>       : Do a wildcard search of the legacy <id> (equiv. to <*id>)       \\
+"                                                                                       \\
+'
+
 alias alm               '$PERL $ALM_DB/ALMTool.pl'
 alias almcr             'alm --cr'
 alias almmatch          'alm --match \!^ | pgrep summary'
@@ -22,8 +38,6 @@ alias crmatchdesc       almsqlite \"SELECT id,message FROM messages WHERE messag
 alias almsqlitedb       cygstart cmd.exe /c sqlite3.exe $SQLITE_ALM
 
 #---------------------------------------------
-
-
 
 alias curldefect           'curl -s "$var_elasticHostOctane/octane_new/_search?pretty&q=\!^"'
 alias defectraw            curldefect

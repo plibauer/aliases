@@ -11,6 +11,7 @@ For elastic search commands           : eshelpsearch                            
 For curl commands, see                : escurlhelp                                      \\
 For auto-classification commands, see : esautohelp                                      \\
 For subversion related commands, see  : essvnhelp                                       \\
+For octane searches, see              : eshelpoctane                                    \\
                                                                                         \\
 ---      Basics        ---                                                              \\
   esinfo              : Show the current configuration                                  \\
