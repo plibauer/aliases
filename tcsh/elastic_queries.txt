@@ -411,6 +411,22 @@ search_defect_by_title:
 
 # ------------------------------------------------
 
+search_defect_by_legacy_id:
+{
+ "_source":[
+    "name",
+    "legacy_id_udf"
+  ],
+  "query": {
+     "wildcard": {
+       "legacy_id_udf": "*ARG1"
+     }
+  },
+  "size": 1000
+}
+
+# ------------------------------------------------
+
 reindex_octane:
 API=_reindex
 {

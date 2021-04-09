@@ -13,6 +13,7 @@ alias tes               '$var_trimDir/$var_defArch/$var_defBuild/TRIMEnterpriseS
 alias trim              '$var_trimDir/$var_defArch/$var_defBuild/TRIM.exe &'
 alias trimadmin         '$var_trimDir/$var_defArch/$var_defBuild/TRIMAdmin.exe &'
 alias trimhelp          'hh $var_trimDir/doc/doc/DocPub/TRIM.chm &'
+alias admincmd          '$var_trimDir/$var_defArch/$var_defBuild/TRIMAdminCmd.exe \!*'
 alias wgs               '$var_trimDir/$var_defArch/$var_defBuild/TRIMWorkgroup.exe &'
 alias messages          'cat $var_trimDir/trim/TRIMMessages.txt | pgrep -i '
 alias trimmessages      '$var_trimDir/trim/TRIMMessages.exe'
