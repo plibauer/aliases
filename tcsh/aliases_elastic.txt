@@ -908,8 +908,8 @@ alias essvnupdate         '$PERL $PERL_HOME/svnLogProcessor/svnlog_to_elastic.pl
 alias pycurlsvn	          'pycurl -u "$var_elasticHostSvn/$var_elasticIndexSvn" -a "_search?pretty"'
 alias essvn               'pycurlsvn -f $ELASTIC_SVN_QUERIES'
 alias essvn_debug         'pycurlsvn -d -f $ELASTIC_SVN_QUERIES'
-alias essvnfile           'essvn --size 10000 -c search_by_file \!^ | lookForSvnFile '
-alias essvnfilev           'setenv ESSVNFILE verbose; essvn --size 10000 -c search_by_file \!^ | lookForSvnFile ; unsetenv ESSVNFILE'
+alias essvnfile           'essvn --json --size 10000 -c search_by_file \!^ | lookForSvnFile '
+alias essvnfilev           'setenv ESSVNFILE verbose; essvn --json --size 10000 -c search_by_file \!^ | lookForSvnFile ; unsetenv ESSVNFILE'
 
 alias lookForSvnFile      ' $PERL -e '"'"'                                            \\
 use JSON::MaybeXS;                                                                    \\
@@ -917,8 +917,6 @@ use strict;                                                                     
                                                                                       \\
 my $verbose = $ENV{ESSVNFILE};                                                        \\
 my @in = <>;                                                                          \\
-# remove last line which is not JSON                                                  \\
-pop @in;                                                                              \\
 my $json = join "", map { chomp $_; $_ } @in;                                         \\
 my $obj = decode_json($json);                                                         \\
 my $out = encode_json($obj);                                                          \\
@@ -971,3 +969,52 @@ if(exists $obj->{hits}{total}{value}){                                          
   }                                                                                   \\
 }                                                                                     \\
 '"'"
+
+alias essvnparent            'essvn --json --size 10000 -c search_by_parent \!^ | lookForSvnParent '
+alias essvnparentv           'setenv ESSVNFILE verbose; essvn --json --size 10000 -c search_by_parent \!^ | lookForSvnParent ; unsetenv ESSVNFILE'
+alias essvnparentexact       'essvn --json --size 10000 -c search_by_parent_exact \!^ | lookForSvnParent '
+
+alias lookForSvnParent      ' $PERL -e '"'"'                                          \\
+use JSON::MaybeXS;                                                                    \\
+use strict;                                                                           \\
+                                                                                      \\
+my $verbose = $ENV{ESSVNFILE};                                                        \\
+my @in = <>;                                                                          \\
+my $json = join "", map { chomp $_; $_ } @in;                                         \\
+my $obj = decode_json($json);                                                         \\
+my $out = encode_json($obj);                                                          \\
+my $maxa = 10;                                                                        \\
+my $maxP = 20;                                                                        \\
+my $maxMessage = 100;                                                                 \\
+my %hits;                                                                             \\
+if(exists $obj->{hits}{total}{value}){                                                \\
+  print "[".$obj->{hits}{total}{value}." hits]\n";                                    \\
+  for my $h (@{$obj->{hits}{hits}}) {                                                 \\
+    my $r = $h->{_source}{revision};                                                  \\
+    my $a = $h->{_source}{author};                                                    \\
+    $maxa= length($a) > $maxa ? length($a) : $maxa;                                   \\
+    $hits{$r}{source} = $h->{_source};                                                \\
+    my $inner = $h->{inner_hits}{files}{hits}{hits}[0]{_source};                      \\
+    $hits{$r}{inner} = $inner;                                                        \\
+    my $p = $inner->{parent};                                                         \\
+    $maxP = length($p) > $maxP ? length($p) : $maxP;                                  \\
+  }                                                                                   \\
+  #print "MAX = $maxa\n"; exit;                                                       \\
+  for(sort {$a<=>$b} keys %hits){                                                     \\
+    my $s = $hits{$_}{source};                                                        \\
+    my $in = $hits{$_}{inner};                                                        \\
+    my ($r,$a,$d,$message) = ($s->{revision},$s->{author},$s->{date},$s->{message});  \\
+    my $sp = " " x ($maxa - length($a) + 1);                                          \\
+    my $action = $in->{action};                                                       \\
+    $action =~ s/^(.).+$/$1/;                                                         \\
+    print "$r\t$a$sp$d  [$action] ";                                                  \\
+    my $name = $in->{name};                                                           \\
+    my $parent = $in->{parent};                                                       \\
+    $parent =~ s/^\/repos//i;                                                         \\
+    # Account for removal of 'repos' above by shortening the number of spaces below   \\
+    my $spp = " " x ($maxP - length($parent) - 2);                                    \\
+    print $parent.$spp.$name."\n";                                                    \\
+  }                                                                                   \\
+}                                                                                     \\
+'"'"
+

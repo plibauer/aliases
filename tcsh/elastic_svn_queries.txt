@@ -50,5 +50,69 @@ search_by_file:
 }
 
 # ------------------------------------------------
+
+search_by_parent:
+{
+  "_source": {
+    "includes": [
+      "revision",
+      "author",
+      "date",
+      "message"
+    ]
+  },
+  "query": {
+    "nested": {
+      "path": "files",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "files.parent": "ARG1"
+              }
+            }
+          ]
+        }
+      },
+      "inner_hits": {}
+    }
+  },
+  "track_total_hits": true,
+  "size": 100
+}
+
 # ------------------------------------------------
+
+search_by_parent_exact:
+{
+  "_source": {
+    "includes": [
+      "revision",
+      "author",
+      "date",
+      "message"
+    ]
+  },
+  "query": {
+    "nested": {
+      "path": "files",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "files.parent.keyword": "ARG1"
+              }
+            }
+          ]
+        }
+      },
+      "inner_hits": {}
+    }
+  },
+  "track_total_hits": true,
+  "size": 100
+}
+
 # ------------------------------------------------
