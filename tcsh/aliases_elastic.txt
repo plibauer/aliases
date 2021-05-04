@@ -221,19 +221,38 @@ alias stopelasticsvc      'setelasticservice  && sc stop $elastic_service_name'
 # Find what java.exe process belongs to 
 alias wmicjavaargs        'echo -n "path win32_process where \042name like \047java.exe\047\042 get Caption,Processid,Commandline"'
 alias wmicjava           "/c/Windows/System32/wbem/WMIC.exe `wmicjavaargs`" 
-alias javapaths           'wmicjava | perl -ne '"'"'                      \\
-chomp;                                                                    \\
-if(/^(java.exe).+-Des.path.home=([^\s]+)\s.+\s(\d+)\s*$/){                \\
-  $s = "$1\t$3\t$2\n";                                                    \\
-  $s =~ s/\"//g;                                                          \\
-  print $s;                                                               \\
-}                                                                         \\
-elsif(/^(java.exe).+(\w:\\Elastic\\Logstash\\[\d\.]+)\\.+\s(\d+)\s*$/i){  \\
-  print "$1\t$3\t$2\n"                                                    \\
-}'"'"
+alias javapaths           'wmicjava | perl -e '"'"'                         \\
+my $c = 0;                                                                  \\
+while (<>) {                                                                \\
+  chomp;                                                                    \\
+  if(/^(java.exe).+-Des.path.home=([^\s]+)\s.+\s(\d+)\s*$/){                \\
+  ++$c;                                                                     \\
+    $s = "$1\t$3\t$2\n";                                                    \\
+    $s =~ s/\"//g;                                                          \\
+    print "[$c] $s";                                                        \\
+  }                                                                         \\
+  elsif(/^(java.exe).+(\w:\\Elastic\\Logstash\\[\d\.]+)\\.+\s(\d+)\s*$/i){  \\
+  ++$c;                                                                     \\
+    print "[$c] $1\t$3\t$2\n"                                               \\
+  }                                                                         \\
+}                                                                           \\
+print "\n(Use \"killjava <number>\" to end process)\n"                      \\
+'"'"
+
+alias killjava   '(echo \!* && javapaths) | perl -e '"'"'  \\
+my @in = <>;                                               \\
+my $num = shift @in;                                       \\
+chomp $num;                                                \\
+for(@in) {                                                 \\
+  if(/^\[$num\]\s[\w\.]+\s+(\d+)\s+/) {                    \\
+    print "Killing PID $1\n";                              \\
+    print `taskkill /F /PID $1`;                           \\
+  }                                                        \\
+}                                                          \\
+'"'"
 
 # Convert WKS polygon string to GeoJSON
-alias geojson                 '$PERL -e '"'"'    \\
+alias geojson      '$PERL -e '"'"'    \\
 my $in = join "", @ARGV;              \\
 chomp $in;                            \\
 if($in =~ /^POLYGON\(\((.+)\)\)$/){   \\
