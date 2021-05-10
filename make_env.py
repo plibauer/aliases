@@ -91,7 +91,7 @@ def template(home, release, prefix, folder, arch, compiler, build, idol, elastic
 unset var_*
 unset env_*
 unset REPOS_ROOT
-unset CLOUD_DRIVE
+unset CLOUD_DIR
 
 set env_alias             = {home}
 set env_alias_dir         = $env_alias/tcsh
@@ -106,7 +106,7 @@ set env_defBuild          = {build}
 set env_idolDbPrefix      = {idol}
 set env_elasticDbPrefix   = {elastic}
 
-# set REPOS_ROOT or CLOUD_DRIVE here if it is different to the default
+# set REPOS_ROOT or CLOUD_DIR here if it is different to the default
 # set REPOS_ROOT = C:
 source $env_alias_dir/LOCAL.txt
 source $env_alias_dir/include.txt
