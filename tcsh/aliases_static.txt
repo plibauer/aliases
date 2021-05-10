@@ -27,7 +27,8 @@ alias src92             "source $env_alias/92environment"
 alias src93             "source $env_alias/93environment"
 alias src94             "source $env_alias/94environment"
 alias src100            "source $env_alias/100environment"
-alias srctrunk          src100
+alias src101            "source $env_alias/101environment"
+alias srctrunk          "source $env_alias/trunkenv"
 
 #
 #  If we modify one of the alias file, make sure we reset the
