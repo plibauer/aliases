@@ -266,6 +266,7 @@ if($in =~ /^POLYGON\(\((.+)\)\)$/){   \\
   print "\n$str\n";                   \\
 }                                     \\
 '"' \!* "
+alias wks2geojson         geojson
 
 # Kibana
 alias kibana              '$KIBANA_HOME/bin/kibana.bat && settitle2str KIBANA'

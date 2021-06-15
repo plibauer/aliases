@@ -1,7 +1,7 @@
 ################################################
 #
 #   Database access aliases
-#   This file should only have to be source once
+#   This file should only have to be sourced once
 #
 #--------------------------------------------
 
@@ -20,6 +20,7 @@ alias dbhelp      'echo                                                         
 \t dbsql     <string>   : run the SQL specified by double quoted <string>                               \\
 \t rectypes             : get RecordTypes                                                               \\
 \t classifications      : get Classifications                                                           \\
+\t tableinfo [opt arg]  : show all database tables, or match the optional string for a specific table   \\
 \t                                                                                                      \\
 \t boxdrawing           : Show box-drawing unicode symbols and values                                   \\
 \\

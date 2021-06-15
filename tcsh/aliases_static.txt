@@ -165,7 +165,8 @@ alias gowixbin           cd $WIX_DIR/bin
 alias gowin              cd $WIN_HOME
 alias godesktop          cd $WIN_HOME/Desktop
 alias desktop            godesktop
-alias gowork             cd $WINHOME/Work
+alias gowork             cd $CLOUD_DIR/Work
+alias gosandc            cd "$CLOUD_DIR/Work/Software\ and\ Code"
 alias godownloads        cd $WIN_HOME/Downloads
 alias godropbox          cd $WIN_HOME/DropBox
 alias godrop             godropbox

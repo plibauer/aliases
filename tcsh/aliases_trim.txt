@@ -190,27 +190,71 @@ alias trimtables 'cat $var_trimDir/trim/src/DD/DATABASE.TXT                   \\
 @in = <>;                                                                     \\
 my %tables;                                                                   \\
 my $max = 10;                                                                 \\
-for(@in) {                                                                    \\
-  chomp;                                                                      \\
-  s/nouri//gi;                                                                \\
-  s/basic(plusloc)*\s+\[/[/gi;                                                \\
-  s/sharedbobtype\(\w+\)//i;                                                  \\
-  s/sharedtableid\(\w+\)//i;                                                  \\
-  s/shared\([\w,\s]+\)//i;                                                    \\
-  s/obsoleteafter\(\d+\)//i;                                                  \\
-  s/^(table\s+[\d,\s]+)iot /$1/i;                                             \\
-  /^table\s+[\d,\s]+(\w+)[\s\d\%]+\[(.+)\]/ and do {                          \\
-     $tables{uc $1} = $2;                                                     \\
-     $l = length $1;                                                          \\
-     $max = ($l > $max) ? $l : $max;                                          \\
+my $table_name = $ENV{TTX_TABLE};                                             \\
+while(my $line = shift @in) {                                                 \\
+  chomp $line;                                                                \\
+  if($line =~ /^table/i) {                                                    \\
+    $_ = $line;                                                               \\
+    s/nouri//gi;                                                              \\
+    s/basic(plusloc)*\s+\[/[/gi;                                              \\
+    s/sharedbobtype\(\w+\)//i;                                                \\
+    s/sharedtableid\(\w+\)//i;                                                \\
+    s/shared\([\w,\s]+\)//i;                                                  \\
+    s/obsoleteafter\(\d+\)//i;                                                \\
+    s/^(table\s+[\d,\s]+)iot /$1/i;                                           \\
+    if(/^table\s+[\d,\s]+(\w+)[\s\d\%]+\[(.+)\]/)  {                          \\
+       my $TBL = uc $1;                                                       \\
+       $tables{$TBL}{description} = $2;                                       \\
+       $l = length $1;                                                        \\
+       $max = ($l > $max) ? $l : $max;                                        \\
+       # next line should be {                                                \\
+       shift @in;                                                             \\
+       my $columns;                                                           \\
+       my $max = 10;                                                          \\
+       $line = shift @in;                                                     \\
+       while($line !~ /^\s*\}\s+/) {                                          \\
+          $line =~ s/^\s+|\s+$//;                                             \\
+          $line =~ s/\s+/ /g;                                                 \\
+          if($line ne "") {                                                   \\
+            if($line =~ /^(\w+)\s*:\s*(.+)$/){                                \\
+               push @{$tables{$TBL}{cols}}, { name => $1, val => $2 };        \\
+               $max = length($1) > $max ? length($1) : $max;                  \\
+            }                                                                 \\
+            $columns .= $line;                                                \\
+          }                                                                   \\
+          $line = shift @in;                                                  \\
+       }                                                                      \\
+       $tables{$TBL}{raw} = $columns;                                         \\
+       $tables{$TBL}{max} = $max;                                             \\
+    }                                                                         \\
+    else {                                                                    \\
+      print "FAILED to match line with 'table': $_\n";                        \\
+      exit;                                                                   \\
+    }                                                                         \\
   }                                                                           \\
 }                                                                             \\
 for(sort keys %tables) {                                                      \\
    $sp = $max - length($_);                                                   \\
-   print $_.(" " x $sp).": ".$tables{$_}."\n";                                \\
+   if($table_name ne "") {                                                    \\
+     if($_ =~ /^$table_name/i) {                                              \\
+         print $_." - ".$tables{$_}{description}."\n";                        \\
+         #print $tables{$_}{raw}."\n";                                        \\
+         my $max = $tables{$_}{max};                                          \\
+         my $i = 1;                                                           \\
+         foreach(@{$tables{$_}{cols}}){                                       \\
+            my $len = length($_->{name});                                     \\
+            my $sp = " " x ($max - $len + 1);                                 \\
+            print "[".$i++."]\t".$_->{name}.$sp.": ".$_->{val}."\n";          \\
+         }                                                                    \\
+         print " ---\n";\\
+     }                                                                        \\
+   }                                                                          \\
+   else {                                                                     \\
+     print $_.(" " x $sp).": ".$tables{$_}{description}."\n";                 \\
+   }                                                                          \\
 }                                                                             \\
 ' "'" 
-alias tableinfo trimtables
+alias tableinfo 'setenv TTX_TABLE "\!*"; trimtables; unsetenv TTX_TABLE'
 
 alias shorttables 'trimtables |                  \\
 $PERL -ne  '"'"'                                 \\
