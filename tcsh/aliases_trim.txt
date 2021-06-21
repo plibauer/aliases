@@ -27,8 +27,12 @@ alias properties        propertyid
 alias searchclause      'trimobject -search \!*'
 alias searchclauses     searchclause
 alias searchclausev     'trimobject -search \!:1 -verbose'
-alias trimobjects       'trimobject -object \!*'
+alias object            'trimobject -object \!*'
+alias trimobjects       object
+alias objects           object
 alias trimobjectsbyid   'trimobject -by_id -object \!*' 
+alias objectsbyid       trimobjectsbyid
+alias objecthelp        trimobject -h
 
 alias database          'cat $var_trimDir/trim/src/DD/DATABASE.TXT | pgrep -i '
 alias viewdb            'view $var_trimDir/trim/src/DD/DATABASE.TXT'
