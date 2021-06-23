@@ -23,16 +23,28 @@ alias viewprop          'view $var_trimDir/trim/src/DD/properties.txt'
 alias trimobject        '$PERL $PERL_HOME/trimobject.pl'
 alias propertyid        'trimobject -prop \!*'
 alias propid            propertyid
+alias propertyidv       'trimobject -prop \!:1 -verbose'
+alias propidv           propertyidv
+alias propv             propidv
 alias properties        propertyid
 alias searchclause      'trimobject -search \!*'
 alias searchclauses     searchclause
+alias scls              searchclause
 alias searchclausev     'trimobject -search \!:1 -verbose'
+alias sclsv             searchclausev
 alias object            'trimobject -object \!*'
 alias trimobjects       object
 alias objects           object
 alias trimobjectsbyid   'trimobject -by_id -object \!*' 
 alias objectsbyid       trimobjectsbyid
 alias objecthelp        trimobject -h
+
+alias trimdb            '$PERL $PERL_HOME/trimdb.pl --dir $var_trimDir/trim/src/DD/py'
+alias trimtable         'trimdb --table \!*'
+alias table             trimtable
+alias tableid           'trimdb --table \!* --by_id'
+alias columns           'trimdb --column \!*'
+alias columnsid         'trimdb --column \!* --by_id'
 
 alias database          'cat $var_trimDir/trim/src/DD/DATABASE.TXT | pgrep -i '
 alias viewdb            'view $var_trimDir/trim/src/DD/DATABASE.TXT'

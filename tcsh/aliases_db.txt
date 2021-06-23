@@ -78,19 +78,17 @@ alias events                eventids
 alias eventsr               eventidsr
 
 
-alias table                 dbv -table
-alias tables                dbv -get_tables
-alias tableids              dbv --id table
-alias tableidsr             dbv --id table -rev
-alias tids                  tableids
-alias tidsr                 tableidsr
+alias gettable              dbv -table
+alias gtable                gettable
+alias gettables             dbv -get_tables
+alias gettableids           dbv --id table
+alias gettableidsr          dbv --id table -rev
 
 alias usertypes             dbv --id userTypes
 
 alias dbsql                 db -sql
 alias sql                   dbsql
 alias sqlv                  dbv -sql
-alias gtable                dbv -table
 alias getrec                dbv -num -row
 alias getrecs               getrec
 alias dumpdb                dbv --dump_all
