@@ -38,6 +38,12 @@ alias objects           object
 alias trimobjectsbyid   'trimobject -by_id -object \!*' 
 alias objectsbyid       trimobjectsbyid
 alias objecthelp        trimobject -h
+alias enum              'trimobject --enum \!*'
+alias enums             enum
+alias enumid            'trimobject --enum \!* --by_id'
+alias enum              'trimobject --enum \!*'
+alias enums             enum
+alias enumid            'trimobject --enum \!* --by_id'
 
 alias trimdb            '$PERL $PERL_HOME/trimdb.pl --dir $var_trimDir/trim/src/DD/py'
 alias trimtable         'trimdb --table \!*'
@@ -45,6 +51,8 @@ alias table             trimtable
 alias tableid           'trimdb --table \!* --by_id'
 alias columns           'trimdb --column \!*'
 alias columnsid         'trimdb --column \!* --by_id'
+alias cols              columns
+alias colid             columnsid
 
 alias database          'cat $var_trimDir/trim/src/DD/DATABASE.TXT | pgrep -i '
 alias viewdb            'view $var_trimDir/trim/src/DD/DATABASE.TXT'
@@ -164,28 +172,6 @@ alias makecontainers    'testtrim --test bulkLoader --type container --timeout 6
 # CSharp testing
 alias testcs            '$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe --test'
 alias testevmon         'testcs EventMonitor --inplace'
-
-alias enums  'cat $var_trimDir/trim/src/HP.HPTRIM.SDK/swig/PropertyIds.cs     \\
-| $PERL -e ' "'" '                                                            \\
-while(<>){                                                                    \\
-  if(/^\s*(\w+)\s*=\s*(\d+)\s*,/){                                            \\
-    if($ids{$2}){                                                             \\
-       print "DUPLICATE? => $2\n";                                            \\
-       next;                                                                  \\
-    }                                                                         \\
-    $ids{$2}=$1;                                                              \\
-  }                                                                           \\
-}                                                                             \\
-my $max = (reverse sort {$a<=>$b} keys %ids)[0];                              \\
-for my $i (0 .. $max) {                                                       \\
-  if($ids{$i}){                                                               \\
-    print "$i\t".$ids{$i}."\n";                                               \\
-  }                                                                           \\
-  else {                                                                      \\
-    print "$i\n";                                                             \\
-  }                                                                           \\
-}                                                                             \\
-' "'"
 
 alias trimtables 'cat $var_trimDir/trim/src/DD/DATABASE.TXT                   \\
 | $PERL -e ' "'" '                                                            \\
