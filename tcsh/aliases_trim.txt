@@ -243,6 +243,7 @@ for(sort keys %tables) {                                                      \\
 }                                                                             \\
 ' "'" 
 alias tableinfo 'setenv TTX_TABLE "\!*"; trimtables; unsetenv TTX_TABLE'
+alias tables    'trimtables'
 
 alias shorttables 'trimtables |                  \\
 $PERL -ne  '"'"'                                 \\
