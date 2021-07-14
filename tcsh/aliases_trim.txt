@@ -17,8 +17,10 @@ alias admincmd          '$var_trimDir/$var_defArch/$var_defBuild/TRIMAdminCmd.ex
 alias wgs               '$var_trimDir/$var_defArch/$var_defBuild/TRIMWorkgroup.exe &'
 alias messages          'cat $var_trimDir/trim/TRIMMessages.txt | pgrep -i '
 alias trimmessages      '$var_trimDir/trim/TRIMMessages.exe'
+alias pymessages        '$PYTHON $STATIC_PY/VisualStudio/Addin/trimMessages.py'
 alias grepproperties    'cat $var_trimDir/trim/src/DD/properties.txt | pgrep -i '
 alias viewprop          'view $var_trimDir/trim/src/DD/properties.txt'
+alias unrefed           '$PERL $STATIC_PERL/BUILD/UnreferencedTrimMessageIDs.pl'
 
 alias trimobject        '$PERL $PERL_HOME/trimobject.pl'
 alias propertyid        'trimobject -prop \!*'
