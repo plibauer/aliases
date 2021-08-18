@@ -65,6 +65,8 @@ alias dbv                   dbpl --version \$env_revision --root \$env_folder
 alias dbs                   dbquery --database tempdb --list
 alias dbdetails             dbquery --database tempdb --list --verbose
 alias dataset               'dbid | $PERL -ne  '"'"' print "DBID => $_\n"  '"'"
+alias temptables	    "dbquery --database tempdb --sql 'select name,type_desc from tempdb.sys.objects'  --unadorn | grep USER_TABLE | sed 's/user_table//i'" 
+alias temptablesv	    "dbquery --database tempdb --sql 'select name,type_desc,create_date from tempdb.sys.objects'  --unadorn | grep USER_TABLE " 
 
 alias bobids                dbv --id bob
 alias bobidsr               dbv --id bob -rev
