@@ -175,7 +175,8 @@ alias makecontainers    'testtrim --test bulkLoader --type container --timeout 6
 alias testcs            '$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe --test'
 alias testevmon         'testcs EventMonitor --inplace'
 
-alias trimtables 'cat $var_trimDir/trim/src/DD/DATABASE.TXT                   \\
+alias trimtables 'setenv PROP_PATH "$var_trimDir/trim/src/Core/Property.cpp"; \\
+                  cat $var_trimDir/trim/src/DD/DATABASE.TXT                   \\
 | $PERL -e ' "'" '                                                            \\
 @in = <>;                                                                     \\
 my %tables;                                                                   \\
@@ -236,14 +237,28 @@ for(sort keys %tables) {                                                      \\
             my $sp = " " x ($max - $len + 1);                                 \\
             print "[".$i++."]\t".$_->{name}.$sp.": ".$_->{val}."\n";          \\
          }                                                                    \\
-         print " ---\n";\\
+         print " ---\n";                                                      \\
      }                                                                        \\
    }                                                                          \\
    else {                                                                     \\
      print $_.(" " x $sp).": ".$tables{$_}{description}."\n";                 \\
    }                                                                          \\
 }                                                                             \\
-' "'" 
+my $propPath = $ENV{PROP_PATH};                                               \\
+if(not -e $propPath) { print "Could not find $propPath"; exit; }              \\
+open PP, "$propPath" or die "Could not read $propPath\n";                     \\
+my $textTable = "TSTXTIDX";                                                   \\
+print "\nSQL Text Indexing Tables\n";                                         \\
+my @pp = <PP>;                                                                \\
+for(@pp){                                                                     \\
+  if(/TRIM::wd_(\w+).+return\s+"(\w+)"/i){                                    \\
+    print $textTable.$2."\t    : SQL Text Index Table for $1\n";              \\
+  }                                                                           \\
+}                                                                             \\
+'"' ; unsetenv PROP_PATH " 
+
+#	case TRIM::wd_locationWord			: return "LO";
+
 alias tableinfo 'setenv TTX_TABLE "\!*"; trimtables; unsetenv TTX_TABLE'
 alias tables    'trimtables'
 
