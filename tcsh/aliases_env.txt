@@ -104,6 +104,43 @@ for $x ( 0 .. 215 ){                                                            
 print "\n";                                                                           \\
 '"'"
 
+# Print a mix of true colour RRRGGGBBB terminal colours
+alias truecolours ' $PERL -e ' "' "'        \\
+$|=1;                                       \\
+use Term::ANSIColor qw(:constants colored); \\
+use integer;                                \\
+$R = $G = $B = 0;                           \\
+while ( $R < 256 ) {                        \\
+  my $red = sprintf "%03d",$R;              \\
+  my $rh = sprintf "%02X", $R;              \\
+  while ( $G < 256 ) {                      \\
+    my $green = sprintf "%03d",$G;          \\
+    my $gh = sprintf "%02X", $G;            \\
+    my $bi = 0;                             \\
+    while ( $B < 256 ) {                    \\
+      ++$bi;                                \\
+      my $blue = sprintf "%03d", $B;        \\
+      my $bh = sprintf "%02X", $B;          \\
+      my $col = "r$red"."g$green"."b$blue"; \\
+      my $cl = "$rh$gh$bh";                 \\
+      $c = colored("$cl",$col );            \\
+      print "$c ";                          \\
+      if ($bi % 8 == 0) {                   \\
+        print "\n";                         \\
+      }                                     \\
+                                            \\
+      $B += 16;                             \\
+    }                                       \\
+    $B = 0;                                 \\
+    $G += 32;                               \\
+  }                                         \\
+  print RESET,"\n";                         \\
+  $G = 0;                                   \\
+  $R += 32;                                 \\
+}                                           \\
+print "\n";                                 \\
+'"'"
+
 alias hklm           'regtool list \\machine\\\!^'
 alias hkcu           'regtool list \\user\\\!^'
 alias hkcr           'regtool list \\root\\\!^'
