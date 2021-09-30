@@ -290,6 +290,9 @@ alias idol_log_agent   'tail -f "$IDOL_DIR/TRIM IDOL Service/logs/agentstore_age
 set ACT_LOG = ": Request (completed in|from)|: Generated ActionId"
 alias idol_log_action  'tail -f "$IDOL_DIR/TRIM IDOL Service/logs/action.log" | grep -Eiv "$ACT_LOG"'
 
+alias idol_log_dev_app   'tail -f "$IDOL_DIR/TRIM IDOL Service DEV ONLY/logs/application.log"'
+alias idol_log_dev_index 'tail -f "$IDOL_DIR/TRIM IDOL Service DEV ONLY/logs/index.log"'
+
 alias grepilogs     'grep -i \!^ "$IDOL_DIR/TRIM Content Service 1/logs/"*.log && grep -i \!^ "$IDOL_DIR/TRIM IDOL Service/logs/"*.log'
 alias grepidol      grepilogs
 
