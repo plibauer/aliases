@@ -241,6 +241,7 @@ current_defects:
     "_severity",
     "_defect_type",
     "_detected_in_release",
+	"_owner",
     "_qa_owner",
     "last_modified",
     "_priority",
