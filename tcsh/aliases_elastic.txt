@@ -49,6 +49,8 @@ For elastic help : elastichelp (or eshelp)                                      
         documents                                                                       \\
                                                                                         \\
   content <id>        : print all the child Document.Content fields for parent id       \\
+  contentsrecnum      : Same as \042contents\042 above, but can take a record number or\\
+                        URI, eg. 9000000020 or REC_20 or just 20                        \\
   contentsrch         : Search for term(s) in child Document.Content fields             \\
   contentsrchids      : Search for term(s) in Document.Content and return the ids       \\
   phrasesrch          : Search for a phrase in child Document.Content fields            \\
@@ -404,6 +406,24 @@ alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=N
 alias metadatasrch        '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(\!^)&size=1000&pretty=true"'
 alias metasearch          metadatasrch
 
+
+alias recxx               'setenv ES_DOCID \!^; perl -e '"'"' \\
+  $id=$ENV{ES_DOCID};                                         \\
+  if($id =~ /^(rec_)?(\d{1,6})$/i){                           \\
+    $id = $2;                                                 \\
+    $zeroes = "0" x (9 - length($id));                        \\
+    $id = "9$zeroes$id.1.1";                                  \\
+  }                                                           \\
+  elsif($id =~ /^\d{10}$/) {                                  \\
+    $id .= ".1.1";                                            \\
+  }                                                           \\
+  open F,">C:/tmp/perl_env.txt" or die;                       \\
+  print F "set ES_DOCID = \"$id\"\n";                         \\
+  close F;                                                    \\
+  '"'  ; unsetenv ES_DOCID "
+
+alias contentsrecnum 'recxx \!^; source C:/tmp/perl_env.txt; contents $ES_DOCID;'
+
 alias contents            'docid \!^     \\
 | $PERL -ne '"'"'                        \\
 if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){  \\
@@ -446,7 +466,15 @@ for(sort keys %containers) {                             \\
 '"'"
 
 alias esdeldocid          '$CURL -XDELETE "$var_elasticHost/$var_elasticIndex/_doc/\!^"'
-alias delxx               'setenv ES_DOCID \!^; perl -e '"'"' $id=$ENV{ES_DOCID}; if($id =~ /^(\d+)\.\d+\.\d+$/){ $id .= "?routing=$1";} open F,">C:/tmp/perl_env.txt" or die; print F "set ES_DOCID = \"$id\"\n"; close F; '"'  ; unsetenv ES_DOCID "
+alias delxx               'setenv ES_DOCID \!^; perl -e '"'"' \\
+  $id=$ENV{ES_DOCID};                                         \\
+  if($id =~ /^(\d+)\.\d+\.\d+$/){                             \\
+    $id .= "?routing=$1";                                     \\
+  }                                                           \\
+  open F,">C:/tmp/perl_env.txt" or die;                       \\
+  print F "set ES_DOCID = \"$id\"\n";                         \\
+  close F;                                                    \\
+  '"'  ; unsetenv ES_DOCID "
 alias deldoc              'delxx \!^; source C:/tmp/perl_env.txt; esdeldocid $ES_DOCID '
 alias delid               'delxx \!^; source C:/tmp/perl_env.txt; esdeldocid $ES_DOCID '
 
