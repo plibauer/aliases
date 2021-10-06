@@ -98,7 +98,7 @@ alias crmatch       'octanesearchtitle \!^ | egrep "$DEFECT_FIELDS" | defectproc
 #  (See the  'legacyprocessor' code above )
 
 alias defectprocessor   '$PERL -e ' "'" '                             \\
-use Term::ANSIColor qw(:constants :constants256 colored);                     \\
+use Term::ANSIColor qw(:constants :constants256 colored);             \\
 sub parse {                                                           \\
   my $l = shift;                                                      \\
   chomp $l;                                                           \\

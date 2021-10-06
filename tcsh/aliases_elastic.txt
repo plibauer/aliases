@@ -996,6 +996,7 @@ alias essvnparentexact       'essvn --json --size 10000 -c search_by_parent_exac
 
 alias lookForSvnParent      ' $PERL -e '"'"'                                          \\
 use JSON::MaybeXS;                                                                    \\
+use Term::ANSIColor qw(:constants :constants256 colored);                             \\
 use strict;                                                                           \\
                                                                                       \\
 my $verbose = $ENV{ESSVNFILE};                                                        \\
@@ -1033,7 +1034,8 @@ if(exists $obj->{hits}{total}{value}){                                          
     $parent =~ s/^\/repos//i;                                                         \\
     # Account for removal of 'repos' above by shortening the number of spaces below   \\
     my $spp = " " x ($maxP - length($parent) - 2);                                    \\
-    print $parent.$spp.$name."\n";                                                    \\
+    print BOLD, $parent.$spp.$name."\n", RESET;                                       \\
+    if($verbose) { print YELLOW, "$message\n", RESET; }                               \\
   }                                                                                   \\
 }                                                                                     \\
 '"'"
