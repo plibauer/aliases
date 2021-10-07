@@ -184,12 +184,6 @@ alias espyhelp      'echo                                                       
 \n\n"                                                                                           \\
 '
 
-alias essvnhelp      'echo                                                                      \\
-"                                                                                               \\
-  essvn <command> [args]  Run an elastic command with optional arguments                        \\
-  essvnfile \042file\042        Search for all revisions that modified \042file\042                 \\
-\n\n"                                                                                           \\
-'
 
 alias elasticblog         'vi $CLOUD_DIR/Work/elastic.txt; scrub $CLOUD_DIR/Work/elastic.txt' 
 alias eblog               elasticblog
@@ -950,7 +944,27 @@ for(sort keys %bytime){                                    \\
                                                            \\
 '"'"
 
-# SVN aliases for trim_svn index
+#
+#=====================================================================================================================================================
+#
+#            SVN aliases for trim_svn index
+#
+
+alias essvnhelp      'echo                                                                      \\
+"                                                                                               \\
+  For most of the aliases below, appending a \042v\042 to the alias name will produce verbose output \\
+                                                                                                \\
+  essvn <command> [args]  Run an elastic command with optional arguments                        \\
+  essvnfile \042file\042        Search for all revisions that modified \042file\042             \\
+  essvnparent \042file\042        Search for revisions based on the parent folder               \\
+  essvnauth               Provide a name to search on. Will add wildcard to the search and      \\
+                          return the last 100 revisions                                         \\
+  essvnauthall            As above, but will return upto 10,000 revisions                       \\
+  authtoday/authweek      As above, but will show revisions for last day/week                   \\
+  today/yesterday         Takes no args and returns revisions modified today/yesterday          \\
+                                                                                                \\
+\n\n"                                                                                           \\
+'
 
 alias essvnupdate         '$PERL $PERL_HOME/svnLogProcessor/svnlog_to_elastic.pl -update -svn $SVN_LAB_FILE --elastic $ELASTIC_SVN_HOST -work E:/tmp'
 alias pycurlsvn	          'pycurl -u "$var_elasticHostSvn/$var_elasticIndexSvn" -a "_search?pretty"'
@@ -1067,4 +1081,72 @@ if(exists $obj->{hits}{total}{value}){                                          
   }                                                                                   \\
 }                                                                                     \\
 '"'"
+
+alias essvnauthor             'essvn --json --size \!:1 -c search_by_author \!:2\* | lookForSvnAuthor '
+alias essvnauth               'essvnauthor 100 \!^'
+alias essvnauthv              'setenv ESSVNFILE verbose; essvnauthor 100 \!^; unsetenv ESSVNFILE'
+alias essvnauthall            'essvnauthor 10000 \!^'
+alias essvnauthallv           'setenv ESSVNFILE verbose; essvnauthor 10000 \!^; unsetenv ESSVNFILE'
+
+alias essvnauthorbydate       'essvn --json --size 10000 -c search_by_author_and_date \!:1\* \!:2 \!:3 | lookForSvnAuthor '
+alias essvnauthday            'essvnauthorbydate \!^ now-1d/d now'
+alias essvnauthdayv           'setenv ESSVNFILE verbose; essvnauthorbydate \!^ now-1d/d now; unsetenv ESSVNFILE'
+alias authtoday               essvnauthday
+alias authtodayv              essvnauthdayv
+alias essvnauthweek           'essvnauthorbydate \!^ now-7d/d now'
+alias essvnauthweekv          'setenv ESSVNFILE verbose; essvnauthorbydate \!^ now-7d/d now; unsetenv ESSVNFILE'
+alias authweek                essvnauthweek
+alias authweekv               essvnauthweekv
+
+alias essvnbydate             'essvn --json --size 10000 -c search_by_date \!:1 \!:2 | lookForSvnAuthor '
+alias essvnbydatetoday        'essvnbydate now-1d/d now'
+alias essvnbydatetodayv       'setenv ESSVNFILE verbose; essvnbydate now-1d/d now; unsetenv ESSVNFILE'
+alias today                   essvnbydatetoday
+alias todayv                  essvnbydatetodayv
+alias essvnbydateyesterday    'essvnbydate now-2d now-1d'
+alias essvnbydateyesterdayv   'setenv ESSVNFILE verbose; essvnbydate now-2d now-1d; unsetenv ESSVNFILE'
+alias yesterday               essvnbydateyesterday
+alias yesterdayv              essvnbydateyesterdayv
+
+alias lookForSvnAuthor      ' $PERL -e '"'"'                                                 \\
+use JSON::MaybeXS;                                                                           \\
+use Term::ANSIColor qw(:constants :constants256 colored);                                    \\
+use strict;                                                                                  \\
+                                                                                             \\
+my $verbose = $ENV{ESSVNFILE};                                                               \\
+my @in = <>;                                                                                 \\
+my $json = join "", map { chomp $_; $_ } @in;                                                \\
+my $obj = decode_json($json);                                                                \\
+my $out = encode_json($obj);                                                                 \\
+my $maxa = 10;                                                                               \\
+my %hits;                                                                                    \\
+if(exists $obj->{hits}{total}{value}){                                                       \\
+  print "[".$obj->{hits}{total}{value}." hits]\n";                                           \\
+  for my $h (@{$obj->{hits}{hits}}) {                                                        \\
+    my $rev = $h->{_id};                                                                     \\
+    my $auth = $h->{_source}{author};                                                        \\
+    $maxa= length($auth) > $maxa ? length($auth) : $maxa;                                    \\
+    $hits{$rev}{source} = $h->{_source};                                                     \\
+  }                                                                                          \\
+  for(sort keys %hits){                                                                      \\
+    my $s = $hits{$_}{source};                                                               \\
+    my ($auth,$date,$message,$files) = ($s->{author},$s->{date},$s->{message}, $s->{files}); \\
+    my $sp = " " x ($maxa - length($auth) + 1);                                              \\
+    $message =~ s/^\s+$//gm;                                              \\
+    print CYAN,$_,RESET,"\t$auth$sp",RED,"$date\n", YELLOW, $message, RESET, "\n";           \\
+	if($verbose){                                                                            \\
+	  for my $f (@$files) {                                                                  \\
+	    my $act = $f->{action};                                                              \\
+		$act =~ s/^(...).+$/$1/;                                                             \\
+	    print GREEN, "\t$act ".$f->{parent}."/".$f->{name}."\n";                             \\
+	  }                                                                                      \\
+	  print RESET;                                                                           \\
+	}                                                                                        \\
+  }                                                                                          \\
+}                                                                                            \\
+'"'"
+
+
+
+
 

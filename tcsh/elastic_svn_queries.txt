@@ -116,3 +116,124 @@ search_by_parent_exact:
 }
 
 # ------------------------------------------------
+
+search_by_author:
+{
+  "_source": {
+    "includes": [
+      "author",
+      "date",
+	  "files",
+      "message"
+    ]
+  },
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "default_field": "author",
+            "query": "ARG1",
+            "analyze_wildcard": true
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "revision": {
+        "order": "desc"
+      }
+    }
+  ], 
+  "track_total_hits": true,
+  "size": 100
+}
+
+# ------------------------------------------------
+
+search_by_author_and_date:
+{
+  "_source": {
+    "includes": [
+      "author",
+      "date",
+      "files",
+      "message"
+    ]
+  },
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "default_field": "author",
+            "query": "ARG1",
+            "analyze_wildcard": true
+          }
+        }
+      ],
+      "filter": {
+        "range": {
+          "date": {
+            "gte": "ARG2",
+            "lte": "ARG3"
+          }
+        }
+      }
+    }
+  },
+  "sort": [
+    {
+      "revision": {
+        "order": "desc"
+      }
+    }
+  ], 
+  "track_total_hits": true,
+  "size": 100
+}
+
+# ------------------------------------------------
+
+search_by_date:
+{
+  "_source": {
+    "includes": [
+      "author", 
+      "date",
+      "files",
+      "message"
+    ]
+  },
+  "query": {
+    "bool": {
+      "filter": {
+        "range": {
+          "date": {
+            "gte": "ARG1",
+            "lte": "ARG2"
+          }
+        }
+      }
+    }
+  },
+  "sort": [
+    {
+      "revision": {
+        "order": "desc"
+      }
+    }
+  ], 
+  "track_total_hits": true,
+  "size": 100
+}
+
+# ------------------------------------------------
+# ------------------------------------------------
+# ------------------------------------------------
+# ------------------------------------------------
+# ------------------------------------------------
+# ------------------------------------------------
+# ------------------------------------------------
