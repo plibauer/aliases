@@ -961,7 +961,10 @@ alias essvnhelp      'echo                                                      
                           return the last 100 revisions                                         \\
   essvnauthall            As above, but will return upto 10,000 revisions                       \\
   authtoday/authweek      As above, but will show revisions for last day/week                   \\
+  authdays                Takes integer argument to show that many days since today             \\
   today/yesterday         Takes no args and returns revisions modified today/yesterday          \\
+  days                    Takes an integer argument and returns that many days since today      \\
+                                                                                                \\
                                                                                                 \\
 \n\n"                                                                                           \\
 '
@@ -1089,14 +1092,14 @@ alias essvnauthall            'essvnauthor 10000 \!^'
 alias essvnauthallv           'setenv ESSVNFILE verbose; essvnauthor 10000 \!^; unsetenv ESSVNFILE'
 
 alias essvnauthorbydate       'essvn --json --size 10000 -c search_by_author_and_date \!:1\* \!:2 \!:3 | lookForSvnAuthor '
-alias essvnauthday            'essvnauthorbydate \!^ now-1d/d now'
-alias essvnauthdayv           'setenv ESSVNFILE verbose; essvnauthorbydate \!^ now-1d/d now; unsetenv ESSVNFILE'
-alias authtoday               essvnauthday
-alias authtodayv              essvnauthdayv
-alias essvnauthweek           'essvnauthorbydate \!^ now-7d/d now'
-alias essvnauthweekv          'setenv ESSVNFILE verbose; essvnauthorbydate \!^ now-7d/d now; unsetenv ESSVNFILE'
-alias authweek                essvnauthweek
-alias authweekv               essvnauthweekv
+alias essvnauthdays           'essvnauthorbydate \!:1 now-\!:2d/d now'
+alias essvnauthdaysv          'setenv ESSVNFILE verbose; essvnauthorbydate \!:1 now-\!:2d/d now; unsetenv ESSVNFILE'
+alias authdays                'essvnauthdays \!:1 \!:2'
+alias authdaysv               'essvnauthdaysv \!:1 \!:2'
+alias authtoday               'essvnauthdays \!^ 1'
+alias authtodayv              'essvnauthdaysv \!^ 1'
+alias authweek                'essvnauthdays \!^ 7'
+alias authweekv               'essvnauthdaysv \!^ 7'
 
 alias essvnbydate             'essvn --json --size 10000 -c search_by_date \!:1 \!:2 | lookForSvnAuthor '
 alias essvnbydatetoday        'essvnbydate now-1d/d now'
@@ -1107,9 +1110,14 @@ alias essvnbydateyesterday    'essvnbydate now-2d now-1d'
 alias essvnbydateyesterdayv   'setenv ESSVNFILE verbose; essvnbydate now-2d now-1d; unsetenv ESSVNFILE'
 alias yesterday               essvnbydateyesterday
 alias yesterdayv              essvnbydateyesterdayv
+alias days                    'essvnbydate now-\!^d/d now'
+alias daysv                   'setenv ESSVNFILE verbose; essvnbydate now-\!^d/d now; unsetenv ESSVNFILE'
 
 alias lookForSvnAuthor      ' $PERL -e '"'"'                                                 \\
+use 5.10.0;                                                                                  \\
 use JSON::MaybeXS;                                                                           \\
+use DateTime;                                                                                \\
+use Time::Piece;                                                                             \\
 use Term::ANSIColor qw(:constants :constants256 colored);                                    \\
 use strict;                                                                                  \\
                                                                                              \\
@@ -1128,11 +1136,21 @@ if(exists $obj->{hits}{total}{value}){                                          
     $maxa= length($auth) > $maxa ? length($auth) : $maxa;                                    \\
     $hits{$rev}{source} = $h->{_source};                                                     \\
   }                                                                                          \\
+  my ($curDay,$prevDay);                                                                     \\
   for(sort keys %hits){                                                                      \\
     my $s = $hits{$_}{source};                                                               \\
     my ($auth,$date,$message,$files) = ($s->{author},$s->{date},$s->{message}, $s->{files}); \\
+	if(not $verbose and $auth =~ /trimbuild/) { next; }                                      \\
+ 	$curDay = $date;                                                                         \\
+	$curDay =~ s/^([\d-]+)\s.+$/$1/;                                                         \\
+	if($curDay ne $prevDay) {                                                                \\
+      my $t = Time::Piece->strptime($curDay, "%F");                                          \\
+	  my $human = $t->fullday." ".$t->mday." ".$t->month; # alt. $t->strftime("%A %d %b");   \\
+	  say BRIGHT_MAGENTA, ("_" x 20), " $curDay ($human) ", ("_" x 20), "\n", RESET;         \\
+	  $prevDay = $curDay;                                                                    \\
+	}                                                                                        \\
     my $sp = " " x ($maxa - length($auth) + 1);                                              \\
-    $message =~ s/^\s+$//gm;                                              \\
+    $message =~ s/^\s+$//gm;                                                                 \\
     print CYAN,$_,RESET,"\t$auth$sp",RED,"$date\n", YELLOW, $message, RESET, "\n";           \\
 	if($verbose){                                                                            \\
 	  for my $f (@$files) {                                                                  \\
