@@ -1136,7 +1136,8 @@ if(exists $obj->{hits}{total}{value}){                                          
     $maxa= length($auth) > $maxa ? length($auth) : $maxa;                                    \\
     $hits{$rev}{source} = $h->{_source};                                                     \\
   }                                                                                          \\
-  my ($curDay,$prevDay);                                                                     \\
+  my ($curDay,$prevDay,$first);                                                              \\
+  my $first = 0;                                                                             \\
   for(sort keys %hits){                                                                      \\
     my $s = $hits{$_}{source};                                                               \\
     my ($auth,$date,$message,$files) = ($s->{author},$s->{date},$s->{message}, $s->{files}); \\
@@ -1146,7 +1147,14 @@ if(exists $obj->{hits}{total}{value}){                                          
 	if($curDay ne $prevDay) {                                                                \\
       my $t = Time::Piece->strptime($curDay, "%F");                                          \\
 	  my $human = $t->fullday." ".$t->mday." ".$t->month; # alt. $t->strftime("%A %d %b");   \\
-	  say BRIGHT_MAGENTA, ("_" x 20), " $curDay ($human) ", ("_" x 20), "\n", RESET;         \\
+	  my $header = ("_" x 20)." $curDay ($human) ".("_" x 20)."\n";                          \\
+	  if($first) {                                                                           \\
+	    say BRIGHT_MAGENTA, $header, RESET;                                                  \\
+	  }                                                                                      \\
+	  else {                                                                                 \\
+		say BRIGHT_GREEN, $header, RESET;                                                    \\
+		++$first;                                                                            \\
+	  }                                                                                      \\
 	  $prevDay = $curDay;                                                                    \\
 	}                                                                                        \\
     my $sp = " " x ($maxa - length($auth) + 1);                                              \\
