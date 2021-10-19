@@ -113,23 +113,23 @@ sub sort_by_release {                                                 \\
     # For releases like 'BACKLOG', sort last                          \\
     if( $a !~ /^\d+/ ) { return -1; }                                 \\
     if( $b !~ /^\d+/ ) { return 1; }                                  \\
-	my ($RELA, $RELB, $amaj,$amin,$apatch, $bmaj, $bmin, $bpatch);      \\
+	my ($RELA, $RELB, $amaj,$amin,$apatch, $bmaj, $bmin, $bpatch);    \\
     if ( $a =~ /^(\d+)\.(\d+)\s*(?:patch)*\s*(\d+)*$/i ) {            \\
-		($amaj,$amin,$apatch) = ($1,$2,$3);                               \\
-		$amin =~ s/^(\d)$/0$1/;                                           \\
-		if($apatch){ $apatch =~ s/^(\d)$/0$1/; }                          \\
-		else { $apatch = "00"; }                                          \\
-		$RELA = $amaj.$amin.$apatch;                                      \\
-		#print "  RELA = $RELA\n";                                        \\
+		($amaj,$amin,$apatch) = ($1,$2,$3);                           \\
+		$amin =~ s/^(\d)$/0$1/;                                       \\
+		if($apatch){ $apatch =~ s/^(\d)$/0$1/; }                      \\
+		else { $apatch = "00"; }                                      \\
+		$RELA = $amaj.$amin.$apatch;                                  \\
+		#print "  RELA = $RELA\n";                                    \\
     }                                                                 \\
     else { return -1; }                                               \\
     if ( $b =~ /^(\d+)\.(\d+)\s*(?:patch)*\s*(\d+)*$/i ) {            \\
-		($bmaj,$bmin,$bpatch) = ($1,$2,$3);                               \\
-		$bmin =~ s/^(\d)$/0$1/;                                           \\
-		if($bpatch){ $bpatch =~ s/^(\d)$/0$1/; }                          \\
-		else { $bpatch = "00"; }                                          \\
-		$RELB = $bmaj.$bmin.$bpatch;                                      \\
-		#print "  RELB = $RELB\n";                                        \\
+		($bmaj,$bmin,$bpatch) = ($1,$2,$3);                           \\
+		$bmin =~ s/^(\d)$/0$1/;                                       \\
+		if($bpatch){ $bpatch =~ s/^(\d)$/0$1/; }                      \\
+		else { $bpatch = "00"; }                                      \\
+		$RELB = $bmaj.$bmin.$bpatch;                                  \\
+		#print "  RELB = $RELB\n";                                    \\
     }                                                                 \\
     else { return 1; }                                                \\
     return $RELA <=> $RELB;                                           \\
@@ -222,8 +222,14 @@ for(sort sort_by_release keys %releases) {                            \\
     my $summary = $ids{$id}{name};                                    \\
     if($ids{$id}{qa_owner} =~ /libauer/i) {                           \\
       my $owner = "[".$ids{$id}{owner}."]";                           \\
-      $summary = colored($summary,'bright_blue').                     \\
-                 colored(" $owner",'bright_green')                      \\
+      if($ids{$id}{phase} =~ /fixed/i){                               \\
+        $summary = colored("$summary (fixed)",'bright_red').          \\
+                 colored(" $owner",'bright_green');                   \\
+	  }                                                               \\
+      else {                                                          \\
+	    $summary = colored($summary,'bright_blue').                   \\
+                 colored(" $owner",'bright_green');                   \\
+      }                                                               \\
     }                                                                 \\
     my $shortSum = substr $summary, 0, 80;                            \\
     if($VERBOSE) {                                                    \\
