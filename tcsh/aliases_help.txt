@@ -45,6 +45,10 @@ alias perlshellhelp      'echo                                                  
   2. Pass command line arguments into alias with Perl scripting                                                 \\
      alias example1  \047\044PERL -e \047\042\047\042\047 print \044ARGV[0]; \047\042\047 <argument here> \042  \\
                                                                                                                 \\
+  3. To pass in some text to a script as well as capturing the output from a command                            \\
+     alias example2  \047\044(echo SOME_TEXT && some_command \\!^) | PERL -e \047\042\047\042\047               \\
+          @in = <>;                                                                                             \\
+          my \044input = shift @in;  # <-- has SOME_TEXT                                                        \\
 \n\n"                                                                                                           \\
 '
 alias shellhelp perlshellhelp

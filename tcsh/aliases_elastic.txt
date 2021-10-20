@@ -8,9 +8,9 @@
 alias elastichelp      'echo                                                            \\
 "                                                                                       \\
 For elastic search commands           : eshelpsearch                                    \\
-For curl commands, see                : escurlhelp                                      \\
-For auto-classification commands, see : esautohelp                                      \\
-For subversion related commands, see  : essvnhelp                                       \\
+For curl commands, see                : eshelpcurl                                      \\
+For auto-classification commands, see : eshelpauto                                      \\
+For subversion related commands, see  : eshelpsvn                                       \\
 For octane searches, see              : eshelpoctane                                    \\
                                                                                         \\
 ---      Basics        ---                                                              \\
@@ -89,13 +89,15 @@ toacronyms,getacronyms: Same as above                                           
   hasnotes            : Show records with the field \042Notes\042                       \\
   containers          : Show container records with their contained records             \\
   esgetfield <arg>    : Show the document id and field specified by <arg> (eg Title)    \\
+  esfield <arg>       : Get specific field for all records that have it. This version   \\
+                        Allows compound fields, eg. Document.Status.Reason              \\
   esrectypes          : Show record uris and their associated record types              \\
 "                                                                                       \\
 '
 
-alias esautohelp      'echo                                                             \\
+alias eshelpauto      'echo                                                             \\
 "                                                                                       \\
-For curl commands, see : escurlhelp                                                     \\
+For curl commands, see : eshelpcurl                                                     \\
 For elastic search commands, see : elastichelp (or eshelp)                              \\
                                                                                         \\
 To build the auto-classification dataset, run the following commands;                   \\
@@ -553,11 +555,61 @@ for(@in){                                  \\
   }                                        \\
   elsif(/^\s+"$suffix"\s*:\s*(.+)$/i) {    \\
     $val = $1;                             \\
-    #$val =~ s/^"//;                        \\
-    #$val =~ s/"$//;                        \\
+    #$val =~ s/^"//;                       \\
+    #$val =~ s/"$//;                       \\
     print "$val\n";                        \\
   }                                        \\
 }                                          \\
+'"'" 
+
+alias esfield              '(echo \!^ && escommand --json -c get_field \!^)         \\
+ | $PERL -e  '"'"'                                                                  \\
+use strict; use JSON;                                                               \\
+use 5.032;                                                                          \\
+                                                                                    \\
+my @in = <>;                                                                        \\
+my $field = shift @in;                                                              \\
+chomp $field;                                                                       \\
+my $j = JSON->new->allow_nonref;                                                    \\
+my $parsed = $j->decode("@in");                                                     \\
+my $count = $parsed->{hits}{total}{value};                                          \\
+my $hits = $parsed->{hits}{hits};                                                   \\
+if($count > 0){                                                                     \\
+  say "[Hits $count]";                                                              \\
+  for my $hit (@$hits) {                                                            \\
+     my $id = $hit->{_id};                                                          \\
+     my $src = $hit->{_source};                                                     \\
+	                                                                                \\
+	 if($field =~ /\./){                                                            \\
+	   my @f = split /\./, $field;                                                  \\
+	   print  "$id: $field { ";                                                     \\
+	   my @out; my $len = scalar @f;                                                \\
+	   if($len == 2) {                                                              \\
+	     @out = split /\n/, $j->pretty->encode($src->{$f[0]}{$f[1]});               \\
+       }                                                                            \\
+	   if($len == 3) {                                                              \\
+	     @out = split /\n/, $j->pretty->encode($src->{$f[0]}{$f[1]}{$f[2]});        \\
+       }                                                                            \\
+	   if($len == 4) {                                                              \\
+	     @out = split /\n/, $j->pretty->encode($src->{$f[0]}{$f[1]}{$f[2]}{$f[3]}); \\
+       }                                                                            \\
+	   if($len == 5) {                                                              \\
+	     @out = split /\n/, $j->pretty->encode($src->{$f[0]}{$f[1]}{$f[2]}{$f[3]}{$f[4]}); \\
+       }                                                                            \\
+	   if($out[0] =~ /^\{/){                                                        \\
+         shift @out;                                                                \\
+	   }                                                                            \\
+	   if($out[$#out] =~ /^\}/){                                                    \\
+	     pop @out;                                                                  \\
+	   }                                                                            \\
+	   my $l = join " ", map { s/^\s+//; s/\s+$//; $_ } @out;                       \\
+	   say "$l }";                                                                  \\
+	 }                                                                              \\
+	 else {                                                                         \\
+	   say "$id: ".$src->{$field};                                                  \\
+	 }                                                                              \\
+  }                                                                                 \\
+}                                                                                   \\
 '"'" 
 
 alias titles              'esgetfield Title | sort'
@@ -950,7 +1002,7 @@ for(sort keys %bytime){                                    \\
 #            SVN aliases for trim_svn index
 #
 
-alias essvnhelp      'echo                                                                      \\
+alias eshelpsvn      'echo                                                                      \\
 "                                                                                               \\
   For most of the aliases below, appending a \042v\042 to the alias name will produce verbose output \\
                                                                                                 \\
