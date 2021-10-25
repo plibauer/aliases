@@ -6,6 +6,9 @@ endif
 if (! $?STORE_DRIVE) then
 	setenv STORE_DRIVE             D:  *** SET THIS VALUE ***
 endif
+if (! $?ELASTIC_DRIVE) then
+    setenv ELASTIC_DRIVE  $STORE_DRIVE
+endif
 
 setenv STATIC_REPO             $STORE_DRIVE/TRIMStaticRepo
 setenv SVN_BIN                 "/c/Program Files/TortoiseSVN/bin"
@@ -77,7 +80,7 @@ setenv ELASTIC_HOST6           http://localhost:9200
 setenv ELASTIC_HOST7           http://localhost:9200
 setenv ELASTIC_HOST_OCTANE     $ELASTIC_HOST
 setenv ELK_VERSION             $SET_THIS_VALUE
-setenv ELASTIC_DIR             $REPOS_ROOT/Elastic
+setenv ELASTIC_DIR             $ELASTIC_DRIVE/Elastic
 setenv ELASTIC_HOME            $ELASTIC_DIR/search/$ELK_VERSION
 setenv KIBANA_HOME             $ELASTIC_DIR/kibana/$ELK_VERSION
 setenv LOGSTASH_HOME           $ELASTIC_DIR/logstash/$ELK_VERSION
