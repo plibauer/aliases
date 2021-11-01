@@ -210,9 +210,11 @@ my $SPACE = length("[Awaiting Decision,Critical,Very High,Enhancement]"); \\
 for(sort sort_by_release keys %releases) {                            \\
   my $rel = $_;                                                       \\
   s/^.+"([\s\w\d\.]+)".*$/$1/;                                        \\
-  print BOLD, YELLOW, "\nTarget Release:$_\n", RESET;                 \\
+  my $count = scalar(@{$releases{$rel}});                             \\
+  print BOLD, YELLOW, "\nTarget Release:$_ [$count]\n", RESET; \\
   my %defects;                                                        \\
   foreach(sort @{$releases{$rel}}) {                                  \\
+                                                                      \\
     my $id = $_;                                                      \\
     my $lead = "[".$ids{$id}{phase}.                                  \\
                ",".$ids{$id}{severity}.                               \\
@@ -225,9 +227,9 @@ for(sort sort_by_release keys %releases) {                            \\
       if($ids{$id}{phase} =~ /fixed/i){                               \\
         $summary = colored("$summary (fixed)",'bright_red').          \\
                  colored(" $owner",'bright_green');                   \\
-	  }                                                               \\
+	  }                                                                 \\
       else {                                                          \\
-	    $summary = colored($summary,'bright_blue').                   \\
+	    $summary = colored($summary,'bright_blue').                     \\
                  colored(" $owner",'bright_green');                   \\
       }                                                               \\
     }                                                                 \\

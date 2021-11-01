@@ -1015,6 +1015,7 @@ alias eshelpsvn      'echo                                                      
   authtoday/authweek      As above, but will show revisions for last day/week                   \\
   authdays                Takes integer argument to show that many days since today             \\
   today/yesterday         Takes no args and returns revisions modified today/yesterday          \\
+  lastweek                Takes no args and returns revisions modified in the last week         \\
   days                    Takes an integer argument and returns that many days since today      \\
                                                                                                 \\
                                                                                                 \\
@@ -1164,6 +1165,7 @@ alias yesterday               essvnbydateyesterday
 alias yesterdayv              essvnbydateyesterdayv
 alias days                    'essvnbydate now-\!^d/d now'
 alias daysv                   'setenv ESSVNFILE verbose; essvnbydate now-\!^d/d now; unsetenv ESSVNFILE'
+alias lastweek                'essvnbydate now-7d/d now'
 
 alias lookForSvnAuthor      ' $PERL -e '"'"'                                                 \\
 use 5.10.0;                                                                                  \\
