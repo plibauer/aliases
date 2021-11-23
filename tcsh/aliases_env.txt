@@ -235,9 +235,12 @@ alias pgrep           'grep --perl-regexp'
 alias trace           'tracert'
 alias route           'route.exe'
 alias netstat         'NETSTAT.EXE'
-alias usingports      'netstat -abno'
 alias usingwgs        'usingport 1137'
-
+alias showports       'netstat -abno'
+alias usingports      'netsh interface ipv4 show excludedportrange protocol=tcp'
+alias excludeport     'netsh int ipv4 add excludedportrange protocol=tcp startport=\!^ numberofports=1'
+alias disablehyperv   'dism.exe /Online /Disable-Feature:Microsoft-Hyper-V'
+alias enablehyperv    'dism.exe /Online /Enable-Feature:Microsoft-Hyper-V /All'
 
 alias usingport        'setenv XXX_USINGPORT \!* &&  usingports           \\
  | $PERL -e '"'"'                                                         \\
