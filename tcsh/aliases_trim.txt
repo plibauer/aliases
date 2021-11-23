@@ -177,7 +177,9 @@ alias bldcont           'testtrim --test bulkLoader --type container --timeout 6
 alias makecontainers    'testtrim --test bulkLoader --type container --timeout 6000 --assert --inplace --containers \!:1 --perContainer \!:2'
 
 # CSharp testing
-alias testcs            '$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe --test'
+alias testtrimcs        '$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe'
+alias testcs            'testtrimcs --test'
+alias testcasecs        '$var_trimDir/AnyCPU/$var_defBuild/TestTrimCs.exe --testcase'
 alias testevmon         'testcs EventMonitor --inplace'
 
 alias trimtables 'setenv PROP_PATH "$var_trimDir/trim/src/Core/Property.cpp"; \\

@@ -475,7 +475,11 @@ API=_reindex
       "workaround_udf"
       ],
     "query" : { 
-      "match_all" : {}
+      "range" : {
+        "last_modified" : {
+           "gte": "ARG1"
+        }
+      }
     }
   },
   "dest": {

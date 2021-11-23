@@ -50,8 +50,11 @@ alias currentdefects       'pycurloct -c current_defects \!^'
 alias defectbyrelease      'pycurloct -c defects_by_release \!:1 \!:2'
 alias alldefects           'pycurloct -c all_defects \!^'
 alias octanesearchtitle    'pycurloct -c search_defect_by_title \!^' 
-alias eshostoctane         elastichost $var_elasticHostOctane
-alias syncoctane           'pycurl -u "$var_elasticHostOctane" -c reindex_octane -f $ELASTIC_QUERIES'
+alias octane               elastichost $var_elasticHostOctane
+alias syncoctane           'pycurl -u "$var_elasticHostOctane" -c reindex_octane -f $ELASTIC_QUERIES now-7d'
+alias syncoctanemonth      'pycurl -u "$var_elasticHostOctane" -c reindex_octane -f $ELASTIC_QUERIES now-1M'
+alias syncoctaneyear       'pycurl -u "$var_elasticHostOctane" -c reindex_octane -f $ELASTIC_QUERIES now-1y'
+alias syncoctaneall        'pycurl -u "$var_elasticHostOctane" -c reindex_octane -f $ELASTIC_QUERIES now-10y'
 alias octanesync           'syncoctane && esrefresh && esinfo'
 
 alias octanesearchlegacyid 'pycurloct --json -c search_defect_by_legacy_id '
