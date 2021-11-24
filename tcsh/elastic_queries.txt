@@ -428,6 +428,35 @@ search_defect_by_legacy_id:
 
 # ------------------------------------------------
 
+update_octane:
+API=_reindex
+{
+  "max_docs": 150000,
+  "conflicts": "proceed",
+  "source": {
+    "remote": {
+      "host": "ARG1",
+      "socket_timeout": "10m",
+      "connect_timeout": "10m"
+    },
+    "index": "ARG2",
+    "query" : {
+      "range": {
+		"last_modified" : {
+           "gte": "ARG3"
+        }
+      }
+    }
+  },
+  "dest": {
+    "index": "ARG4",
+    "version_type": "external"
+  }
+}
+
+
+# ------------------------------------------------
+
 reindex_octane:
 API=_reindex
 {

@@ -314,3 +314,6 @@ alias json            jsonpretty
 alias getguids        '$STATIC_REPO/tools/Wix/MsiProperties/MsiProperties.exe'
 alias msiproperties   getguids
 alias msiguids        getguids
+
+# Prettify Perl Scripts
+alias perlpretty	  '$PERL -x -S perltidy -b \!^ -ole=win'
