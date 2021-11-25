@@ -14,10 +14,10 @@ alias eshelpoctane      'echo                                                   
   almmatchv <text>    : Search defect titles, description and comments for <text>         \\
                                                                                           \\
 ---    Octane Index    ---                                                                \\
-  createoctane        : Generate the JSON mappings/settings for creating octane_new index \\
-  initialiseoctane    : Sync all defects from http://10.11.12.2:9273                      \\
-  updateoctane        : Sync last 2 weeks of defects from http://10.11.12.2:9273          \\
-  updateoctanemore    : Sync last month of defects from http://10.11.12.2:9273            \\
+  octanecreate        : Generate the JSON mappings/settings for creating octane_new index \\
+  octaneinitialise    : Sync all defects from http://10.11.12.2:9273                      \\
+  octaneupdate        : Sync last 2 weeks of defects from http://10.11.12.2:9273          \\
+  octaneupdatemore    : Sync last month of defects from http://10.11.12.2:9273            \\
                                                                                           \\
   defect <id>         : Search for a defect with ID <id>                                  \\
   defectv <id>        : Verbose form of above                                             \\
@@ -62,10 +62,10 @@ alias syncoctaneyear       'pycurl -u "$var_elasticHostOctane" -c reindex_octane
 alias syncoctaneall        'pycurl -u "$var_elasticHostOctane" -c reindex_octane -f $ELASTIC_QUERIES now-10y'
 alias octanesync           'syncoctane && esrefresh && esinfo'
 
-alias createoctane         '$PYTHON $PYTHON_HOME/octane.py -e octane_new'
-alias initialiseoctane     'pycurl -u "$var_elasticHostOctane" -c update_octane -f $ELASTIC_QUERIES http://10.11.12.2:9273 octane_new now-20y octane_new'
-alias updateoctane         'pycurl -u "$var_elasticHostOctane" -c update_octane -f $ELASTIC_QUERIES http://10.11.12.2:9273 octane_new now-2w octane_new'
-alias updateoctanemore     'pycurl -u "$var_elasticHostOctane" -c update_octane -f $ELASTIC_QUERIES http://10.11.12.2:9273 octane_new now-1M octane_new'
+alias octanecreate         '$PYTHON $PYTHON_HOME/octane.py -e octane_new'
+alias octaneinitialise     'pycurl -u "$var_elasticHostOctane" -c update_octane -f $ELASTIC_QUERIES http://10.11.12.2:9273 octane_new now-20y octane_new'
+alias octaneupdate         'pycurl -u "$var_elasticHostOctane" -c update_octane -f $ELASTIC_QUERIES http://10.11.12.2:9273 octane_new now-2w octane_new'
+alias octaneupdatemore     'pycurl -u "$var_elasticHostOctane" -c update_octane -f $ELASTIC_QUERIES http://10.11.12.2:9273 octane_new now-1M octane_new'
 
 alias octanesearchlegacyid 'pycurloct --json -c search_defect_by_legacy_id '
 alias crlegacy             'octanesearchlegacyid \!^ | legacyprocessor '
