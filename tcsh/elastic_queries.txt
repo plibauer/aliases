@@ -428,6 +428,27 @@ search_defect_by_legacy_id:
 
 # ------------------------------------------------
 
+octane_show_latest:
+{
+  "_source": [
+    "name",
+    "last_modified"
+  ],
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "last_modified": {
+        "order": "desc"
+      }
+    }
+  ],
+  "size": 10
+}
+
+# ------------------------------------------------
+
 update_octane:
 API=_reindex
 {
