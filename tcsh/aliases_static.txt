@@ -20,6 +20,8 @@ set defproj = ALL_BUILD
 
 alias src               "source $include_file; settitle"
 alias refresh           "unset include_*; src"
+alias src81             "source $env_alias/81environment"
+alias src82             "source $env_alias/82environment"
 alias src83             "source $env_alias/83environment"
 alias src90             "source $env_alias/90environment"
 alias src91             "source $env_alias/91environment"

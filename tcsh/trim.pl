@@ -5,6 +5,7 @@ use strict;
 use XML::LibXML qw(:libxml);
 use Getopt::Long;
 use Data::Dumper;
+use Term::ANSIColor qw(:constants :constants256 colored);
 
 $| = 1;
 
@@ -55,7 +56,10 @@ OPTIONS:
 	  Specify a path to the Trim config file, or a dataset ID, in which case, we assume
 	  that the dataset resides under $defDatasetPath
 	  
-	  
+  --list_config
+  
+       Show the current datasets and relevant info for the default config file
+
   --remove_config
   
 	  Will display a list of the configured datasets and prompt to remove one. The default
@@ -248,6 +252,113 @@ sub removeConfig {
 
 #---------------------------------------------------------------------------------------------
 
+sub listConfig {
+
+    my ($baseDir) = @_;
+
+    my $config = $baseDir . $configFolder . "/$TRIMconfig";
+    if ( not -e $config ) {
+        die "Configuration file $config not found\n";
+    }
+
+    my $dom      = XML::LibXML->load_xml( location => $config, no_blanks => 1 );
+    my $datasets = getDatasets( $dom, $xpathDataset );
+    if ( scalar(@$datasets) == 0 ) {
+        die "No datasets available\n";
+    }
+
+    my $xpaths = [
+        { 'n' => 'DBID' },
+        { 'n' => 'GlobalPath' },
+        { 'n' => 'BulkLoadConfig', 'l' => ['UNCPathForBulkLoader'] },
+        {
+            'n' => 'ContentIndexParams',
+            'l' => [
+                'EngineType',           'DCIServer',
+                'ElasticUrl',           'ResultBufferSize',
+                'MaxDciResults',        'ElasticBufferSize',
+                'ElasticScrollTimeout', 'ElasticDocumentFieldSize',
+                'MaxNormalSize',        'MaxArchiveSize',
+                'IDOLTimeOut'
+            ]
+        },
+        {
+            'n' => 'EventProcessors',
+            'l' => { 'prefixMatch' => 'ep_', 'element' => 'Suspended' }
+        }
+    ];
+
+    my $max = length("ElasticDocumentFieldSize");
+
+    foreach my $d (@$datasets) {
+        print CYAN, "Dataset ", RESET, " => ", BRIGHT_GREEN, $d->{name}, "\n",
+          RESET;
+        my $node = $d->{node};
+        foreach my $x (@$xpaths) {
+            my $elem = $x->{n};
+            if ( $elem eq 'EventProcessors' ) {
+                print BRIGHT_BLUE "    EVENT_PROCESSORS:\n";
+                my $pref    = $x->{l}{prefixMatch};
+                my $element = $x->{l}{element};
+
+                my @n =
+                  $node->findnodes("$elem/*[starts-with(name(), '$pref')]");
+                my $maxEv = 10;
+                my @events;
+                foreach my $snd (@n) {
+                    my $name = $snd->nodeName;
+                    my $val = $snd->findvalue("$element") eq "0" ? "ON" : "OFF";
+                    $maxEv = length($name) > $maxEv ? length($name) : $maxEv;
+                    push @events, [ $name, $val ];
+                }
+
+                for my $ev (@events) {
+                    my $n  = $ev->[0];
+                    my $sp = " " x ( $maxEv - length($n) + 1 );
+                    print "\t", BRIGHT_YELLOW, $n, RESET,
+                      "$sp -> " . $ev->[1] . "\n";
+                }
+            }
+            else {
+                if ( exists $x->{l} ) {
+                    my $list    = $x->{l};
+                    my $engType = "";
+                    foreach my $l (@$list) {
+
+                        my $sp = " " x ( $max - length($l) + 1 );
+
+                        my $elemVal = $node->findvalue("$elem/$l");
+                        if ( $l eq 'EngineType' ) {
+                            $engType = $elemVal == 1 ? "IDOL" : "Elastic";
+                            print "    $l $sp=> ", BRIGHT_RED, "$engType\n",
+                              RESET;
+                        }
+                        else {
+                            if ( $engType eq 'IDOL' and $l =~ /elastic/i ) {
+                                next;
+                            }
+                            elsif ( $engType eq 'Elastic'
+                                and $l =~ /dciserver|idol/i )
+                            {
+                                next;
+                            }
+                            print "    $l $sp=> " . $elemVal . "\n";
+                        }
+                    }
+                }
+                else {
+                    my $sp      = " " x ( $max - length($elem) + 1 );
+                    my $elemVal = $node->findvalue("$elem");
+                    print "    $elem $sp=> " . $elemVal . "\n";
+                }
+            }
+        }
+        print "\n";
+    }
+}
+
+#---------------------------------------------------------------------------------------------
+
 sub trimTables {
     my ( $basePath, $table_name ) = @_;
 
@@ -374,12 +485,13 @@ sub trimTables {
 #---------------------------------------------------------------------------------------------
 #=============================================================================================
 
-my ( $baseDir, $trimCfg, $help, $removeConf, $trimTables );
+my ( $baseDir, $help, $listCfg, $removeConf, $trimCfg, $trimTables );
 if (
     GetOptions(
         "--base_dir=s"     => \$baseDir,
         "--debug"          => \$DEBUG,
         "--help"           => \$help,
+        "--list_config"    => \$listCfg,
         "--merge_config=s" => \$trimCfg,
         "--remove_config"  => \$removeConf,
         "--tables:s"       => \$trimTables
@@ -406,5 +518,8 @@ if (
     }
     elsif ( defined $removeConf ) {
         removeConfig($baseDir);
+    }
+    elsif ($listCfg) {
+        listConfig($baseDir);
     }
 }

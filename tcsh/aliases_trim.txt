@@ -137,31 +137,6 @@ alias xmltrim             '$PERL $PERL_HOME/xml_libxml.pl --file '
 alias xmltrimdatasets     '$PERL $PERL_HOME/xml_libxml.pl --datasets --file '
 alias getconfig           'more $var_trimcfg'
 alias fixtrimconfig       'xmlformat -i -b .backup $var_trimcfg'
-alias trimconfigdci       'xmlconf $var_trimcfg |                                    \\
-$PERL -e '"'"'                                                                     \\
-  @in = <>; $outStr;                                                               \\
-  $pattern = "ContentIndex|MaxArchive|MaxDci|DCIServer|Elastic|DocumentField".     \\
-             "|DCI|ResultBuffer|EngineType|EventProcessors|ep_|Suspended\\W|name". \\
-             "|DBID|WorkgroupServers";                                             \\
-  @new;                                                                            \\
-  for(@in) { if(/^\s+.($pattern)/){ push @new, $_; } }                             \\
-  while($l = shift @new){                                                          \\
-    chomp $l;                                                                      \\
-    if ($l =~ /ep_/) {                                                             \\
-      $evStatus = shift @new; chomp $evStatus;                                     \\
-      if($evStatus =~ /suspended.+0/i) { $str .= "$l ON }\n"; }                    \\
-      elsif($evStatus =~ /suspended.+1/i) { $str .= "$l OFF }\n"; }                \\
-    }                                                                              \\
-    elsif( $l =~ /^(.+enginetype.+).(\d)./i ){                                     \\
-      $beg = $1; $engine = "Elasticsearch";                                        \\
-      if ($2 eq "2") { $str .= "$beg ELASTICSEARCH\n" }                            \\
-      else { $engine = "Idol"; $str .= "$beg IDOL\n" }                             \\
-    }                                                                              \\
-    else { $str .= "$l\n"; }                                                       \\
-  }                                                                                \\
-  print "\nContent Engine: $engine\n\n$str\n";                                     \\
-'"'"
-alias dciconfig         trimconfigdci
 
 alias testtrim          '$var_trimDir/$var_defArch/$var_defBuild/testTrim.exe'
 alias trimtest          testtrim
@@ -188,6 +163,8 @@ alias trimtables        'trimperl --tables'
 alias tables            'trimtables'
 alias mergeconfig       'trimperl --merge_config'
 alias removeconfig      'trimperl --remove_config'
+alias trimconfigdci     'trimperl --list_config'
+alias datasets           trimconfigdci
 
 
 alias shorttables 'trimtables |                  \\
