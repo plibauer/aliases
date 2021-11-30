@@ -307,7 +307,7 @@ sub listConfig {
                 my @events;
                 foreach my $snd (@n) {
                     my $name = $snd->nodeName;
-                    my $val = $snd->findvalue("$element") eq "0" ? "ON" : "OFF";
+                    my $val = $snd->findvalue("$element") eq "0" ? "ON" : "SUSPENDED";
                     $maxEv = length($name) > $maxEv ? length($name) : $maxEv;
                     push @events, [ $name, $val ];
                 }
