@@ -5,187 +5,12 @@
 #                                                                                                                #
 ##################################################################################################################
 
-alias elastichelp      'echo                                                            \\
-"                                                                                       \\
-For elastic search commands           : eshelpsearch                                    \\
-For curl commands, see                : eshelpcurl                                      \\
-For auto-classification commands, see : eshelpauto                                      \\
-For subversion related commands, see  : eshelpsvn                                       \\
-For octane searches, see              : eshelpoctane                                    \\
-                                                                                        \\
----      Basics        ---                                                              \\
-  esinfo              : Show the current configuration                                  \\
-  eshost <host:port>  : Set the default host server and port                            \\
-  esindex <name>      : Set the default index                                           \\
-                                                                                        \\
----   Elastic Index    ---                                                              \\
-  mapping        : Show mapping for the default elastic index                           \\
-  espym \042index\042  : Show mapping for \042index\042                                 \\
-  settings       : Show settings for default index                                      \\
-  espys \042index\042  : Show settings for \042index\042                                \\
-  espyhelp(espyh): See examples of extended espy commands                               \\
-  esindexproperties : Show index properties                                             \\
-  esmetadata        : Show metadata fields (use 'metadata' for brief output)            \\
-  espolicy          : Show the policy settings if ILM is enabled on the index           \\
-  estemplate        : Show the template settings if ILM is enabled on the index         \\
-"                                                                                       \\
-'
-
-alias eshelpsearch      'echo                                                           \\
-"                                                                                       \\
-For elastic help : elastichelp (or eshelp)                                              \\
-                                                                                        \\
------- Using IDs -------                                                                \\
-  docid <id>          : print doc with given id                                         \\
-  contents <id>       : print the Document.Content field for given id as original text  \\
-  recid <number>      : print doc with record number (\042REC_\042 is prefixed)         \\
-  allids              : print every elastic document id found                           \\
-  trimallids          : print every unique URI found                                    \\
-  delid <id>          : delete the doc with given id                                    \\
-                                                                                        \\
-------- Content --------                                                                \\
-  NOTE: contentsrch and phrasesrch will print the actual contents of the document,      \\
-        converting \042\\n\042 into newlines, whereas the 'trim' variants return the metadata  \\
-        documents                                                                       \\
-                                                                                        \\
-  content <id>        : print all the child Document.Content fields for parent id       \\
-  contentsrecnum      : Same as \042contents\042 above, but can take a record number or\\
-                        URI, eg. 9000000020 or REC_20 or just 20                        \\
-  contentsrch         : Search for term(s) in child Document.Content fields             \\
-  contentsrchids      : Search for term(s) in Document.Content and return the ids       \\
-  phrasesrch          : Search for a phrase in child Document.Content fields            \\
-  phrasesrchids       : Search for a phrase in Document.Content and return the ids      \\
-  ---                                                                                   \\
-  trimcontent         : Search in Document.Content with same query syntax as TRIM       \\
-  trimcontentid       : As above, but return the URIs                                   \\
-  trimcontentidsorted : As above, but return the URIs sorted by URI                     \\
-  not_trimcontent     : As above, but negated                                           \\
-  not_trimcontentid   : As above, but return the URIs                                   \\
-  ---                                                                                   \\
-  trimphrase          : Search in Document.Content as above, but perform a phrase search\\
-  trimphraseids       : As above, but return the URIs                                   \\
-  not_trimphrase      : As above, but negated                                           \\
-  not_trimphraseids   : As above, but return the URIs                                   \\
-                                                                                        \\
-------- books -------                                                                   \\
-booktitles            : Print URIs => Title Acronym and vice versa                      \\
-booktitlesv           : Print URIs, Acronym and Title                                   \\
-docid2acronym         : Pipe output of commands that return a list of URIs to this      \\
-                        command to convert them to acronyms                             \\
-toacronyms,getacronyms: Same as above                                                   \\
-                                                                                        \\
-                                                                                        \\
-------- Metadata -------                                                                \\
-  metadatasrch        : Search on a metadata field (eg. Notes:spoon). Spaces need to be \\
-                        encoded as %20, Eg. Notes:spoon%20AND%20Title:refresh           \\
-  metasearch          : Same as above                                                   \\
-  hasallcontacts      : Show records with the field \042AllContacts\042                 \\
-  hasclassification   : Show records with the field \042Classification\042              \\
-  hascontainer        : Show records with the field \042Container\042                   \\
-  hascontent          : Show records with the field \042Document.Content\042            \\
-  hascontenttrim      : As above, but only shows parent URIs, not child documents       \\
-  withandwithout      : Shows output of above with the gaps in a second column          \\
-  hasexternalref      : Show records with the field \042ExternalReference\042           \\
-  hasnotes            : Show records with the field \042Notes\042                       \\
-  containers          : Show container records with their contained records             \\
-  esgetfield <arg>    : Show the document id and field specified by <arg> (eg Title)    \\
-  esfield <arg>       : Get specific field for all records that have it. This version   \\
-                        Allows compound fields, eg. Document.Status.Reason              \\
-  esrectypes          : Show record uris and their associated record types              \\
-"                                                                                       \\
-'
-
-alias eshelpauto      'echo                                                             \\
-"                                                                                       \\
-For curl commands, see : eshelpcurl                                                     \\
-For elastic search commands, see : elastichelp (or eshelp)                              \\
-                                                                                        \\
-To build the auto-classification dataset, run the following commands;                   \\
-   popdbac - runs podpb with --dbid AC and --dbname elastic_autoclass                   \\
-   saveac  - save the dataset with above data                                           \\
-   testac  - runs testttrim with above for autoclassification test --all and then       \\
-             call saveac                                                                \\
-   restoreac - load the above saved data                                                \\
-                                                                                        \\
-buildac is a shortcut to run both popdbac and testac                                    \\
-                                                                                        \\
---- Autoclassification ---                                                              \\
-  acmapping      : Show mapping for the autoclassification index                        \\
-  acsettings     : Show settings for autoclassification index                           \\
-  autoclassinfo  : Show a summary of the autoclassification index                       \\
-  autoclasstypes : Show the different table <types>                                     \\
-  estype <type>  : Query one of the types from the previous command                     \\
-  aclabels       : Print _id, document count, uri and name for all categories/labels    \\
-                                                                                        \\
----   Word statistics  ---                                                              \\
-                                                                                        \\
-  getwords \042id\042  <arg1> <arg2> <arg3>                                             \\
-             Print tabulated words using _id from acwordlabels                          \\
-                                                                                        \\
-      ARG1  - search string which will be matched against each pair                     \\
-              Eg. \042^un\042 will only match words beginning with \047un\047           \\
-      ARG2  - number of columns (default 10)                                            \\
-      ARG3  - size of columns (default 30)                                              \\
-                                                                                        \\
-  If all words should be printed, but you want to change arg2 or arg3, then;            \\
-  getwords \042^.+\042 8 25   (all words with 8 columns and col width 25)               \\
-                                                                                        \\
-Manipulate word counts and test classification process                                  \\
-                                                                                        \\
-  testac --inplace --classify --input \042hockey science ...\042 --debug > output.txt   \\
-  espy --ac_analyse output.txt                                                          \\
-             With the WGS running, run testtrim with the text input and see how         \\
-             terms are scored.  Feed the output into espy to analyse the results        \\
-                                                                                        \\
-  espy --ac_modify 9000000018:zubkoff:1                                                 \\
-             Change the word count for \047zubkoff\047 to a value of 1. Changing        \\
-             a value to 0 will remove the word for the given label.                     \\
-                                                                                        \\
-"                                                                                       \\
-'
-
-alias eshelp elastichelp
-alias helpelastic elastichelp
-
-alias espyhelp      'echo                                                                       \\
-"                                                                                               \\
-  espy           Show all indexes and assign integer value to each index                        \\
-  espy \047index\047   Show info for specific index (can use an integer for \047index\047)      \\
-                                                                                                \\
-  espy s/5/q:a   (long form: search/5/query:all)                                                \\
-                 Search(s) the 5th index and Query(q) All(a)                                    \\
-                                                                                                \\
-  espy s/5/9000000020  (long form: search/5/9000000020)                                         \\
-                 Show document with _id (uri) 9000000020                                        \\
-                                                                                                \\
-  espy s/5       (long form: search/5)                                                          \\
-                 Show top 10 documents for index 5                                              \\
-                                                                                                \\
-  espy s/5 -s Number:Title                                                                      \\
-                 As above but only show Number and Title fields                                 \\
-                                                                                                \\
-  espy s/5 -s Number:Title --compact                                                            \\
-                 As above but remove _index,_score,_source,_type fields                         \\
-                                                                                                \\
-  espy s/5 -e Document                                                                          \\
-                 Exclude \047Document\047 from the _source properties                           \\
-                                                                                                \\
-  espy s/cm_m1 --brief --size 100                                                               \\
-                 Get the first 100 documents with 1 entry per line (_id,_sore,Title)            \\
-                                                                                                \\
-  espy s/cm_m1/query:Notes:\042patterson\042 -s Notes --compact                                 \\
-                 Search all \047Notes\047 fields in cm_m1 for the string \047patterson\047 and  \\
-                 limit the output to only the \047Notes\047 field                               \\
-                                                                                                \\
-  espy s/cm_m1/q:Document.Content:trim -s Document --compact                                    \\
-                 Search in the document content field for all occurrences of \047trim\047       \\
-                 and limit the output to only the \047Document.Content\047 field                \\
-                                                                                                \\
-  espy s/cm_m1/q:Document.Content:trim --brief                                                  \\
-                 As above, but just print the matching URIs                                     \\
-\n\n"                                                                                           \\
-'
-
+alias elastichelp          'esperl --es_help'
+alias eshelpsearch         'esperl --es_help_search'
+alias eshelpauto           'esperl --es_help_ac'
+alias eshelp               elastichelp
+alias helpelastic          elastichelp
+alias eshelppy             'esperl --es_help_py'
 
 alias elasticblog         'vi $CLOUD_DIR/Work/elastic.txt; scrub $CLOUD_DIR/Work/elastic.txt' 
 alias eblog               elasticblog
@@ -311,86 +136,15 @@ alias mapping             'esget \!^/_mappings?pretty'
 alias espolicy            'esget _ilm/policy/cm-policy-$var_elasticIndex?pretty'
 alias estemplate          'esget _template/cm-template-$var_elasticIndex?pretty'
 alias estemplateraw       'esget _template/cm-template-$var_elasticIndex'
-alias estemplatemapping   '(echo cm-template-$var_elasticIndex && estemplateraw )                               \\
- | $PERL -e '"'"'                                             \\
-use strict;                                                   \\
-use JSON;                                                     \\
-                                                              \\
-my @in = <>;                                                  \\
-my $template = shift @in;                                     \\
-chomp $template;                                              \\
-my $input = shift @in;                                        \\
-                                                              \\
-my $j = JSON->new->allow_nonref;                              \\
-my $parsed = $j->decode($input);                              \\
-#print $j->pretty->encode($parsed->{$template}{"mappings"});  \\
-my $map = $parsed->{$template}{"mappings"}{properties};       \\
-                                                              \\
-my %mapping;                                                  \\
-my $max = 15;                                                 \\
-for (sort keys %$map){                                        \\
-   $max = $max > length($_) ? $max : length($_);              \\
-   if($map->{$_}{type}){                                      \\
-     $mapping{$_} = $map->{$_}{type};                         \\
-   }                                                          \\
-   else {                                                     \\
-     $mapping{$_} = "";                                       \\
-   }                                                          \\
-}                                                             \\
-                                                              \\
-for(sort keys %mapping){                                      \\
-  my $sp = " " x ($max - length($_) + 1);                     \\
-  print $_.$sp.": ".$mapping{$_}."\n";                        \\
-}                                                             \\
-'"'"
 
+alias esperl              '$PERL $CYG_HOME/aliases/tcsh/elastic.pl'
+alias esperlhelp          'esperl -h'
+
+alias estemplatemapping   '(echo cm-template-$var_elasticIndex && estemplateraw ) | esperl --template_mapping'
 alias esindexproperties   'esget $var_elasticIndex.properties/_doc/_properties?pretty'
 alias indexproperties     esindexproperties
 alias esindexmetadata     'esget $var_elasticIndex.properties/_doc/_metadata?pretty'
-alias metadata            'esindexmetadata                          \\
-| $PERL -e '"'"'                                                    \\
-use strict; use JSON;                                               \\
-my @input = <>;                                                     \\
-my ($max1,$max2,$max3,$max4) = (15,5,8,8);                          \\
-my %fields;                                                         \\
-my $j = JSON->new;                                                  \\
-my $parsed = $j->decode("@input");                                  \\
-#print $j->pretty->encode($parsed->{"_source"}{Metadata});          \\
-my $meta = $parsed->{"_source"}{Metadata};                          \\
-for(keys %$meta){                                                   \\
-    my $typ = $meta->{$_}{ElasticType};                             \\
-    my $isdef = $meta->{$_}{IsDefault} ? "true" : "false";          \\
-    my $enabled = $meta->{$_}{Enabled} ? "true" : "false";          \\
-    my $pid = $meta->{$_}{PropertyOrFieldID};                       \\
-                                                                    \\
-    $max1 = length($_) > $max1 ? length($_) : $max1;                \\
-    $max2 = length($pid) > $max2 ? length($pid) : $max2;            \\
-    $max3 = length($typ) > $max3 ? length($typ) : $max3;            \\
-                                                                    \\
-    $fields{$_} = [$typ, $enabled, $isdef, $pid];                   \\
-}                                                                   \\
-                                                                    \\
-++$max1; ++$max2; ++$max3;                                          \\
-my $n = "NAME";                                                     \\
-my $s = " " x ($max1 - length($n));                                 \\
-my $i = "ID";                                                       \\
-my $s1 = " " x ($max2 - length($i));                                \\
-my $t = "TYPE";                                                     \\
-my $s2 = " " x ($max3 - length($t));                                \\
-my $title = $n.$s.$i.$s1.$t.$s2."DEFAULT ENABLED";                  \\
-my $len = length($title);                                           \\
-                                                                    \\
-print $title."\n".("-" x $len)."\n";                                \\
-                                                                    \\
-for(sort keys %fields) {                                            \\
-  my($typ,$enab,$def,$prop) = @{$fields{$_}};                       \\
-  $s = " " x ($max1 - length($_));                                  \\
-  $s1 = " " x ($max2 - length($prop));                              \\
-  $s2 = " " x ($max3 - length($typ));                               \\
-  my $s3 = " " x ($max4 - length($def));                            \\
-  print "$_$s$prop$s1$typ$s2$def$s3$enab\n";                        \\
-}                                                                   \\
-'"'"
+alias metadata            'esindexmetadata | esperl --index_metadata'
 alias esmetadata          metadata
 alias essearchall         'esgetp _search'
 alias essearch            'esgetp $var_elasticIndex/_search'
@@ -401,7 +155,6 @@ alias docid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=_
 alias recid               '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=Number:REC_\!^&pretty=true"'
 alias metadatasrch        '$CURL "$var_elasticHost/$var_elasticIndex/_search?q=(\!^)&size=1000&pretty=true"'
 alias metasearch          metadatasrch
-
 
 alias recxx               'setenv ES_DOCID \!^; perl -e '"'"' \\
   $id=$ENV{ES_DOCID};                                         \\
@@ -430,37 +183,7 @@ if(/^\s+\"Content\"\s+:\s+\"(.+)\",$/){  \\
   }                                      \\
 }  '"'"
 
-alias containers          'eshasfield_withsrc Container  \\
-| $PERL -e '"'"'                                         \\
-@in = <>;                                                \\
-while(my $l = shift @in) {                               \\
-  $cont = $uri = "";                                     \\
-  if($l =~ /"_source"/){                                 \\
-    $l = shift @in;                                      \\
-    while($l and $l !~ /"_source"/) {                    \\
-      if($l =~ /"Container":\s+(\d+)/i) {                \\
-        $cont = $1;                                      \\
-      }                                                  \\
-      elsif($l =~ /"Uri":\s+(\d+)/i) {                   \\
-        $uri = $1;                                       \\
-      }                                                  \\
-      $l = shift @in;                                    \\
-    }                                                    \\
-    push @{$containers{$cont}}, $uri;                    \\
-    if($l =~ /"_source"/){                               \\
-      unshift @in, $l;                                   \\
-    }                                                    \\
-  }                                                      \\
-}                                                        \\
-for(sort keys %containers) {                             \\
-  $k = $_;                                               \\
-  print "$k:\n";                                         \\
-  for(sort @{$containers{$k}}) {                         \\
-    print "\t$_\n";                                      \\
-  }                                                      \\
-}                                                        \\
-'"'"
-
+alias containers          'eshasfield_withsrc Container | esperl --container_records'
 alias esdeldocid          '$CURL -XDELETE "$var_elasticHost/$var_elasticIndex/_doc/\!^"'
 alias delxx               'setenv ES_DOCID \!^; perl -e '"'"' \\
   $id=$ENV{ES_DOCID};                                         \\
@@ -483,41 +206,31 @@ alias esquerystring       'pycurldef -q'
 
 alias escommand           'pycurldef -f $ELASTIC_QUERIES'
 alias escommand_debug     'pycurldef -d -f $ELASTIC_QUERIES'
-alias eshasfield          'escommand -c field_exists \!^ | grep _id | sort | $PERL -ne '"'"' s/^.+:\s*"([^"]+)".+$/$1/; chomp; print "$_\n"; '"'"
+alias eshasfield          'escommand -c field_exists \!^ | \\
+grep _id | sort | $PERL -ne  '"'"'                         \\
+  s/^.+:\s*"([^"]+)".+$/$1/;                               \\
+  chomp;                                                   \\
+  print "$_\n";                                            \\
+'"'"
 alias eshasfield_withsrc  'escommand --source -c field_exists \!^' 
 alias hasclassification   'eshasfield Classification' 
 alias hascontainer        'eshasfield Container' 
 alias hascontent          'eshasfield Document.Content' 
-alias hascontenttrim      'eshasfield Document.Content | $PERL -e '"'"' @i=<>; for(@i){ chomp; s/^(\d+)\..+$/$1/; $u{$_}=1;} for(sort {$a<=>$b} keys %u){print "$_\n"} '"'" 
-alias withandwithout      'hascontenttrim       \\
- | $PERL -e '"'"'                               \\
-@in = <>;                                       \\
-$current = 0;                                   \\
-for(@in){                                       \\
-  chomp;                                        \\
-  if($current) {                                \\
-     $next = $current + 1;                      \\
-     if($next == $_){                           \\
-       print "$_\n";                            \\
-     }                                          \\
-     else {                                     \\
-       $prev = $_ - 1;                          \\
-       $sp = " " x length($current);            \\
-       if($next == $prev) {                     \\
-         $missing = "$sp$next";                 \\
-       }                                        \\
-       else {                                   \\
-         $diff = $prev - $next;                 \\
-         $missing = "$sp$next -> $prev ($diff)";\\
-       }                                        \\
-       print " $missing\n$_\n";                 \\
-     }                                          \\
-  }                                             \\
-  else { print "$_\n" }                         \\
-  $current = $_;                                \\
-}                                               \\
-'"'"
+alias hascontenttrim      'eshasfield Document.Content | \\
+$PERL -e '"'"'                                           \\
+@i=<>;                                                   \\
+for(@i) {                                                \\
+  chomp;                                                 \\
+  s/^(\d+)\..+$/$1/;                                     \\
+  $u{$_}=1;                                              \\
+}                                                        \\
+                                                         \\
+for(sort {$a<=>$b} keys %u){                             \\
+  print "$_\n"                                           \\
+}                                                        \\
+'"'" 
 
+alias withandwithout      'hascontenttrim  | esperl --records_with_and_without_content'
 alias hasexternalref      'eshasfield ExternalReference' 
 alias hasnotes            'eshasfield Notes' 
 alias hasallcontacts      'eshasfield AllContacts'
@@ -539,79 +252,7 @@ for (sort keys %uniq){             \\
 }                                  \\
 '"'"
 
-alias esgetfield          '(echo \!^ && escommand -c get_field \!^)  \\
- | $PERL -e  '"'"'                                             \\
-                                           \\
-@in = <>;                                  \\
-$field = shift @in;                        \\
-chomp $field;                              \\
-$suffix = $field;                          \\
-$suffix =~ s/^.+\.([^.]+)$/$1/;            \\
-#print "FIELD: $suffix\n";                 \\
-for(@in){                                  \\
-  chomp;                                   \\
-  if(/"_id"\s*:\s*"([^"]+)",/){            \\
-    print "$1\t";                          \\
-  }                                        \\
-  elsif(/^\s+"$suffix"\s*:\s*(.+)$/i) {    \\
-    $val = $1;                             \\
-    #$val =~ s/^"//;                       \\
-    #$val =~ s/"$//;                       \\
-    print "$val\n";                        \\
-  }                                        \\
-}                                          \\
-'"'" 
-
-alias esfield              '(echo \!^ && escommand --json -c get_field \!^)         \\
- | $PERL -e  '"'"'                                                                  \\
-use strict; use JSON;                                                               \\
-use 5.032;                                                                          \\
-                                                                                    \\
-my @in = <>;                                                                        \\
-my $field = shift @in;                                                              \\
-chomp $field;                                                                       \\
-my $j = JSON->new->allow_nonref;                                                    \\
-my $parsed = $j->decode("@in");                                                     \\
-my $count = $parsed->{hits}{total}{value};                                          \\
-my $hits = $parsed->{hits}{hits};                                                   \\
-if($count > 0){                                                                     \\
-  say "[Hits $count]";                                                              \\
-  for my $hit (@$hits) {                                                            \\
-     my $id = $hit->{_id};                                                          \\
-     my $src = $hit->{_source};                                                     \\
-	                                                                                \\
-	 if($field =~ /\./){                                                            \\
-	   my @f = split /\./, $field;                                                  \\
-	   print  "$id: $field { ";                                                     \\
-	   my @out; my $len = scalar @f;                                                \\
-	   if($len == 2) {                                                              \\
-	     @out = split /\n/, $j->pretty->encode($src->{$f[0]}{$f[1]});               \\
-       }                                                                            \\
-	   if($len == 3) {                                                              \\
-	     @out = split /\n/, $j->pretty->encode($src->{$f[0]}{$f[1]}{$f[2]});        \\
-       }                                                                            \\
-	   if($len == 4) {                                                              \\
-	     @out = split /\n/, $j->pretty->encode($src->{$f[0]}{$f[1]}{$f[2]}{$f[3]}); \\
-       }                                                                            \\
-	   if($len == 5) {                                                              \\
-	     @out = split /\n/, $j->pretty->encode($src->{$f[0]}{$f[1]}{$f[2]}{$f[3]}{$f[4]}); \\
-       }                                                                            \\
-	   if($out[0] =~ /^\{/){                                                        \\
-         shift @out;                                                                \\
-	   }                                                                            \\
-	   if($out[$#out] =~ /^\}/){                                                    \\
-	     pop @out;                                                                  \\
-	   }                                                                            \\
-	   my $l = join " ", map { s/^\s+//; s/\s+$//; $_ } @out;                       \\
-	   say "$l }";                                                                  \\
-	 }                                                                              \\
-	 else {                                                                         \\
-	   say "$id: ".$src->{$field};                                                  \\
-	 }                                                                              \\
-  }                                                                                 \\
-}                                                                                   \\
-'"'" 
-
+alias esfield             '(echo \!^ && escommand --json -c get_field \!^) | esperl --get_field'
 alias titles              'esgetfield Title | sort'
 alias booktitlesv         'esgetfield Title | sort       \\
 | $PERL -ne '"'"'                                        \\
@@ -657,96 +298,11 @@ for(@in){                                                         \\
   print T $_;                                                     \\
 } '"'" 
 
-alias docid2acronym    'capture_input && booktitlesv > /c/temp/booktitles.txt;   \\
-$PERL -e '"'"'                                                                   \\
-                                                                                 \\
-   open IN, "C:/temp/xxx.txt" or die "Couldnt read /c/temp/xxx.txt";             \\
-   @input = <IN>;                                                                \\
-   close IN;                                                                     \\
-                                                                                 \\
-   for(@input){                                                                  \\
-     chomp;                                                                      \\
-     s/\s+//;                                                                    \\
-     $docids .= "$_,";                                                           \\
-   }                                                                             \\
-   chop $docids;                                                                 \\
-                                                                                 \\
-  open F, "C:/temp/booktitles.txt" or                                            \\
-      die "Couldnt read /c/temp/booktitles.txt\n";                               \\
-  @in = <F>;                                                                     \\
-  for(@in){                                                                      \\
-    chomp;                                                                       \\
-    if(/^(\d+)\s+(\w+)/){                                                        \\
-       $uri{$1} = $2;                                                            \\
-    }                                                                            \\
-  }                                                                              \\
-                                                                                 \\
-  %ids = map { s/^(\d+).*$/$1/; $_ => 1 } split /,/, $docids;                    \\
-                                                                                 \\
-  for(keys %ids){                                                                \\
-    if(exists $uri{$_}) { $valid{$_} = 1; }                                      \\
-  }                                                                              \\
-  $COUNT = scalar(keys %valid);                                                  \\
-                                                                                 \\
-  for(keys %uri){                                                                \\
-    if(not exists $valid{$_}){                                                   \\
-      $missing .= $uri{$_}.",";                                                  \\
-      push @missSorted, $uri{$_};                                                \\
-    }                                                                            \\
-  }                                                                              \\
-  $missing =~ s/,$//;                                                            \\
-  $miss_sort = join ",", sort @missSorted;                                       \\
-  $COUNT_NOMATCH = scalar(@missSorted);                                          \\
-                                                                                 \\
-  $acr = join ",", sort map { $uri{$_} } (keys %valid) ;                         \\
-  $acrbyid = join ",", map { $uri{$_} } (sort keys %valid) ;                     \\
-  $uribyid = join "\n", map { "$_\t".$uri{$_} } (sort keys %valid);              \\
-  $acr =~ s/^,|,$//;  $acrbyid =~ s/^,|,$//;                                     \\
-  $acr =~ s/,+/,/g;   $acrbyid =~ s/,+/,/g;                                      \\
-  #print "\n$acr\n\n"; print "ORDERED BY ID:\n$acrbyid\n\n";                     \\
-                                                                                 \\
-  print "\nMatched: $COUNT (unmatched $COUNT_NOMATCH)\n".                        \\
-          "Matches: $acr\n".                                                     \\
-          "By ID  : $acrbyid\n\n$uribyid\n";                                     \\
-                                                                                 \\
-  if($missing ne ""){                                                            \\
-    print "\n[Count      : $COUNT_NOMATCH]\n";                                   \\
-    print   "[NOT MATCHED: $missing]\n";                                         \\
-    print   "[SORTED     : $miss_sort]\n";                                       \\
-  }                                                                              \\
-'"'"
+alias docid2acronym         'capture_input && booktitlesv > /c/temp/booktitles.txt; esperl --book_id_2_acronym'
 alias getacronyms           docid2acronym
 alias toacronyms            docid2acronym
 
-alias bookdates           '(booktitlesv && esgetfield DateCreated)  \\
- | $PERL -e '"'"'                         \\
-while(<>){                                \\
-  chomp;                                  \\
-                                          \\
-  if(/^(\d+)\s+(\w+)\s+(\w.+)$/) {        \\
-    my($u,$a,$t) = ($1,$2,$3);            \\
-    $title{$u} = $t;                      \\
-  }                                       \\
-  elsif(/^(\d+)\s+"([^"]+)"/){            \\
-    my($u,$d) = ($1,$2);                  \\
-    $date{$u} = $d;                       \\
-    $byDate{$d} = $u;                     \\
-  }                                       \\
-}                                         \\
-                                          \\
-for(sort keys %title){                    \\
-  my $date = $date{$_};                   \\
-  print "$_  $date  $title{$_}\n";        \\
-}                                         \\
-print "\n---- BY DATE ----\n\n";          \\
-for(sort keys %byDate){                   \\
-  my $uri = $byDate{$_};                  \\
-  if(exists $title{$uri}){                \\
-    my $title = $title{$uri};             \\
-    print "$_  $uri  $title\n";           \\
-  }                                       \\
-}                                         \\
-'"'"
+alias bookdates           '(booktitlesv && esgetfield DateCreated) | esperl --book_dates'
 
 alias doccontent          'escommand -c get_record_content \!^ \\
  | $PERL -ne '"'"'            \\
@@ -898,88 +454,13 @@ alias elastic_add_wlc_prefix 'set wlcIndex=`echo \!^ | sed -r -e "s/^([[:digit:]
 #  ARG2  - number of columns (default 10)
 #  ARG3  - size of columns (default 30)
 #
-alias getwords 'setenv AC_SEARCH_STR "\!*"                          \\
-&& elastic_add_wlc_prefix \!:1                              \\
-&& espy search/$var_elasticIndexAC/$wlcIndex --compact -s word_count        \\
-| $PERL -e '"'"'                                    \\
-my ($cols, $width) = (10, 30);                                                      \\
-@a = split /\s+/, $ENV{AC_SEARCH_STR};                                              \\
-#                                                                                   \\
-#  We may have added a missing wlc_ prefix using elastic_add_wlc_prefix             \\
-my $ind = shift @a; $ind =~ s/^(\d)/wlc_$1/;                                        \\
-#                                                                                   \\
-my (@tooLong, $out, $outf, @args);                                                  \\
-$out = "INDEX: $ind";                                                               \\
-for($i=0; $i <= $#a; $i++){                                                         \\
-   if($a[$i] eq ">") { $outf = $a[$i + 1]; last; }                                  \\
-   @args[$i] = $a[$i];                                                              \\
-}                                                                                   \\
-                                                                                    \\
-if(scalar(@args) >= 1) { $srchStr = $args[0]; $out .= ", SEARCH: \"$srchStr\""; }   \\
-if(scalar(@args) >= 2) { $cols    = $args[1]; $out .= ", COLUMNS: $cols"; }         \\
-if(scalar(@args) >= 3) { $width   = $args[2]; $out .= ", WIDTH: $width"; }          \\
-                                                                                    \\
-if($outf) { print "OutputFile => $outf\n"; }                                        \\
-                                                                                    \\
-$out .= "\n";                                                                       \\
-while(<>) {                                                                         \\
-  chomp;                                                                            \\
-  if(/^\s+"word_count":\s+"(.+)"$/){                                                \\
-     @pairs = split /,/, $1;                                                        \\
-     $out .= "WORD Count = ".scalar(@pairs)."\n";                                   \\
-     $i=1;                                                                          \\
-     for(@pairs){                                                                   \\
-        if($srchStr) { next unless /$srchStr/; }                                    \\
-        if(length($_) >= $width){ push @tooLong, $_; next }                         \\
-        $space = " " x ($width - length($_));                                       \\
-        $out .= $_.$space;                                                          \\
-        ++$i;                                                                       \\
-        if($i % $cols == 0){ $out .= "\n"; }                                        \\
-     }                                                                              \\
-  }                                                                                 \\
-}                                                                                   \\
-$out .= "\n\n";                                                                     \\
-for(@tooLong){ $out .= "$_\n"; }                                                    \\
-if($outf) {                                                                         \\
-  open OUT, ">$outf" or die "Couldnt open $outf\n";                                 \\
-  print OUT $out;                                                                   \\
-  close OUT;                                                                        \\
-}                                                                                   \\
-else { print $out; }                                                                \\
-exit;                                                                               \\
-'"'" 
+alias getwords 'setenv AC_SEARCH_STR "\!*"                           \\
+&& elastic_add_wlc_prefix \!:1                                       \\
+&& espy search/$var_elasticIndexAC/$wlcIndex --compact -s word_count \\
+| esperl  --autoclass_getwords '
 
-alias esprocesslog  'cat \!^ | $PERL -e '"'"'          \\
-                                                           \\
-while(<>) {                                                \\
-  chomp $_;                                                \\
-  if (/^[\d:]+\s+[A-z]{2}\s+(\d+)/) {                      \\
-     $thread = $1;                                         \\
-     push @{$log[$thread]}, "$_\n";                        \\
-  }                                                        \\
-  else {                                                   \\
-    print "$_\n";                                          \\
-  }                                                        \\
-}                                                          \\
-for(my $i=1; $i <= $#log; $i++ ){                          \\
-  print "Thread\t$i (".scalar(@{$log[$i]})." entries) \t"; \\
-  open T,">Thread_$i.txt" or die;                          \\
-  for(@{$log[$i]}){                                        \\
-     print T $_;                                           \\
-  }                                                        \\
-  close T;                                                 \\
-  print "=> Thread_$i.txt\n";                              \\
-                                                           \\
-}                                                          \\
-                                                           \\
- print "\nTo get the list of files for a thread;\n\n\t";   \\
- print ">esgetfiles 'Thread_1.txt'\n\n";                   \\
-                                                           \\
-                                                           \\
-'"'"
-
+alias esprocesslog  'cat \!^ | esperl --es_process_log'
 alias esgetfiles 'cat \!^ | $PERL -e '"'"'                 \\
-                                                           \\
 while(<>) {                                                \\
   chomp $_;                                                \\
   if (/^([\d:]+)\s+[A-z0-9]{2}\s+(\d+\s+){6}([^\s]+)/) {   \\
@@ -992,8 +473,6 @@ while(<>) {                                                \\
 for(sort keys %bytime){                                    \\
   print "$_\t$bytime{$_}\n";                               \\
 }                                                          \\
-                                                           \\
-                                                           \\
 '"'"
 
 #
@@ -1029,115 +508,12 @@ alias essvn_debug         'pycurlsvn -d -f $ELASTIC_SVN_QUERIES'
 alias essvnfile           'essvn --json --size 10000 -c search_by_file \!^ | lookForSvnFile '
 alias essvnfilev           'setenv ESSVNFILE verbose; essvn --json --size 10000 -c search_by_file \!^ | lookForSvnFile ; unsetenv ESSVNFILE'
 
-alias lookForSvnFile      ' $PERL -e '"'"'                                            \\
-use JSON::MaybeXS;                                                                    \\
-use strict;                                                                           \\
-                                                                                      \\
-my $verbose = $ENV{ESSVNFILE};                                                        \\
-my @in = <>;                                                                          \\
-my $json = join "", map { chomp $_; $_ } @in;                                         \\
-my $obj = decode_json($json);                                                         \\
-my $out = encode_json($obj);                                                          \\
-my $maxa = 10;                                                                        \\
-my $maxParent = 40;                                                                   \\
-my $maxMessage = 100;                                                                 \\
-my %hits;                                                                             \\
-if(exists $obj->{hits}{total}{value}){                                                \\
-  print "[".$obj->{hits}{total}{value}." hits]\n";                                    \\
-  for my $h (@{$obj->{hits}{hits}}) {                                                 \\
-    my $r = $h->{_source}{revision};                                                  \\
-    my $a = $h->{_source}{author};                                                    \\
-    $maxa= length($a) > $maxa ? length($a) : $maxa;                                   \\
-    $hits{$r}{source} = $h->{_source};                                                \\
-    my $inner = $h->{inner_hits}{files}{hits}{hits}[0]{_source};                      \\
-    $hits{$r}{inner} = $inner;                                                        \\
-  }                                                                                   \\
-  #print "MAX = $maxa\n"; exit;                                                       \\
-  for(sort {$a<=>$b} keys %hits){                                                     \\
-    my $s = $hits{$_}{source};                                                        \\
-    my $in = $hits{$_}{inner};                                                        \\
-    my ($r,$a,$d,$message) = ($s->{revision},$s->{author},$s->{date},$s->{message});  \\
-    my $sp = " " x ($maxa - length($a) + 1);                                          \\
-    my $action = $in->{action};                                                       \\
-    $action =~ s/^(.).+$/$1/;                                                         \\
-    print "$r\t$a$sp$d  [$action] ";                                                  \\
-                                                                                      \\
-    my $parent = $in->{parent};                                                       \\
-    $parent =~ s/^\/repos//i;                                                         \\
-    if(not $verbose) {                                                                \\
-       print "$parent\n";                                                             \\
-    }                                                                                 \\
-    else {                                                                            \\
-      my $pl = length($parent);                                                       \\
-      if($pl > $maxParent) {                                                          \\
-        my $cut = $pl - $maxParent;                                                   \\
-        $parent =~ s/^.{$cut}//;                                                      \\
-        $parent = "...".$parent;                                                      \\
-      }                                                                               \\
-      my $sp2 = " " x ($maxParent + 4 - length($parent));                             \\
-                                                                                      \\
-      $message =~ s/[\r\n]+/ /g;                                                      \\
-      my $ml = length($message);                                                      \\
-      if ($ml > $maxMessage) {                                                        \\
-        my $cut = $ml - $maxMessage;                                                  \\
-        $message =~ s/.{$cut}$/ .../;                                                 \\
-      }                                                                               \\
-      print "$parent$sp2$message\n";                                                  \\
-    }                                                                                 \\
-  }                                                                                   \\
-}                                                                                     \\
-'"'"
+alias lookForSvnFile      'esperl --svn_look_for_file'
+alias essvnparent         'essvn --json --size 10000 -c search_by_parent \!^ | lookForSvnParent '
+alias essvnparentv        'setenv ESSVNFILE verbose; essvn --json --size 10000 -c search_by_parent \!^ | lookForSvnParent ; unsetenv ESSVNFILE'
+alias essvnparentexact    'essvn --json --size 10000 -c search_by_parent_exact \!^ | lookForSvnParent '
 
-alias essvnparent            'essvn --json --size 10000 -c search_by_parent \!^ | lookForSvnParent '
-alias essvnparentv           'setenv ESSVNFILE verbose; essvn --json --size 10000 -c search_by_parent \!^ | lookForSvnParent ; unsetenv ESSVNFILE'
-alias essvnparentexact       'essvn --json --size 10000 -c search_by_parent_exact \!^ | lookForSvnParent '
-
-alias lookForSvnParent      ' $PERL -e '"'"'                                          \\
-use JSON::MaybeXS;                                                                    \\
-use Term::ANSIColor qw(:constants :constants256 colored);                             \\
-use strict;                                                                           \\
-                                                                                      \\
-my $verbose = $ENV{ESSVNFILE};                                                        \\
-my @in = <>;                                                                          \\
-my $json = join "", map { chomp $_; $_ } @in;                                         \\
-my $obj = decode_json($json);                                                         \\
-my $out = encode_json($obj);                                                          \\
-my $maxa = 10;                                                                        \\
-my $maxP = 20;                                                                        \\
-my $maxMessage = 100;                                                                 \\
-my %hits;                                                                             \\
-if(exists $obj->{hits}{total}{value}){                                                \\
-  print "[".$obj->{hits}{total}{value}." hits]\n";                                    \\
-  for my $h (@{$obj->{hits}{hits}}) {                                                 \\
-    my $r = $h->{_source}{revision};                                                  \\
-    my $a = $h->{_source}{author};                                                    \\
-    $maxa= length($a) > $maxa ? length($a) : $maxa;                                   \\
-    $hits{$r}{source} = $h->{_source};                                                \\
-    my $inner = $h->{inner_hits}{files}{hits}{hits}[0]{_source};                      \\
-    $hits{$r}{inner} = $inner;                                                        \\
-    my $p = $inner->{parent};                                                         \\
-    $maxP = length($p) > $maxP ? length($p) : $maxP;                                  \\
-  }                                                                                   \\
-  #print "MAX = $maxa\n"; exit;                                                       \\
-  for(sort {$a<=>$b} keys %hits){                                                     \\
-    my $s = $hits{$_}{source};                                                        \\
-    my $in = $hits{$_}{inner};                                                        \\
-    my ($r,$a,$d,$message) = ($s->{revision},$s->{author},$s->{date},$s->{message});  \\
-    my $sp = " " x ($maxa - length($a) + 1);                                          \\
-    my $action = $in->{action};                                                       \\
-    $action =~ s/^(.).+$/$1/;                                                         \\
-    print "$r\t$a$sp$d  [$action] ";                                                  \\
-    my $name = $in->{name};                                                           \\
-    my $parent = $in->{parent};                                                       \\
-    $parent =~ s/^\/repos//i;                                                         \\
-    # Account for removal of 'repos' above by shortening the number of spaces below   \\
-    my $spp = " " x ($maxP - length($parent) - 2);                                    \\
-    print BOLD, $parent.$spp.$name."\n", RESET;                                       \\
-    if($verbose) { print YELLOW, "$message\n", RESET; }                               \\
-  }                                                                                   \\
-}                                                                                     \\
-'"'"
-
+alias lookForSvnParent        'esperl --svn_look_for_parent'
 alias essvnauthor             'essvn --json --size \!:1 -c search_by_author \!:2\* | lookForSvnAuthor '
 alias essvnauth               'essvnauthor 100 \!^'
 alias essvnauthv              'setenv ESSVNFILE verbose; essvnauthor 100 \!^; unsetenv ESSVNFILE'
@@ -1166,65 +542,7 @@ alias yesterdayv              essvnbydateyesterdayv
 alias days                    'essvnbydate now-\!^d/d now'
 alias daysv                   'setenv ESSVNFILE verbose; essvnbydate now-\!^d/d now; unsetenv ESSVNFILE'
 alias lastweek                'essvnbydate now-7d/d now'
-
-alias lookForSvnAuthor      ' $PERL -e '"'"'                                                 \\
-use 5.10.0;                                                                                  \\
-use JSON::MaybeXS;                                                                           \\
-use DateTime;                                                                                \\
-use Time::Piece;                                                                             \\
-use Term::ANSIColor qw(:constants :constants256 colored);                                    \\
-use strict;                                                                                  \\
-                                                                                             \\
-my $verbose = $ENV{ESSVNFILE};                                                               \\
-my @in = <>;                                                                                 \\
-my $json = join "", map { chomp $_; $_ } @in;                                                \\
-my $obj = decode_json($json);                                                                \\
-my $out = encode_json($obj);                                                                 \\
-my $maxa = 10;                                                                               \\
-my %hits;                                                                                    \\
-if(exists $obj->{hits}{total}{value}){                                                       \\
-  print "[".$obj->{hits}{total}{value}." hits]\n";                                           \\
-  for my $h (@{$obj->{hits}{hits}}) {                                                        \\
-    my $rev = $h->{_id};                                                                     \\
-    my $auth = $h->{_source}{author};                                                        \\
-    $maxa= length($auth) > $maxa ? length($auth) : $maxa;                                    \\
-    $hits{$rev}{source} = $h->{_source};                                                     \\
-  }                                                                                          \\
-  my ($curDay,$prevDay,$first);                                                              \\
-  my $first = 0;                                                                             \\
-  for(sort keys %hits){                                                                      \\
-    my $s = $hits{$_}{source};                                                               \\
-    my ($auth,$date,$message,$files) = ($s->{author},$s->{date},$s->{message}, $s->{files}); \\
-	if(not $verbose and $auth =~ /trimbuild/) { next; }                                      \\
- 	$curDay = $date;                                                                         \\
-	$curDay =~ s/^([\d-]+)\s.+$/$1/;                                                         \\
-	if($curDay ne $prevDay) {                                                                \\
-      my $t = Time::Piece->strptime($curDay, "%F");                                          \\
-	  my $human = $t->fullday." ".$t->mday." ".$t->month; # alt. $t->strftime("%A %d %b");   \\
-	  my $header = ("_" x 20)." $curDay ($human) ".("_" x 20)."\n";                          \\
-	  if($first) {                                                                           \\
-	    say BRIGHT_MAGENTA, $header, RESET;                                                  \\
-	  }                                                                                      \\
-	  else {                                                                                 \\
-		say BRIGHT_GREEN, $header, RESET;                                                    \\
-		++$first;                                                                            \\
-	  }                                                                                      \\
-	  $prevDay = $curDay;                                                                    \\
-	}                                                                                        \\
-    my $sp = " " x ($maxa - length($auth) + 1);                                              \\
-    $message =~ s/^\s+$//gm;                                                                 \\
-    print CYAN,$_,RESET,"\t$auth$sp",RED,"$date\n", YELLOW, $message, RESET, "\n";           \\
-	if($verbose){                                                                            \\
-	  for my $f (@$files) {                                                                  \\
-	    my $act = $f->{action};                                                              \\
-		$act =~ s/^(...).+$/$1/;                                                             \\
-	    print GREEN, "\t$act ".$f->{parent}."/".$f->{name}."\n";                             \\
-	  }                                                                                      \\
-	  print RESET;                                                                           \\
-	}                                                                                        \\
-  }                                                                                          \\
-}                                                                                            \\
-'"'"
+alias lookForSvnAuthor        'esperl --svn_look_for_author'
 
 
 

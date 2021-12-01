@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use 5.030;
+use 5.032;
 use strict;
 use XML::LibXML qw(:libxml);
 use Getopt::Long;

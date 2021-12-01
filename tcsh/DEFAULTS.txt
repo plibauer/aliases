@@ -40,6 +40,7 @@ setenv SVN_STATIC_FILE         file:///$SVN_STATIC_PATH
 setenv SVN_STATIC_DB           $STORE_DRIVE/svnLogDatabase
 #  
 setenv CYGUSER                 plibauer
+setenv CYG_HOME                C:/cygwin/home/$CYGUSER
 setenv CYG_WIN_HOME            /c/Users/$CYGUSER
 setenv WIN_HOME                C:/Users/$CYGUSER
 setenv CLOUD_DIR               $WIN_HOME/CLOUD
@@ -52,14 +53,14 @@ setenv GIT_URL                 git://$GIT_HOST/
    
 setenv PERL_PATH               /c/strawberry/perl/bin
 setenv PERL                    $PERL_PATH/perl.exe
-setenv PERL_HOME               C:/cygwin/home/$CYGUSER/perl
+setenv PERL_HOME               $CYG_HOME/perl
 setenv STATIC_PERL             $STATIC_REPO/libs/Perl
    
 setenv PYTHON_PATH             /c/python
 setenv PYTHON_SCRIPTS          $PYTHON_PATH/Scripts
 setenv PYTHON                  $PYTHON_PATH/python.exe
 setenv PYTHON_CYG              /bin/python3
-setenv PYTHON_HOME             C:/cygwin/home/$CYGUSER/python
+setenv PYTHON_HOME             $CYG_HOME/python
 setenv STATIC_PY               $STATIC_REPO/libs/Python
    
 setenv DEVENV_ROOT             "C:/Program Files (x86)"

@@ -69,27 +69,30 @@ alias octaneinitialise     'pycurl -u "$var_elasticHostOctane" -c update_octane 
 alias octaneupdate         'pycurl -u "$var_elasticHostOctane" -c update_octane -f $ELASTIC_QUERIES http://10.11.12.2:9273 octane_new now-2w octane_new'
 alias octaneupdatemore     'pycurl -u "$var_elasticHostOctane" -c update_octane -f $ELASTIC_QUERIES http://10.11.12.2:9273 octane_new now-1M octane_new'
 alias octanelatest         'pycurl -u "$var_elasticHostOctane/octane_new" -c octane_show_latest --json -f $ELASTIC_QUERIES --size \!^ | perl -e '"'"' \\
-use strict;								                                            \\
-use 5.032;                                                                          \\
-use JSON;                                                                           \\
-use Term::ANSIColor qw(:constants :constants256 colored);                           \\
-                                                                                    \\
-my @in = <>;								                                        \\
-my $j = JSON->new->allow_nonref;                                                    \\
-my $parsed = $j->decode("@in");                                                     \\
-my $count = $parsed->{hits}{total}{value};                                          \\
-my $hits = $parsed->{hits}{hits};                                                   \\
-if($count > 0){                                                                     \\
-  say "[Hits $count]";                                                              \\
-  for my $hit (@$hits) {                                                            \\
-     my $id = $hit->{_id};                                                          \\
-	 $id =~ s/^oct(im|cr|cl)6j//i;                                                  \\
-     my $src = $hit->{_source};                                                     \\
-     my ($name,$date) = ($src->{name}, $src->{last_modified});                      \\
-     $date =~ s/^([\d-]+)T([\d:]+).+$/$1 $2/;                                       \\
- 	 print "$date  ",YELLOW,"$id: ", CYAN, "$name\n", RESET;	                    \\
-  }								                                                    \\
-}								                                                    \\
+use strict;                                                      \\
+use 5.032;                                                       \\
+use JSON;                                                        \\
+use utf8;                                                        \\
+use Term::ANSIColor qw(:constants :constants256 colored);        \\
+                                                                 \\
+my $in = join "", <>;                                            \\
+utf8::encode($in);                                               \\
+binmode *STDOUT, ":encoding(UTF-8)";                             \\
+my $j = JSON->new->allow_nonref;                                 \\
+my $parsed = $j->decode($in);                                    \\
+my $count = $parsed->{hits}{total}{value};                       \\
+my $hits = $parsed->{hits}{hits};                                \\
+if($count > 0){                                                  \\
+  say "[Hits $count]";                                           \\
+  for my $hit (@$hits) {                                         \\
+     my $id = $hit->{_id};                                       \\
+	 $id =~ s/^oct(im|cr|cl)6j//i;                                 \\
+     my $src = $hit->{_source};                                  \\
+     my ($name,$date) = ($src->{name}, $src->{last_modified});   \\
+     $date =~ s/^([\d-]+)T([\d:]+).+$/$1 $2/;                    \\
+ 	 print "$date  ",YELLOW,"$id: ", CYAN, "$name\n", RESET;       \\
+  }                                                              \\
+}                                                                \\
 '"'"
 
 alias octanenew			   'octanelatest 10'
