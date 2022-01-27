@@ -16,6 +16,11 @@ set DEVURL = $IDOL_PROXY/action
 
 alias idolhelp      'echo                                                                           \\
 "\n                                                                                                 \\
+---------------------- DATABASE --------------------------------------------------------            \\
+idoldbs               : List the currently configured IDOL databases                                \\
+idolremovedb          : Remove the default database (eg. CM_M5)                                     \\
+\\
+---------------------- CONFIGURATION ---------------------------------------------------            \\
 idolconfig            : Sets up DBID with suffix 5 and dataset name with suffix '_idol'             \\
 popdbidol             : Runs popdb for above settings                                               \\
 restoreidol           : Restores above database                                                     \\
@@ -99,17 +104,18 @@ set XMLFORMAT = "$PERL $PERL_HOME/xmlformat.pl"
 set CURLDEV   = "curl -XGET $DEVURL"
 set CURLQUERY = "curl -XGET $DEVURL=query"
 
-alias dresync           'curl "$IDOL_PROXY_IDX/DRESYNC"'
-alias removedocs        'curl "$IDOL_PROXY_IDX/DREDELDBASE?DREdbname=\!^"'
-alias removedb          'curl "$IDOL_PROXY_IDX/DREREMOVEDBASE?DREdbname=\!^"'
-alias idolcontent       '$CURLDEV=getcontent\&reference=trim:$var_idolDBID/rec/\!^                  $CURL_OPTS | $XMLFORMAT'
-alias idolref           '$CURLDEV=getcontent\&reference=\!^                                         $CURL_OPTS | $XMLFORMAT'
-alias idolrecordsdb     '$CURLQUERY\&text=\*\&databasematch=\!^\&MaxResults=999                     $CURL_OPTS | $XMLFORMAT'
-alias idolrecords       '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=\!^             $CURL_OPTS | $XMLFORMAT'
-alias idolrecordsall    '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=1000000         $CURL_OPTS | $XMLFORMAT'
-alias idolreference     '$CURLQUERY\&text=\*\&MatchReference=trim:$var_idolDBID/rec/\!^            $CURL_OPTS | $XMLFORMAT'
-alias idolreferencev    '$CURLQUERY\&text=\*\&Print=All\&MaxResults=1000\&MatchReference=trim:$var_idolDBID/rec/\!^ $CURL_OPTS | $XMLFORMAT'
-alias idolquery         '$CURLQUERY\&text=\!^\&MaxResults=1000\&databasematch=$var_idolDb           $CURL_OPTS | $XMLFORMAT'
+alias dresync            'curl "$IDOL_PROXY_IDX/DRESYNC"'
+alias idolremovedocs     'curl "$IDOL_PROXY_IDX/DREDELDBASE?DREdbname=\!^"'
+alias idolremovedatabase 'curl "$IDOL_PROXY_IDX/DREREMOVEDBASE?DREdbname=\!^"'
+alias idolremovedb       'idolremovedatabase $var_idolDb'
+alias idolcontent        '$CURLDEV=getcontent\&reference=trim:$var_idolDBID/rec/\!^                  $CURL_OPTS | $XMLFORMAT'
+alias idolref            '$CURLDEV=getcontent\&reference=\!^                                         $CURL_OPTS | $XMLFORMAT'
+alias idolrecordsdb      '$CURLQUERY\&text=\*\&databasematch=\!^\&MaxResults=999                     $CURL_OPTS | $XMLFORMAT'
+alias idolrecords        '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=\!^             $CURL_OPTS | $XMLFORMAT'
+alias idolrecordsall     '$CURLQUERY\&text=\*\&databasematch=$var_idolDb\&MaxResults=1000000         $CURL_OPTS | $XMLFORMAT'
+alias idolreference      '$CURLQUERY\&text=\*\&MatchReference=trim:$var_idolDBID/rec/\!^            $CURL_OPTS | $XMLFORMAT'
+alias idolreferencev     '$CURLQUERY\&text=\*\&Print=All\&MaxResults=1000\&MatchReference=trim:$var_idolDBID/rec/\!^ $CURL_OPTS | $XMLFORMAT'
+alias idolquery          '$CURLQUERY\&text=\!^\&MaxResults=1000\&databasematch=$var_idolDb           $CURL_OPTS | $XMLFORMAT'
 
 #   Need to % encode left and right brackets
 #
