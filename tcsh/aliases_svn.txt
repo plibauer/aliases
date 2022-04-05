@@ -35,7 +35,6 @@ alias svnlogrev       'svn log $SVN_LAB_URI/REPOS/trunk -v -r "\!^":"\!^"'
 alias trimhead        'svn log $var_trimDir -r HEAD:1 --limit 1 --verbose'
 alias trimlatest      'svn log $var_trimDir -r HEAD:1 --limit 10 --verbose'
 
-alias svnstat         'svn status . -q'
 alias svnstatic       'svn update $STATIC_REPO'
 alias svnrevcurrent   'svn log -v -r "\!^":"\!^"'
 alias svnhead         'svn log -l 1 -v'
@@ -47,6 +46,8 @@ alias svndiff         'svn diff -r PREV'
 alias writeSvnBranch 'svnstatus | $PERL -ne '"'"' /^URL:\s+(.+)\/(REPOS\/.+)/ and do { print "$1/$2\n" }' "' "' > C:/temp/svn_branch_x.txt'
 alias showrevs       'writeSvnBranch && echo -n "\!*"      | processSvnLog'
 alias showchanges     showrevs
+alias svnmods        'svn status $var_trimDir -q'
+alias modifications  svnmods
 
 alias svnstatus       'svn info $var_trimDir | $PERL -ne '"'"' print if /^Path|^URL:|^\n/; '"'"
 alias svnstatusfull   'svn info $var_trimDir | $PERL -ne '"'"' print unless /^(Working Copy|Relative|Node Kind|Schedule)/; '"'"
