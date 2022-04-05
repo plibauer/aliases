@@ -13,12 +13,13 @@ alias svnhelp     'echo                                                         
 \t                           can be specified, eg. --diff 1-5,7,9                                          \\
 \t revhead, statrevhead    : Show last update to trim/staticrepo checkout                                  \\
 \t showlatest              : Show last 10 changes to current path                                          \\
+\t svninfo                 : Show details for the 3 main checkouts, trim, doc and TRIMStaticRepo           \\
+\t svnmods                 : Show local modifications to the current branch eg. C:/trunk                   \\
 \t match <string>          : Search for log entries matching <string>                                      \\
 \t labmatch <string>       : Search for log entries matching <string> in the sqlite database (faster)      \\
 \t sync{lab,static}        : Run svn sync for lab/static                                                   \\
 \t labupdate[local], statupdate[local]                                                                     \\
 \t                         : update the sqlite databases from a remote or local svn server                 \\
-\t svninfo                 : Show details for the 3 main checkouts, trim, doc and TRIMStaticRepo           \\
 \t refresh{lab,static}     : Combination of above 2 aliases                                                \\
 \t remlock, remlockstat    : Remove database locks                                                         \\
 \t lablook, statlook       : Check the sync URL from which we are mirroring                                \\
