@@ -15,6 +15,7 @@ alias trimadmin         '$var_trimDir/$var_defArch/$var_defBuild/TRIMAdmin.exe &
 alias trimhelp          'hh $var_trimDir/doc/doc/DocPub/TRIM.chm &'
 alias admincmd          '$var_trimDir/$var_defArch/$var_defBuild/TRIMAdminCmd.exe \!*'
 alias wgs               '$var_trimDir/$var_defArch/$var_defBuild/TRIMWorkgroup.exe &'
+alias wgsnoevent        '$var_trimDir/$var_defArch/$var_defBuild/TRIMWorkgroup.exe --noEvent &'
 alias messages          'cat $var_trimDir/trim/TRIMMessages.txt | pgrep -i '
 alias trimmessages      '$var_trimDir/trim/TRIMMessages.exe'
 alias pymessages        '$PYTHON $STATIC_PY/VisualStudio/Addin/trimMessages.py'

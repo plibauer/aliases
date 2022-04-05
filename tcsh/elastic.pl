@@ -715,9 +715,16 @@ sub svn_look_for_author {
 
                 $prevDay = $curDay;
             }
+
+            # Try to parse a single parent path to suggest where the commit 
+            # has come from. Eg. /REPOS/branch/10.0/...  would append [10.0/...]
+            my $parent = $files->[0]{parent};
+            $parent =~ s/^(\/REPOS\/(branch\/)*)//;
+            $parent =~ s/^([^\/]+\/[^\/]+\/[^\/]+)\/.+/$1/;
+
             my $sp = " " x ( $maxa - length($auth) + 1 );
             $message =~ s/^\s+$//gm;
-            print CYAN, $_, RESET, "\t$auth$sp", RED, "$date\n", YELLOW,
+            print CYAN, $_, RESET, "\t$auth$sp", RED, "$date", CYAN, " [$parent]\n", YELLOW,
               $message, RESET, "\n";
 
             if ($verbose) {

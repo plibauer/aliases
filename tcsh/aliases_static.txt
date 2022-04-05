@@ -158,6 +158,7 @@ alias gotmp              cd /c/tmp
 alias goperl             cd $STATIC_PERL
 alias gopython           cd $PYTHON_HOME
 alias gopy               gopython
+alias gopystat           cd $STATIC_REPO/libs/python
 alias gop                cd $PERL_HOME
 alias goalm              cd $ALM_DB
 alias gosvn              cd $SVN_LAB_DB
