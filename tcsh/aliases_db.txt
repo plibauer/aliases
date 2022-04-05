@@ -61,7 +61,7 @@ alias boxdrawing            $PERL $STATIC_PERL/db/db.pl --box_drawing
 alias dbquery               $PERL $STATIC_PERL/db/db.pl --server \$var_dbServer
 alias db                    dbpl
 alias dbidol                dbplidol
-alias dbv                   dbpl --version \$env_revision --root \$env_folder
+alias dbv                   dbpl --version \$env_revision --root $REPOS_ROOT/\$env_folder
 alias dbs                   dbquery --database tempdb --list
 alias dbdetails             dbquery --database tempdb --list --verbose
 alias dataset               'dbid | $PERL -ne  '"'"' print "DBID => $_\n"  '"'"
