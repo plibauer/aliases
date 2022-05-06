@@ -66,6 +66,7 @@ setenv STATIC_PY               $STATIC_REPO/libs/Python
 setenv DEVENV_ROOT             "C:/Program Files (x86)"
 setenv DEVENV_ROOT_2017        "$DEVENV_ROOT/Microsoft Visual Studio/2017/Enterprise"
 setenv DEVENV_ROOT_2019        "$DEVENV_ROOT/Microsoft Visual Studio/2019/Enterprise"
+setenv DEVENV_ROOT_2022        "C:/Program Files/Microsoft Visual Studio/2022/Enterprise"
 setenv WIX_DIR                 "C:/Program\ Files\ \(x86\)/WiX\ Toolset\ v3.11"
    
 setenv LOCAL_SQLSVR            LOCALHOST

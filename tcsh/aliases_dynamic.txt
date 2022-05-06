@@ -54,7 +54,10 @@ endif
 #------------------------------------------------------
 #  SET VISUAL STUDIO COMPILER PATH
 
-if ($env_defCompiler == "VS2019") then
+if ($env_defCompiler == "VS2022") then
+  set var_devenvRoot = "${DEVENV_ROOT_2022}"
+
+else if ($env_defCompiler == "VS2019") then
   set var_devenvRoot = "${DEVENV_ROOT_2019}"
 
 else if ($env_defCompiler == "VS2017") then
