@@ -52,6 +52,10 @@ alias enumid            'trimobject --enum \!* --by_id'
 alias enum              'trimobject --enum \!*'
 alias enums             enum
 alias enumid            'trimobject --enum \!* --by_id'
+alias useroptions       'trimobject --user_options \!*'
+alias useropts          useroptions
+alias useroptionsid     'trimobject --user_options \!* --by_id'
+alias useroptsid        useroptionsid
 
 alias trimdb            '$PERL $PERL_HOME/trimdb.pl --dir $var_trimDir/trim/src/DD/py'
 alias trimtable         'trimdb --table \!*'
