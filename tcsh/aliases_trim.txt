@@ -22,11 +22,14 @@ alias pymessages        '$PYTHON $STATIC_PY/VisualStudio/Addin/trimMessages.py'
 alias grepproperties    'cat $var_trimDir/trim/src/DD/properties.txt | pgrep -i '
 alias viewprop          'view $var_trimDir/trim/src/DD/properties.txt'
 alias unrefed           '$PERL $STATIC_PERL/BUILD/UnreferencedTrimMessageIDs.pl'
-alias catmetrics       'cat $var_trimDir/$var_defArch/$var_defBuild/TRIMMetrics.ini'
+alias catmetrics        'cat $var_trimDir/$var_defArch/$var_defBuild/TRIMMetrics.ini'
 alias metrics           '$PERL $STATIC_PERL/misc/trimMetrics.pl --repos $var_trimDir --dir $var_defArch/$var_defBuild'
 alias makemetric        'metrics --create'
 alias metricshelp       'metrics --help'
-alias trimmetrics       metrics
+alias trimmetrics        metrics
+
+# Compare a file in this branch to the same file in another branch
+alias bcomp             'BCompare.exe'
 
 alias trimobject        '$PERL $PERL_HOME/trimobject.pl'
 alias propertyid        'trimobject -prop \!*'
@@ -170,7 +173,6 @@ alias mergeconfig       'trimperl --merge_config'
 alias removeconfig      'trimperl --remove_config'
 alias trimconfigdci     'trimperl --list_config'
 alias datasets           trimconfigdci
-
 
 alias shorttables 'trimtables |                  \\
 $PERL -ne  '"'"'                                 \\

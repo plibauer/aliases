@@ -93,6 +93,7 @@ alias whichenv  'echo "\n                      \\
 Trim Directory      = $var_trimDir             \\
 Build Architecture  = $var_defArch             \\
 Build Config        = $var_defBuild            \\
+VS Compiler         = $var_devenvRoot          \\
 Folder              = $env_folder              \\
 Revision            = $env_revision            \\
 DBID                = $var_DBID                \\
