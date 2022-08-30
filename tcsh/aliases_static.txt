@@ -20,6 +20,7 @@ set defproj = ALL_BUILD
 
 alias src               "source $include_file; settitle"
 alias refresh           "unset include_*; src"
+alias src80             "source $env_alias/80environment"
 alias src81             "source $env_alias/81environment"
 alias src82             "source $env_alias/82environment"
 alias src83             "source $env_alias/83environment"
@@ -89,27 +90,28 @@ alias wt2a              winterm2aliases
 alias aliases2winterm   'cp ~/aliases/terminal/settings.json $LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_*/LocalState'
 alias a2wt              aliases2winterm
 
-alias whichenv  'echo "\n                      \\
-Trim Directory      = $var_trimDir             \\
-Build Architecture  = $var_defArch             \\
-Build Config        = $var_defBuild            \\
-VS Compiler         = $var_devenvRoot          \\
-Folder              = $env_folder              \\
-Revision            = $env_revision            \\
-DBID                = $var_DBID                \\
-DBID Idol           = $var_idolDBID            \\
-DBSession           = $var_dbSession           \\
-DBSession Idol      = $var_idolDbSession       \\
-DBServer            = $var_dbServer            \\
-Idol Database       = $var_idolDb              \\
-Elastic Index       = $var_elasticIndex        \\
-Elastic Host        = $var_elasticHost         \\
-Elastic Host Octane = $var_elasticHostOctane   \\
-SVN Lab Server      = $SVN_LAB_URI             \\
-SVN Lab Database    = $SVN_LAB_DB              \\
-SVN Static Server   = $SVN_STATIC_URI          \\
-SVN Static Database = $SVN_STATIC_DB           \\
-VPN Config          = $var_vpnConfig           \\
+alias whichenv  'echo "\n                        \\
+Trim Directory        = $var_trimDir             \\
+Build Architecture    = $var_defArch             \\
+Build Config          = $var_defBuild            \\
+VS Compiler           = $var_devenvRoot          \\
+Visual Studio Version = $var_vsCommonName        \\
+Folder                = $env_folder              \\
+Revision              = $env_revision            \\
+DBID                  = $var_DBID                \\
+DBID Idol             = $var_idolDBID            \\
+DBSession             = $var_dbSession           \\
+DBSession Idol        = $var_idolDbSession       \\
+DBServer              = $var_dbServer            \\
+Idol Database         = $var_idolDb              \\
+Elastic Index         = $var_elasticIndex        \\
+Elastic Host          = $var_elasticHost         \\
+Elastic Host Octane   = $var_elasticHostOctane   \\
+SVN Lab Server        = $SVN_LAB_URI             \\
+SVN Lab Database      = $SVN_LAB_DB              \\
+SVN Static Server     = $SVN_STATIC_URI          \\
+SVN Static Database   = $SVN_STATIC_DB           \\
+VPN Config            = $var_vpnConfig           \\
 "'
 alias showenv           'whichenv && svnservers'
 alias trimversion       'cat $var_trimDir/trim/wix/version.wxi | grep -i "version ="'

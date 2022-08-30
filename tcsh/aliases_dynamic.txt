@@ -56,22 +56,28 @@ endif
 
 if ($env_defCompiler == "VS2022") then
   set var_devenvRoot = "${DEVENV_ROOT_2022}"
+  set var_vsCommonName = "Visual Studio 2022"
 
 else if ($env_defCompiler == "VS2019") then
   set var_devenvRoot = "${DEVENV_ROOT_2019}"
+  set var_vsCommonName = "Visual Studio 2019"
 
 else if ($env_defCompiler == "VS2017") then
   set var_devenvRoot = "${DEVENV_ROOT_2017}"
+  set var_vsCommonName = "Visual Studio 2017"
 
 else 
   if ($env_defCompiler == "VS2015") then
     set VSVER = 14.0
+    set var_vsCommonName = "Visual Studio 2015"
 
   else if ($env_defCompiler == "VS2013") then
     set VSVER = 12.0
+    set var_vsCommonName = "Visual Studio 2013"
 
   else if ($env_defCompiler == "VS2008") then
     set VSVER = 9.0
+    set var_vsCommonName = "Visual Studio 2008"
 
   endif
   set var_devenvRoot = "${DEVENV_ROOT}/Microsoft Visual Studio $VSVER"
