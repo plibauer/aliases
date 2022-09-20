@@ -121,7 +121,33 @@ alias buildtest2  'buildtest1                                                   
  '"'"
 
 #  TURN OFF OFFICE ADDIN LOADING AFTER A CSHARP BUILD
+
 alias noaddins ' $PERL -e ' "' "'                                                   \\
+   %addins = (Excel        => "TRIMOfficeIntegrationExcel",                         \\
+              "MS Project" => "TRIMOfficeIntegrationProject",                       \\
+              Outlook      => "TRIMOfficeIntegrationOutlook",                       \\
+              PowerPoint   => "TRIMOfficeIntegrationPowerPoint",                    \\
+              Word         => "TRIMOfficeIntegrationWord");                         \\
+  for (sort keys %addins) {                                                         \\
+     my $key = "HKCU\\Software\\Microsoft\\Office\\".$_."\\Addins\\".$addins{$_};   \\
+     print "Updated load behaviour for Addin $_ : ";                                \\
+     print `REG ADD "$key" /v LoadBehavior /t REG_DWORD /d 0 /f`;                   \\
+  }                                                                                 \\
+ '"'"
+
+alias addins   ' $PERL -e ' "' "'                                                   \\
+   %addins = (Excel        => "TRIMOfficeIntegrationExcel",                         \\
+              "MS Project" => "TRIMOfficeIntegrationProject",                       \\
+              Outlook      => "TRIMOfficeIntegrationOutlook",                       \\
+              PowerPoint   => "TRIMOfficeIntegrationPowerPoint",                    \\
+              Word         => "TRIMOfficeIntegrationWord");                         \\
+  for (sort keys %addins) {                                                         \\
+     my $key = "HKCU\\Software\\Microsoft\\Office\\".$_."\\Addins\\".$addins{$_};   \\
+     print `REG QUERY "$key" /v LoadBehavior`;                                      \\
+  }                                                                                 \\
+ '"'"
+
+alias noaddins_old ' $PERL -e ' "' "'                                                   \\
    %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",                    \\
               "MS Project" => "HP.HPRM.OfficeIntegration.Project",                  \\
               Outlook      => "HP.HPRM.OfficeIntegration.Outlook",                  \\
@@ -134,7 +160,7 @@ alias noaddins ' $PERL -e ' "' "'                                               
   }                                                                                 \\
  '"'"
  
-alias addins   ' $PERL -e ' "' "'                                                   \\
+alias addins_old   ' $PERL -e ' "' "'                                                   \\
    %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",                    \\
               "MS Project" => "HP.HPRM.OfficeIntegration.Project",                  \\
               Outlook      => "HP.HPRM.OfficeIntegration.Outlook",                  \\
