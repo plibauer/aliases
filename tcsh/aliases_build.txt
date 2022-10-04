@@ -147,7 +147,7 @@ alias addins   ' $PERL -e ' "' "'                                               
   }                                                                                 \\
  '"'"
 
-alias noaddins_old ' $PERL -e ' "' "'                                                   \\
+alias noaddins_old ' $PERL -e ' "' "'                                               \\
    %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",                    \\
               "MS Project" => "HP.HPRM.OfficeIntegration.Project",                  \\
               Outlook      => "HP.HPRM.OfficeIntegration.Outlook",                  \\
@@ -160,7 +160,7 @@ alias noaddins_old ' $PERL -e ' "' "'                                           
   }                                                                                 \\
  '"'"
  
-alias addins_old   ' $PERL -e ' "' "'                                                   \\
+alias addins_old   ' $PERL -e ' "' "'                                               \\
    %addins = (Excel        => "HP.HPRM.OfficeIntegration.Excel",                    \\
               "MS Project" => "HP.HPRM.OfficeIntegration.Project",                  \\
               Outlook      => "HP.HPRM.OfficeIntegration.Outlook",                  \\
@@ -180,20 +180,29 @@ alias checkForSolution 'echo $var_trimDir/trim/sln/TRIM/$var_defArch/TRIM.sln   
    }                                                                            \\
  '"'"
 
-alias buildsolution '  echo $logSeparator; date;                                                         \\
-   echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.build"      \\
- | $PERL -ne '  "'  "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  '"'"'        \\
+# Build the TRIM solution based on the current environment settings
+alias build_nofilter 'echo $logSeparator; date;                                                               \\
+   echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.build,FILTER=NO" \\
+   | buildsolution '
+
+alias build_filtered 'echo $logSeparator; date;                                                                 \\
+   echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.build,FILTER=YES" \\
+   | buildsolution '
+
+alias buildsolution '                                                                                    \\
+   $PERL -ne ' "' "' s/^(.):./\/$1\//;  s/\s/\\ /g; s/\(/\\(/g; s/\)/\\)/g; print "$_\n"  '"'"'          \\
  | $PERL -e ' "' "'                                                                                      \\
       @l = <>;                                                                                           \\
       $line = shift @l;                                                                                  \\
       chomp $line;                                                                                       \\
       $line =~ s/\\\s+$//;                                                                               \\
-      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+)/) {                                              \\
-        $td=$1;$da=$2;$db=$3;$bl=$4;                                                                     \\
+      if($line =~ /.exe,TD=(.+),DA=(.+),DB=(.+),BL=(.+),FILTER=(YES|NO)/) {                              \\
+        $td=$1;$da=$2;$db=$3;$bl=$4;$filter=$5;                                                          \\
         $line =~ s/.exe(,.+)/.exe/;                                                                      \\
         $ver=$td; $ver =~ s/^.:.//;                                                                      \\
         open T,">$bl.cmd_line";                                                                          \\
         print T "$line $td/trim/sln/TRIM/$da/TRIM.sln /build $db /project ALL_BUILD /out $bl\n";         \\
+        print T "$filter\n";                                                                             \\
         close T;                                                                                         \\
       }                                                                                                  \\
       else {                                                                                             \\
@@ -212,8 +221,10 @@ alias buildsolution '  echo $logSeparator; date;                                
       $ver =~ s/^.:.//;                                                                                  \\
       # print the command line to console                                                                \\
       open C, "$b.cmd_line"; @cl = <C>; close C;                                                         \\
-      print "COMMAND LINE: @cl";                                                                         \\
+      print "COMMAND LINE: $cl[0]";                                                                      \\
+      print "FILTERED?   : $cl[1]";                                                                      \\
       print "LOG FILE    : $b\n";                                                                        \\
+      my $filtered = $cl[1]; chomp $filtered;                                                            \\
       $file = File::Tail->new(name=>$b, interval=>1);                                                    \\
       while(defined($log=$file->read)) {                                                                 \\
         chomp $log;                                                                                      \\
@@ -221,6 +232,7 @@ alias buildsolution '  echo $logSeparator; date;                                
            print "$log\n";                                                                               \\
            exit;                                                                                         \\
         }                                                                                                \\
+        elsif($filtered eq "NO") { print "$log\n"; next; }                                               \\
         elsif($log =~ /\s(warning|error|fatal|failed)\s|>Error:/i) {                                     \\
           if(length($log) > 200){ $log = substr($log,0,200); }                                           \\
           print "$log\n"                                                                                 \\
@@ -245,8 +257,9 @@ alias buildsolution '  echo $logSeparator; date;                                
       }                                                                                                  \\
  '"'"
  
-alias bldsln "checkForSolution; buildsolution; date"
-alias kbldsln "killboth; bldsln"
+alias bldsln  'checkForSolution; build_filtered; date'
+alias build   'checkForSolution; build_nofilter; date'
+alias kbldsln 'killboth; bldsln'
 
 alias clnsln '    echo $logSeparator; date;                                                           \\
     echo -n "$var_devenvexe,TD=$var_trimDir,DA=$var_defArch,DB=$var_defBuild,BL=$var_buildLog.clean"  \\
