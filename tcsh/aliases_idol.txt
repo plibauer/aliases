@@ -21,7 +21,7 @@ idoldbs               : List the currently configured IDOL databases            
 idolremovedb          : Remove the default database (eg. CM_M5)                                     \\
 \\
 ---------------------- CONFIGURATION ---------------------------------------------------            \\
-idolconfig            : Sets up DBID with suffix 5 and dataset name with suffix '_idol'             \\
+idolconfig            : Sets up DBID with suffix 5 and dataset name with suffix \042_idol\042       \\
 popdbidol             : Runs popdb for above settings                                               \\
 restoreidol           : Restores above database                                                     \\
 goidol                : Change directory to Idol Development Deployment                             \\
@@ -40,6 +40,11 @@ idolrec <number>      : Search based on record number, ie. 200 for REC_200      
 idolrecv <number>     : Same as above, but print all fields including content                       \\
 idolref  <urn>        : Search for a record based on the URN, eg. trim:N5/rec/9000000238:1          \\
                         Use idolcontent if you only want to specify the URI                         \\
+idolsave <num/range>  : Save the full IDX in XML format for the given record number/range. Can      \\
+                        specify as REC_10, or just 10. A range is \042REC_1 .. REC_10\042 or        \\
+                        \042\061 .. 10\042. This is equivalent to the range 9000000001 -> 9000000010.\\
+                        The files are saved as 9000000001.txt etc.                                  \\
+idolreq <num/range>   : As above, except prints to screen and formats the XML output                \\
 \\
 idolrectype <uri>     : Search for records that have the Record Type <uri>                          \\
 idolrectypev <uri>    : Search as above and print full output                                       \\
@@ -174,6 +179,12 @@ alias idolrec           "$IDOLRECQRY=MATCH%7BREC_\!^%7D:TS_NUMBER               
 alias idolrecv          "$IDOLRECQRY=MATCH%7BREC_\!^%7D:TS_NUMBER\&Print=All                          $CURL_OPTS | $XMLFORMAT"
 alias irt               "$IDOLRECQRY=STRING%7Btrim:$var_idolDBID/rty/\!^%7D:TS_RECORDTYPE\&combine=DREROOTFAMILYREFERENCE $CURL_OPTS | $XMLFORMAT"
 alias irtv              "$IDOLRECQRY=STRING%7Btrim:$var_idolDBID/rty/\!^%7D:TS_RECORDTYPE\&print=all  $CURL_OPTS | $XMLFORMAT"
+
+# New python script for querying the proxy server
+alias idolrequest	'$PYTHON $PYTHON_HOME/idolRequest.py'
+alias idolrequesthelp   'idolrequest -h'
+alias idolsave          'idolrequest -a getcontent --all --create --dbid $var_idolDBID --recnum'
+alias idolreq           'idolrequest -a getcontent --all --dbid $var_idolDBID --recnum \!^ | xmlformat'
 
 alias idolrectype       'irt \!^ |   \\
 $PERL -e '"'"'                       \\

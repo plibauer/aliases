@@ -122,6 +122,11 @@ alias wixcomponents     makewix
 
 #################################################################################
 
+alias pipupgrade  '$PYTHON -m pip install --upgrade pip'
+alias asciiescape 'ascii -o'
+alias octal       asciescape
+alias asciiall    'ascii; ascii -o'
+
 set WINHOME = `cygpath $HOMEDRIVE$HOMEPATH`
 
 alias goa                'cd $env_alias'
