@@ -279,7 +279,8 @@ sub listConfig {
                 'MaxDciResults',        'ElasticBufferSize',
                 'ElasticScrollTimeout', 'ElasticDocumentFieldSize',
                 'MaxNormalSize',        'MaxArchiveSize',
-                'IDOLTimeOut'
+                'IDOLTimeOut',          'RMSClientID',
+                'RMSTenantID',          'RMSPassword_aes'
             ]
         },
         {
