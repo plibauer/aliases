@@ -181,7 +181,7 @@ alias irt               "$IDOLRECQRY=STRING%7Btrim:$var_idolDBID/rty/\!^%7D:TS_R
 alias irtv              "$IDOLRECQRY=STRING%7Btrim:$var_idolDBID/rty/\!^%7D:TS_RECORDTYPE\&print=all  $CURL_OPTS | $XMLFORMAT"
 
 # New python script for querying the proxy server
-alias idolrequest	'$PYTHON $PYTHON_HOME/idolRequest.py'
+alias idolrequest	'$PYTHON $PYTHON_HOME/indexRequest.py'
 alias idolrequesthelp   'idolrequest -h'
 alias idolsave          'idolrequest -a getcontent --all --create --dbid $var_idolDBID --recnum'
 alias idolreq           'idolrequest -a getcontent --all --dbid $var_idolDBID --recnum \!^ | xmlformat'
