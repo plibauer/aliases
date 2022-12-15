@@ -274,13 +274,27 @@ sub listConfig {
         {
             'n' => 'ContentIndexParams',
             'l' => [
-                'EngineType',           'DCIServer',
-                'ElasticUrl',           'ResultBufferSize',
-                'MaxDciResults',        'ElasticBufferSize',
-                'ElasticScrollTimeout', 'ElasticDocumentFieldSize',
-                'MaxNormalSize',        'MaxArchiveSize',
-                'IDOLTimeOut',          'RMSClientID',
-                'RMSTenantID',          'RMSPassword_aes'
+                'EngineType',
+                'DCIServer',
+                'ElasticUrl',
+                'ResultBufferSize',
+                'MaxDciResults',
+                'ElasticBufferSize',
+                'ElasticScrollTimeout',
+                'ElasticDocumentFieldSize',
+                'ElasticStemmingEnabled',
+                'ElasticILMEnabled',
+                'ElasticRolloverMaxAge',
+                'ElasticRolloverMaxSize',
+                'ElasticRolloverMaxDocuments',
+                'ElasticRolloverMaxPrimaryShardDocs',
+                'ElasticRolloverMaxPrimaryShardSize',
+                'MaxNormalSize',
+                'MaxArchiveSize',
+                'IDOLTimeOut',
+                'RMSClientID',
+                'RMSTenantID',
+                'RMSPassword_aes'
             ]
         },
         {
@@ -289,7 +303,7 @@ sub listConfig {
         }
     ];
 
-    my $max = length("ElasticDocumentFieldSize");
+    my $max = length("ElasticRolloverMaxPrimaryShardSize");
 
     foreach my $d (@$datasets) {
         print CYAN, "Dataset ", RESET, " => ", BRIGHT_GREEN, $d->{name}, "\n",
@@ -308,7 +322,8 @@ sub listConfig {
                 my @events;
                 foreach my $snd (@n) {
                     my $name = $snd->nodeName;
-                    my $val = $snd->findvalue("$element") eq "0" ? "ON" : "SUSPENDED";
+                    my $val =
+                      $snd->findvalue("$element") eq "0" ? "ON" : "SUSPENDED";
                     $maxEv = length($name) > $maxEv ? length($name) : $maxEv;
                     push @events, [ $name, $val ];
                 }
