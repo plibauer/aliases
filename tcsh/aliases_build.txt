@@ -27,6 +27,11 @@ alias rmlogs           'rm $var_trimDir/$var_defArch/$var_defBuild/ServerLocalDa
 alias rmlogsboth       'rm $var_trimDir/$var_defArch/{Debug,Release}/ServerLocalData/Log/*.log'
 alias rmlogslocal      'golocallog; rm -f *.log; back' 
 
+# Patching tools
+alias patchlogcleaner	'$PERL $STATIC_PERL/WIX/patch_log_cleaner.pl'
+alias patchloghelp	'patchlogcleaner -h'
+alias patchlog		patchlogcleaner
+
 # Search for which project a source module belongs to
 alias findproject       '$PERL $STATIC_PERL/misc/find_in_visual_studio.pl --solution $var_trimDir/trim/sln/TRIM/x64/TRIM.sln \!^'
 alias findproject_XXX      'setenv PROJSRCH \!^; grep -is -A 1 \!^ $var_trimDir/trim/sln/TRIM/x64/*/*.filters   \\
