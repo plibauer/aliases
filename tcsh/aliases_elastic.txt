@@ -5,6 +5,7 @@
 #                                                                                                                #
 ##################################################################################################################
 
+alias goelastic		   'cd $ELASTIC_DIR'
 alias elastichelp          'esperl --es_help'
 alias eshelpsearch         'esperl --es_help_search'
 alias eshelpauto           'esperl --es_help_ac'

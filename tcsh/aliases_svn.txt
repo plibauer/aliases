@@ -135,9 +135,11 @@ alias statsearch        statmatch
 alias statfind          statmatch
 
 # Query the SVN sqlite database for the UUID of a given checked out path
-alias sqliteuuid            sqlite .svn/wc.db 'select uuid from REPOSITORY where id=1'
-alias uuidupdate            sqlite .svn/wc.db 'update REPOSITORY set uuid=\!^ where id=1'
-alias repoinfo              sqlite .svn/wc.db 'select * from REPOSITORY'
+alias sqliteuuid        'sqlite .svn/wc.db "select uuid from REPOSITORY where id=1"'
+#
+# Below aliases not working in latest version of sqlite (3.41)
+# alias uuidupdate        'sqlite .svn/wc.db update REPOSITORY set uuid=\"\!^\" where id=1'
+alias repoinfo          'sqlite .svn/wc.db "select * from REPOSITORY"'
 
 #----------------------------------------------
 
